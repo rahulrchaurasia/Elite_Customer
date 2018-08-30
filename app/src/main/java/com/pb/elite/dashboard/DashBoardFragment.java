@@ -4,26 +4,23 @@ package com.pb.elite.dashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.feedback.FeedbackActivity;
 import com.pb.elite.orderDetail.OrderActivity;
 import com.pb.elite.servicelist.Activity.ServiceActivity;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ss.com.bannerslider.banners.Banner;
-import ss.com.bannerslider.banners.DrawableBanner;
-import ss.com.bannerslider.views.BannerSlider;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,10 +28,11 @@ import ss.com.bannerslider.views.BannerSlider;
 public class DashBoardFragment extends BaseFragment implements View.OnClickListener {
 
 
-    BannerSlider bannerSlider;
-    List<Banner> banners;
-    CardView cvService, cvRequest,cvfeedback;
-
+    ViewPager viewPager;
+    List<Integer> banners;
+    CardView cvService, cvRequest, cvfeedback;
+    CustomPagerAdapter mBannerAdapter;
+    CirclePageIndicator circlePageIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +49,9 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     private void initialize(View view) {
 
 
-        bannerSlider = (BannerSlider) view.findViewById(R.id.banner_slider1);
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.titles);
+
         cvService = (CardView) view.findViewById(R.id.cvService);
         cvRequest = (CardView) view.findViewById(R.id.cvRequest);
         cvfeedback = (CardView) view.findViewById(R.id.cvfeedback);
@@ -61,11 +61,48 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     private void setBanner() {
         banners = new ArrayList<>();
 
-        banners.add(new DrawableBanner(R.drawable.banner1));
-        banners.add(new DrawableBanner(R.drawable.banner2));
-        banners.add(new DrawableBanner(R.drawable.banner3));
+        banners.add(R.drawable.banner1);
+        banners.add(R.drawable.banner2);
+        banners.add(R.drawable.banner3);
+        mBannerAdapter = new CustomPagerAdapter(getContext(), banners);
 
-        bannerSlider.setBanners(banners);
+
+        if (viewPager != null && circlePageIndicator != null) {
+            viewPager.setAdapter(mBannerAdapter);
+            circlePageIndicator.setViewPager(viewPager);
+
+            Timer timer = new Timer();
+            timer.schedule(new RemindTask(banners.size(), viewPager), 0, 1500);
+
+        }
+    }
+
+    class RemindTask extends TimerTask {
+        private int numberOfPages;
+        private ViewPager mViewPager;
+        private int page = 0;
+
+        public RemindTask(int numberOfPages, ViewPager mViewPager) {
+            this.numberOfPages = numberOfPages;
+            this.mViewPager = mViewPager;
+        }
+
+        @Override
+        public void run() {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (page > numberOfPages) { // In my case the number of pages are 5
+                            mViewPager.setCurrentItem(0);
+                            page = 0;
+                        } else {
+                            mViewPager.setCurrentItem(page++);
+                        }
+                    }
+                });
+            }
+
+        }
     }
 
     private void setListnner() {
