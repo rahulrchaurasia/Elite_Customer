@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtHdr"
+        style="@style/TextViewStyle.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="14dp"
+        android:text="Document"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/ivDocFile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnClose"
+        android:layout_below="@+id/txtHdr"
+
+        android:padding="5dp" />
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--android:orientation="vertical">-->
+
+
+    <!--<com.pb.elite.utility.TouchImageView-->
+    <!--android:id="@+id/ivDocFile"-->
+    <!--android:src="@drawable/drop_down_arrow"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scaleType="fitCenter"/>-->
+
+    <!--</LinearLayout>-->
+
+
+    <Button
+        android:id="@+id/btnClose"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="CLOSE" />
+
+</RelativeLayout>

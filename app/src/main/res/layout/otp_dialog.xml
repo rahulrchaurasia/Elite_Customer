@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/txtPlanName"
+            style="@style/TextViewStyle.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="left|center_vertical"
+            android:minHeight="45dp"
+            android:padding="8dp"
+            android:text="Elite Customer"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivCross"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/TextViewStyle.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:text="Enter OTP sent on " />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_margin="@dimen/fab_margin"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etOtp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvTitle"
+            android:layout_weight="3"
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/tvResend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="2"
+            android:gravity="right|center_vertical"
+            android:padding="5dp"
+            android:text="resend"
+            android:textColor="@android:color/holo_blue_dark"
+            android:visibility="visible" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tvOk"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:minHeight="35dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="VERIFY" />
+</LinearLayout>

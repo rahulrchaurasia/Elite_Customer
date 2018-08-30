@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+ android:orientation="vertical"
+    android:background="@color/bg"
+    tools:context="com.pb.elite.servicelist.NonRTOListFragment">
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:id="@+id/cvParent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginBottom="5dp">-->
+
+        <!--<TextView-->
+
+            <!--style="@style/TextViewStyle.Large"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:gravity="left"-->
+            <!--android:text="List Of Non RTO Services"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:padding="10dp"-->
+            <!--android:background="@color/seperator_white"-->
+
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:paddingBottom="3dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+
+</LinearLayout>
