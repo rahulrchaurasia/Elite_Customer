@@ -13,6 +13,7 @@ import com.pb.elite.core.response.DBVersionRespone;
 import com.pb.elite.core.response.GetOtpResponse;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
+import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.database.DataBaseController;
 
@@ -360,6 +361,52 @@ public class RegisterController implements IRegister {
 
             @Override
             public void onFailure(Call<CommonResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getPolicyData(String PolicyNumber, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("PolicyNumber", PolicyNumber);
+
+
+        registerQuotesNetworkService.getPolicyData(body).enqueue(new Callback<PolicyResponse>() {
+            @Override
+            public void onResponse(Call<PolicyResponse> call, Response<PolicyResponse> response) {
+                if (response.body() != null) {
+
+                    //callback of data
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PolicyResponse> call, Throwable t) {
                 if (t instanceof ConnectException) {
                     iResponseSubcriber.OnFailure(t);
                 } else if (t instanceof SocketTimeoutException) {

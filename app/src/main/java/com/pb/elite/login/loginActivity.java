@@ -10,7 +10,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import com.pb.elite.core.controller.register.RegisterController;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.register.SignUpActivity;
 import com.pb.elite.splash.PrefManager;
+import com.pb.elite.utility.Constants;
 
 public class loginActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
 
@@ -97,6 +101,7 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
+        Constants.hideKeyBoard(view,loginActivity.this);
         switch (view.getId()) {
             case R.id.tvRegistration:
                 startActivity(new Intent(loginActivity.this, SignUpActivity.class));
@@ -174,7 +179,8 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
     public void OnFailure(Throwable t) {
 
         cancelDialog();
-        Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+        getCustomToast(t.getMessage());
     }
 
 
@@ -239,4 +245,6 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     //endregion
+
+
 }

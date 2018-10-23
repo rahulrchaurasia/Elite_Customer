@@ -25,4 +25,6 @@ public interface IRegister {
     void changePassword(String mobile, String curr_password, String new_password,  IResponseSubcriber iResponseSubcriber);
 
     void forgotPassword(String mobile, IResponseSubcriber iResponseSubcriber);
+
+    void getPolicyData(String PolicyNumber, IResponseSubcriber iResponseSubcriber);
 }

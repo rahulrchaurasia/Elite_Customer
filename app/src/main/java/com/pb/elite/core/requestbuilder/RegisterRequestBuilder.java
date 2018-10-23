@@ -9,6 +9,7 @@ import com.pb.elite.core.response.DBVersionRespone;
 import com.pb.elite.core.response.GetOtpResponse;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
+import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.ProductResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 
@@ -52,6 +53,9 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
 
         @POST("/api/forgot-password")
         Call<CommonResponse> forgotPassword(@Body HashMap<String, String> body);
+
+        @POST("/api/policy")   // Change 05
+        Call<PolicyResponse> getPolicyData(@Body HashMap<String, String> body);
 
     }
 }

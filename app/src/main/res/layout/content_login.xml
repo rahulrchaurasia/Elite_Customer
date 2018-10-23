@@ -12,79 +12,119 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:src="@mipmap/ic_launcher" />
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til"
-            style="@style/TextInputLayoutStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="Mobile No">
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="5dp">
 
-            <EditText
-                android:id="@+id/etMobile"
-                style="@style/Style.edittext"
-                android:inputType="number"
-                android:maxLength="10"
-                android:text="" />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tiee"
-            style="@style/TextInputLayoutStyle"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/ic_launcher" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="Mobile No.">
+
+                <EditText
+                    android:id="@+id/etMobile"
+                    style="@style/Style.edittext"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tiee"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="Password"
+                app:passwordToggleContentDescription="Password"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/primary_color">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    style="@style/Style.edittext"
+                    android:inputType="textPassword"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnSignIn"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:text="SIGN IN" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:hint="Password"
-            app:passwordToggleContentDescription="Password"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/primary_color">
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-            <EditText
-                android:id="@+id/etPassword"
-                style="@style/Style.edittext"
-                android:inputType="textPassword"
-                android:text="" />
-        </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:id="@+id/tvRegistration"
+                style="@style/TextViewStyle.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:text="@string/signup"
+                android:textColor="@color/header_dark_text"
+                android:visibility="visible" />
 
-        <Button
-            android:id="@+id/btnSignIn"
-            style="@style/ButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="8dp"
-            android:text="SIGN IN" />
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                style="@style/TextViewStyle.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_weight="0.4"
+                android:gravity="right"
+
+                android:text="@string/forgotPwd"
+                android:textColor="@color/header_dark_text" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvForgotPassword"
+            android:id="@+id/tvForgotPassword1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:padding="10dp"
             android:text="forgot password?"
             android:textAppearance="@style/TextStyle.Body1"
-            android:padding="10dp"
             android:textColor="@color/blue"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tvRegistration"
+            android:id="@+id/tvRegistration1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -93,7 +133,8 @@
             android:text="New Registration "
             android:textAppearance="@style/TextStyle.Title"
             android:textColor="@color/blue"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:visibility="gone" />
 
 
     </LinearLayout>

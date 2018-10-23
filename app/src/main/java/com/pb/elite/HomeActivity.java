@@ -89,6 +89,8 @@ public class HomeActivity extends BaseActivity {
             loadHomeFragment("Home");
         }
 
+
+
     }
 
     private void setUpNavigationView() {
@@ -353,6 +355,9 @@ public class HomeActivity extends BaseActivity {
         prefManager.setPassword("");
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCustomToast("Data Save Successfullyy....");
+    }
 }

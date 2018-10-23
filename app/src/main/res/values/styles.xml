@@ -14,36 +14,59 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!--<item name="android:windowBackground">@color/window_background</item>-->
-        <item name="android:windowBackground">@color/seperator</item>
-        <!--<item name="android:textColorPrimary">@color/header_text_color</item>-->
-        <!--<item name="android:textColorHint">@color/secondary_text_color</item>-->
+        <!--<item name="android:fontFamily">@fonts/oxygenregular</item>-->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorControlNormal">@color/colorNormal</item>
+        <item name="android:colorForeground">@color/colorNormal</item>
+        <item name="toolbarStyle">@style/custom_toolbar</item>
 
+
+        <!--Text Colors-->
+        <item name="android:textColorPrimary">@color/textTitle</item>
+        <item name="android:textColorSecondary">@color/textSubTitle</item>
+        <item name="android:textColorTertiary">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/textSubTitle</item>
+
+        <item name="drawerArrowStyle">@style/DrawerStyle</item>
+    </style>
+
+    <style name="custom_toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="titleTextColor">@color/off_white</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">0</item>
+
+    </style>
+    <style name="DrawerStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="colorControlNormal">@color/colorNormal</item>
+        <item name="spinBars">true</item>
+        <item name="color">@color/textTitle</item>
     </style>
 
     <!--//  font style for theme-->
     <style name="AppTheme.Widget" />
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="fontPath">fonts/oxygenlight.ttf</item>
     </style>
 
 
-    <style name="Font_robo_light">
-        <item name="android:textSize">13sp</item>
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
-    </style>
+    <!--<style name="Font_robo_light">-->
+        <!--<item name="android:textSize">13sp</item>-->
+        <!--<item name="fontPath">fonts/Roboto-Light.ttf</item>-->
+    <!--</style>-->
 
-    <style name="Font_robo_boldIt">
-        <item name="android:textSize">13sp</item>
-        <item name="fontPath">fonts/Roboto-BoldItalic.ttf</item>
+    <!--<style name="Font_robo_boldIt">-->
+        <!--<item name="android:textSize">13sp</item>-->
+        <!--<item name="fontPath">fonts/Roboto-BoldItalic.ttf</item>-->
 
-    </style>
+    <!--</style>-->
 
-    <style name="Font_san_light">
-        <item name="android:textSize">13sp</item>
-        <item name="fontPath">fonts/source-sans-pro.light.ttf</item>
+    <!--<style name="Font_san_light">-->
+        <!--<item name="android:textSize">13sp</item>-->
+        <!--<item name="fontPath">fonts/source-sans-pro.light.ttf</item>-->
 
-    </style>
+    <!--</style>-->
 
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -91,11 +114,12 @@
     <!--Edit text style-->
     <style name="Style.edittext" parent="@android:style/Widget.EditText">
         <!--<item name="android:background">@null</item>-->
-        <item name="android:textColor">@color/header_dark_text</item>
+        <item name="android:textColor">@color/uvv_black</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingTop">2dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="fontPath">fonts/oxygenregular.ttf</item>
         <item name="android:layout_marginTop">8dp</item>
 
     </style>
@@ -108,10 +132,23 @@
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/lightblue_background</item>
+
+        <item name="android:focusable">true</item>
+        <item name="android:minHeight">38dp</item>
+        <item name="fontPath">fonts/oxygenlight.ttf</item>
+    </style>
+
+    <style name="ButtonBlue" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:background">@drawable/blue_border_lightblue_background</item>
         <item name="android:focusable">true</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="fontPath">fonts/source-sans-pro.light.ttf</item>
+        <item name="android:minHeight">38dp</item>
+        <item name="fontPath">fonts/oxygenlight.ttf</item>
     </style>
 
 
@@ -126,38 +163,38 @@
 
     <style name="TextViewStyle.Large" parent="TextViewStyle">
         <item name="android:textSize">15sp</item>
-        <item name="fontPath">fonts/source-sans-pro.semibold.ttf</item>
+        <item name="fontPath">fonts/oxygenbold.ttf</item>
         <item name="android:textColor">@color/header_dark_text</item>
 
     </style>
 
     <style name="TextViewStyle.MediumLarge" parent="TextViewStyle">
         <item name="android:textSize">15sp</item>
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="fontPath">fonts/oxygenlight.ttf</item>
         <item name="android:textColor">@color/header_light_text</item>
     </style>
 
     <style name="TextViewStyle.Medium" parent="TextViewStyle">
         <item name="android:textSize">13sp</item>
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="fontPath">fonts/oxygenregular.ttf</item>
         <item name="android:textColor">@color/header_light_text</item>
     </style>
 
     <style name="TextViewStyle.MediumBold" parent="TextViewStyle">
-        <item name="fontPath">fonts/source-sans-pro.semibold.ttf</item>
+        <item name="fontPath">fonts/oxygenbold.ttf</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
 
     <style name="TextViewStyle.Small" parent="TextViewStyle">
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="fontPath">fonts/oxygenlight.ttf</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/header_light_text</item>
     </style>
 
     <style name="TextViewStyle.VerySmall" parent="TextViewStyle">
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="fontPath">fonts/oxygenlight.ttf</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/description_text</item>
     </style>
@@ -225,7 +262,7 @@
     <!-- Edit Text Styles -->
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textSize">14sp</item>
-        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="fontPath">fonts/oxygenregular.ttf</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout"></style>

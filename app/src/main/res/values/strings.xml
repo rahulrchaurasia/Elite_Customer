@@ -22,6 +22,8 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
 
+    <string name="signup">Not a Member? <b><u>Sign up now!</u></b></string>
+    <string name="forgotPwd"><u><i>Forgot Password? .</i></u></string>
 
     <string name="title_activity_product">Product</string>
     <string name="title_activity_home">Home</string>

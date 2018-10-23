@@ -17,9 +17,12 @@
     <color name="secondary_text">#757575</color>
     <color name="divider1">#BDBDBD</color>
 
-    <!--<color name="colorPrimary">#009EE3</color>-->
-    <!--<color name="colorPrimaryDark">#01579B</color>-->
-    <color name="colorAccent">#0288D1</color>
+    <color name="colorAccent">#9E9E9E</color>
+
+    <color name="textTitle">#616161</color>
+    <color name="textSubTitle">#BDBDBD</color>
+    <color name="colorNormal">#9E9E9E</color>
+
     <color name="darkBlue">#1565c0</color>
     <color name="divider">#F1F1F1</color>
     <color name="bg">#c9c5c5</color>

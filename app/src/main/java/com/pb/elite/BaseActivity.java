@@ -8,10 +8,16 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
 
 import java.io.File;
@@ -168,6 +174,26 @@ public class BaseActivity extends AppCompatActivity {
         } catch (Exception ex) {
             Toast.makeText(BaseActivity.this, "Please try again..", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void getCustomToast(String strMessage)
+    {
+
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.layout_custom_toast,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+
+        TextView text = (TextView) layout.findViewById(R.id.txtMessage);
+        text.setText(""+strMessage);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
     public interface PopUpListener {
