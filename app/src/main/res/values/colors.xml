@@ -17,7 +17,8 @@
     <color name="secondary_text">#757575</color>
     <color name="divider1">#BDBDBD</color>
 
-    <color name="colorAccent">#9E9E9E</color>
+    <color name="colorAccent">#71c4d2</color>
+    <!--9E9E9E-->
 
     <color name="textTitle">#616161</color>
     <color name="textSubTitle">#BDBDBD</color>

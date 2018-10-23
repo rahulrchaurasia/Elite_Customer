@@ -355,9 +355,5 @@ public class HomeActivity extends BaseActivity {
         prefManager.setPassword("");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getCustomToast("Data Save Successfullyy....");
-    }
+
 }

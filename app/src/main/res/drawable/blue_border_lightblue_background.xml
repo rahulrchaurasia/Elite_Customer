@@ -6,4 +6,5 @@
     <stroke
         android:width="0.3dp"
         android:color="@color/tab_color" />
+    <corners android:radius="4dp"></corners>
 </shape>

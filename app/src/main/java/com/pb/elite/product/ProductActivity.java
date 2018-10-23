@@ -311,7 +311,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void reqDocPopUp(List<DocProductEnity> lstDoc) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this,R.style.CustomDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this, R.style.CustomDialog);
 
         RecyclerView rvProductDoc;
         ProductDocAdapter mAdapter = new ProductDocAdapter(this, lstDoc);
@@ -860,34 +860,75 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void showPaymentAlert(final View view, String strBody, final int OrderID) {
-        try {
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-            builder.setTitle("Elite");
 
-            builder.setMessage(strBody);
-            String positiveText = "Ok";
-            builder.setPositiveButton(positiveText,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+      //region comment
+      //        try {
+//            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+//            builder.setTitle("Elite");
+//
+//            builder.setMessage(strBody);
+//            String positiveText = "Ok";
+//            builder.setPositiveButton(positiveText,
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//
+//                            startActivity(new Intent(ProductActivity.this, DocUploadActivity.class)
+//                                    .putExtra("ORDER_ID", OrderID));
+//
+//                            ProductActivity.this.finish();
+//
+//
+//                        }
+//                    });
+//            final android.support.v7.app.AlertDialog dialog = builder.create();
+//            dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnimation;
+//            dialog.setCancelable(false);
+//            dialog.setCanceledOnTouchOutside(false);
+//            dialog.show();
+//        } catch (Exception ex) {
+//            Toast.makeText(this, "Please try again..", Toast.LENGTH_SHORT).show();
+//        }
+     //endregion
 
-                            startActivity(new Intent(ProductActivity.this, DocUploadActivity.class)
-                                    .putExtra("ORDER_ID", OrderID));
-
-                            ProductActivity.this.finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this, R.style.CustomDialog);
 
 
-                        }
-                    });
-            final android.support.v7.app.AlertDialog dialog = builder.create();
-            dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnimation;
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        } catch (Exception ex) {
-            Toast.makeText(this, "Please try again..", Toast.LENGTH_SHORT).show();
-        }
+        Button btnClose;
+        TextView txtMessage;
+
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.layout_success_message, null);
+
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
+        txtMessage = (TextView) dialogView.findViewById(R.id.txtMessage);
+
+        txtMessage.setText("" + strBody);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                startActivity(new Intent(ProductActivity.this, DocUploadActivity.class)
+                        .putExtra("ORDER_ID", OrderID));
+
+                ProductActivity.this.finish();
+            }
+        });
+
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.show();
+        //  alertDialog.getWindow().setLayout(900, 600);
+
+
     }
 
 
@@ -898,9 +939,9 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         if (requestCode == Constants.SEARCH_CITY_CODE) {
             if (data != null) {
 
-                    String CITY_NAME = data.getStringExtra(Constants.SEARCH_CITY_NAME);
-                    CITY_ID_NON_RTO = data.getStringExtra(Constants.SEARCH_CITY_ID);
-                    acCity.setText(CITY_NAME);
+                String CITY_NAME = data.getStringExtra(Constants.SEARCH_CITY_NAME);
+                CITY_ID_NON_RTO = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                acCity.setText(CITY_NAME);
 
             }
 
