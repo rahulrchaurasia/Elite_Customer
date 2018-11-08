@@ -68,7 +68,7 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
         @POST("/api/get-product-wise-document")
         Call<ProductDocumentResponse> getProdDocument(@Body HashMap<String, String> body);   //used
 
-        @POST("/api/get-order-document ")
+        @POST("/api/get-order-document")
         Call<DocumentViewResponse> getDocumentView(@Body HashMap<String, String> body);   //used
 
         @Multipart

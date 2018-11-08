@@ -4,19 +4,25 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pb.elite.product.ProductActivity;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
 
@@ -34,6 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     //public Realm realm;
     ProgressDialog dialog;
     PopUpListener popUpListener;
+    CustomPopUpListener customPopUpListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +48,7 @@ public class BaseActivity extends AppCompatActivity {
         // Initialize Realm
         //Realm.init(this);
         // Get a Realm instance for this thread
-       // realm = Realm.getDefaultInstance();
+        // realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -73,7 +80,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void showDialog(String msg) {
         if (dialog == null)
             dialog = ProgressDialog.show(BaseActivity.this, "", msg, true);
-        else{
+        else {
             if (!dialog.isShowing())
                 dialog = ProgressDialog.show(BaseActivity.this, "", msg, true);
         }
@@ -148,7 +155,8 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showAlertAction(final View view ,String strBody) {
+    //region Default Alert
+    public void showAlertAction(final View view, String strBody) {
         try {
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(BaseActivity.this);
             builder.setTitle("Elite");
@@ -160,9 +168,9 @@ public class BaseActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            if (popUpListener != null){
+                            if (popUpListener != null) {
 
-                                popUpListener.onPositiveButtonClick( view);
+                                popUpListener.onPositiveButtonClick(view);
                             }
 
                         }
@@ -176,26 +184,6 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void getCustomToast(String strMessage)
-    {
-
-
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.layout_custom_toast,
-                (ViewGroup) findViewById(R.id.toast_layout_root));
-
-
-
-        TextView text = (TextView) layout.findViewById(R.id.txtMessage);
-        text.setText(""+strMessage);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 100);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-    }
-
     public interface PopUpListener {
 
         void onPositiveButtonClick(View view);
@@ -206,5 +194,119 @@ public class BaseActivity extends AppCompatActivity {
         if (popUpListener != null)
             this.popUpListener = popUpListener;
     }
+
+
+    public void getCustomToast(String strMessage) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.layout_custom_toast,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+        TextView text = (TextView) layout.findViewById(R.id.txtMessage);
+        text.setText("" + strMessage);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+    //endregion
+
+
+    public void openPopUp(final View view, String title, String desc, String positiveButtonName, String negativeButtonName, boolean isNegativeVisible, boolean isCancelable) {
+        try {
+            final Dialog dialog;
+            dialog = new Dialog(BaseActivity.this, R.style.CustomDialog);
+
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.layout_common_popup);
+
+            TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
+            tvTitle.setText(title);
+            TextView tvOk = (TextView) dialog.findViewById(R.id.tvOk);
+            tvOk.setText(positiveButtonName);
+
+            TextView tvCancel = (TextView) dialog.findViewById(R.id.tvCancel);
+            tvCancel.setText(negativeButtonName);
+            if (isNegativeVisible) {
+                tvCancel.setVisibility(View.VISIBLE);
+            } else {
+                tvCancel.setVisibility(View.GONE);
+            }
+
+            TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
+            txtMessage.setText(desc);
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+
+            dialog.setCancelable(isCancelable);
+            dialog.setCanceledOnTouchOutside(isCancelable);
+
+            Window dialogWindow = dialog.getWindow();
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = lp.MATCH_PARENT;  // Width
+            lp.height = lp.WRAP_CONTENT; // Height
+            dialogWindow.setAttributes(lp);
+
+            dialog.show();
+            tvOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if (customPopUpListener != null)
+                        customPopUpListener.onPositiveButtonClick(dialog, view);
+                }
+            });
+
+            tvCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if (customPopUpListener != null)
+                        customPopUpListener.onCancelButtonClick(dialog, view);
+                }
+            });
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if (customPopUpListener != null)
+                        customPopUpListener.onCancelButtonClick(dialog, view);
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // region CustomPopup
+
+    public interface CustomPopUpListener {
+
+        void onPositiveButtonClick(Dialog dialog, View view);
+
+        void onCancelButtonClick(Dialog dialog, View view);
+
+    }
+
+    public void registerCustomPopUp(CustomPopUpListener customPopUpListener) {
+        if (customPopUpListener != null)
+            this.customPopUpListener = customPopUpListener;
+    }
+
+    //endregion
+
+    public void composeEmail(String addresses, String subject) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{addresses});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+
+        startActivity(Intent.createChooser(intent, "Email via..."));
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.pb.elite.core.requestbuilder;
 
 import com.pb.elite.core.RetroRequestBuilder;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
+import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.AddUserResponse;
 import com.pb.elite.core.response.CommonResponse;
@@ -12,6 +13,7 @@ import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.ProductResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
+import com.pb.elite.core.response.UserRegistrationResponse;
 
 import java.util.HashMap;
 
@@ -54,8 +56,12 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         @POST("/api/forgot-password")
         Call<CommonResponse> forgotPassword(@Body HashMap<String, String> body);
 
-        @POST("/api/policy")   // Change 05
+        @POST("/api/reliance-login")   // Change 05
         Call<PolicyResponse> getPolicyData(@Body HashMap<String, String> body);
+
+        @POST("/api/user-registration")
+        Call<UserRegistrationResponse> userRegistration (@Body RegisterRequest registerRequest);
+
 
     }
 }

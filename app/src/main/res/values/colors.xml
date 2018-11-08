@@ -5,7 +5,7 @@
     <color name="colorPrimary">#ed1c24</color>
     <color name="primary_light">#FFCDD2</color>
     <!--<color name="primary_light">#D0991000</color>-->
-    <!--be2513--> #ed8387
+    <!--be2513-->
 
     <!--<color name="colorPrimary">#F44336</color>-->
     <!--<color name="colorPrimaryDark">#D32F2F</color>-->
@@ -27,6 +27,8 @@
     <color name="darkBlue">#1565c0</color>
     <color name="divider">#F1F1F1</color>
     <color name="bg">#c9c5c5</color>
+    <color name="bg_dashboard">#f5f5f5</color>
+
     <color name="header_text_color">#6c747c</color>
     <color name="secondary_text_color">#9ba0a6</color>
     <color name="seperator_white">#dadada</color>
@@ -54,6 +56,8 @@
     <color name="buttonRedBackground">#ee5e35</color>
     <color name="buttonGreenBackground">#20d2bb</color>
     <color name="red_descent">#de6d75</color>
+    <color name="red_light">#ff7777</color>
+
     <color name="green_descent">#42ceb2</color>
     <color name="offer_info_white">#DDFFFFFF</color>
     <color name="alpha_white">#26ffffff</color>
@@ -66,7 +70,10 @@
     <!--<color name="white">#FFFFFF</color>-->
     <color name="blue_descent">#4b76c2</color>
     <color name="red_nav">#D3332B</color>
+    <color name="holo_red_dark">#ffcc0000</color>
     <color name="uvv_green">#ff50b100</color>
+    <color name="green_light">#7db142</color>
+
     <color name="uvv_black">#ff000000</color>
     <color name="uvv_light_gray">#ffF0F0F0</color>
     <color name="uvv_gray">#ffbbbbbb</color>

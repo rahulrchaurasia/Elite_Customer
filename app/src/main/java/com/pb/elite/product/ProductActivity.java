@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +93,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
 
     LinearLayout lvLogo, llDocumentUpload, lyRTO, lyTAT, lySpecial, lyPuc;
+    RelativeLayout rlDoc, rlfileUpload;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -222,6 +224,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     // region Method
     private void initialize() {
 
+
         textCity = (TextView) findViewById(R.id.textCity);
         acCity = (EditText) findViewById(R.id.acCity);
         spRTO = (Spinner) findViewById(R.id.spRTO);
@@ -239,6 +242,8 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         txtClientName = (TextView) findViewById(R.id.txtClientName);
         txtTAT = (TextView) findViewById(R.id.txtTAT);
 
+        rlDoc = (RelativeLayout) findViewById(R.id.rlDoc);
+        rlfileUpload = (RelativeLayout) findViewById(R.id.rlfileUpload);
         lvLogo = (LinearLayout) findViewById(R.id.lvLogo);
         llDocumentUpload = (LinearLayout) findViewById(R.id.llDocumentUpload);
         lyRTO = (LinearLayout) findViewById(R.id.lyRTO);
@@ -251,7 +256,8 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
         btnBooked.setOnClickListener(this);
         acCity.setOnClickListener(this);
-        txtDoc.setOnClickListener(this);
+        rlDoc.setOnClickListener(this);
+        rlfileUpload.setOnClickListener(this);
 
 
         initNonRTOSpecial();
@@ -428,10 +434,16 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                     startActivityForResult(new Intent(ProductActivity.this, SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
                 }
                 break;
-            case R.id.txtDoc:
+
+            case R.id.rlfileUpload:
+                startActivityForResult(new Intent(ProductActivity.this, DocUploadActivity.class), Constants.UPLOAD_FILE);
+                break;
+
+            case R.id.rlDoc:
                 showDialog();
                 new ProductController(this).getProducDoc(PRODUCT_ID, ProductActivity.this);
                 break;
+
 
             case R.id.etVehicleExp:
 
@@ -861,37 +873,6 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
     public void showPaymentAlert(final View view, String strBody, final int OrderID) {
 
-      //region comment
-      //        try {
-//            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-//            builder.setTitle("Elite");
-//
-//            builder.setMessage(strBody);
-//            String positiveText = "Ok";
-//            builder.setPositiveButton(positiveText,
-//                    new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//
-//                            startActivity(new Intent(ProductActivity.this, DocUploadActivity.class)
-//                                    .putExtra("ORDER_ID", OrderID));
-//
-//                            ProductActivity.this.finish();
-//
-//
-//                        }
-//                    });
-//            final android.support.v7.app.AlertDialog dialog = builder.create();
-//            dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnimation;
-//            dialog.setCancelable(false);
-//            dialog.setCanceledOnTouchOutside(false);
-//            dialog.show();
-//        } catch (Exception ex) {
-//            Toast.makeText(this, "Please try again..", Toast.LENGTH_SHORT).show();
-//        }
-     //endregion
-
         AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this, R.style.CustomDialog);
 
 
@@ -944,8 +925,11 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 acCity.setText(CITY_NAME);
 
             }
+        }else if  (requestCode == Constants.UPLOAD_FILE) {
+            if (data != null) {
 
-
+                Toast.makeText(this,"data",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

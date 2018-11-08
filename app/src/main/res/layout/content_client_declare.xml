@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.pb.elite.register.ClientDeclareActivity"
+    android:background="@color/background"
+    tools:showIn="@layout/activity_client_declare">
+
+
+    <android.support.v7.widget.CardView
+        style="@style/CardStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                style="@style/TextViewStyle.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Reliance Customer"
+                android:textColor="@color/black"
+
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.6dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/bg"></View>
+
+            <TextView
+                style="@style/TextViewStyle.MediumBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:textColor="@color/header_dark_text"
+                android:text="Please Enter Your Vehicle Registration Number Or Reliance Policy Number"
+              />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/etpolicyVeh_no"
+                    style="@style/Style.edittext"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_edit"
+                    android:drawablePadding="5dp"
+                    android:focusableInTouchMode="true"
+                    android:hint="Reliance Policy No./Vehicle No."
+                    android:maxLength="30"
+                    android:textStyle="italic" />
+
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Submit" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextViewStyle.Large"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="OR"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <android.support.v7.widget.CardView
+        style="@style/CardStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:id="@+id/lyOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:padding="8dp"
+            android:layout_margin="5dp">
+
+            <TextView
+                style="@style/TextViewStyle.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Other User " />
+
+            <TextView
+                style="@style/TextViewStyle.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue"
+                android:text="@string/click_here"
+                 />
+
+            <TextView
+                style="@style/TextViewStyle.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text=" For Registration" />
+
+
+            </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

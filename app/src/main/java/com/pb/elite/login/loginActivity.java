@@ -26,6 +26,7 @@ import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.register.RegisterController;
 import com.pb.elite.core.response.LoginResponse;
+import com.pb.elite.register.ClientDeclareActivity;
 import com.pb.elite.register.SignUpActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -104,7 +105,8 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
         Constants.hideKeyBoard(view,loginActivity.this);
         switch (view.getId()) {
             case R.id.tvRegistration:
-                startActivity(new Intent(loginActivity.this, SignUpActivity.class));
+                startActivity(new Intent(loginActivity.this, ClientDeclareActivity.class));
+
                 break;
 
             case R.id.tvForgotPassword:

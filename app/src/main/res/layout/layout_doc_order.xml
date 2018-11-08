@@ -15,87 +15,83 @@
         android:visibility="visible">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+     <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/ivPhotoCam"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivPhoto"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="2dp"
+                    android:src="@drawable/doc_notuploaded" />
+
+                <TextView
+                    android:id="@+id/txtDOC"
+                    style="@style/TextViewStyle.Medium"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="FBA PHOTOGRAPH" />
 
 
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/ivPhoto"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-
-            android:padding="2dp"
-            android:src="@drawable/doc_notuploaded" />
-
-        <TextView
-            android:id="@+id/txtDOC"
-            style="@style/TextViewStyle.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/ivPhoto"
-            android:layout_toLeftOf="@+id/ivPhotoCam"
-            android:text="Document " />
 
 
-        <TextView
-            android:id="@+id/txtViewDoc"
-            style="@style/TextViewStyle.MediumBold"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/red_dot"
-            android:text="View"
-            android:gravity="center"
-            android:textSize="8sp"
-            android:textStyle="bold"
 
-            android:textColor="@color/white" />
+            </LinearLayout>
 
-        <!--<ImageView-->
-            <!--android:id="@+id/txtViewDoc"-->
-            <!--style="@style/TextViewStyle.Large"-->
-            <!--android:layout_width="25dp"-->
-            <!--android:layout_height="25dp"-->
-            <!--android:padding="6dp"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginRight="5dp"-->
-            <!--android:background="@drawable/red_dot"-->
-            <!--android:src="@drawable/ic_visibility"-->
-            <!--android:textColor="@color/colorPrimaryDark" />-->
-
-        <ImageView
-            android:id="@+id/ivPhotoGallery"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/txtViewDoc"
-            android:padding="2dp"
-            android:src="@drawable/folder_icon" />
-
-        <ImageView
-            android:id="@+id/ivPhotoCam"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@+id/ivPhotoGallery"
-            android:padding="2dp"
-            android:src="@drawable/camera_icon" />
+         <ImageView
+             android:id="@+id/ivPhotoCam"
+             android:layout_width="32dp"
+             android:layout_height="32dp"
+           android:layout_toLeftOf="@+id/txtViewDoc"
+             android:layout_centerInParent="true"
+             android:layout_marginRight="10dp"
+             android:padding="2dp"
+             android:src="@drawable/ic_camera_alt" />
 
 
-    </RelativeLayout>
+         <TextView
+             android:id="@+id/txtViewDoc"
+             style="@style/TextViewStyle.MediumBold"
+             android:layout_width="25dp"
+             android:layout_height="25dp"
+             android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+             android:layout_marginRight="5dp"
+             android:background="@drawable/red_dot"
+             android:text="View"
+             android:gravity="center"
+             android:textSize="8sp"
+             android:textStyle="bold"
+
+             android:textColor="@color/white" />
+
+         <!--<ImageView-->
+             <!--android:id="@+id/txtViewDoc"-->
+             <!--android:layout_width="22dp"-->
+             <!--android:layout_height="22dp"-->
+             <!--android:layout_alignParentRight="true"-->
+             <!--android:layout_centerVertical="true"-->
+             <!--android:layout_marginRight="8dp"-->
+             <!--android:padding="5dp"-->
+             <!--android:background="@drawable/green_dot"-->
+
+             <!--android:src="@drawable/ic_visibility" />-->
+
+        </RelativeLayout>
 
 
     <View

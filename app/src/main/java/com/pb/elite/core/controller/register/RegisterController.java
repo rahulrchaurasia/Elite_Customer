@@ -6,6 +6,7 @@ import com.pb.elite.core.IResponseSubcriber;
 
 import com.pb.elite.core.requestbuilder.RegisterRequestBuilder;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
+import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.AddUserResponse;
 import com.pb.elite.core.response.CommonResponse;
@@ -15,6 +16,7 @@ import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
+import com.pb.elite.core.response.UserRegistrationResponse;
 import com.pb.elite.database.DataBaseController;
 
 import java.net.ConnectException;
@@ -81,46 +83,6 @@ public class RegisterController implements IRegister {
         });
     }
 
-    @Override
-    public void getOtp(String email, String mobile, String ip, final IResponseSubcriber iResponseSubcriber) {
-        HashMap<String, String> body = new HashMap<>();
-        body.put("email", email);
-        body.put("mobile", mobile);
-        body.put("ip", "127.0.0.1");
-        registerQuotesNetworkService.getOtp(body).enqueue(new Callback<GetOtpResponse>() {
-            @Override
-            public void onResponse(Call<GetOtpResponse> call, Response<GetOtpResponse> response) {
-                if (response.body() != null) {
-
-                    if (response.body().getStatus_code() == 0) {
-                        iResponseSubcriber.OnSuccess(response.body(), "");
-                    } else {
-                        //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
-                    }
-
-                } else {
-                    //failure
-                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetOtpResponse> call, Throwable t) {
-                if (t instanceof ConnectException) {
-                    iResponseSubcriber.OnFailure(t);
-                } else if (t instanceof SocketTimeoutException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof UnknownHostException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof NumberFormatException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
-                } else {
-                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
-                }
-            }
-        });
-    }
 
     @Override
     public void addUser(AddUserRequestEntity addUserRequestEntity, final IResponseSubcriber iResponseSubcriber) {
@@ -421,4 +383,89 @@ public class RegisterController implements IRegister {
             }
         });
     }
+
+    @Override
+    public void saveUserRegistration(RegisterRequest registerRequest, final IResponseSubcriber iResponseSubcriber) {
+
+
+        registerQuotesNetworkService.userRegistration(registerRequest).enqueue(new Callback<UserRegistrationResponse>() {
+            @Override
+            public void onResponse(Call<UserRegistrationResponse> call, Response<UserRegistrationResponse> response) {
+                if (response.body() != null) {
+
+                    //callback of data
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRegistrationResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void getOtp(String email, String mobile, String ip, final IResponseSubcriber iResponseSubcriber) {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("email", email);
+        body.put("mobNo", mobile);
+        body.put("ip", "");
+        registerQuotesNetworkService.getOtp(body).enqueue(new Callback<GetOtpResponse>() {
+            @Override
+            public void onResponse(Call<GetOtpResponse> call, Response<GetOtpResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), "");
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOtpResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
 }

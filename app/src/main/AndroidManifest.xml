@@ -59,6 +59,7 @@
         <activity
             android:name=".login.loginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
@@ -80,6 +81,7 @@
         <activity
             android:name=".register.SignUpActivity"
             android:label="@string/title_activity_sign_up"
+            android:parentActivityName=".login.loginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -118,6 +120,7 @@
             android:name=".login.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".login.loginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -131,6 +134,7 @@
             android:name=".payment.PaymentRazorActivity"
             android:label="@string/title_activity_payment_razor"
             android:parentActivityName=".product.ProductActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <meta-data
@@ -140,6 +144,7 @@
         <activity
             android:name=".product.ProductDisplayActivity"
             android:label="@string/title_activity_product_display"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".servicelist.SubProductActivity"
@@ -161,15 +166,18 @@
         <activity
             android:name=".aboutUs.AboutUsActivity"
             android:label="@string/title_activity_about_us"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".term.TermsConditionActivity"
             android:label="@string/title_activity_terms_condition"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".welcome.WelcomeActivity" />
         <activity
             android:name=".welcome.EulaActivity"
             android:label="@string/title_activity_eula"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".search.SearchCityActivity"
@@ -217,6 +225,28 @@
         <activity
             android:name=".feedback.FeedbackActivity"
             android:label="@string/title_activity_feedback"
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pb.elite.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".register.ClientDeclareActivity"
+            android:label="@string/title_activity_client_declare"
+            android:parentActivityName=".register.SignUpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pb.elite.register.SignUpActivity" />
+        </activity>
+        <activity
+            android:name=".emailUs.EmailUsActivity"
+            android:label="@string/title_activity_email_us"
             android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"

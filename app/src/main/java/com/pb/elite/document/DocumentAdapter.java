@@ -35,7 +35,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
     {
         LinearLayout llDocumentUpload;
         ImageView ivPhoto , ivPhotoCam ,ivPhotoGallery;
-        TextView txtDOC,  txtViewDoc;
+        TextView txtDOC ,txtViewDoc ;
 
 
 
@@ -49,7 +49,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
 
             ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
             ivPhotoCam = (ImageView) itemView.findViewById(R.id.ivPhotoCam);
-            ivPhotoGallery = (ImageView) itemView.findViewById(R.id.ivPhotoGallery);
+          //  ivPhotoGallery = (ImageView) itemView.findViewById(R.id.ivPhotoGallery);
 
 
 
@@ -89,14 +89,6 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
             public void onClick(View v) {
 
                 ((DocUploadActivity)mContext).getActionCamera(entity );
-            }
-        });
-
-        holder.ivPhotoGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ((DocUploadActivity)mContext).getActionGallery(entity);
             }
         });
 

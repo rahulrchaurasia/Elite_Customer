@@ -20,7 +20,7 @@
             android:gravity="left|center_vertical"
             android:minHeight="45dp"
             android:padding="8dp"
-            android:text="Elite Customer"
+            android:text="OTP VERIFICATION"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 

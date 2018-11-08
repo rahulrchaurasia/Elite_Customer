@@ -2,6 +2,7 @@ package com.pb.elite.core.controller.register;
 
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
+import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 
 /**
@@ -27,4 +28,6 @@ public interface IRegister {
     void forgotPassword(String mobile, IResponseSubcriber iResponseSubcriber);
 
     void getPolicyData(String PolicyNumber, IResponseSubcriber iResponseSubcriber);
+
+    void saveUserRegistration(RegisterRequest registerRequest, IResponseSubcriber iResponseSubcriber);
 }

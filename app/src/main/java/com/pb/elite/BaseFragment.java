@@ -1,10 +1,16 @@
 package com.pb.elite;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.utility.Utility;
@@ -21,6 +27,7 @@ public class BaseFragment extends Fragment {
 
     ProgressDialog dialog;
 
+   CustomPopUpListener customPopUpListener;
     public BaseFragment() {
 
     }
@@ -115,6 +122,93 @@ public class BaseFragment extends Fragment {
         }
         return outFile;
     }
+
+    public void openPopUp(final View view, String title, String desc, String positiveButtonName, String negativeButtonName, boolean isNegativeVisible, boolean isCancelable) {
+        try {
+            final Dialog dialog;
+            dialog = new Dialog(this.getActivity(), R.style.CustomDialog);
+
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.layout_common_popup);
+
+            TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
+            tvTitle.setText(title);
+            TextView tvOk = (TextView) dialog.findViewById(R.id.tvOk);
+            tvOk.setText(positiveButtonName);
+
+            TextView tvCancel = (TextView) dialog.findViewById(R.id.tvCancel);
+            tvCancel.setText(negativeButtonName);
+            if (isNegativeVisible) {
+                tvCancel.setVisibility(View.VISIBLE);
+            } else {
+                tvCancel.setVisibility(View.GONE);
+            }
+
+            TextView txtMessage = (TextView) dialog.findViewById(R.id.txtMessage);
+            txtMessage.setText(desc);
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+
+            dialog.setCancelable(isCancelable);
+            dialog.setCanceledOnTouchOutside(isCancelable);
+
+            Window dialogWindow = dialog.getWindow();
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = lp.MATCH_PARENT;  // Width
+            lp.height = lp.WRAP_CONTENT; // Height
+            dialogWindow.setAttributes(lp);
+
+            dialog.show();
+            tvOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if (customPopUpListener != null)
+                        customPopUpListener.onPositiveButtonClick(dialog, view);
+                }
+            });
+
+            tvCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if (customPopUpListener != null)
+                        customPopUpListener.onCancelButtonClick(dialog, view);
+                }
+            });
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if (customPopUpListener != null)
+                        customPopUpListener.onCancelButtonClick(dialog, view);
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // region CustomPopup
+
+    public interface CustomPopUpListener {
+
+        void onPositiveButtonClick(Dialog dialog, View view);
+
+        void onCancelButtonClick(Dialog dialog, View view);
+
+    }
+
+    public void registerCustomPopUp(CustomPopUpListener customPopUpListener) {
+        if (customPopUpListener != null)
+            this.customPopUpListener = customPopUpListener;
+    }
+
+    //endregion
+
+
 
     public void showAlert(String strBody) {
         try {

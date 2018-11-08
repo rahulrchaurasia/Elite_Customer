@@ -26,11 +26,13 @@ public class Constants {
 
     public static  int SEARCH_CITY_CODE = 5;
     public static  int ORDER_CODE = 2;
+    public static  int UPLOAD_FILE = 4;
 
     public static  String SEARCH_CITY_NAME  = "ELITE_SEARCH_CITY_NAME";
     public static  String SEARCH_CITY_ID  = "ELITE_SEARCH_CITY_ID";
-
-
+    public static final int PERMISSION_CAMERA_STORACGE_CONSTANT = 103;
+    public static final int PERMISSION_CALLBACK_CONSTANT = 100;
+    public static final int REQUEST_PERMISSION_SETTING = 101;
 
 
 

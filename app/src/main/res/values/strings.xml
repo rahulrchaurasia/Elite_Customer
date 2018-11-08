@@ -22,7 +22,15 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
 
+
+    <string name="supp_Calling">Do you want to call Elite Support Team</string>
+    <string name="call_number">9702943935</string>
+    <string name="email">rahulrchaurasia@gmail.com</string>
+
+
     <string name="signup">Not a Member? <b><u>Sign up now!</u></b></string>
+    <string name="click_here"> <b><u>Click Here!!</u></b></string>
+    <string name="register_here"> <b><u>Register Here!</u></b></string>
     <string name="forgotPwd"><u><i>Forgot Password? .</i></u></string>
 
     <string name="title_activity_product">Product</string>
@@ -33,7 +41,7 @@
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
-    <string name="req_doc"><u>Required Service Documents: <b>Click Here</b></u></string>
+    <string name="req_doc"><u> <b>Click Here</b></u></string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -47,7 +55,8 @@
         completions."
     </string>
     <string name="title_activity_login">LOGIN</string>
-    <string name="title_activity_sign_up">Register</string>
+    <string name="title_activity_sign_up">Registration</string>
+    <string name="title_activity_client_declare">Registration</string>
     <string name="title_activity_product_detail">Product</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_payment">Payment</string>
@@ -68,4 +77,6 @@
     <string name="title_activity_service">Service</string>
     <string name="title_activity_order">Request</string>
     <string name="title_activity_feedback">Feedback</string>
+    <string name="title_activity_email_us">Email Us</string>
+
 </resources>

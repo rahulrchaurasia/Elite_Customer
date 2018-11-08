@@ -1,9 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@color/bg_dashboard"
     android:orientation="vertical"
     tools:context="com.pb.elite.dashboard.DashBoardFragment">
 
@@ -26,7 +26,7 @@
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="196dp"
+                    android:layout_height="145dp"
                     android:layout_alignParentTop="true" />
 
 
@@ -40,9 +40,9 @@
             </FrameLayout>
 
             <LinearLayout
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
                 android:clipToPadding="false"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -229,5 +229,87 @@
 
     </ScrollView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
 
-</LinearLayout>
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <LinearLayout
+                android:id="@+id/lyCall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:padding="6dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+
+                    android:src="@drawable/vector_call"
+                    android:tint="@color/uvv_green" />
+
+                <TextView
+                   style="@style/TextViewStyle.MediumLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                  android:textColor="@color/black"
+                    android:text="CALL US" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.6dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+
+            <LinearLayout
+                android:id="@+id/lyEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:padding="6dp">
+
+                <android.support.v7.widget.AppCompatImageView
+
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+
+                    android:src="@drawable/vector_email_white"
+                    android:tint="@color/holo_red_dark" />
+
+                <TextView
+                    style="@style/TextViewStyle.MediumLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+
+                    android:text="EMAIL US" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

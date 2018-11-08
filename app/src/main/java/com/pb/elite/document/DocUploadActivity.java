@@ -1,12 +1,18 @@
 package com.pb.elite.document;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +40,7 @@ import com.pb.elite.core.response.DocumentResponse;
 import com.pb.elite.core.response.DocumentViewResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
 
 import java.io.File;
@@ -43,16 +50,11 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 
-public class DocUploadActivity extends BaseActivity implements IResponseSubcriber, View.OnClickListener {
+public class DocUploadActivity extends BaseActivity implements IResponseSubcriber , BaseActivity.CustomPopUpListener {
 
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int SELECT_PICTURE = 1800;
-    LinearLayout llDocumentUpload;
-    ImageView ivLogo, ivClientLogo,
-            ivPhotoCam, ivPhotoGallery, ivPanCam, ivPanGallery, ivCancelCam, ivCancelGallery, ivAadharCam, ivAadharGallery,
-            ivAadhar, ivCancel, ivPan, ivPhoto;
-    TextView txtViewDoc1, txtViewDoc2, txtViewDoc3, txtViewDoc4;
 
     HashMap<String, Integer> body;
     MultipartBody.Part part;
@@ -63,7 +65,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     int OrderID;
 
 
-    private int PROFILE = 1, PHOTO = 2, PAN = 3, AADHAR = 4;
+
     private String DOC1 = "DOC1", DOC2 = "DOC2", DOC3 = "DOC3", DOC4 = "DOC4";
     int type;
     ///////////
@@ -75,7 +77,12 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
     List<DocumentViewEntity> lstDoc;
     DocumentViewEntity documentViewEntity;
+    String[] perms = {
+            "android.permission.CAMERA",
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_EXTERNAL_STORAGE"
 
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +92,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+          registerCustomPopUp(DocUploadActivity.this);
         if (getIntent().getExtras() != null) {
             OrderID = getIntent().getIntExtra("ORDER_ID", 0);
 
@@ -112,81 +119,10 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(DocUploadActivity.this);
         rvProduct.setLayoutManager(layoutManager);
 
-
-        //  spProduct = (Spinner) view.view.findViewById(R.id.spProduct);
-
-        llDocumentUpload = (LinearLayout) this.findViewById(R.id.llDocumentUpload);
-
-        ivLogo = (ImageView) this.findViewById(R.id.ivLogo);
-        ivClientLogo = (ImageView) this.findViewById(R.id.ivClientLogo);
-
-        ivPhotoCam = (ImageView) this.findViewById(R.id.ivPhotoCam);
-        ivPhotoGallery = (ImageView) this.findViewById(R.id.ivPhotoGallery);
-        ivPanCam = (ImageView) findViewById(R.id.ivPanCam);
-        ivPanGallery = (ImageView) findViewById(R.id.ivPanGallery);
-
-        ivCancelCam = (ImageView) findViewById(R.id.ivCancelCam);
-        ivCancelGallery = (ImageView) findViewById(R.id.ivCancelGallery);
-        ivAadharCam = (ImageView) findViewById(R.id.ivAadharCam);
-        ivAadharGallery = (ImageView) findViewById(R.id.ivAadharGallery);
-
-        ivAadhar = (ImageView) findViewById(R.id.ivAadhar);
-        ivCancel = (ImageView) findViewById(R.id.ivCancel);
-        ivPan = (ImageView) findViewById(R.id.ivPan);
-        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
-
-        txtViewDoc1 = (TextView) findViewById(R.id.txtViewDoc1);
-        txtViewDoc2 = (TextView) findViewById(R.id.txtViewDoc2);
-        txtViewDoc3 = (TextView) findViewById(R.id.txtViewDoc3);
-        txtViewDoc4 = (TextView) findViewById(R.id.txtViewDoc4);
-
-        txtViewDoc1.setOnClickListener(this);
-        txtViewDoc2.setOnClickListener(this);
-        txtViewDoc3.setOnClickListener(this);
-        txtViewDoc4.setOnClickListener(this);
-
-        txtViewDoc1.setVisibility(View.INVISIBLE);
-        txtViewDoc2.setVisibility(View.INVISIBLE);
-        txtViewDoc3.setVisibility(View.INVISIBLE);
-        txtViewDoc4.setVisibility(View.INVISIBLE);
-
-
-        ivPhotoCam.setOnClickListener(this);
-        ivPhotoGallery.setOnClickListener(this);
-        ivPanCam.setOnClickListener(this);
-        ivPanGallery.setOnClickListener(this);
-
-        ivCancelCam.setOnClickListener(this);
-        ivCancelGallery.setOnClickListener(this);
-        ivAadharCam.setOnClickListener(this);
-        ivAadharGallery.setOnClickListener(this);
-
-
     }
 
     private void setDocumentUpload(String urlPath) {
 
-//        if (type == 1) {
-        //           ivPhoto.setImageResource(R.drawable.doc_uploaded);
-//            txtViewDoc1.setTag(URL);
-//            txtViewDoc1.setVisibility(View.VISIBLE);
-//            //  Glide.with(ProductActivity.this).load(URL).into(ivPhoto);
-//        } else if (type == 2) {
-//            ivPan.setImageResource(R.drawable.doc_uploaded);
-//            txtViewDoc2.setTag(URL);
-//            txtViewDoc2.setVisibility(View.VISIBLE);
-//            //  Glide.with(ProductActivity.this).load(URL).into(ivPan);
-//        } else if (type == 3) {
-//            ivCancel.setImageResource(R.drawable.doc_uploaded);
-//            txtViewDoc3.setTag(URL);
-//            txtViewDoc3.setVisibility(View.VISIBLE);
-//            //  Glide.with(ProductActivity.this).load(URL).into(ivCancel);
-//        } else if (type == 4) {
-//            ivAadhar.setImageResource(R.drawable.doc_uploaded);
-//            txtViewDoc4.setTag(URL);
-//            txtViewDoc4.setVisibility(View.VISIBLE);
-//            // Glide.with(ProductActivity.this).load(URL).into(ivAadhar);
-//        }
 
         if (documentViewEntity != null) {
             documentViewEntity.setPath(urlPath);
@@ -272,6 +208,67 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
+    private void galleryCamPopUp() {
+
+        if (!checkPermission()) {
+
+            if (checkRationalePermission()) {
+                //Show Information about why you need the permission
+                requestPermission();
+
+            } else {
+                //Previously Permission Request was cancelled with 'Dont Ask Again',
+                // Redirect to Settings after showing Information about why you need the permission
+                //  permissionAlert(navigationView,"Need Call Permission","This app needs Call permission.");
+                openPopUp(rvProduct, "Need  Permission", "This app needs all permissions.", "GRANT","DENNY",false, true);
+
+
+            }
+        } else {
+
+            showCamerGalleryPopUp();
+        }
+    }
+
+
+    private void showCamerGalleryPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+
+        LinearLayout lyCamera, lyGallery;
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        final View dialogView = inflater.inflate(R.layout.layout_cam_gallery, null);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+        lyCamera = (LinearLayout) dialogView.findViewById(R.id.lyCamera);
+        lyGallery = (LinearLayout) dialogView.findViewById(R.id.lyGallery);
+
+        lyCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchCamera();
+                alertDialog.dismiss();
+
+            }
+        });
+
+        lyGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+                alertDialog.dismiss();
+
+            }
+        });
+        alertDialog.setCancelable(true);
+        alertDialog.show();
+        //  alertDialog.getWindow().setLayout(900, 600);
+
+        // for user define height and width..
+    }
+
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -287,72 +284,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId()) {
-
-
-            case R.id.txtViewDoc1:
-                viewUploadFile(txtViewDoc1.getTag().toString());
-                break;
-
-            case R.id.txtViewDoc2:
-                viewUploadFile(txtViewDoc2.getTag().toString());
-                break;
-
-            case R.id.txtViewDoc3:
-                viewUploadFile(txtViewDoc3.getTag().toString());
-                break;
-
-            case R.id.txtViewDoc4:
-                viewUploadFile(txtViewDoc4.getTag().toString());
-                break;
-
-
-            case R.id.ivPhotoCam:
-                type = 1;
-                launchCamera();
-                break;
-
-            case R.id.ivPhotoGallery:
-                type = 1;
-                openGallery();
-                break;
-
-            case R.id.ivPanCam:
-                type = 2;
-                launchCamera();
-                break;
-
-            case R.id.ivPanGallery:
-                type = 2;
-                openGallery();
-                break;
-
-            case R.id.ivCancelCam:
-                type = 3;
-                launchCamera();
-                break;
-
-            case R.id.ivCancelGallery:
-                type = 3;
-                openGallery();
-                break;
-
-            case R.id.ivAadharCam:
-                type = 4;
-                launchCamera();
-                break;
-
-            case R.id.ivAadharGallery:
-                type = 4;
-                openGallery();
-                break;
-
-
-        }
-    }
 
     @Override
     public void OnSuccess(APIResponse response, String message) {
@@ -435,15 +367,10 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     public void getActionCamera(DocumentViewEntity entity) {
         documentViewEntity = entity;
 
-        launchCamera();
+        galleryCamPopUp();
     }
 
-    public void getActionGallery(DocumentViewEntity entity) {
-        documentViewEntity = entity;
 
-        openGallery();
-
-    }
 
     public void getActionView(DocumentViewEntity entity) {
         documentViewEntity = entity;
@@ -465,9 +392,83 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     }
 
 
+    // region permission
+    private boolean checkPermission() {
+
+        int camera = ActivityCompat.checkSelfPermission(getApplicationContext(), perms[0]);
+
+        int WRITE_EXTERNAL = ActivityCompat.checkSelfPermission(getApplicationContext(), perms[1]);
+        int READ_EXTERNAL = ActivityCompat.checkSelfPermission(getApplicationContext(), perms[2]);
+
+        return camera == PackageManager.PERMISSION_GRANTED
+                && WRITE_EXTERNAL == PackageManager.PERMISSION_GRANTED
+                && READ_EXTERNAL == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean checkRationalePermission() {
+
+        boolean camera = ActivityCompat.shouldShowRequestPermissionRationale(DocUploadActivity.this, perms[0]);
+
+        boolean write_external = ActivityCompat.shouldShowRequestPermissionRationale(DocUploadActivity.this, perms[1]);
+        boolean read_external = ActivityCompat.shouldShowRequestPermissionRationale(DocUploadActivity.this, perms[2]);
+
+        return camera || write_external || read_external;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, perms, Constants.PERMISSION_CAMERA_STORACGE_CONSTANT);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+        switch (requestCode) {
+            case Constants.PERMISSION_CAMERA_STORACGE_CONSTANT:
+                if (grantResults.length > 0) {
+
+                    //boolean writeExternal = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    boolean camera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeExternal = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean readExternal = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+
+                    if (camera && writeExternal && readExternal) {
+
+                        showCamerGalleryPopUp();
+
+                    }
+
+                }
+                break;
+
+
+
+
+        }
+    }
+
+    //endregion
+
+
     @Override
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    public void onPositiveButtonClick(Dialog dialog, View view) {
+
+        dialog.cancel();
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, Constants.REQUEST_PERMISSION_SETTING);
+    }
+
+    @Override
+    public void onCancelButtonClick(Dialog dialog, View view) {
+        dialog.cancel();
     }
 }
