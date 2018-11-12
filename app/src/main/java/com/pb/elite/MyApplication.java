@@ -20,7 +20,7 @@ public class MyApplication extends Application {
         Realm.setDefaultConfiguration(config);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Light.ttf")
+                .setDefaultFontPath("fonts/oxygenlight.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );

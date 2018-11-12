@@ -49,22 +49,6 @@
     </style>
 
 
-    <!--<style name="Font_robo_light">-->
-    <!--<item name="android:textSize">13sp</item>-->
-    <!--<item name="fontPath">fonts/Roboto-Light.ttf</item>-->
-    <!--</style>-->
-
-    <!--<style name="Font_robo_boldIt">-->
-    <!--<item name="android:textSize">13sp</item>-->
-    <!--<item name="fontPath">fonts/Roboto-BoldItalic.ttf</item>-->
-
-    <!--</style>-->
-
-    <!--<style name="Font_san_light">-->
-    <!--<item name="android:textSize">13sp</item>-->
-    <!--<item name="fontPath">fonts/source-sans-pro.light.ttf</item>-->
-
-    <!--</style>-->
 
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
