@@ -40,7 +40,7 @@ public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.Pr
             super(itemView);
 
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            txtDownload  = (TextView) itemView.findViewById(R.id.txtTitle);
+            txtDownload  = (TextView) itemView.findViewById(R.id.txtDownload);
         }
     }
 
@@ -58,6 +58,22 @@ public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.Pr
         final DocProductEnity docProductEnity = lstDoc.get(position);
 
         holder.txtTitle.setText( "" +docProductEnity.getDocument_name());
+
+        if( docProductEnity.getDocumenturl().equalsIgnoreCase("")){
+
+            holder.txtDownload.setVisibility(View.GONE);
+
+        }else{
+            holder.txtDownload.setVisibility(View.VISIBLE);
+        }
+
+        holder.txtDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((ProductActivity)mContext).downloadPdf(docProductEnity.getDocumenturl(),docProductEnity.getDocument_name());
+            }
+        });
 
     }
 
