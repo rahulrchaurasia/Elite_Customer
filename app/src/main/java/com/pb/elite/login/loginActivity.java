@@ -25,11 +25,16 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.register.RegisterController;
+import com.pb.elite.core.model.MakeEntity;
+import com.pb.elite.core.model.ModelEntity;
+import com.pb.elite.core.model.VariantEntity;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.register.ClientDeclareActivity;
 import com.pb.elite.register.SignUpActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
+
+import java.util.List;
 
 public class loginActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
 
@@ -83,6 +88,8 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
         if (!checkPermission()) {
             requestPermission();
         }
+
+
     }
 
     private void initialize() {
@@ -102,7 +109,7 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        Constants.hideKeyBoard(view,loginActivity.this);
+        Constants.hideKeyBoard(view, loginActivity.this);
         switch (view.getId()) {
             case R.id.tvRegistration:
                 startActivity(new Intent(loginActivity.this, ClientDeclareActivity.class));
@@ -170,7 +177,7 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
 
                 prefManager.setMobile(etMobile.getText().toString());
                 prefManager.setPassword(etPassword.getText().toString());
-              //  Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(loginActivity.this, HomeActivity.class));
                 finish();
             }
@@ -211,11 +218,10 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
 //                    boolean recordAudio = grantResults[8] == PackageManager.PERMISSION_GRANTED;
 
 
-
-                    if (camera &&  sendSms && readSms && receiveSms && writeExternal && readExternal ) {
+                    if (camera && sendSms && readSms && receiveSms && writeExternal && readExternal) {
                         // you can do all necessary steps
                         // new Dialer().getObject().getLeadData(String.valueOf(Utility.EmpCode), this, this);
-                       // Toast.makeText(this, "All permission granted", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(this, "All permission granted", Toast.LENGTH_SHORT).show();
                     } else {
 
                         //Permission Denied, You cannot access location data and camera

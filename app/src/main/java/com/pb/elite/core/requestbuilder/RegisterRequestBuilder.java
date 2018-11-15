@@ -12,9 +12,9 @@ import com.pb.elite.core.response.GetOtpResponse;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
-import com.pb.elite.core.response.ProductResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
+import com.pb.elite.core.response.VehicleMasterResponse;
 import com.pb.elite.core.response.VerifyUserRegisterResponse;
 
 import java.util.HashMap;
@@ -23,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public class RegisterRequestBuilder extends RetroRequestBuilder {
 
@@ -58,19 +59,23 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         @POST("/api/forgot-password")
         Call<CommonResponse> forgotPassword(@Body HashMap<String, String> body);
 
-        @POST("/api/reliance-login")   // Change 05
+        @POST("/api/reliance-login")
+            // Change 05
         Call<PolicyResponse> getPolicyData(@Body HashMap<String, String> body);
 
         @POST("/api/check-user-registration")
-        Call<VerifyUserRegisterResponse> verifyUserRegistration (@Body HashMap<String, String> body);
+        Call<VerifyUserRegisterResponse> verifyUserRegistration(@Body HashMap<String, String> body);
 
         @POST("/api/user-otp-verify")
-        Call<UserRegistrationResponse> userRegistration (@Body RegisterRequest registerRequest);
+        Call<UserRegistrationResponse> userRegistration(@Body RegisterRequest registerRequest);
 
         @POST("/api/vehicle-details")
         Call<CarMasterResponse> getCarMaster(@Body HashMap<String, String> body);
 
 
+        //vehicle request
+        @GET
+        Call<VehicleMasterResponse> getCarMaster(@Url String url);
 
     }
 }

@@ -61,8 +61,12 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
         allCityEntityList = new ArrayList<String>();
 
         verify();
+        fetchCar();
 
+    }
 
+    private void fetchCar() {
+        new RegisterController(this).getCarVehicleMaster();
     }
 
     private void fetchCityMasters() {

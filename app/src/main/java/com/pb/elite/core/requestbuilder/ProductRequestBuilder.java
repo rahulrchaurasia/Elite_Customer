@@ -76,5 +76,8 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
         Call<DocumentResponse> uploadDocument(@Part() MultipartBody.Part doc, @PartMap() Map<String, Integer> partMap);  //used
 
 
+
+
+
     }
 }

@@ -3,7 +3,6 @@ package com.pb.elite.core.controller.register;
 import android.content.Context;
 
 import com.pb.elite.core.IResponseSubcriber;
-
 import com.pb.elite.core.controller.product.AsyncCarMaster;
 import com.pb.elite.core.requestbuilder.RegisterRequestBuilder;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
@@ -19,8 +18,10 @@ import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
+import com.pb.elite.core.response.VehicleMasterResponse;
 import com.pb.elite.core.response.VerifyUserRegisterResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.splash.PrefManager;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -269,7 +270,6 @@ public class RegisterController implements IRegister {
                     }
 
 
-
                 } else {
                     //failure
                     iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
@@ -312,7 +312,7 @@ public class RegisterController implements IRegister {
                     if (response.body().getStatus_code() == 0) {
                         //callback of data
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }else {
+                    } else {
                         //failure
                         iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
@@ -559,4 +559,25 @@ public class RegisterController implements IRegister {
         });
     }
 
+
+    @Override
+    public void getCarVehicleMaster() {
+
+        String url = "http://202.131.96.100:7541/LeadGenration.svc/VehicleMaster?VehicleTypeID=2";
+
+        registerQuotesNetworkService.getCarMaster(url).enqueue(new Callback<VehicleMasterResponse>() {
+            @Override
+            public void onResponse(Call<VehicleMasterResponse> call, Response<VehicleMasterResponse> response) {
+                if (response.isSuccessful()) {
+                    new PrefManager(mContext).storeVehicle(response.body().getVehicleMasterResult());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleMasterResponse> call, Throwable t) {
+
+
+            }
+        });
+    }
 }
