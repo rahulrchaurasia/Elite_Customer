@@ -85,7 +85,7 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
             case R.id.lyEmail:
 
                 if (getResources().getString(R.string.email) != "") {
-                    composeEmail(getResources().getString(R.string.email), "Elite Supprt");
+                    composeEmail(getResources().getString(R.string.email), "Elite Support Team");
                 }
                 break;
 

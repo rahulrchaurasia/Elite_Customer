@@ -5,6 +5,7 @@ import com.pb.elite.core.requestmodel.AddUserRequestEntity;
 import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.AddUserResponse;
+import com.pb.elite.core.response.CarMasterResponse;
 import com.pb.elite.core.response.CommonResponse;
 import com.pb.elite.core.response.DBVersionRespone;
 import com.pb.elite.core.response.GetOtpResponse;
@@ -14,6 +15,7 @@ import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.ProductResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
+import com.pb.elite.core.response.VerifyUserRegisterResponse;
 
 import java.util.HashMap;
 
@@ -59,8 +61,15 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         @POST("/api/reliance-login")   // Change 05
         Call<PolicyResponse> getPolicyData(@Body HashMap<String, String> body);
 
-        @POST("/api/user-registration")
+        @POST("/api/check-user-registration")
+        Call<VerifyUserRegisterResponse> verifyUserRegistration (@Body HashMap<String, String> body);
+
+        @POST("/api/user-otp-verify")
         Call<UserRegistrationResponse> userRegistration (@Body RegisterRequest registerRequest);
+
+        @POST("/api/vehicle-details")
+        Call<CarMasterResponse> getCarMaster(@Body HashMap<String, String> body);
+
 
 
     }

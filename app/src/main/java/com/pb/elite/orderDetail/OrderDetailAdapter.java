@@ -33,7 +33,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     }
 
     public class OrderDetailItem extends RecyclerView.ViewHolder {
-        TextView txtPrdName, txtAmnt, txtOrderID, txtcustName, txtDate, txtStatus, txtPayment, txtUpload;
+        TextView txtPrdName, txtAmnt, txtOrderID, txtcustName, txtDate, txtStatus,  txtUpload;
         LinearLayout lyUpload;
 
 
@@ -48,7 +48,6 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             txtDate = (TextView) itemView.findViewById(R.id.txtDate);
             txtStatus = (TextView) itemView.findViewById(R.id.txtStatus);
 
-            txtPayment = (TextView) itemView.findViewById(R.id.txtPayment);
             txtUpload = (TextView) itemView.findViewById(R.id.txtUpload);
 
             lyUpload = (LinearLayout) itemView.findViewById(R.id.lyUpload);
@@ -92,18 +91,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             holder.txtStatus.setTextColor(Color.parseColor("#de6d75"));
         }
 
-        //  Todo For Payment Status
 
-        if ((orderDetailEntity.getPayment_status() != null)) {
-
-            if (orderDetailEntity.getPayment_status().equals("0")) {
-                holder.txtPayment.setText("Pending");
-                holder.txtPayment.setTextColor(mContext.getResources().getColor(R.color.redDark));
-            } else {
-                holder.txtPayment.setText("Complete");
-                holder.txtPayment.setTextColor(mContext.getResources().getColor(R.color.green_descent));
-            }
-        }
 
         //txtUpload
 

@@ -33,6 +33,8 @@
     <string name="register_here"> <b><u>Register Here!</u></b></string>
     <string name="forgotPwd"><u><i>Forgot Password? .</i></u></string>
 
+    <string name="download"> <b><u>Download</u></b></string>
+
     <string name="title_activity_product">Product</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>

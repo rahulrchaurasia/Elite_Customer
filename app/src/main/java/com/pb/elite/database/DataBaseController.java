@@ -3,6 +3,7 @@ package com.pb.elite.database;
 import android.content.Context;
 
 import com.pb.elite.core.model.AllCityEntity;
+import com.pb.elite.core.model.CarMasterEntity;
 import com.pb.elite.core.model.CategoryEntity;
 import com.pb.elite.core.model.CityEntity;
 import com.pb.elite.core.model.OrderStatusEntity;
@@ -264,6 +265,92 @@ public class DataBaseController {
         else
             return 0;
     }
+
+
+    //region master car
+
+    public List<String> getCarMake() {
+        List<String> listCarModel = new ArrayList<>();
+        // List<ModelMasterEntity> listModelMaster = dbController.getMasterModel();
+        List<CarMasterEntity> list = realm.where(CarMasterEntity.class).distinct("Make_Name");
+
+        for (int i = 0; i < list.size(); i++) {
+            CarMasterEntity entity = list.get(i);
+            String carModel = entity.getMake_Name();
+            listCarModel.add(carModel);
+        }
+
+        return listCarModel;
+
+
+    }
+
+    public List<String> getCarModel() {
+        List<String> listCarMake = new ArrayList<>();
+        List<CarMasterEntity> list = realm.where(CarMasterEntity.class).distinct("Make_Name");
+        for (int i = 0; i < list.size(); i++) {
+            CarMasterEntity entity = list.get(i);
+            String carModel = entity.getModel_Name();
+            listCarMake.add(carModel);
+        }
+
+        return listCarMake;
+    }
+
+    public List<String> getMake() {
+        List<String> listCarMake = new ArrayList<>();
+        List<CarMasterEntity> list = realm.where(CarMasterEntity.class).distinct("Model_Name");
+        for (int i = 0; i < list.size(); i++) {
+            CarMasterEntity entity = list.get(i);
+            String carModel = entity.getMake_Name();
+            listCarMake.add(carModel);
+        }
+
+        return listCarMake;
+    }
+
+    public List<String> getModel(String makeName) {
+
+        List<String> listCarModel = new ArrayList<>();
+        List<CarMasterEntity> list = realm.where(CarMasterEntity.class).equalTo("Make_Name", makeName.trim())
+                .distinctValues("Model_Name")
+                .findAll();
+        for (int i = 0; i < list.size(); i++) {
+            CarMasterEntity entity = list.get(i);
+            String carModel = entity.getModel_Name();
+            listCarModel.add(carModel);
+        }
+        return listCarModel;
+    }
+
+    public String getModelID(String makeName, String modelName) {
+        CarMasterEntity entity = realm.where(CarMasterEntity.class)
+                .equalTo("Make_Name", makeName.trim())
+                .equalTo("Model_Name", modelName.trim())
+                .findFirst();
+        if (entity != null)
+            return entity.getModel_ID();
+        else
+            return "";
+    }
+
+
+    public CarMasterEntity getVarientDetails(String varientId) {
+        CarMasterEntity entity = realm.where(CarMasterEntity.class)
+                .equalTo("Variant_ID", varientId).findFirst();
+
+        if (entity != null)
+            return entity;
+        else
+            return null;
+    }
+
+
+    public int getCarIcon(int InsurerID) {
+        return 0;
+    }
+
+    //endregion
 
     // region Login Detail
 

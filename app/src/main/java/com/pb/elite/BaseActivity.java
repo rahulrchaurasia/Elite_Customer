@@ -195,6 +195,7 @@ public class BaseActivity extends AppCompatActivity {
             this.popUpListener = popUpListener;
     }
 
+    //endregion
 
     public void getCustomToast(String strMessage) {
         LayoutInflater inflater = getLayoutInflater();
@@ -206,13 +207,12 @@ public class BaseActivity extends AppCompatActivity {
         text.setText("" + strMessage);
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//        toast.setGravity(Gravity.BOTTOM, 0, 100);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
     }
-    //endregion
-
 
     public void openPopUp(final View view, String title, String desc, String positiveButtonName, String negativeButtonName, boolean isNegativeVisible, boolean isCancelable) {
         try {

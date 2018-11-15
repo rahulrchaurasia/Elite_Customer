@@ -1,5 +1,6 @@
 package com.pb.elite.register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import com.pb.elite.core.controller.register.RegisterController;
 import com.pb.elite.core.model.PolicyEntity;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.login.loginActivity;
+import com.pb.elite.utility.Constants;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class ClientDeclareActivity extends BaseActivity implements IResponseSubc
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         setListener();
+
 
     }
 

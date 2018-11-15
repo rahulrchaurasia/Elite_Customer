@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,17 +27,29 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.register.RegisterController;
+import com.pb.elite.core.model.CarMasterEntity;
 import com.pb.elite.core.model.PincodeEntity;
 import com.pb.elite.core.model.PolicyEntity;
+import com.pb.elite.core.model.VerifyOTPEntity;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
 import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.AddUserResponse;
+import com.pb.elite.core.response.CarMasterResponse;
 import com.pb.elite.core.response.GetOtpResponse;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
+import com.pb.elite.core.response.VerifyUserRegisterResponse;
+import com.pb.elite.database.DataBaseController;
+import com.pb.elite.orderDetail.OrderDetailAdapter;
+import com.pb.elite.orderDetail.OrderDetailFragment;
+import com.pb.elite.splash.PrefManager;
+import com.pb.elite.splash.SplashScreenActivity;
+import com.pb.elite.utility.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,9 +57,10 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
     EditText etPolicyNo, etEmail, etPassword, etconfirmPassword;
     Button btnVerify, btnSubmit;
-    EditText etFullName, etVehicle, etMobile,  etPincode, etArea, etCity, etState;
+    EditText etFullName, etVehicle, etMobile, etPincode, etArea, etCity, etState;
     TextView tvOk;
     EditText etOtp;
+    AutoCompleteTextView acMake, acModel;
     Dialog dialog;
     AddUserRequestEntity addUserRequestEntity;
     PincodeEntity pincodeEntity;
@@ -53,6 +68,11 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     String otp = "0000";
     LinearLayout llOtherInfo, llCityInfo;
     PolicyEntity policyEntity;
+    List<String> CarMasterMakeList;
+    List<String> CarMasterModelList;
+    DataBaseController dataBaseController;
+    PrefManager prefManager;
+    ArrayAdapter<String> makeAdapter, modelAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +82,28 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prefManager = new PrefManager(this);
+        dataBaseController = new DataBaseController(SignUpActivity.this);
+
         init_widets();
         setListener();
+        acMake.setThreshold(2);
+        acMake.setSelection(0);
+
+        acModel.setThreshold(1);
+        acModel.setSelection(0);
+
         addUserRequestEntity = new AddUserRequestEntity();
         updateUserRequestEntity = new UpdateUserRequestEntity();
+
+        CarMasterMakeList = dataBaseController.getCarMake();
+        CarMasterModelList = dataBaseController.getCarModel();
+
+        if (CarMasterMakeList.size() == 0) {
+            new RegisterController(SignUpActivity.this).getCarMaster(SignUpActivity.this);
+        } else {
+            setMakeModel();
+        }
 
         //  etpolicyVeh_no.setCursorVisible(false);
 
@@ -75,6 +113,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             bindDetails();
         }
 
+
     }
 
     private void bindDetails() {
@@ -82,6 +121,15 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         etVehicle.setText(policyEntity.getVehicleNumber());
         etPolicyNo.setText(policyEntity.getPolicyNumber());
 
+
+    }
+
+    private void setMakeModel() {
+        makeAdapter = new ArrayAdapter(SignUpActivity.this, android.R.layout.simple_list_item_1, CarMasterMakeList);
+        acMake.setAdapter(makeAdapter);
+
+        modelAdapter = new ArrayAdapter(SignUpActivity.this, android.R.layout.simple_list_item_1, CarMasterModelList);
+        acModel.setAdapter(makeAdapter);
 
     }
 
@@ -155,6 +203,8 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         etArea = (EditText) findViewById(R.id.etArea);
         etCity = (EditText) findViewById(R.id.etCity);
         etState = (EditText) findViewById(R.id.etState);
+        acMake = (AutoCompleteTextView) findViewById(R.id.acMake);
+        acModel = (AutoCompleteTextView) findViewById(R.id.acModel);
 
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
@@ -220,23 +270,49 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         return true;
     }
 
+    public List<String> getCarMake( List<CarMasterEntity> list ) {
+        List<String> listCarModel = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            CarMasterEntity entity = list.get(i);
+            String carModel = entity.getMake_Name();
+            listCarModel.add(carModel);
+        }
+
+        return listCarModel;
+
+
+    }
+
+    public List<String> getCarModel(List<CarMasterEntity> list ) {
+        List<String> listCarMake = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            CarMasterEntity entity = list.get(i);
+            String carModel = entity.getModel_Name();
+            listCarMake.add(carModel);
+        }
+
+        return listCarMake;
+    }
+
+
     @Override
     public void onClick(View view) {
+
+        Constants.hideKeyBoard(view, this);
         switch (view.getId()) {
 
             case R.id.btnSubmit:
-//                if (!isEmpty(etpolicyVeh_no)) {
-//                    etpolicyVeh_no.requestFocus();
-//                    etpolicyVeh_no.setError("Enter Policy Number");
-//                    return;
-//                }
 
                 if (validateRegistration() == true) {
-                    showOtpAlert();
-                } else {
-                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-                }
 
+                    // verifyOTPTegistration
+
+                    showDialog();
+                    new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
+
+                }
 
                 break;
         }
@@ -244,13 +320,14 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
     @Override
     public void OnSuccess(APIResponse response, String message) {
+        cancelDialog();
         if (response instanceof GetOtpResponse) {
-            cancelDialog();
+
             if (response.getStatus_code() == 0) {
                 this.otp = "" + ((GetOtpResponse) response).getData();
             }
-        }  else if (response instanceof PincodeResponse) {
-            cancelDialog();
+        } else if (response instanceof PincodeResponse) {
+
             if (response.getStatus_code() == 0) {
 
                 pincodeEntity = ((PincodeResponse) response).getData().get(0);
@@ -260,16 +337,38 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
                     etState.setText("" + pincodeEntity.getState_name());
                 }
             }
-        } else if (response instanceof UserRegistrationResponse) {
-            cancelDialog();
+        } else if (response instanceof CarMasterResponse) {
+
             if (response.getStatus_code() == 0) {
 
-               // this.finish();
+                List<CarMasterEntity> carMasterEntityList = ((CarMasterResponse) response).getMasterData();
+                CarMasterMakeList = getCarMake(carMasterEntityList);
+                CarMasterModelList = getCarModel(carMasterEntityList);
+
+                setMakeModel();
+            }
+        } else if (response instanceof VerifyUserRegisterResponse) {
+
+            if (response.getStatus_code() == 0) {
+                VerifyOTPEntity verifyOTPEntity = ((VerifyUserRegisterResponse) response).getData().get(0);
+                if (verifyOTPEntity.getSavedStatus() == 1) {
+                    showOtpAlert();
+                } else if (verifyOTPEntity.getSavedStatus() == 2) {
+                    getCustomToast(verifyOTPEntity.getMessage());
+                }
+            }
+        } else if (response instanceof UserRegistrationResponse) {
+
+            if (response.getStatus_code() == 0) {
+
+                // this.finish();
                 //Toast.makeText(this, "Data Save Successfully" , Toast.LENGTH_SHORT).show();
                 getCustomToast("Data Save Successfully");
                 this.finish();
             }
         }
+
+        //
     }
 
     @Override
@@ -282,19 +381,19 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     private void setRegisterRequest(String strOTP) {
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setVehicle_no("" + etVehicle.getText());
-        registerRequest.setPolicyNo("" + etPolicyNo.getText());
+        registerRequest.setPolicy_no("" + etPolicyNo.getText());
         registerRequest.setMobile("" + etMobile.getText());
         registerRequest.setEmailid("" + etEmail.getText());
 
         registerRequest.setPincode("" + etPincode.getText());
         registerRequest.setState("");
-        registerRequest.setArea("" );
+        registerRequest.setArea("");
         registerRequest.setCity("");
 
         registerRequest.setPassword("" + etPassword.getText());
         registerRequest.setOtp("" + strOTP);
         showDialog();
-        new RegisterController(this).saveUserRegistration(registerRequest,SignUpActivity.this);
+        new RegisterController(this).saveUserRegistration(registerRequest, SignUpActivity.this);
     }
 
     private void showOtpAlert() {
@@ -345,14 +444,13 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
                     etOtp.setText("");
                     otp = "";
                     showDialog("Re-sending otp...");
-                    new RegisterController(SignUpActivity.this).getOtp(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
+                    new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
     //region textwatcher

@@ -17,6 +17,9 @@ public interface IRegister {
 
     void addUser(AddUserRequestEntity addUserRequestEntity, IResponseSubcriber iResponseSubcriber);
 
+
+    public void getCarMaster(IResponseSubcriber iResponseSubcriber);
+
     void getCityState(String pincode, IResponseSubcriber iResponseSubcriber);
 
     void updateUser(UpdateUserRequestEntity updateUserRequestEntity, IResponseSubcriber iResponseSubcriber);
@@ -30,4 +33,6 @@ public interface IRegister {
     void getPolicyData(String PolicyNumber, IResponseSubcriber iResponseSubcriber);
 
     void saveUserRegistration(RegisterRequest registerRequest, IResponseSubcriber iResponseSubcriber);
+
+    void verifyOTPTegistration(String email, String mobile, String ip,  IResponseSubcriber iResponseSubcriber);
 }

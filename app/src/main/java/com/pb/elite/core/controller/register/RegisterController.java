@@ -4,11 +4,13 @@ import android.content.Context;
 
 import com.pb.elite.core.IResponseSubcriber;
 
+import com.pb.elite.core.controller.product.AsyncCarMaster;
 import com.pb.elite.core.requestbuilder.RegisterRequestBuilder;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
 import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.AddUserResponse;
+import com.pb.elite.core.response.CarMasterResponse;
 import com.pb.elite.core.response.CommonResponse;
 import com.pb.elite.core.response.DBVersionRespone;
 import com.pb.elite.core.response.GetOtpResponse;
@@ -17,6 +19,7 @@ import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
+import com.pb.elite.core.response.VerifyUserRegisterResponse;
 import com.pb.elite.database.DataBaseController;
 
 import java.net.ConnectException;
@@ -119,6 +122,52 @@ public class RegisterController implements IRegister {
                 }
             }
         });
+    }
+
+    @Override
+    public void getCarMaster(final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("ProductId", "1");
+
+        registerQuotesNetworkService.getCarMaster(hashMap).enqueue(new Callback<CarMasterResponse>() {
+            @Override
+            public void onResponse(Call<CarMasterResponse> call, Response<CarMasterResponse> response) {
+                if (response.body() != null) {
+                    if (response.body().getStatus_code() == 0) {
+                        if (response.body().getMasterData() != null || response.body().getMasterData().size() != 0)
+                            new AsyncCarMaster(mContext, response.body().getMasterData()).execute();
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+
+                    } else {
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+                } else {
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Failed to fetch information."));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CarMasterResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -425,6 +474,48 @@ public class RegisterController implements IRegister {
             }
         });
 
+    }
+
+    @Override
+    public void verifyOTPTegistration(String email, String mobile, String ip, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+        body.put("email", email);
+        body.put("mobNo", mobile);
+        body.put("ip", "");
+        registerQuotesNetworkService.verifyUserRegistration(body).enqueue(new Callback<VerifyUserRegisterResponse>() {
+            @Override
+            public void onResponse(Call<VerifyUserRegisterResponse> call, Response<VerifyUserRegisterResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), "");
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerifyUserRegisterResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
     }
 
     @Override

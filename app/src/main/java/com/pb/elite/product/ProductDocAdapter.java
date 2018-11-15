@@ -27,19 +27,20 @@ public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.Pr
     public ProductDocAdapter(Activity mContext, List<DocProductEnity> lstDoc) {
         this.mContext = mContext;
         this.lstDoc = lstDoc;
+
     }
 
 
     public class ProductItem extends RecyclerView.ViewHolder
     {
-        public TextView txtTitle;
+        public TextView txtTitle,txtDownload;
 
 
         public ProductItem(View itemView) {
             super(itemView);
 
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-
+            txtDownload  = (TextView) itemView.findViewById(R.id.txtTitle);
         }
     }
 

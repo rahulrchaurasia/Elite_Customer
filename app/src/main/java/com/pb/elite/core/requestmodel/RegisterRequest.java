@@ -5,12 +5,11 @@ package com.pb.elite.core.requestmodel;
  */
 
 public class RegisterRequest {
-
-
     /**
+     * otp : 795147
      * name : Nitin Teat
-     * emailid : patil44@gmail.com
-     * mobile : 7865503612
+     * emailid : nitinpatil23@gmail.com
+     * mobile : 7387863187
      * city : Nashik
      * state : Maharashtra
      * area : vihar
@@ -18,8 +17,17 @@ public class RegisterRequest {
      * vehicle_no : MH03AS4561
      * policy_no : HGHDD7665
      * password : 1234567
+     * ProductCode : 2311
+     * RiskEndDate : 21 Jan 2019
+     * RiskStartDate : 22 Jan 2018
+     * InsuredName : RUDRAGOUDA S PATIL
+     * Make : SKODA
+     * Model : RAPID
+     * PolicyStatus : Active
+     * ResponseStatus : Policy is eligible for ELITE services
      */
 
+    private String otp;
     private String name;
     private String emailid;
     private String mobile;
@@ -30,9 +38,22 @@ public class RegisterRequest {
     private String vehicle_no;
     private String policy_no;
     private String password;
+    private String ProductCode;
+    private String RiskEndDate;
+    private String RiskStartDate;
+    private String InsuredName;
+    private String Make;
+    private String Model;
+    private String PolicyStatus;
+    private String ResponseStatus;
 
+    public String getOtp() {
+        return otp;
+    }
 
-    private String otp;
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 
     public String getName() {
         return name;
@@ -102,7 +123,7 @@ public class RegisterRequest {
         return policy_no;
     }
 
-    public void setPolicyNo(String policy_no) {
+    public void setPolicy_no(String policy_no) {
         this.policy_no = policy_no;
     }
 
@@ -114,15 +135,71 @@ public class RegisterRequest {
         this.password = password;
     }
 
-    public void setPolicy_no(String policy_no) {
-        this.policy_no = policy_no;
+    public String getProductCode() {
+        return ProductCode;
     }
 
-    public String getOtp() {
-        return otp;
+    public void setProductCode(String ProductCode) {
+        this.ProductCode = ProductCode;
     }
 
-    public void setOtp(String otp) {
-        this.otp = otp;
+    public String getRiskEndDate() {
+        return RiskEndDate;
     }
+
+    public void setRiskEndDate(String RiskEndDate) {
+        this.RiskEndDate = RiskEndDate;
+    }
+
+    public String getRiskStartDate() {
+        return RiskStartDate;
+    }
+
+    public void setRiskStartDate(String RiskStartDate) {
+        this.RiskStartDate = RiskStartDate;
+    }
+
+    public String getInsuredName() {
+        return InsuredName;
+    }
+
+    public void setInsuredName(String InsuredName) {
+        this.InsuredName = InsuredName;
+    }
+
+    public String getMake() {
+        return Make;
+    }
+
+    public void setMake(String Make) {
+        this.Make = Make;
+    }
+
+    public String getModel() {
+        return Model;
+    }
+
+    public void setModel(String Model) {
+        this.Model = Model;
+    }
+
+    public String getPolicyStatus() {
+        return PolicyStatus;
+    }
+
+    public void setPolicyStatus(String PolicyStatus) {
+        this.PolicyStatus = PolicyStatus;
+    }
+
+    public String getResponseStatus() {
+        return ResponseStatus;
+    }
+
+    public void setResponseStatus(String ResponseStatus) {
+        this.ResponseStatus = ResponseStatus;
+    }
+
+
+
+
 }
