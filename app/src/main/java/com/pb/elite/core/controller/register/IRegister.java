@@ -11,7 +11,7 @@ import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 
 public interface IRegister {
 
-    void getDbVersion( IResponseSubcriber iResponseSubcriber);
+    void getDbVersion(IResponseSubcriber iResponseSubcriber);
 
     void getOtp(String email, String mobile, String ip, IResponseSubcriber iResponseSubcriber);
 
@@ -26,7 +26,7 @@ public interface IRegister {
 
     void getLogin(String mobile, String password, IResponseSubcriber iResponseSubcriber);
 
-    void changePassword(String mobile, String curr_password, String new_password,  IResponseSubcriber iResponseSubcriber);
+    void changePassword(String mobile, String curr_password, String new_password, IResponseSubcriber iResponseSubcriber);
 
     void forgotPassword(String mobile, IResponseSubcriber iResponseSubcriber);
 
@@ -34,5 +34,8 @@ public interface IRegister {
 
     void saveUserRegistration(RegisterRequest registerRequest, IResponseSubcriber iResponseSubcriber);
 
-    void verifyOTPTegistration(String email, String mobile, String ip,  IResponseSubcriber iResponseSubcriber);
+    void verifyOTPTegistration(String email, String mobile, String ip, IResponseSubcriber iResponseSubcriber);
+
+
+    void getCarVehicleMaster();
 }
