@@ -1,8 +1,11 @@
 package com.pb.elite.product;
 
 import android.app.DatePickerDialog;
+import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.SyncStateContract;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -932,4 +936,15 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
             }
         }
     }
+
+    public void downloadPdf(String url, String name) {
+        Toast.makeText(this, "Download started..", Toast.LENGTH_LONG).show();
+        DownloadManager.Request r = new DownloadManager.Request(Uri.parse(url));
+        r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name + ".pdf");
+        r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        r.setMimeType(MimeTypeMap.getFileExtensionFromUrl(url));
+        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        dm.enqueue(r);
+    }
+
 }
