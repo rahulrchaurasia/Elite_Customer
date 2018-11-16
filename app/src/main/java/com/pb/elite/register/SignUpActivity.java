@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,6 +107,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                acMake.setError(null);
                 MakeEntity makeEntity = makeAdapter.getItem(position);
                 modelAdapter = new ModelAdapter(SignUpActivity.this,
                         R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
@@ -113,8 +115,79 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             }
         });
 
+        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                acModel.setError(null);
+                ModelEntity makeEntity = modelAdapter.getItem(position);
+
+            }
+        });
+
+        acMake.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String str = acMake.getText().toString();
+
+                ListAdapter listAdapter = acMake.getAdapter();
+                for (int i = 0; i < listAdapter.getCount(); i++) {
+                    String temp = listAdapter.getItem(i).toString();
+                    if (str.compareTo(temp) == 0) {
+                        acMake.setError(null);
+                        return;
+                    }
+                }
+
+                acMake.setError("Invalid Make");
+                acMake.setFocusable(true);
+
+            }
+        });
+
+        acModel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String str = acModel.getText().toString();
+
+                ListAdapter listAdapter = acModel.getAdapter();
+                for (int i = 0; i < listAdapter.getCount(); i++) {
+                    String temp = listAdapter.getItem(i).toString();
+                    if (str.compareTo(temp) == 0) {
+                        acModel.setError(null);
+                        return;
+                    }
+                }
+
+                acModel.setError("Invalid Model");
+                acModel.setFocusable(true);
+
+            }
+        });
 
     }
+
 
     private void bindDetails() {
         etFullName.setText(policyEntity.getInsuredName());
