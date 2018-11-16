@@ -120,6 +120,8 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         etFullName.setText(policyEntity.getInsuredName());
         etVehicle.setText(policyEntity.getVehicleNumber());
         etPolicyNo.setText(policyEntity.getPolicyNumber());
+        acMake.setText(policyEntity.getMake());
+        acModel.setText(policyEntity.getModel());
 
 
     }
@@ -142,10 +144,10 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase("otp")) {
                 String message = intent.getStringExtra("message");
-                String otp = extractDigitFromMessage(message);
+                 otp = extractDigitFromMessage(message);
                 if (!otp.equals("")) {
                     etOtp.setText(otp);
-                    // tvOk.performClick();
+
                 }
             }
         }
@@ -261,32 +263,6 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         return true;
     }
 
-    public List<String> getCarMake(List<CarMasterEntity> list) {
-        List<String> listCarModel = new ArrayList<>();
-
-        for (int i = 0; i < list.size(); i++) {
-            CarMasterEntity entity = list.get(i);
-            String carModel = entity.getMake_Name();
-            listCarModel.add(carModel);
-        }
-
-        return listCarModel;
-
-
-    }
-
-    public List<String> getCarModel(List<CarMasterEntity> list) {
-        List<String> listCarMake = new ArrayList<>();
-
-        for (int i = 0; i < list.size(); i++) {
-            CarMasterEntity entity = list.get(i);
-            String carModel = entity.getModel_Name();
-            listCarMake.add(carModel);
-        }
-
-        return listCarMake;
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -297,9 +273,6 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             case R.id.btnSubmit:
 
                 if (validateRegistration() == true) {
-
-                    // verifyOTPTegistration
-
                     showDialog();
                     new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
 
@@ -331,11 +304,11 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         } else if (response instanceof VerifyUserRegisterResponse) {
 
             if (response.getStatus_code() == 0) {
-                VerifyOTPEntity verifyOTPEntity = ((VerifyUserRegisterResponse) response).getData().get(0);
+                VerifyOTPEntity verifyOTPEntity = ((VerifyUserRegisterResponse) response).getData();
                 if (verifyOTPEntity.getSavedStatus() == 1) {
                     showOtpAlert();
                 } else if (verifyOTPEntity.getSavedStatus() == 2) {
-                    getCustomToast(verifyOTPEntity.getMessage());
+                    getCustomToast(response.getMessage());
                 }
             }
         } else if (response instanceof UserRegistrationResponse) {
@@ -361,18 +334,32 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
     private void setRegisterRequest(String strOTP) {
         RegisterRequest registerRequest = new RegisterRequest();
-        registerRequest.setVehicle_no("" + etVehicle.getText());
-        registerRequest.setPolicy_no("" + etPolicyNo.getText());
-        registerRequest.setMobile("" + etMobile.getText());
+
+        registerRequest.setOtp("" + strOTP);
+        registerRequest.setName("" + etFullName.getText());
         registerRequest.setEmailid("" + etEmail.getText());
+        registerRequest.setMobile("" + etMobile.getText());
 
         registerRequest.setPincode("" + etPincode.getText());
-        registerRequest.setState("");
-        registerRequest.setArea("");
-        registerRequest.setCity("");
+        registerRequest.setState("" + etState.getText());
+        registerRequest.setArea("" + etArea.getText());
+        registerRequest.setCity("" + etCity.getText());
 
+        registerRequest.setVehicle_no("" + etVehicle.getText());
+        registerRequest.setPolicy_no("" + etPolicyNo.getText());
         registerRequest.setPassword("" + etPassword.getText());
-        registerRequest.setOtp("" + strOTP);
+        registerRequest.setMake("" + acMake.getText());
+        registerRequest.setModel("" + acModel.getText());
+
+        registerRequest.setProductCode("" + policyEntity.getProductCode());
+        registerRequest.setRiskEndDate("" + policyEntity.getRiskEndDate());
+        registerRequest.setRiskStartDate("" + policyEntity.getRiskStartDate());
+        registerRequest.setInsuredName("" + policyEntity.getInsuredName());
+
+        registerRequest.setPolicyStatus("" + policyEntity.getPolicyStatus());
+        registerRequest.setResponseStatus("" + policyEntity.getResponseStatus());
+
+
         showDialog();
         new RegisterController(this).saveUserRegistration(registerRequest, SignUpActivity.this);
     }

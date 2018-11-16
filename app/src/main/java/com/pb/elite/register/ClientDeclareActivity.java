@@ -1,11 +1,7 @@
 package com.pb.elite.register;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,10 +16,6 @@ import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.register.RegisterController;
 import com.pb.elite.core.model.PolicyEntity;
 import com.pb.elite.core.response.PolicyResponse;
-import com.pb.elite.login.loginActivity;
-import com.pb.elite.utility.Constants;
-
-import java.util.List;
 
 public class ClientDeclareActivity extends BaseActivity implements IResponseSubcriber, View.OnClickListener {
 

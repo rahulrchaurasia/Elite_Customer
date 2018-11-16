@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.loginActivity"
+            android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -81,7 +81,7 @@
         <activity
             android:name=".register.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName=".login.loginActivity"
+            android:parentActivityName=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -119,12 +119,12 @@
         <activity
             android:name=".login.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
-            android:parentActivityName=".login.loginActivity"
+            android:parentActivityName=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pb.elite.login.loginActivity" />
+                android:value="com.pb.elite.login.LoginActivity" />
         </activity>
         <activity
             android:name=".DemActivity"
@@ -246,6 +246,18 @@
         </activity>
         <activity
             android:name=".emailUs.EmailUsActivity"
+            android:label="@string/title_activity_email_us"
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pb.elite.HomeActivity" />
+        </activity>
+
+        <activity
+            android:name=".webview.CommonWebViewActivity"
             android:label="@string/title_activity_email_us"
             android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"

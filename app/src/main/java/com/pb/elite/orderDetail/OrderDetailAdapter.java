@@ -35,7 +35,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     public class OrderDetailItem extends RecyclerView.ViewHolder {
         TextView txtPrdName, txtAmnt, txtOrderID, txtcustName, txtDate, txtStatus,  txtUpload;
         LinearLayout lyUpload;
-
+        ImageView ivReceipt;
 
         public OrderDetailItem(View itemView) {
             super(itemView);
@@ -51,6 +51,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             txtUpload = (TextView) itemView.findViewById(R.id.txtUpload);
 
             lyUpload = (LinearLayout) itemView.findViewById(R.id.lyUpload);
+
+            ivReceipt = itemView.findViewById(R.id.ivReceipt);
         }
     }
 
@@ -117,6 +119,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             public void onClick(View v) {
 
                 ((OrderDetailFragment) mContext).getOrderId(orderDetailEntity.getOrder_id());
+            }
+        });
+        holder.ivReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((OrderDetailFragment) mContext).redirectToreceipt(orderDetailEntity);
             }
         });
 

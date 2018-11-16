@@ -206,7 +206,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginTop="5dp"
-                        android:text="Status:"
+                        android:text="Receipt:"
 
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
@@ -226,6 +226,7 @@
                         android:textStyle="normal" />
 
                     <ImageView
+                        android:id="@+id/ivReceipt"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="5dp"

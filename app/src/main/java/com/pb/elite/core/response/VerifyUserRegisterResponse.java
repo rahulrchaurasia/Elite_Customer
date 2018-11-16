@@ -3,8 +3,6 @@ package com.pb.elite.core.response;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.model.VerifyOTPEntity;
 
-import java.util.List;
-
 /**
  * Created by IN-RB on 14-11-2018.
  */
@@ -12,13 +10,17 @@ import java.util.List;
 public class VerifyUserRegisterResponse extends APIResponse {
 
 
-    private List<VerifyOTPEntity> Data;
+    /**
+     * Data : {"SavedStatus":1,"OTP":"344324"}
+     */
 
-    public List<VerifyOTPEntity> getData() {
+    private VerifyOTPEntity Data;
+
+    public VerifyOTPEntity getData() {
         return Data;
     }
 
-    public void setData(List<VerifyOTPEntity> Data) {
+    public void setData(VerifyOTPEntity Data) {
         this.Data = Data;
     }
 

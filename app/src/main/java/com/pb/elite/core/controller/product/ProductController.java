@@ -334,11 +334,13 @@ public class ProductController implements IProduct {
     }
 
     @Override
-    public void getRTOProductList(int prdid, final IResponseSubcriber iResponseSubcriber) {
+    public void getRTOProductList(int prdid, String prdCode,int userID, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
         body.put("product_id", String.valueOf(prdid));
+        body.put("productcode", prdCode);
+        body.put("userid", String.valueOf(userID));
 
         productNetworkService.getRTOProductList(body).enqueue(new Callback<RtoProductDisplayResponse>() {
             @Override

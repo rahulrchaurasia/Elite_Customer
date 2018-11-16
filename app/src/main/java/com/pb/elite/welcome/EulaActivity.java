@@ -2,21 +2,17 @@ package com.pb.elite.welcome;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
-import com.pb.elite.login.loginActivity;
+import com.pb.elite.login.LoginActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.webview.MyWebViewClient;
 
@@ -55,7 +51,7 @@ public class EulaActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.btnAgree:
 
                     prefManager.setFirstTimeLaunch(false);
-                    startActivity(new Intent(this, loginActivity.class));
+                    startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.btnDisAgree:
                 finish();

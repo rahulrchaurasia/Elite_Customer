@@ -29,7 +29,7 @@ public interface IProduct {
 
     void getRtoAndNonRtoList(IResponseSubcriber iResponseSubcriber);
 
-    void getRTOProductList(int prdid, IResponseSubcriber iResponseSubcriber);
+    void getRTOProductList(int prdid,String prdCode, int UserId, IResponseSubcriber iResponseSubcriber);
 
     void getNonRTOProductList(int prdid, IResponseSubcriber iResponseSubcriber);
 

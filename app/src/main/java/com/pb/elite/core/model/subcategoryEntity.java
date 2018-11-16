@@ -23,6 +23,8 @@ public class subcategoryEntity implements Parcelable{
     private String catg_id;
     private String product_logo;
     private int parent_id;
+    private String productcode;
+
 
     protected subcategoryEntity(Parcel in) {
         id = in.readInt();
@@ -30,6 +32,7 @@ public class subcategoryEntity implements Parcelable{
         catg_id = in.readString();
         product_logo = in.readString();
         parent_id = in.readInt();
+        productcode = in.readString();
     }
 
     public static final Creator<subcategoryEntity> CREATOR = new Creator<subcategoryEntity>() {
@@ -83,6 +86,14 @@ public class subcategoryEntity implements Parcelable{
     public void setParent_id(int parent_id) {
         this.parent_id = parent_id;
     }
+    public String getProductcode() {
+        return productcode;
+    }
+
+    public void setProductcode(String productcode) {
+        this.productcode = productcode;
+    }
+
 
     @Override
     public int describeContents() {
@@ -96,5 +107,6 @@ public class subcategoryEntity implements Parcelable{
         dest.writeString(catg_id);
         dest.writeString(product_logo);
         dest.writeInt(parent_id);
+        dest.writeString(productcode);
     }
 }

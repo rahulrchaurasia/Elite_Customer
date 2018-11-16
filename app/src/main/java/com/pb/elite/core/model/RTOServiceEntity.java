@@ -12,6 +12,7 @@ public class RTOServiceEntity implements Parcelable {
 
     private String catg_id;
     private String product_logo;
+    private String productcode;
     private int parent_id;
     private List<subcategoryEntity> subcategory;
 
@@ -21,23 +22,9 @@ public class RTOServiceEntity implements Parcelable {
         name = in.readString();
         catg_id = in.readString();
         product_logo = in.readString();
+        productcode = in.readString();
         parent_id = in.readInt();
         subcategory = in.createTypedArrayList(subcategoryEntity.CREATOR);
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(catg_id);
-        dest.writeString(product_logo);
-        dest.writeInt(parent_id);
-        dest.writeTypedList(subcategory);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<RTOServiceEntity> CREATOR = new Creator<RTOServiceEntity>() {
@@ -92,12 +79,36 @@ public class RTOServiceEntity implements Parcelable {
         this.parent_id = parent_id;
     }
 
+    public String getProductcode() {
+        return productcode;
+    }
+
+    public void setProductcode(String productcode) {
+        this.productcode = productcode;
+    }
+
     public List<subcategoryEntity> getSubcategory() {
         return subcategory;
     }
 
     public void setSubcategory(List<subcategoryEntity> subcategory) {
         this.subcategory = subcategory;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(catg_id);
+        dest.writeString(product_logo);
+        dest.writeString(productcode);
+        dest.writeInt(parent_id);
+        dest.writeTypedList(subcategory);
     }
 
     /**

@@ -10,14 +10,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pb.elite.BaseActivity;
 import com.pb.elite.HomeActivity;
@@ -25,18 +21,12 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.register.RegisterController;
-import com.pb.elite.core.model.MakeEntity;
-import com.pb.elite.core.model.ModelEntity;
-import com.pb.elite.core.model.VariantEntity;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.register.ClientDeclareActivity;
-import com.pb.elite.register.SignUpActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 
-import java.util.List;
-
-public class loginActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
 
 
     TextView tvRegistration, tvForgotPassword;
@@ -109,15 +99,15 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        Constants.hideKeyBoard(view, loginActivity.this);
+        Constants.hideKeyBoard(view, LoginActivity.this);
         switch (view.getId()) {
             case R.id.tvRegistration:
-                startActivity(new Intent(loginActivity.this, ClientDeclareActivity.class));
+                startActivity(new Intent(LoginActivity.this, ClientDeclareActivity.class));
 
                 break;
 
             case R.id.tvForgotPassword:
-                startActivity(new Intent(loginActivity.this, ForgotPasswordActivity.class));
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
                 break;
             case R.id.btnSignIn:
                 if (!isEmpty(etMobile)) {
@@ -134,7 +124,7 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
                 }
 
                 showDialog("Please Wait...");
-                new RegisterController(loginActivity.this).getLogin(etMobile.getText().toString(), etPassword.getText().toString(), this);
+                new RegisterController(LoginActivity.this).getLogin(etMobile.getText().toString(), etPassword.getText().toString(), this);
 
 
                 break;
@@ -178,7 +168,7 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
                 prefManager.setMobile(etMobile.getText().toString());
                 prefManager.setPassword(etPassword.getText().toString());
                 //  Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(loginActivity.this, HomeActivity.class));
+                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 finish();
             }
         }
@@ -243,7 +233,7 @@ public class loginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(loginActivity.this)
+        new AlertDialog.Builder(LoginActivity.this)
                 .setTitle("Retry")
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)

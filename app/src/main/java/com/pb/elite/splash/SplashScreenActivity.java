@@ -18,18 +18,10 @@ import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.register.RegisterController;
-import com.pb.elite.core.model.AllCityEntity;
-import com.pb.elite.core.model.CarMasterEntity;
 import com.pb.elite.core.model.UserEntity;
-import com.pb.elite.core.response.CarMasterResponse;
 import com.pb.elite.core.response.CityResponse;
-import com.pb.elite.core.response.DBVersionRespone;
-import com.pb.elite.core.response.ProductResponse;
-import com.pb.elite.core.response.RtoLocationReponse;
-import com.pb.elite.core.response.UserRegistrationResponse;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.login.loginActivity;
-import com.pb.elite.product.ProductActivity;
+import com.pb.elite.login.LoginActivity;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.welcome.WelcomeActivity;
 
@@ -43,7 +35,6 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     DataBaseController dataBaseController;
     List<String> allCityEntityList;
-    List<String> CarMasterList;
 
     int CityVersion;
 
@@ -77,11 +68,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
             new ProductController(SplashScreenActivity.this).getCityMaster(SplashScreenActivity.this);
         }
 
-        CarMasterList = dataBaseController.getCarMake();
 
-        if (CarMasterList.size() == 0) {
-            new RegisterController(SplashScreenActivity.this).getCarMaster(SplashScreenActivity.this);
-        }
         UserEntity loginEntity = dataBaseController.getUserData();
 
 
@@ -89,7 +76,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
             startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
 
         } else {
-            startActivity(new Intent(SplashScreenActivity.this, loginActivity.class));
+            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
 
         }
     }

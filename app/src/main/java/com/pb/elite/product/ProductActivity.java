@@ -108,6 +108,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
 
     String PRODUCT_NAME = "";
+    String PRODUCT_CODE = "";
     int PRODUCT_ID = 0;
 
     String SERVICE_TYPE;
@@ -143,12 +144,14 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
                 serviceEntity = extras.getParcelable(Constants.RTO_PRODUCT_DATA);
                 PRODUCT_NAME = serviceEntity.getName();
+                PRODUCT_CODE = serviceEntity.getProductcode();
                 PRODUCT_ID = serviceEntity.getId();
 
             } else if (getIntent().hasExtra(Constants.NON_RTO_PRODUCT_DATA)) {
 
                 nonrtoServiceEntity = extras.getParcelable(Constants.NON_RTO_PRODUCT_DATA);
                 PRODUCT_NAME = nonrtoServiceEntity.getName();
+                PRODUCT_CODE = nonrtoServiceEntity.getProductcode();
                 PRODUCT_ID = nonrtoServiceEntity.getId();
 
             } else if (getIntent().hasExtra(Constants.SUB_PRODUCT_DATA)) {
@@ -156,6 +159,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 subRTOEntity = extras.getParcelable(Constants.SUB_PRODUCT_DATA);
                 PRODUCT_NAME = subRTOEntity.getName();
                 PRODUCT_ID = subRTOEntity.getId();
+                PRODUCT_CODE = subRTOEntity.getProductcode();
 
             }
 
@@ -169,7 +173,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
             }
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(this, "" + PRODUCT_ID, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + PRODUCT_ID +"/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
 
 
         }
@@ -186,7 +190,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         if (SERVICE_TYPE.equals("RTO")) {
             textCity.setText("Select City");
             showDialog();
-            new ProductController(this).getRTOProductList(PRODUCT_ID, ProductActivity.this);
+            new ProductController(this).getRTOProductList(PRODUCT_ID,PRODUCT_CODE,loginEntity.getUser_id(), ProductActivity.this);
         } else {
 
             acCity.setVisibility(View.VISIBLE);

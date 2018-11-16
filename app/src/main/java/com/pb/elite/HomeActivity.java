@@ -22,13 +22,10 @@ import com.pb.elite.aboutUs.AboutUsFragment;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.dashboard.DashBoardFragment;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.document.DocUploadActivity;
-import com.pb.elite.document.DocUploadFragment;
 import com.pb.elite.login.ChangePasswordFragment;
-import com.pb.elite.login.loginActivity;
+import com.pb.elite.login.LoginActivity;
 import com.pb.elite.orderDetail.OrderDetailFragment;
 
-import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.servicelist.ProductHomeFragment;
 import com.pb.elite.profile.ProfileFragment;
 import com.pb.elite.splash.PrefManager;
@@ -147,7 +144,7 @@ public class HomeActivity extends BaseActivity {
 
                         dataBaseController.logout();
                         clear();
-                        Intent intent = new Intent(HomeActivity.this, loginActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();

@@ -12,7 +12,9 @@ public class NONRTOServiceEntity implements Parcelable {
     private String catg_id;
     private String product_logo;
     private int parent_id;
+    private String productcode;
     private List<subcategoryEntity> subcategory;
+
 
     protected NONRTOServiceEntity(Parcel in) {
         id = in.readInt();
@@ -20,22 +22,8 @@ public class NONRTOServiceEntity implements Parcelable {
         catg_id = in.readString();
         product_logo = in.readString();
         parent_id = in.readInt();
+        productcode = in.readString();
         subcategory = in.createTypedArrayList(subcategoryEntity.CREATOR);
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(catg_id);
-        dest.writeString(product_logo);
-        dest.writeInt(parent_id);
-        dest.writeTypedList(subcategory);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<NONRTOServiceEntity> CREATOR = new Creator<NONRTOServiceEntity>() {
@@ -49,6 +37,14 @@ public class NONRTOServiceEntity implements Parcelable {
             return new NONRTOServiceEntity[size];
         }
     };
+
+    public String getProductcode() {
+        return productcode;
+    }
+
+    public void setProductcode(String productcode) {
+        this.productcode = productcode;
+    }
 
     public int getId() {
         return id;
@@ -98,6 +94,22 @@ public class NONRTOServiceEntity implements Parcelable {
         this.subcategory = subcategory;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(catg_id);
+        dest.writeString(product_logo);
+        dest.writeInt(parent_id);
+        dest.writeString(productcode);
+        dest.writeTypedList(subcategory);
+    }
+
     /**
      * id : 97
      * name : Vehicle Pick or Drop service available in Mum
@@ -106,8 +118,6 @@ public class NONRTOServiceEntity implements Parcelable {
      * parent_id : 0
      * subcategory : []
      */
-
-
 
 
 }

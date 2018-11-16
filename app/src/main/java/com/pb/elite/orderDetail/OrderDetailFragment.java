@@ -25,6 +25,7 @@ import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
 import com.pb.elite.product.ProductActivity;
 import com.pb.elite.utility.Constants;
+import com.pb.elite.webview.CommonWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,5 +123,17 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
 
 
         }
+    }
+
+    public void redirectToreceipt(OrderDetailEntity orderDetailEntity) {
+        //todo: need to change the id
+        String id = "172";
+       // String url = "http://www.rupeeboss.com/receipt";
+        String url ="https://www.rupeeboss.com/receipt/index1.html";
+        //String url = "file:///android_asset/elite_receipt.html";
+        startActivity(new Intent(getActivity(), CommonWebViewActivity.class)
+                .putExtra("URL", url)
+                .putExtra("NAME", "RECEIPT_" + id)
+                .putExtra("TITLE", "RECEIPT"));
     }
 }
