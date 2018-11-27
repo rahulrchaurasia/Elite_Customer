@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.model.subcategoryEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.payment.PaymentRazorActivity;
+import com.pb.elite.productServiceRtoFragment.AssistanObtainFragment;
 import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
 import com.pb.elite.rtoAdapter.CityMainAdapter;
 import com.pb.elite.rtoAdapter.RtoMainAdapter;
@@ -50,7 +52,7 @@ public class ProductMainActivity extends BaseActivity {
     BottomSheetBehavior sheetBehavior;
     LinearLayout layoutBottomSheet;
 
-    RecyclerView rvCity,rvRTO;
+    RecyclerView rvCity, rvRTO;
     CityMainAdapter cityMainAdapter;
     RtoMainAdapter rtoMainAdapter;
 
@@ -60,6 +62,11 @@ public class ProductMainActivity extends BaseActivity {
     RtoProductDisplayMainEntity cityMainEntity;
 
     RenewRcFragment rcFragment;
+    AssistanObtainFragment assistanObtainFragment;
+
+    Bundle bundle;
+    Fragment mainfragment = null;
+    FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,20 +142,40 @@ public class ProductMainActivity extends BaseActivity {
     }
 
 
-    private void setListFragmentSubProdct() {
-
+    private Fragment getProductFragment() {
         if ((PRODUCT_CODE.equalsIgnoreCase("1.1")) || (PRODUCT_CODE.equalsIgnoreCase("1.2"))
                 || (PRODUCT_CODE.equalsIgnoreCase("1.3"))) {
 
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.SUB_PRODUCT_DATA, subRTOEntity);
             rcFragment = new RenewRcFragment();
-            rcFragment.setArguments(bundle);
+            return rcFragment;
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.frame_layout, rcFragment);
-            ft.commitAllowingStateLoss();
+
+        } else if ((PRODUCT_CODE.equalsIgnoreCase("2.1")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))
+                || (PRODUCT_CODE.equalsIgnoreCase("2.3")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))) {
+
+            assistanObtainFragment = new AssistanObtainFragment();
+            return assistanObtainFragment;
+
+
         }
+
+        return null;
+    }
+
+    private void setListFragmentSubProdct() {
+
+
+        if (getProductFragment() != null) {
+            bundle = new Bundle();
+            bundle.putParcelable(Constants.SUB_PRODUCT_DATA, subRTOEntity);
+
+            mainfragment = getProductFragment();
+            mainfragment.setArguments(bundle);
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, mainfragment);
+            transaction.commitAllowingStateLoss();
+        }
+
 
     }
 
@@ -164,17 +191,17 @@ public class ProductMainActivity extends BaseActivity {
         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         listCityMain = templistCityMain;
 
-      cityMainAdapter =  new CityMainAdapter(ProductMainActivity.this,listCityMain);
-      rvCity.setAdapter(cityMainAdapter);
-      rvCity.setVisibility(View.VISIBLE);
-      rvRTO.setVisibility(View.GONE);
+        cityMainAdapter = new CityMainAdapter(ProductMainActivity.this, listCityMain);
+        rvCity.setAdapter(cityMainAdapter);
+        rvCity.setVisibility(View.VISIBLE);
+        rvRTO.setVisibility(View.GONE);
 
     }
 
     public void showRTOBottomSheetDialog() {
         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         rtoProductDisplayList = cityMainEntity.getRtolist();
-        rtoMainAdapter =  new RtoMainAdapter(ProductMainActivity.this,rtoProductDisplayList);
+        rtoMainAdapter = new RtoMainAdapter(ProductMainActivity.this, rtoProductDisplayList);
         rvRTO.setAdapter(rtoMainAdapter);
         rvCity.setVisibility(View.GONE);
         rvRTO.setVisibility(View.VISIBLE);
@@ -182,31 +209,68 @@ public class ProductMainActivity extends BaseActivity {
     }
 
 
-
-    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity)
-    {
+    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity  ) {
         cityMainEntity = cityEntity;
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        if(rcFragment == null) {
-            rcFragment = (RenewRcFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if(getServiceNumber()== 1) {
+            if (rcFragment == null) {
+                rcFragment = (RenewRcFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            }
+
+            rcFragment.setCityData(cityMainEntity.getCityname(), cityMainEntity);
+        }
+        else if(getServiceNumber()== 2) {
+            if (assistanObtainFragment == null) {
+                assistanObtainFragment = (AssistanObtainFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            }
+
+            assistanObtainFragment.setCityData(cityMainEntity.getCityname(), cityMainEntity);
         }
 
-        rcFragment.setCityData(cityMainEntity.getCityname(),cityMainEntity);
 
     }
 
-    public void getRTOBottomSheet(RtoProductEntity rtoEntity )
-    {
-        Toast.makeText(this,"RTO ",Toast.LENGTH_SHORT).show();
+    public void getRTOBottomSheet(RtoProductEntity rtoEntity ) {
+        // Toast.makeText(this,"RTO ",Toast.LENGTH_SHORT).show();
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        if(rcFragment == null) {
-            rcFragment = (RenewRcFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if(getServiceNumber()== 1) {
+            if (rcFragment == null) {
+                rcFragment = (RenewRcFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            }
+
+            rcFragment.setRTOData(rtoEntity.getSeries_no() + "-" + rtoEntity.getRto_location(), rtoEntity);
+        }
+        else if(getServiceNumber()== 2) {
+            if (assistanObtainFragment == null) {
+                assistanObtainFragment = (AssistanObtainFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            }
+
+            assistanObtainFragment.setRTOData(rtoEntity.getSeries_no() + "-" + rtoEntity.getRto_location(), rtoEntity);
         }
 
-        rcFragment.setRTOData(rtoEntity.getSeries_no() +"-" + rtoEntity.getRto_location(),  rtoEntity);
+    }
 
+
+    private int getServiceNumber()
+    {
+        if ((PRODUCT_CODE.equalsIgnoreCase("1.1")) || (PRODUCT_CODE.equalsIgnoreCase("1.2"))
+                || (PRODUCT_CODE.equalsIgnoreCase("1.3"))) {
+
+            return 1;
+
+
+        } else if ((PRODUCT_CODE.equalsIgnoreCase("2.1")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))
+                || (PRODUCT_CODE.equalsIgnoreCase("2.3")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))) {
+
+
+            return 2;
+
+        }
+
+        return 0;
 
     }
+
 }

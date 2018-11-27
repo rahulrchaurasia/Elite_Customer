@@ -22,7 +22,6 @@
             android:text="City" />
 
 
-
         <EditText
             android:id="@+id/etCity"
             style="@style/EditTextStyle"
@@ -34,15 +33,6 @@
             android:singleLine="true"
             android:ellipsize="end"/>
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +41,6 @@
             android:layout_marginTop="5dp"
             android:text="RTO"
             />
-
 
 
         <EditText
@@ -63,6 +52,23 @@
             android:minLines="1"
             android:singleLine="true"
             android:ellipsize="end"/>
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+
+
+
+
+
 
 
         <EditText
