@@ -5,7 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -232,6 +235,25 @@ public class BaseFragment extends Fragment {
         } catch (Exception ex) {
             Toast.makeText(getActivity(), "Please try again..", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void getCustomToast(String strMessage) {
+
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.layout_custom_toast,
+                (ViewGroup) getActivity().findViewById(R.id.toast_layout_root));
+
+
+        TextView text = (TextView) layout.findViewById(R.id.txtMessage);
+        text.setText("" + strMessage);
+
+        Toast toast = new Toast(getActivity().getApplicationContext());
+        // toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
 

@@ -28,6 +28,7 @@ public class DataBaseController {
     Context mContext;
     Realm realm;
 
+
     public DataBaseController(Context mContext) {
         this.mContext = mContext;
         realm = Realm.getDefaultInstance();
@@ -228,6 +229,15 @@ public class DataBaseController {
         return List;
     }
 
+    public List<AllCityEntity> getAllCity() {
+        List<AllCityEntity> cityEntityList = realm.where(AllCityEntity.class).findAll();
+
+        if(cityEntityList == null){
+            cityEntityList = new ArrayList<AllCityEntity>();
+        }
+        return cityEntityList;
+    }
+
     public List<AllCityEntity> getCityMainList()
     {
         List<AllCityEntity> cityEntityList = realm.where(AllCityEntity.class).findAll().sort("cityname",Sort.ASCENDING);;
@@ -356,9 +366,11 @@ public class DataBaseController {
 
     public void logout() {
         realm.beginTransaction();
-//        realm.delete(UserEntity.class);
-        realm.deleteAll();
+        realm.delete(UserEntity.class);
+        realm.delete(CityEntity.class);
+        realm.delete(RTOEntity.class);
         realm.commitTransaction();
+
     }
 
     public UserEntity getUserData() {

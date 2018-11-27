@@ -129,8 +129,8 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
         //todo: need to change the id
         String id = "172";
        // String url = "http://www.rupeeboss.com/receipt";
-        String url ="https://www.rupeeboss.com/receipt/index1.html";
-        //String url = "file:///android_asset/elite_receipt.html";
+      //  String url ="https://www.rupeeboss.com/receipt/index1.html";
+        String url = "file:///android_asset/index1.html";
         startActivity(new Intent(getActivity(), CommonWebViewActivity.class)
                 .putExtra("URL", url)
                 .putExtra("NAME", "RECEIPT_" + id)

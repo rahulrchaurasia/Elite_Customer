@@ -13,6 +13,7 @@ import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
+import com.pb.elite.core.response.UserConsttantResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
 import com.pb.elite.core.response.VehicleMasterResponse;
 import com.pb.elite.core.response.VerifyUserRegisterResponse;
@@ -60,7 +61,7 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         Call<CommonResponse> forgotPassword(@Body HashMap<String, String> body);
 
         @POST("/api/reliance-login")
-            // Change 05
+
         Call<PolicyResponse> getPolicyData(@Body HashMap<String, String> body);
 
         @POST("/api/check-user-registration")
@@ -71,6 +72,9 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
 
         @POST("/api/vehicle-details")
         Call<CarMasterResponse> getCarMaster(@Body HashMap<String, String> body);
+
+        @POST("/api/get-user-constant")
+        Call<UserConsttantResponse> getUserConstant(@Body HashMap<String, String> body);   //used
 
 
         //vehicle request

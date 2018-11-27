@@ -15,6 +15,7 @@ import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.subcategoryEntity;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.servicelist.adapter.SubProductServiceAdapter;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -74,7 +75,7 @@ public class SubProductActivity extends AppCompatActivity {
 
     public void getProduct(subcategoryEntity subcategoryEntity) {
 
-            Intent intent = new Intent(SubProductActivity.this, ProductActivity.class);
+            Intent intent = new Intent(SubProductActivity.this, ProductMainActivity.class);
             intent.putExtra(Constants.SUB_PRODUCT_DATA, subcategoryEntity);
             intent.putExtra(Constants.SERVICE_TYPE, TYPE);
             startActivity(intent);

@@ -36,7 +36,7 @@ public class AsyncCityMaster  extends AsyncTask< Void, Void ,Void>{
                 @Override
                 public void execute(Realm realm) {
 
-                    realm.delete(AllCityEntity.class);
+                   // realm.delete(AllCityEntity.class);
                     realm.copyToRealmOrUpdate(lstAllCity);
                 }
             });

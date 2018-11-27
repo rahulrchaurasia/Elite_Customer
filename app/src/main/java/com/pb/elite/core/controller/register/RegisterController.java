@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.AsyncCarMaster;
+import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestbuilder.RegisterRequestBuilder;
 import com.pb.elite.core.requestmodel.AddUserRequestEntity;
 import com.pb.elite.core.requestmodel.RegisterRequest;
@@ -17,6 +18,7 @@ import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.PolicyResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
+import com.pb.elite.core.response.UserConsttantResponse;
 import com.pb.elite.core.response.UserRegistrationResponse;
 import com.pb.elite.core.response.VehicleMasterResponse;
 import com.pb.elite.core.response.VerifyUserRegisterResponse;
@@ -40,13 +42,14 @@ public class RegisterController implements IRegister {
 
     RegisterRequestBuilder.RegisterQuotesNetworkService registerQuotesNetworkService;
     Context mContext;
-
+    UserEntity loginEntity;
     DataBaseController dataBaseController;
 
     public RegisterController(Context context) {
         registerQuotesNetworkService = new RegisterRequestBuilder().getService();
         mContext = context;
         dataBaseController = new DataBaseController(mContext);
+        loginEntity = dataBaseController.getUserData();
     }
 
     @Override
@@ -249,12 +252,16 @@ public class RegisterController implements IRegister {
 
 
     @Override
-    public void getLogin(String mobile, String password, final IResponseSubcriber iResponseSubcriber) {
+    public void getLogin(String mobile, String password, String token,String devId,final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
         body.put("mobile", mobile);
         body.put("password", password);
+        body.put("device_token",token);
+        body.put("device_id",devId);
+        body.put("user_type_id","1");
+
         registerQuotesNetworkService.getLogin(body).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -580,4 +587,47 @@ public class RegisterController implements IRegister {
             }
         });
     }
+
+    @Override
+    public void getUserConstatnt( final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("userid", String.valueOf(loginEntity.getUser_id()));
+
+        registerQuotesNetworkService.getUserConstant(body).enqueue(new Callback<UserConsttantResponse>() {
+            @Override
+            public void onResponse(Call<UserConsttantResponse> call, Response<UserConsttantResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        new PrefManager(mContext).storeUserConstatnt(response.body().getData().get(0));
+                        iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserConsttantResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+
+    }
+
+
 }

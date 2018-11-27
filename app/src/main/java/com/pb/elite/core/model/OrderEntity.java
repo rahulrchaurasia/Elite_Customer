@@ -15,6 +15,10 @@ public class OrderEntity {
     private String name;
     private String amount;
 
+
+
+    private String displaymessage;
+
     public int getId() {
         return id;
     }
@@ -69,6 +73,14 @@ public class OrderEntity {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getDisplaymessage() {
+        return displaymessage;
+    }
+
+    public void setDisplaymessage(String displaymessage) {
+        this.displaymessage = displaymessage;
     }
 
 }

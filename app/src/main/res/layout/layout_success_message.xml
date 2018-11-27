@@ -29,10 +29,17 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="14dp"
-                android:text="Congratulation!!"
+                android:text="order Placed Successfully!!"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.6dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/search_gray"
+                />
 
             <TextView
                 android:id="@+id/txtMessage"

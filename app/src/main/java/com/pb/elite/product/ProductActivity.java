@@ -299,8 +299,8 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 //    private void bindAutoCity() {
 //        //region make AutoComplete City
 //        CityList = dataBaseController.getAllCityList();
-//        CityAdapter = new ArrayAdapter(ProductActivity.this, R.layout.spinner_item, CityList);
-//        acCity.setAdapter(CityAdapter);
+//        CityMainAdapter = new ArrayAdapter(ProductActivity.this, R.layout.spinner_item, CityList);
+//        acCity.setAdapter(CityMainAdapter);
 //        acCity.setThreshold(2);
 //
 //        acCity.setOnFocusChangeListener(acCityFocusChange);
@@ -325,49 +325,49 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void reqDocPopUp(List<DocProductEnity> lstDoc) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this, R.style.CustomDialog);
-
-        RecyclerView rvProductDoc;
-        ProductDocAdapter mAdapter = new ProductDocAdapter(this, lstDoc);
-        Button btnClose;
-        ImageView ivClose;
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_doc_prod, null);
-
-
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-        // set the custom dialog components - text, image and button
-        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
-        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
-        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
-        rvProductDoc.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ProductActivity.this);
-        rvProductDoc.setLayoutManager(layoutManager);
-        rvProductDoc.setAdapter(mAdapter);
-
-
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        alertDialog.setCancelable(false);
-
-        alertDialog.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this, R.style.CustomDialog);
+//
+//        RecyclerView rvProductDoc;
+//        ProductDocAdapter mAdapter = new ProductDocAdapter(this, lstDoc);
+//        Button btnClose;
+//        ImageView ivClose;
+//
+//        LayoutInflater inflater = this.getLayoutInflater();
+//        View dialogView = inflater.inflate(R.layout.layout_doc_prod, null);
+//
+//
+//        builder.setView(dialogView);
+//        final AlertDialog alertDialog = builder.create();
+//        // set the custom dialog components - text, image and button
+//        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
+//        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
+//        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
+//        rvProductDoc.setHasFixedSize(true);
+//
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ProductActivity.this);
+//        rvProductDoc.setLayoutManager(layoutManager);
+//        rvProductDoc.setAdapter(mAdapter);
+//
+//
+//        btnClose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialog.dismiss();
+//
+//            }
+//        });
+//
+//        ivClose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialog.dismiss();
+//
+//            }
+//        });
+//
+//        alertDialog.setCancelable(false);
+//
+//        alertDialog.show();
         //  alertDialog.getWindow().setLayout(900, 600);
 
 
@@ -547,7 +547,6 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 }
 
                 break;
-
 
         }
 
@@ -950,5 +949,6 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         dm.enqueue(r);
     }
+
 
 }

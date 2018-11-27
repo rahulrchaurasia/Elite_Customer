@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@color/colorAccentRed"
-    android:gravity="center"
+    android:background="@drawable/side_nav_bar"
+    android:gravity="bottom"
     android:minHeight="170dp"
     android:orientation="vertical">
 
@@ -13,26 +12,40 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="5dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher" />
+        android:visibility="visible"
+        android:src="@drawable/car" />
 
     <TextView
-        android:id="@+id/txtEntityName"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome Elite Customer "
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/white" />
+        android:paddingLeft="5dp"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        style="@style/TextViewStyle.Large"
+        android:textColor="@color/white"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/txtABNNumber"
+        android:id="@+id/txtEmail"
+        style="@style/TextViewStyle.Medium"
+        android:textColor="@color/white"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtother"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:padding="5dp"
+        style="@style/TextViewStyle.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

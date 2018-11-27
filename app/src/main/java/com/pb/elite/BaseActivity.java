@@ -198,6 +198,8 @@ public class BaseActivity extends AppCompatActivity {
     //endregion
 
     public void getCustomToast(String strMessage) {
+
+
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.layout_custom_toast,
                 (ViewGroup) findViewById(R.id.toast_layout_root));
@@ -207,8 +209,8 @@ public class BaseActivity extends AppCompatActivity {
         text.setText("" + strMessage);
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//        toast.setGravity(Gravity.BOTTOM, 0, 100);
+       // toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 200);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();

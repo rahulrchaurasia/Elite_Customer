@@ -18,6 +18,10 @@ import okhttp3.RequestBody;
 public class Utility {
 
 
+    public static String PUSH_BROADCAST_ACTION = "Finmart_Push_BroadCast_Action";
+    public static String PUSH_NOTIFY = "notifyFlag";
+    public static String PUSH_LOGIN_PAGE = "pushloginPage";
+
 
     public static MultipartBody.Part getMultipartImage(File file) {
         RequestBody imgBody = RequestBody.create(MediaType.parse("image/*"), file);

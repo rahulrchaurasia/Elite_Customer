@@ -34,7 +34,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     public class OrderDetailItem extends RecyclerView.ViewHolder {
         TextView txtPrdName, txtAmnt, txtOrderID, txtcustName, txtDate, txtStatus,  txtUpload;
-        LinearLayout lyUpload;
+        LinearLayout lyUpload,lyReceipt;
         ImageView ivReceipt;
 
         public OrderDetailItem(View itemView) {
@@ -51,6 +51,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             txtUpload = (TextView) itemView.findViewById(R.id.txtUpload);
 
             lyUpload = (LinearLayout) itemView.findViewById(R.id.lyUpload);
+
+            lyReceipt =   (LinearLayout) itemView.findViewById(R.id.lyReceipt);
 
             ivReceipt = itemView.findViewById(R.id.ivReceipt);
         }
@@ -75,13 +77,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.txtOrderID.setText("" + orderDetailEntity.getOrder_id());
       //  holder.txtcustName.setText("" + orderDetailEntity.getCustomer_name());
         holder.txtDate.setText("" + orderDetailEntity.getPayment_date());
-        holder.txtStatus.setText("Request " + orderDetailEntity.getOrder_status());
+        holder.txtStatus.setText(""+ orderDetailEntity.getOrder_status());
 
-//        if(orderDetailEntity.getPayment_status().equals("1")) {
-//            holder.imgPay.setBackgroundResource(R.drawable.tick);
-//        }else{
-//            holder.imgPay.setBackgroundResource(R.drawable.cross);
-//        }
 
         if (orderDetailEntity.getStatus().equals("1")) {
             holder.txtStatus.setTextColor(Color.parseColor("#009EE3"));
@@ -99,16 +96,17 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
          if(orderDetailEntity.getDocumentPending() == 0 )
 
-
         {
 
-            holder.txtUpload.setText("Document Complete");
+//            holder.txtUpload.setText("Document Complete");
+            holder.txtUpload.setText("Document");
 
             holder.txtUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonGreenBackground));
             holder.txtUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_visibility, 0, 0, 0);
 
         } else {
-            holder.txtUpload.setText("Document Pending  ");
+//            holder.txtUpload.setText("Document Pending  ");
+             holder.txtUpload.setText("Document");
             holder.txtUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonRedBackground));
              holder.txtUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_upload, 0, 0, 0);
 
@@ -121,7 +119,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 ((OrderDetailFragment) mContext).getOrderId(orderDetailEntity.getOrder_id());
             }
         });
-        holder.ivReceipt.setOnClickListener(new View.OnClickListener() {
+        holder.lyReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

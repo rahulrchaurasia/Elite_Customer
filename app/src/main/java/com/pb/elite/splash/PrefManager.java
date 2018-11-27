@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.pb.elite.core.model.MakeEntity;
 import com.pb.elite.core.model.ModelEntity;
+import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.VariantEntity;
 import com.pb.elite.core.model.VehicleMasterEntity;
 
@@ -32,6 +33,11 @@ public class PrefManager {
     private static final String PASSWORD = "ELITE_CUSTOMER_PASSWORD";
 
     private static final String VEHICLE_MASTER = "vehicle_data";
+    private static final String USER_CONSTATNT = "user_constatnt";
+
+    private static final String IS_DEVICE_TOKEN = "devicetoken";
+    public static String DEVICE_ID = "deviceID";
+    public static String NOTIFICATION_COUNTER = "Notification_Counter";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -65,6 +71,29 @@ public class PrefManager {
         if (entity.getVariant() != null) return entity.getVariant();
         else return null;
     }
+
+
+    //endregion
+
+    //region master vehicle
+
+    public boolean storeUserConstatnt(UserConstatntEntity entity) {
+        editor.putString(USER_CONSTATNT, new Gson().toJson(entity));
+        return editor.commit();
+    }
+
+    public UserConstatntEntity getUserConstatnt() {
+        String userComtatnt = pref.getString(USER_CONSTATNT, "");
+
+        if (userComtatnt.length() > 0) {
+            UserConstatntEntity userMaster = new Gson().fromJson(userComtatnt, UserConstatntEntity.class);
+            return userMaster;
+        } else {
+            return null;
+        }
+    }
+
+
 
 
     //endregion
@@ -137,6 +166,45 @@ public class PrefManager {
 
     public String getPassword() {
         return pref.getString(PASSWORD, "");
+    }
+
+
+    public  void setDeviceID(String deviceID)
+    {
+        editor.putString(DEVICE_ID, deviceID);
+
+        editor.commit();
+    }
+
+    public String getDeviceID() {
+        return pref.getString(DEVICE_ID, "");
+    }
+
+    public int getNotificationCounter() {
+        return pref.getInt(NOTIFICATION_COUNTER, 0);
+    }
+
+    public void setNotificationCounter(int counter) {
+        editor.putInt(NOTIFICATION_COUNTER, counter);
+        editor.commit();
+    }
+
+
+    public void setToken(String token) {
+
+        editor.putString(IS_DEVICE_TOKEN, token);
+        editor.commit();
+    }
+
+    public String getToken() {
+        return pref.getString(IS_DEVICE_TOKEN, "");
+    }
+
+    public void clearUserCache() {
+
+        editor.remove(USER_CONSTATNT);
+
+        editor.commit();
     }
 
 

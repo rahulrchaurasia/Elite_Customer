@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -54,8 +56,8 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
     EditText etPolicyNo, etEmail, etPassword, etconfirmPassword;
     Button btnVerify, btnSubmit;
+    // TextView txtModel;
     EditText etFullName, etVehicle, etMobile, etPincode, etArea, etCity, etState;
-    TextView tvOk;
     EditText etOtp;
     AutoCompleteTextView acMake, acModel;
     Dialog dialog;
@@ -68,8 +70,14 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     DataBaseController dataBaseController;
     PrefManager prefManager;
 
+
     MakeAdapter makeAdapter;
     ModelAdapter modelAdapter;
+    MakeEntity makeEntity;
+    ModelEntity modelEntity;
+
+    boolean IsMakeValid = false;
+    boolean IsModelValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,21 +116,29 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 acMake.setError(null);
-                MakeEntity makeEntity = makeAdapter.getItem(position);
-                modelAdapter = new ModelAdapter(SignUpActivity.this,
-                        R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
-                acModel.setAdapter(modelAdapter);
+                acMake.setSelection(0);
+                IsMakeValid = true;
+                makeEntity = makeAdapter.getItem(position);
+                if (makeEntity.getModel() != null) {
+                    modelAdapter = new ModelAdapter(SignUpActivity.this,
+                            R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
+                    acModel.setAdapter(modelAdapter);
+                    acModel.setEnabled(true);
+                    IsModelValid = true;
+                    acModel.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    acModel.setText("");
+                    acModel.setEnabled(false);
+                    acModel.setVisibility(View.INVISIBLE);
+                    IsModelValid = false;
+
+
+                }
             }
         });
 
-        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                acModel.setError(null);
-                ModelEntity makeEntity = modelAdapter.getItem(position);
-
-            }
-        });
 
         acMake.addTextChangedListener(new TextWatcher() {
             @Override
@@ -142,9 +158,14 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
                 ListAdapter listAdapter = acMake.getAdapter();
                 for (int i = 0; i < listAdapter.getCount(); i++) {
-                    String temp = listAdapter.getItem(i).toString();
+                    String temp = listAdapter.getItem(i).toString().toUpperCase();
                     if (str.compareTo(temp) == 0) {
                         acMake.setError(null);
+                        acModel.setText("");
+                        acModel.setEnabled(true);
+                        IsMakeValid = true;
+
+
                         return;
                     }
                 }
@@ -152,9 +173,26 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
                 acMake.setError("Invalid Make");
                 acMake.setFocusable(true);
 
+                acModel.setText("");
+                acModel.setEnabled(false);
+                IsMakeValid = false;
+
+
             }
         });
 
+        //region  Model Listener
+
+        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                IsModelValid = true;
+                acModel.setError(null);
+                modelEntity = modelAdapter.getItem(position);
+                acMake.setSelection(0);
+
+            }
+        });
         acModel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,22 +207,30 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             @Override
             public void afterTextChanged(Editable s) {
 
-                String str = acModel.getText().toString();
+                if (s.length() > 0) {
+                    String str = acModel.getText().toString();
 
-                ListAdapter listAdapter = acModel.getAdapter();
-                for (int i = 0; i < listAdapter.getCount(); i++) {
-                    String temp = listAdapter.getItem(i).toString();
-                    if (str.compareTo(temp) == 0) {
-                        acModel.setError(null);
-                        return;
+                    ListAdapter listAdapter = acModel.getAdapter();
+                    for (int i = 0; i < listAdapter.getCount(); i++) {
+                        String temp = listAdapter.getItem(i).toString().toUpperCase();
+                        if (str.compareTo(temp) == 0) {
+                            acModel.setError(null);
+                            IsModelValid = true;
+                            return;
+                        }
                     }
-                }
 
-                acModel.setError("Invalid Model");
-                acModel.setFocusable(true);
+                    acModel.setError("Invalid Model");
+                    acModel.setFocusable(true);
+                    IsModelValid = false;
+
+
+                }
 
             }
         });
+
+        //endregion
 
     }
 
@@ -195,6 +241,8 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         etPolicyNo.setText(policyEntity.getPolicyNumber());
         acMake.setText(policyEntity.getMake());
         acModel.setText(policyEntity.getModel());
+        IsMakeValid = true;
+        IsModelValid = true;
 
 
     }
@@ -217,7 +265,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase("otp")) {
                 String message = intent.getStringExtra("message");
-                 otp = extractDigitFromMessage(message);
+                otp = extractDigitFromMessage(message);
                 if (!otp.equals("")) {
                     etOtp.setText(otp);
 
@@ -266,6 +314,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         etconfirmPassword = (EditText) findViewById(R.id.etconfirmPassword);
 
         //  btnVerify = (Button) findViewById(R.id.btnVerify);
+
         etArea = (EditText) findViewById(R.id.etArea);
         etCity = (EditText) findViewById(R.id.etCity);
         etState = (EditText) findViewById(R.id.etState);
@@ -293,232 +342,286 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             etMobile.setError("Enter Reliance Policy Number");
             return false;
         }
-        if (!isEmpty(etMobile)) {
-            etMobile.requestFocus();
-            etMobile.setError("Enter Mobile");
-            return false;
-        }
-        if (!isValidePhoneNumber(etMobile)) {
-            etMobile.requestFocus();
-            etMobile.setError("Enter Valid Mobile");
-            return false;
-        }
-        if (!isEmpty(etEmail)) {
-            etEmail.requestFocus();
-            etEmail.setError("Enter Email");
-            return false;
-        }
-        if (!isValideEmailID(etEmail)) {
-            etEmail.requestFocus();
-            etEmail.setError("Enter Valid Email");
-            return false;
-        }
-        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
-            etPincode.requestFocus();
-            etPincode.setError("Enter Pincode");
-            return false;
-        }
-        if (!isEmpty(etPassword)) {
-            etPassword.requestFocus();
-            etPassword.setError("Enter Password");
-            return false;
-        }
-        if (!isEmpty(etconfirmPassword)) {
-            etconfirmPassword.requestFocus();
-            etconfirmPassword.setError("Confirm Password");
-            return false;
-        }
-        if (!etPassword.getText().toString().equals(etconfirmPassword.getText().toString())) {
-            etconfirmPassword.requestFocus();
-            etconfirmPassword.setError("Password Mismatch");
-            return false;
-        }
-        return true;
-    }
 
+        if (!isEmpty(acMake))
+            {
+                acMake.requestFocus();
+                acMake.setError("Enter Make");
+                return false;
+            }
+            if (IsMakeValid == false) {
+                acMake.requestFocus();
+                acMake.setError("Invalid Make");
+                return false;
 
-    @Override
-    public void onClick(View view) {
+            }
 
-        Constants.hideKeyBoard(view, this);
-        switch (view.getId()) {
+            if (!isEmpty(acModel))
+                {
+                    acModel.requestFocus();
+                    acModel.setError("Enter Model");
 
-            case R.id.btnSubmit:
-
-                if (validateRegistration() == true) {
-                    showDialog();
-                    new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
-
+                    return false;
                 }
 
-                break;
-        }
-    }
+                if (IsModelValid == false) {
+                    acModel.requestFocus();
+                    acModel.setError("Invalid Model");
 
-    @Override
-    public void OnSuccess(APIResponse response, String message) {
-        cancelDialog();
-        if (response instanceof GetOtpResponse) {
-
-            if (response.getStatus_code() == 0) {
-                this.otp = "" + ((GetOtpResponse) response).getData();
+                    return false;
+                }
+                if (!isEmpty(etMobile)) {
+                    etMobile.requestFocus();
+                    etMobile.setError("Enter Mobile");
+                    return false;
+                }
+                if (!isValidePhoneNumber(etMobile)) {
+                    etMobile.requestFocus();
+                    etMobile.setError("Enter Valid Mobile");
+                    return false;
+                }
+                if (!isEmpty(etEmail)) {
+                    etEmail.requestFocus();
+                    etEmail.setError("Enter Email");
+                    return false;
+                }
+                if (!isValideEmailID(etEmail)) {
+                    etEmail.requestFocus();
+                    etEmail.setError("Enter Valid Email");
+                    return false;
+                }
+                if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
+                    etPincode.requestFocus();
+                    etPincode.setError("Enter Pincode");
+                    return false;
+                }
+                if (!isEmpty(etPassword)) {
+                    etPassword.requestFocus();
+                    etPassword.setError("Enter Password");
+                    return false;
+                }
+                if (etPassword.getText().toString().trim().length() < 3) {
+                    etPassword.requestFocus();
+                    etPassword.setError("Minimum length should be 3");
+                    return false;
+                }
+                if (!isEmpty(etconfirmPassword)) {
+                    etconfirmPassword.requestFocus();
+                    etconfirmPassword.setError("Confirm Password");
+                    return false;
+                }
+                if (!etPassword.getText().toString().equals(etconfirmPassword.getText().toString())) {
+                    etconfirmPassword.requestFocus();
+                    etconfirmPassword.setError("Password Mismatch");
+                    return false;
+                }
+                return true;
             }
-        } else if (response instanceof PincodeResponse) {
 
-            if (response.getStatus_code() == 0) {
 
-                pincodeEntity = ((PincodeResponse) response).getData().get(0);
-                if (pincodeEntity != null) {
-                    etArea.setText("" + pincodeEntity.getPostname());
-                    etCity.setText("" + pincodeEntity.getCityname());
-                    etState.setText("" + pincodeEntity.getState_name());
+            @Override
+            public void onClick (View view){
+
+                Constants.hideKeyBoard(view, this);
+                switch (view.getId()) {
+
+                    case R.id.btnSubmit:
+
+                        if (validateRegistration() == true) {
+                            showDialog();
+                            new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
+
+                        }
+
+                        break;
                 }
             }
-        } else if (response instanceof VerifyUserRegisterResponse) {
 
-            if (response.getStatus_code() == 0) {
-                VerifyOTPEntity verifyOTPEntity = ((VerifyUserRegisterResponse) response).getData();
-                if (verifyOTPEntity.getSavedStatus() == 1) {
-                    showOtpAlert();
-                } else if (verifyOTPEntity.getSavedStatus() == 2) {
-                    getCustomToast(response.getMessage());
+            @Override
+            public void OnSuccess (APIResponse response, String message){
+                cancelDialog();
+                if (response instanceof GetOtpResponse) {
+
+                    if (response.getStatus_code() == 0) {
+                        this.otp = "" + ((GetOtpResponse) response).getData();
+                    }
+                } else if (response instanceof PincodeResponse) {
+
+                    if (response.getStatus_code() == 0) {
+
+                        pincodeEntity = ((PincodeResponse) response).getData().get(0);
+                        if (pincodeEntity != null) {
+                            etArea.setText("" + pincodeEntity.getPostname());
+                            etCity.setText("" + pincodeEntity.getCityname());
+                            etState.setText("" + pincodeEntity.getState_name());
+                        }
+                    }
+                } else if (response instanceof VerifyUserRegisterResponse) {
+
+                    if (response.getStatus_code() == 0) {
+                        VerifyOTPEntity verifyOTPEntity = ((VerifyUserRegisterResponse) response).getData();
+                        if (verifyOTPEntity.getSavedStatus() == 1) {
+                            showOtpAlert();
+                        } else if (verifyOTPEntity.getSavedStatus() == 2) {
+                            getCustomToast(response.getMessage());
+                        }
+                    }
+                } else if (response instanceof UserRegistrationResponse) {
+
+                    if (response.getStatus_code() == 0) {
+
+                        // this.finish();
+                        //Toast.makeText(this, "Data Save Successfully" , Toast.LENGTH_SHORT).show();
+                        getCustomToast("Data Save Successfully");
+                        this.finish();
+                    }
                 }
-            }
-        } else if (response instanceof UserRegistrationResponse) {
 
-            if (response.getStatus_code() == 0) {
-
-                // this.finish();
-                //Toast.makeText(this, "Data Save Successfully" , Toast.LENGTH_SHORT).show();
-                getCustomToast("Data Save Successfully");
-                this.finish();
+                //
             }
+
+            @Override
+            public void OnFailure (Throwable t){
+                cancelDialog();
+                // Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                getCustomToast(t.getMessage());
+            }
+
+        private void setRegisterRequest (String strOTP){
+            RegisterRequest registerRequest = new RegisterRequest();
+
+            registerRequest.setOtp("" + strOTP);
+            registerRequest.setName("" + etFullName.getText());
+            registerRequest.setEmailid("" + etEmail.getText());
+            registerRequest.setMobile("" + etMobile.getText());
+
+            registerRequest.setPincode("" + etPincode.getText());
+            registerRequest.setState("" + etState.getText());
+            registerRequest.setArea("" + etArea.getText());
+            registerRequest.setCity("" + etCity.getText());
+
+            registerRequest.setVehicle_no("" + etVehicle.getText());
+            registerRequest.setPolicy_no("" + etPolicyNo.getText());
+            registerRequest.setPassword("" + etPassword.getText());
+            registerRequest.setMake("" + acMake.getText());
+            registerRequest.setModel("" + acModel.getText());
+
+            registerRequest.setProductCode("" + policyEntity.getProductCode());
+            registerRequest.setRiskEndDate("" + policyEntity.getRiskEndDate());
+            registerRequest.setRiskStartDate("" + policyEntity.getRiskStartDate());
+            registerRequest.setInsuredName("" + policyEntity.getInsuredName());
+
+            registerRequest.setPolicyStatus("" + policyEntity.getPolicyStatus());
+            registerRequest.setResponseStatus("" + policyEntity.getResponseStatus());
+
+
+            showDialog();
+            new RegisterController(this).saveUserRegistration(registerRequest, SignUpActivity.this);
         }
 
-        //
-    }
+        private void showOtpAlert () {
 
-    @Override
-    public void OnFailure(Throwable t) {
-        cancelDialog();
-        // Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-        getCustomToast(t.getMessage());
-    }
+            try {
 
-    private void setRegisterRequest(String strOTP) {
-        RegisterRequest registerRequest = new RegisterRequest();
+                dialog = new Dialog(SignUpActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.otp_dialog);
+                TextView tvOk = (TextView) dialog.findViewById(R.id.tvOk);
+                final TextView  txtOTPMessage = (TextView) dialog.findViewById(R.id.txtOTPMessage);
+                final TextView tvTime = (TextView) dialog.findViewById(R.id.tvTime);
+                TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
+                tvTitle.setText("Enter OTP sent on : " + etMobile.getText().toString());
+                TextView resend = (TextView) dialog.findViewById(R.id.tvResend);
+                etOtp = (EditText) dialog.findViewById(R.id.etOtp);
+                dialog.setCancelable(true);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
+                Window dialogWindow = dialog.getWindow();
+                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                lp.width = lp.MATCH_PARENT;
 
-        registerRequest.setOtp("" + strOTP);
-        registerRequest.setName("" + etFullName.getText());
-        registerRequest.setEmailid("" + etEmail.getText());
-        registerRequest.setMobile("" + etMobile.getText());
+                lp.height = lp.WRAP_CONTENT; // Height
+                dialogWindow.setAttributes(lp);
 
-        registerRequest.setPincode("" + etPincode.getText());
-        registerRequest.setState("" + etState.getText());
-        registerRequest.setArea("" + etArea.getText());
-        registerRequest.setCity("" + etCity.getText());
+                txtOTPMessage.setText("");
+                txtOTPMessage.setVisibility(View.GONE);
 
-        registerRequest.setVehicle_no("" + etVehicle.getText());
-        registerRequest.setPolicy_no("" + etPolicyNo.getText());
-        registerRequest.setPassword("" + etPassword.getText());
-        registerRequest.setMake("" + acMake.getText());
-        registerRequest.setModel("" + acModel.getText());
+                dialog.show();
+                tvOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-        registerRequest.setProductCode("" + policyEntity.getProductCode());
-        registerRequest.setRiskEndDate("" + policyEntity.getRiskEndDate());
-        registerRequest.setRiskStartDate("" + policyEntity.getRiskStartDate());
-        registerRequest.setInsuredName("" + policyEntity.getInsuredName());
+                        // Close dialog
+                        if (etOtp.getText().toString().equals("0000") || etOtp.getText().toString().equals(otp)) {
 
-        registerRequest.setPolicyStatus("" + policyEntity.getPolicyStatus());
-        registerRequest.setResponseStatus("" + policyEntity.getResponseStatus());
+                            etMobile.setText(etMobile.getText().toString());
+                            dialog.dismiss();
+                            setRegisterRequest(otp);
+
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
+                            txtOTPMessage.setText("Invalid OTP");
+                            txtOTPMessage.setVisibility(View.VISIBLE);
+                        }
 
 
-        showDialog();
-        new RegisterController(this).saveUserRegistration(registerRequest, SignUpActivity.this);
-    }
+                    }
+                });
 
-    private void showOtpAlert() {
+                resend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        etOtp.setText("");
+                        otp = "";
+                        showDialog("Re-sending otp...");
+                        new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
+                    }
+                });
 
-        try {
-
-            dialog = new Dialog(SignUpActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.otp_dialog);
-            tvOk = (TextView) dialog.findViewById(R.id.tvOk);
-            TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
-            tvTitle.setText("Enter OTP sent on : " + etMobile.getText().toString());
-            TextView resend = (TextView) dialog.findViewById(R.id.tvResend);
-            etOtp = (EditText) dialog.findViewById(R.id.etOtp);
-            dialog.setCancelable(true);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
-            Window dialogWindow = dialog.getWindow();
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            lp.width = lp.MATCH_PARENT;
-
-            lp.height = lp.WRAP_CONTENT; // Height
-            dialogWindow.setAttributes(lp);
-
-            dialog.show();
-            tvOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    // Close dialog
-                    if (etOtp.getText().toString().equals("0000") || etOtp.getText().toString().equals(otp)) {
-                        etMobile.setText(etMobile.getText().toString());
-//                        Toast.makeText(SignUpActivity.this, "Otp Verified Success", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        setRegisterRequest(otp);
-
-                    } else {
-                        Toast.makeText(SignUpActivity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
+                new CountDownTimer(60000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tvTime.setText((millisUntilFinished / 1000) + " seconds remaining");
                     }
 
-
-                }
-            });
-
-            resend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    etOtp.setText("");
-                    otp = "";
-                    showDialog("Re-sending otp...");
-                    new RegisterController(SignUpActivity.this).verifyOTPTegistration(etEmail.getText().toString(), etMobile.getText().toString(), "", SignUpActivity.this);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+                    @Override
+                    public void onFinish() {
+                        tvTime.setText("");
+                        // dialog.dismiss();
+                    }
+                }.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+
+        //region textwatcher
+        TextWatcher pincodeTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (start <6) {
+                    etCity.setText("");
+                    etState.setText("");
+                    etArea.setText("");
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 6) {
+                    showDialog("Fetching City...");
+                    new RegisterController(SignUpActivity.this).getCityState(etPincode.getText().toString(), SignUpActivity.this);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        //endregion
+
+
     }
-
-
-    //region textwatcher
-    TextWatcher pincodeTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            if (start == 5) {
-                etCity.setText("");
-                etState.setText("");
-            }
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s.length() == 6) {
-                showDialog("Fetching City...");
-                new RegisterController(SignUpActivity.this).getCityState(etPincode.getText().toString(), SignUpActivity.this);
-
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
-    //endregion
-
-
-}

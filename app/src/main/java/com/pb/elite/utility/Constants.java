@@ -27,6 +27,7 @@ public class Constants {
     public static  int SEARCH_CITY_CODE = 5;
     public static  int ORDER_CODE = 2;
     public static  int UPLOAD_FILE = 4;
+    public static int REQUEST_CODE = 22;
 
     public static  String SEARCH_CITY_NAME  = "ELITE_SEARCH_CITY_NAME";
     public static  String SEARCH_CITY_ID  = "ELITE_SEARCH_CITY_ID";

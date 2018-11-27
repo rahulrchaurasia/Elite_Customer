@@ -24,7 +24,7 @@ public interface IRegister {
 
     void updateUser(UpdateUserRequestEntity updateUserRequestEntity, IResponseSubcriber iResponseSubcriber);
 
-    void getLogin(String mobile, String password, IResponseSubcriber iResponseSubcriber);
+    void getLogin(String mobile, String password, String token,String devId, IResponseSubcriber iResponseSubcriber);
 
     void changePassword(String mobile, String curr_password, String new_password, IResponseSubcriber iResponseSubcriber);
 
@@ -38,4 +38,6 @@ public interface IRegister {
 
 
     void getCarVehicleMaster();
+
+    void getUserConstatnt( IResponseSubcriber iResponseSubcriber);
 }

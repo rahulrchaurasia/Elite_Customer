@@ -32,12 +32,14 @@
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">0</item>
 
+
     </style>
 
+    <!--// For Drawer Style : here we spin the Hamburger icon -->
     <style name="DrawerStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="colorControlNormal">@color/colorNormal</item>
+        <!--<item name="colorControlNormal">@color/colorNormal</item>-->
         <item name="spinBars">true</item>
-        <item name="color">@color/textTitle</item>
+        <!--<item name="color">@color/textTitle</item>-->
     </style>
 
     <!--//  font style for theme-->
@@ -47,8 +49,6 @@
         <item name="fontPath">fonts/oxygenlight.ttf</item>
         <item name="android:textColor">@color/header_light_text</item>
     </style>
-
-
 
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

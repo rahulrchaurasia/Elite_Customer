@@ -18,6 +18,7 @@ import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.register.RegisterController;
+import com.pb.elite.core.model.AllCityEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.database.DataBaseController;
@@ -34,7 +35,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
     TextView txtGroup;
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     DataBaseController dataBaseController;
-    List<String> allCityEntityList;
+    List<AllCityEntity> allCityEntityList;
 
     int CityVersion;
 
@@ -49,10 +50,10 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
         prefManager = new PrefManager(this);
         dataBaseController = new DataBaseController(SplashScreenActivity.this);
-        allCityEntityList = new ArrayList<String>();
+        allCityEntityList = new ArrayList<AllCityEntity>();
 
         verify();
-        fetchCar();
+
 
     }
 
@@ -60,16 +61,31 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
         new RegisterController(this).getCarVehicleMaster();
     }
 
-    private void fetchCityMasters() {
+    private void fetchUserConstatnt() {
+        //getUserConstatnt
+        new RegisterController(this).getUserConstatnt(SplashScreenActivity.this);
+    }
 
-        allCityEntityList = dataBaseController.getAllCityList();
+    private void fetchMasters() {
+
+        allCityEntityList = dataBaseController.getAllCity();
 
         if (allCityEntityList.size() == 0) {     // step 4 (if db version is below than city list is already filled above)
             new ProductController(SplashScreenActivity.this).getCityMaster(SplashScreenActivity.this);
         }
 
+        if (prefManager.getMake() == null) {
+            fetchCar();
+        }
+
+        if (prefManager.getMake() == null) {
+            fetchCar();
+        }
 
         UserEntity loginEntity = dataBaseController.getUserData();
+        if (loginEntity != null) {
+            fetchUserConstatnt();
+        }
 
 
         if (loginEntity != null) {
@@ -136,7 +152,6 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
             snackbar.show();
         } else {
             if (prefManager.isFirstTimeLaunch()) {
-
                 startActivity(new Intent(this, WelcomeActivity.class));
             } else {
                 new Handler().postDelayed(new Runnable() {
@@ -144,10 +159,8 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
                     public void run() {
 
                         //  new RegisterController(SplashScreenActivity.this).getDbVersion(SplashScreenActivity.this);  //step1
-
-                        fetchCityMasters();
-
-
+                        fetchMasters();
+                        
                     }
                 }, SPLASH_DISPLAY_LENGTH);
 

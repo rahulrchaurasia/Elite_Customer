@@ -31,11 +31,16 @@ public interface IProduct {
 
     void getRTOProductList(int prdid,String prdCode, int UserId, IResponseSubcriber iResponseSubcriber);
 
+    void RTOProductListOnChangeVehicle(int prdid,String prdCode, int UserId,String make,String model, IResponseSubcriber iResponseSubcriber);
+
     void getNonRTOProductList(int prdid, IResponseSubcriber iResponseSubcriber);
 
     void getProducDoc(int prdid, IResponseSubcriber iResponseSubcriber);
 
     void getDocumentView(String order_id, IResponseSubcriber iResponseSubcriber);
+
+    void getNotifcation(int userid,String count, IResponseSubcriber iResponseSubcriber);
+
 
     void uploadDocuments(MultipartBody.Part document, HashMap<String, Integer> body, final IResponseSubcriber iResponseSubcriber);
 }

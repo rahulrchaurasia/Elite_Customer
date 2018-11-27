@@ -29,7 +29,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="30dp"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/elite_logo" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -112,29 +112,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvForgotPassword1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="10dp"
-            android:text="forgot password?"
-            android:textAppearance="@style/TextStyle.Body1"
-            android:textColor="@color/blue"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tvRegistration1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="New Registration "
-            android:textAppearance="@style/TextStyle.Title"
-            android:textColor="@color/blue"
-            android:textStyle="italic"
-            android:visibility="gone" />
 
 
     </LinearLayout>

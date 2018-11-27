@@ -10,6 +10,7 @@
         android:lines="1"
         android:padding="8dp"
         android:singleLine="true"
+        android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/textTitle" />
 

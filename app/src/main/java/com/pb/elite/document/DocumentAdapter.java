@@ -23,7 +23,7 @@ import java.util.List;
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocItem> {
 
     Activity mContext;
-    List<DocumentViewEntity>  lstDoc;
+    List<DocumentViewEntity> lstDoc;
 
     public DocumentAdapter(Activity mContext, List<DocumentViewEntity> lstDoc) {
         this.mContext = mContext;
@@ -31,12 +31,10 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
     }
 
 
-    public class DocItem extends RecyclerView.ViewHolder
-    {
+    public class DocItem extends RecyclerView.ViewHolder {
         LinearLayout llDocumentUpload;
-        ImageView ivPhoto , ivPhotoCam ,ivPhotoGallery;
-        TextView txtDOC ,txtViewDoc ;
-
+        ImageView ivPhoto, ivPhotoCam, ivPhotoGallery;
+        TextView txtDOC, txtViewDoc;
 
 
         public DocItem(View itemView) {
@@ -49,10 +47,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
 
             ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
             ivPhotoCam = (ImageView) itemView.findViewById(R.id.ivPhotoCam);
-          //  ivPhotoGallery = (ImageView) itemView.findViewById(R.id.ivPhotoGallery);
-
-
-
+            //  ivPhotoGallery = (ImageView) itemView.findViewById(R.id.ivPhotoGallery);
 
 
         }
@@ -63,24 +58,29 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_doc_order, parent, false);
 
-        return new DocumentAdapter.DocItem (itemView);
+        return new DocumentAdapter.DocItem(itemView);
     }
 
     @Override
-    public void onBindViewHolder(DocItem holder,  int position) {
+    public void onBindViewHolder(DocItem holder, int position) {
 
         final DocumentViewEntity entity = lstDoc.get(position);
 
-        holder.txtDOC.setText( "" +entity.getDocument_name());
+        holder.txtDOC.setText("" + entity.getDocument_name());
 
-        if(entity.getPath().trim().equals(""))
-        {
+        if (entity.getPath().trim().equals("")) {
             holder.ivPhoto.setImageResource(R.drawable.doc_notuploaded);
             holder.txtViewDoc.setVisibility(View.INVISIBLE);
 
-        }else{
+        } else {
             holder.ivPhoto.setImageResource(R.drawable.doc_uploaded);
             holder.txtViewDoc.setVisibility(View.VISIBLE);
+        }
+
+        if (entity.getDocstatus() == 2) {
+            holder.ivPhotoCam.setVisibility(View.GONE);
+        } else {
+            holder.ivPhotoCam.setVisibility(View.VISIBLE);
         }
 
 
@@ -88,7 +88,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
             @Override
             public void onClick(View v) {
 
-                ((DocUploadActivity)mContext).getActionCamera(entity );
+                ((DocUploadActivity) mContext).getActionCamera(entity);
             }
         });
 
@@ -97,12 +97,11 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
             @Override
             public void onClick(View v) {
 
-                ((DocUploadActivity)mContext).getActionView(entity );
+                ((DocUploadActivity) mContext).getActionView(entity);
             }
         });
 
     }
-
 
 
     @Override
@@ -116,7 +115,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
         for (int pos = 0; pos < lstDoc.size(); pos++) {
             if (lstDoc.get(pos).getDoc_id() == (curEntity.getDoc_id())) {
 
-                lstDoc.set(pos,curEntity);
+                lstDoc.set(pos, curEntity);
 
             }
         }

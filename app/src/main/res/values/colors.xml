@@ -57,7 +57,7 @@
     <color name="buttonGreenBackground">#20d2bb</color>
     <color name="red_descent">#de6d75</color>
     <color name="red_light">#ff7777</color>
-
+    <color name="red_custom">#ff5a5f</color>
     <color name="green_descent">#42ceb2</color>
     <color name="offer_info_white">#DDFFFFFF</color>
     <color name="alpha_white">#26ffffff</color>
@@ -68,21 +68,21 @@
     <color name="application_primary_text_color">#212121</color>
     <color name="lightBlue">#3ab2d4</color>
     <!--<color name="white">#FFFFFF</color>-->
-    <color name="blue_descent">#4b76c2</color>
-    <color name="red_nav">#D3332B</color>
-    <color name="holo_red_dark">#ffcc0000</color>
-    <color name="uvv_green">#ff50b100</color>
-    <color name="green_light">#7db142</color>
+        <color name="blue_descent">#4b76c2</color>
+        <color name="red_nav">#D3332B</color>
+        <color name="holo_red_dark">#ffcc0000</color>
+        <color name="uvv_green">#ff50b100</color>
+        <color name="green_light">#7db142</color>
 
-    <color name="uvv_black">#ff000000</color>
-    <color name="uvv_light_gray">#ffF0F0F0</color>
-    <color name="uvv_gray">#ffbbbbbb</color>
-    <color name="edittext_border">#cfcfcf</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="uvv_titlebar_bg">#7f000000</color>
-    <color name="colorPrimary_inspect">#3F51B5</color>
-    <color name="colorPrimaryDark_inspect">#303F9F</color>
-    <color name="colorAccent_inspect">#FF4081</color>
+        <color name="uvv_black">#ff000000</color>
+        <color name="uvv_light_gray">#ffF0F0F0</color>
+        <color name="uvv_gray">#ffbbbbbb</color>
+        <color name="edittext_border">#cfcfcf</color>
+        <color name="icons">#FFFFFF</color>
+        <color name="uvv_titlebar_bg">#7f000000</color>
+        <color name="colorPrimary_inspect">#3F51B5</color>
+        <color name="colorPrimaryDark_inspect">#303F9F</color>
+        <color name="colorAccent_inspect">#FF4081</color>
 
 
     <!--region posp-->
@@ -115,6 +115,9 @@
     <color name="yellow">#ffb300</color>
     <color name="green">#00bfa5</color>
     <color name="pink">#ff4081</color>
+
+    <color name="yellow_text">#e2e20d</color>
+
 
 
 

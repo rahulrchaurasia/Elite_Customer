@@ -7,6 +7,7 @@ import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.core.response.DocumentResponse;
 import com.pb.elite.core.response.DocumentViewResponse;
 import com.pb.elite.core.response.NonRtoProductDisplayResponse;
+import com.pb.elite.core.response.NotificationResponse;
 import com.pb.elite.core.response.OrderDetailResponse;
 import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.ProductDocumentResponse;
@@ -15,6 +16,7 @@ import com.pb.elite.core.response.RtoLocationReponse;
 import com.pb.elite.core.response.ClientCommonResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.core.response.ServiceListResponse;
+import com.pb.elite.core.response.UserConsttantResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +64,9 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
         @POST("/api/get-rto-list")
         Call<RtoProductDisplayResponse> getRTOProductList(@Body HashMap<String, String> body);   //used
 
+        @POST("/api/get-rto-list-chahngevehicle")
+        Call<RtoProductDisplayResponse> getRTOProductListOnChangeVehicle(@Body HashMap<String, String> body);   //used
+
         @POST("/api/get-non-rto-list")
         Call<NonRtoProductDisplayResponse> getNonRTOProductList(@Body HashMap<String, String> body);   //used
 
@@ -70,6 +75,10 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
 
         @POST("/api/get-order-document")
         Call<DocumentViewResponse> getDocumentView(@Body HashMap<String, String> body);   //used
+
+        @POST("/api/get-notification")
+        Call<NotificationResponse> getNotification(@Body HashMap<String, String> body);   //used
+
 
         @Multipart
         @POST("/api/doc-upload")

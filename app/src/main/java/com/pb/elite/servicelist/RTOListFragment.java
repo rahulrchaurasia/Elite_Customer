@@ -16,6 +16,7 @@ import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.subcategoryEntity;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 import com.pb.elite.servicelist.adapter.ServicePagerAdapter;
 import com.pb.elite.splash.PrefManager;
@@ -80,7 +81,7 @@ public class RTOListFragment extends BaseFragment {
             intent.putExtra("TYPE","RTO");
             startActivity(intent);
         }else{
-            Intent intent = new Intent(getActivity(), ProductActivity.class);
+            Intent intent = new Intent(getActivity(), ProductMainActivity.class);
             intent.putExtra(Constants.RTO_PRODUCT_DATA, rtoServiceEntity);
             intent.putExtra(Constants.SERVICE_TYPE, "RTO");
             startActivity(intent);

@@ -1,6 +1,8 @@
 package com.pb.elite.product;
 
 import android.app.Activity;
+
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.pb.elite.R;
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
 import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 
 import java.util.List;
@@ -21,10 +24,10 @@ import java.util.List;
 
 public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.ProductItem> {
 
-    Activity mContext;
+    Fragment mContext;
     List<DocProductEnity> lstDoc;
 
-    public ProductDocAdapter(Activity mContext, List<DocProductEnity> lstDoc) {
+    public ProductDocAdapter(Fragment mContext, List<DocProductEnity> lstDoc) {
         this.mContext = mContext;
         this.lstDoc = lstDoc;
 
@@ -71,7 +74,7 @@ public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.Pr
             @Override
             public void onClick(View v) {
 
-                ((ProductActivity)mContext).downloadPdf(docProductEnity.getDocumenturl(),docProductEnity.getDocument_name());
+                ((RenewRcFragment)mContext).downloadPdf(docProductEnity.getDocumenturl(),docProductEnity.getDocument_name());
             }
         });
 

@@ -16,6 +16,7 @@ import com.pb.elite.core.model.NONRTOServiceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.subcategoryEntity;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.servicelist.adapter.NonRTOServiceAdapter;
 import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 import com.pb.elite.servicelist.adapter.ServicePagerAdapter;
@@ -75,7 +76,7 @@ public class NonRTOListFragment extends BaseFragment {
             intent.putExtra("TYPE","NONRTO");
             startActivity(intent);
         }else{
-            Intent intent = new Intent(getActivity(), ProductActivity.class);
+            Intent intent = new Intent(getActivity(), ProductMainActivity.class);
             intent.putExtra(Constants.NON_RTO_PRODUCT_DATA, nonrtoServiceEntity);
             intent.putExtra(Constants.SERVICE_TYPE, "NONRTO");
             startActivity(intent);

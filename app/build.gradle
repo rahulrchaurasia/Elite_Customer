@@ -43,9 +43,14 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.razorpay:checkout:1.4.9'
+
+    compile 'com.google.android.gms:play-services-location:12.0.1'
+    compile 'com.google.android.gms:play-services-analytics:12.0.1'
+    compile 'com.google.firebase:firebase-messaging:12.0.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:cardview-v7:26.1.0'
 }
 apply plugin: 'realm-android'
+apply plugin: 'com.google.gms.google-services'

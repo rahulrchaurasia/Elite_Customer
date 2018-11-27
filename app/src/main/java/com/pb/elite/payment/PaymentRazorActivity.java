@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
+import com.pb.elite.product.ProductActivity;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -131,8 +134,6 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     @Override
     public void onPaymentSuccess(String razorpayPaymentID) {
         try {
-            //  Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
-
 
             orderRequestEntity.setPayment_status("1");
             orderRequestEntity.setTransaction_id(razorpayPaymentID);
@@ -144,8 +145,6 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }
 
-        //  showDialog();
-        //  new ProductController(PaymentRazorActivity.this).inserOrderData(productEntity.getId(), loginEntity.getUser_id(),Integer.valueOf(RTO_ID), this);
 
     }
 
@@ -167,7 +166,9 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void onClick(View view) {
 
         if (view.getId() == R.id.btnSubmit) {
+
             startPayment();
+
         }
     }
 
@@ -197,8 +198,8 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             if (response.getStatus_code() == 0) {
 
                 OrderID = (((OrderResponse) response).getData().get(0).getId());
-
-                showPaymentAlert(btnSubmit, response.getMessage().toString(), OrderID);
+                String DisplayMessage = (((OrderResponse) response).getData().get(0).getDisplaymessage());
+                showPaymentAlert(btnSubmit, response.getMessage().toString(),DisplayMessage, OrderID);
 
             }
 
@@ -225,7 +226,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
 //    }
 
 
-    public void showPaymentAlert(final View view, String strBody, final int OrderID) {
+    public void showPaymentAlert1(final View view, String strBody, String DisplayMessage, final int OrderID) {
         try {
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
             builder.setTitle("Elite");
@@ -256,4 +257,49 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     }
 
 
+    public void showPaymentAlert(final View view, String strhdr, String DisplayMessage, final int OrderID) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(PaymentRazorActivity.this, R.style.CustomDialog);
+
+
+        Button btnClose;
+        TextView txtHdr ,txtMessage;
+
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.layout_success_message, null);
+
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
+        txtMessage = (TextView) dialogView.findViewById(R.id.txtMessage);
+        txtHdr = (TextView) dialogView.findViewById(R.id.txtHdr);
+
+        txtHdr.setText(""+ strhdr);
+        txtMessage.setText("" + DisplayMessage);
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                startActivity(new Intent(PaymentRazorActivity.this, DocUploadActivity.class)
+                        .putExtra("ORDER_ID", OrderID));
+
+                PaymentRazorActivity.this.finish();
+
+
+            }
+        });
+
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.show();
+        //  alertDialog.getWindow().setLayout(900, 600);
+
+
+    }
 }

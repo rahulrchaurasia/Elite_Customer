@@ -155,7 +155,7 @@
                                 android:focusable="false"
                                 android:paddingRight="12dp"
                                 android:paddingTop="5dp"
-                                android:visibility="gone" />
+                                android:visibility="visible" />
 
                             <Spinner
 
@@ -165,7 +165,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:singleLine="true"
-                                android:visibility="gone" />
+                                android:visibility="visible" />
 
                             <LinearLayout
                                 android:id="@+id/lyRTO"
@@ -202,7 +202,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
                                     android:inputType="textCapWords"
-                                    android:visibility="gone" />
+                                    android:visibility="visible" />
                             </LinearLayout>
 
 

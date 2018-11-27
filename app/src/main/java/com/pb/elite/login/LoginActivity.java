@@ -25,6 +25,8 @@ import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.register.ClientDeclareActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
+import com.pb.elite.utility.ReadDeviceID;
+import com.pb.elite.utility.Utility;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
 
@@ -34,18 +36,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     EditText etPassword, etMobile;
 
     PrefManager prefManager;
+    String strToken ;
     Button btnSignIn;
-//    String[] perms = {
-//            "android.permission.CAMERA",
-//            "android.permission.ACCESS_FINE_LOCATION",
-//            "android.permission.SEND_SMS",
-//            "android.permission.READ_SMS",
-//            "android.permission.RECEIVE_SMS",
-//            "android.permission.WRITE_EXTERNAL_STORAGE",
-//            "android.permission.READ_EXTERNAL_STORAGE",
-//            "android.permission.CALL_PHONE",
-//            "android.permission.RECORD_AUDIO"
-//    };
+    String deviceId ="";
 
 
     String[] perms = {
@@ -74,6 +67,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
         etMobile.setText(mob);
         etPassword.setText(pwd);
+
+        try {
+            deviceId = prefManager.getDeviceID();
+            if (deviceId == null || deviceId.matches("")) {
+                deviceId = new ReadDeviceID(this).getAndroidID();
+                prefManager.setDeviceID(deviceId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (!checkPermission()) {
             requestPermission();
@@ -123,8 +127,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     return;
                 }
 
+                strToken    =  prefManager.getToken();
+                if(prefManager.getToken() != null)
+                {
+                    strToken = prefManager.getToken();
+                }else {
+                    strToken = "";
+                }
+
                 showDialog("Please Wait...");
-                new RegisterController(LoginActivity.this).getLogin(etMobile.getText().toString(), etPassword.getText().toString(), this);
+                new RegisterController(LoginActivity.this).getLogin(etMobile.getText().toString(), etPassword.getText().toString(),strToken, deviceId, this);
 
 
                 break;

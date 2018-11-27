@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "831112507157",
+    "firebase_url": "https://elite-customer.firebaseio.com",
+    "project_id": "elite-customer",
+    "storage_bucket": "elite-customer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831112507157:android:aa34810c6bd32948",
+        "android_client_info": {
+          "package_name": "com.pb.elite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831112507157-nra8ref8k6li3a6kqh14l4030vbron90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ9-MpnQs5KuFIzUOq-766BkdTmDFkyQk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

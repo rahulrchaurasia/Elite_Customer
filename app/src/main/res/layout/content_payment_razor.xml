@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00b1e1"
+        android:background="@color/white"
         >
 
         <LinearLayout
@@ -27,6 +27,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
+                android:background="#E2E2E2"
                 >
 
                 <LinearLayout
@@ -40,7 +41,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="35dp"
+                        android:paddingTop="15dp"
                         android:paddingBottom="0dp"
                         android:textSize="18sp"
                         android:text="Order"
@@ -52,8 +53,8 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerHorizontal="true"
-
-                    android:src="@drawable/elite_bg_logo"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/elite_logo"
                     />
 
             </RelativeLayout>

@@ -12,8 +12,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/lySupport">
+        android:layout_above="@+id/lySupport"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,6 +40,60 @@
                     android:layout_weight="8"
                     android:padding="8dip" />
             </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    style="@style/TextViewStyle.MediumBold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="Hi Rudragouda Patil"
+                    android:textColor="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="top"
+                        android:paddingBottom="5dp"
+                        android:src="@drawable/car"
+                        android:tint="@color/colorPrimaryDark_inspect" />
+
+
+                    <TextView
+                        style="@style/TextViewStyle.MediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="KA04ML6747" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.6dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/bg" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -239,6 +293,7 @@
 
         android:orientation="vertical">
 
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -269,11 +324,11 @@
                     android:tint="@color/uvv_green" />
 
                 <TextView
-                   style="@style/TextViewStyle.MediumLarge"
+                    style="@style/TextViewStyle.MediumLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                  android:textColor="@color/black"
-                    android:text="CALL US" />
+                    android:text="CALL US"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -303,9 +358,9 @@
                     style="@style/TextViewStyle.MediumLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:text="EMAIL US"
 
-                    android:text="EMAIL US" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 

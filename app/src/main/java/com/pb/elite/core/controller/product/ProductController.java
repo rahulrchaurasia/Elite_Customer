@@ -9,6 +9,7 @@ import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.core.response.DocumentResponse;
 import com.pb.elite.core.response.DocumentViewResponse;
 import com.pb.elite.core.response.NonRtoProductDisplayResponse;
+import com.pb.elite.core.response.NotificationResponse;
 import com.pb.elite.core.response.OrderDetailResponse;
 import com.pb.elite.core.requestmodel.UpdateOrderRequestEntity;
 import com.pb.elite.core.response.OrderResponse;
@@ -18,6 +19,7 @@ import com.pb.elite.core.response.RtoLocationReponse;
 import com.pb.elite.core.response.ClientCommonResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.core.response.ServiceListResponse;
+import com.pb.elite.core.response.UserConsttantResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.splash.PrefManager;
 
@@ -380,6 +382,54 @@ public class ProductController implements IProduct {
     }
 
     @Override
+    public void RTOProductListOnChangeVehicle(int prdid, String prdCode, int UserId,String make,String model, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("product_id", String.valueOf(prdid));
+        body.put("productcode", prdCode);
+        body.put("userid", String.valueOf(UserId));
+        body.put("make", make);
+        body.put("model", model);
+
+        productNetworkService.getRTOProductListOnChangeVehicle(body).enqueue(new Callback<RtoProductDisplayResponse>() {
+            @Override
+            public void onResponse(Call<RtoProductDisplayResponse> call, Response<RtoProductDisplayResponse> response) {
+                if (response.body() != null) {
+                    if(response.body().getStatus_code() == 0) {
+                        //callback of data
+
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    }
+                    else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RtoProductDisplayResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
     public void getNonRTOProductList(int prdid, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
@@ -496,6 +546,52 @@ public class ProductController implements IProduct {
 
             @Override
             public void onFailure(Call<DocumentViewResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getNotifcation(int userid, String count, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("isagentapp", "0");
+        body.put("count", count);
+        body.put("userid", String.valueOf(userid));
+
+        productNetworkService.getNotification(body).enqueue(new Callback<NotificationResponse>() {
+            @Override
+            public void onResponse(Call<NotificationResponse> call, Response<NotificationResponse> response) {
+                if (response.body() != null) {
+                    if(response.body().getStatus_code() == 0) {
+                        //callback of data
+
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    }
+                    else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NotificationResponse> call, Throwable t) {
                 if (t instanceof ConnectException) {
                     iResponseSubcriber.OnFailure(t);
                 } else if (t instanceof SocketTimeoutException) {

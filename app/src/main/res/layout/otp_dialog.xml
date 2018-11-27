@@ -37,9 +37,42 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/clock"
+        />
+
+    <TextView
+        android:id="@+id/tvTime"
+        style="@style/TextViewStyle.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:text="Time remaining " />
+
+    <TextView
+        style="@style/TextViewStyle.MediumRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:text="A few seconds while we verify your mobile number" />
+
+
+    <View
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="@color/search_gray"/>
     <TextView
         android:id="@+id/tvTitle"
-        style="@style/TextViewStyle.Medium"
+        style="@style/TextViewStyle.MediumRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/fab_margin"
@@ -53,42 +86,61 @@
         android:layout_below="@+id/tvTitle"
         android:layout_margin="@dimen/fab_margin"
         android:gravity="left"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/etOtp"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvTitle"
-            android:layout_weight="3"
             android:imeOptions="flagNoExtractUi"
             android:inputType="number" />
 
         <TextView
-            android:id="@+id/tvResend"
-            android:layout_width="0dp"
+            android:id="@+id/txtOTPMessage"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/TextViewStyle.MediumBold"
+            android:text=""
+            android:textColor="@color/red_nav"/>
 
-            android:layout_weight="2"
-            android:gravity="right|center_vertical"
-            android:padding="5dp"
-            android:text="resend"
-            android:textColor="@android:color/holo_blue_dark"
-            android:visibility="visible" />
+
+
+
     </LinearLayout>
+
 
 
     <TextView
         android:id="@+id/tvOk"
         style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:minHeight="35dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="VERIFY" />
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:text="VERIFY OTP" />
+
+
+    <TextView
+        android:id="@+id/tvResend"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RESEND OTP"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp"
+        android:minHeight="35dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp" />
 </LinearLayout>
