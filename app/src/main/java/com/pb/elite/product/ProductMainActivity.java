@@ -73,8 +73,26 @@ public class ProductMainActivity extends BaseActivity {
             AssistanObtainFragment obtainFragment = new AssistanObtainFragment();
             obtainFragment.setArguments(getBundleRTO());
             return obtainFragment;
-        } else if (productEntity.getProductcode().equalsIgnoreCase("09")
+        } else if (productEntity.getProductcode().equalsIgnoreCase("09")  //Miscellaneous
                 || productEntity.getProductcode().equalsIgnoreCase("09")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("10")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("11")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("12")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("13")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("14")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("15")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("16")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("17")) {
+            return new ProvideVehicleDamageFragment();
+        } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
             return new ProvideVehicleDamageFragment();
         }
 
