@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
@@ -972,7 +973,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
                 requestEntity.setCityid("" + cityID);
                 requestEntity.setAmount("" + AMOUNT);
                 requestEntity.setPayment_status("0");
-                requestEntity.setExtrarequest(extrarequest);
+                requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
 
 
                 //endregion

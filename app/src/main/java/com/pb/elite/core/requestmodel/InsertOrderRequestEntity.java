@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by IN-RB on 10-08-2018.
  */
 
-public class InsertOrderRequestEntity implements Parcelable  {
+public class InsertOrderRequestEntity implements Parcelable {
 
 
     /**
@@ -35,7 +35,7 @@ public class InsertOrderRequestEntity implements Parcelable  {
     private String transaction_id;
     private String userid;
     private String vehicleno;
-    private ExtrarequestEntity extrarequest;
+    private String extrarequest;
 
 
     public InsertOrderRequestEntity() {
@@ -53,7 +53,7 @@ public class InsertOrderRequestEntity implements Parcelable  {
         transaction_id = in.readString();
         userid = in.readString();
         vehicleno = in.readString();
-        extrarequest = in.readParcelable(ExtrarequestEntity.class.getClassLoader());
+        extrarequest = in.readString();
     }
 
     public static final Creator<InsertOrderRequestEntity> CREATOR = new Creator<InsertOrderRequestEntity>() {
@@ -157,11 +157,11 @@ public class InsertOrderRequestEntity implements Parcelable  {
         this.vehicleno = vehicleno;
     }
 
-    public ExtrarequestEntity getExtrarequest() {
+    public String getExtrarequest() {
         return extrarequest;
     }
 
-    public void setExtrarequest(ExtrarequestEntity extrarequest) {
+    public void setExtrarequest(String extrarequest) {
         this.extrarequest = extrarequest;
     }
 
@@ -184,6 +184,6 @@ public class InsertOrderRequestEntity implements Parcelable  {
         dest.writeString(transaction_id);
         dest.writeString(userid);
         dest.writeString(vehicleno);
-        dest.writeParcelable(extrarequest, flags);
+        dest.writeString(extrarequest);
     }
 }
