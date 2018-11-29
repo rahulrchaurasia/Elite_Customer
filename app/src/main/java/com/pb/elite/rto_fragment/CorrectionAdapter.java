@@ -1,4 +1,4 @@
-package com.pb.elite.productServiceRtoFragment;
+package com.pb.elite.rto_fragment;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.pb.elite.R;
 import com.pb.elite.core.model.CorrectiontEnity;
-import com.pb.elite.core.model.NonRtoSpeciallistEntity;
-import com.pb.elite.product.ProductActivity;
 
 import java.util.List;
 

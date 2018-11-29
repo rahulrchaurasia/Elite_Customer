@@ -1,22 +1,14 @@
 package com.pb.elite.product;
 
-import android.app.Activity;
-
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pb.elite.R;
 import com.pb.elite.core.model.DocProductEnity;
-import com.pb.elite.productServiceRtoFragment.AssistanObtainFragment;
-import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
-import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 
 import java.util.List;
 

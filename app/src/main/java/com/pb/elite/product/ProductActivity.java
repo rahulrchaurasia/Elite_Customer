@@ -2,11 +2,9 @@ package com.pb.elite.product;
 
 import android.app.DatePickerDialog;
 import android.app.DownloadManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.SyncStateContract;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -18,13 +16,11 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,9 +33,7 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
-import com.pb.elite.core.model.AllCityEntity;
 import com.pb.elite.core.model.DocProductEnity;
-import com.pb.elite.core.model.NONRTOServiceEntity;
 
 
 import com.pb.elite.core.model.NonRtoProductDisplayMainEntity;
@@ -48,7 +42,6 @@ import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.core.model.UserEntity;
-import com.pb.elite.core.model.subcategoryEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.core.response.NonRtoProductDisplayResponse;
@@ -61,7 +54,6 @@ import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.DateTimePicker;
-import com.pb.elite.utility.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,8 +78,8 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     // ProductEntity productEntity;
 
     RTOServiceEntity serviceEntity;
-    NONRTOServiceEntity nonrtoServiceEntity;
-    subcategoryEntity subRTOEntity;
+    RTOServiceEntity nonrtoServiceEntity;
+
 
     List<NonRtoSpeciallistEntity> nonRtoSpeciList;
 
@@ -129,82 +121,83 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         registerPopUp(this);
-        initialize();
+    }
+      //  initialize();
 
 
         // region Filter Type
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            if (getIntent().hasExtra(Constants.SERVICE_TYPE)) {
-
-                SERVICE_TYPE = extras.getString(Constants.SERVICE_TYPE, "");
-            }
-            if (getIntent().hasExtra(Constants.RTO_PRODUCT_DATA)) {
-
-                serviceEntity = extras.getParcelable(Constants.RTO_PRODUCT_DATA);
-                PRODUCT_NAME = serviceEntity.getName();
-                PRODUCT_CODE = serviceEntity.getProductcode();
-                PRODUCT_ID = serviceEntity.getId();
-
-            } else if (getIntent().hasExtra(Constants.NON_RTO_PRODUCT_DATA)) {
-
-                nonrtoServiceEntity = extras.getParcelable(Constants.NON_RTO_PRODUCT_DATA);
-                PRODUCT_NAME = nonrtoServiceEntity.getName();
-                PRODUCT_CODE = nonrtoServiceEntity.getProductcode();
-                PRODUCT_ID = nonrtoServiceEntity.getId();
-
-            } else if (getIntent().hasExtra(Constants.SUB_PRODUCT_DATA)) {
-
-                subRTOEntity = extras.getParcelable(Constants.SUB_PRODUCT_DATA);
-                PRODUCT_NAME = subRTOEntity.getName();
-                PRODUCT_ID = subRTOEntity.getId();
-                PRODUCT_CODE = subRTOEntity.getProductcode();
-
-            }
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            if (getIntent().hasExtra(Constants.SERVICE_TYPE)) {
+//
+//                SERVICE_TYPE = extras.getString(Constants.SERVICE_TYPE, "");
+//            }
+//            if (getIntent().hasExtra(Constants.RTO_PRODUCT_DATA)) {
+//
+//                serviceEntity = extras.getParcelable(Constants.RTO_PRODUCT_DATA);
+//                PRODUCT_NAME = serviceEntity.getName();
+//                PRODUCT_CODE = serviceEntity.getProductcode();
+//                PRODUCT_ID = serviceEntity.getId();
+//
+//            } else if (getIntent().hasExtra(Constants.NON_RTO_PRODUCT_DATA)) {
+//
+//                nonrtoServiceEntity = extras.getParcelable(Constants.NON_RTO_PRODUCT_DATA);
+//                PRODUCT_NAME = nonrtoServiceEntity.getName();
+//                PRODUCT_CODE = nonrtoServiceEntity.getProductcode();
+//                PRODUCT_ID = nonrtoServiceEntity.getId();
+//
+//            } else if (getIntent().hasExtra(Constants.SUB_PRODUCT_DATA)) {
+//
+//                RTOServiceEntity = extras.getParcelable(Constants.SUB_PRODUCT_DATA);
+//                PRODUCT_NAME = subRTOEntity.getName();
+//                PRODUCT_ID = subRTOEntity.getId();
+//                PRODUCT_CODE = subRTOEntity.getProductcode();
+//
+//            }
 
             //endregion
-
-            if (PRODUCT_ID == 131) {
-                lyPuc.setVisibility(View.VISIBLE);
-                etVehicleExp.setOnClickListener(this);
-            } else {
-                lyPuc.setVisibility(View.GONE);
-            }
-
-            txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(this, "" + PRODUCT_ID +"/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
-
-
-        }
+//
+//            if (PRODUCT_ID == 131) {
+//                lyPuc.setVisibility(View.VISIBLE);
+//                etVehicleExp.setOnClickListener(this);
+//            } else {
+//                lyPuc.setVisibility(View.GONE);
+//            }
+//
+//            txtPrdName.setText("" + PRODUCT_NAME);
+//            Toast.makeText(this, "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+//
+//
+//        }
 
         // endregion
 
-        dataBaseController = new DataBaseController(ProductActivity.this);
-        loginEntity = dataBaseController.getUserData();
-        CityList = new ArrayList<String>();
-        RtoList = new ArrayList<String>();
-        OrderID = 0;
-        bindClient();
-
-        if (SERVICE_TYPE.equals("RTO")) {
-            textCity.setText("Select City");
-            showDialog();
-            new ProductController(this).getRTOProductList(PRODUCT_ID,PRODUCT_CODE,loginEntity.getUser_id(), ProductActivity.this);
-        } else {
-
-            acCity.setVisibility(View.VISIBLE);
-
-            spCity.setVisibility(View.GONE);
-            spRTO.setVisibility(View.GONE);
-            lyRTO.setVisibility(View.GONE);
-            textCity.setText("Enter City");
-
-
-            showDialog();
-            new ProductController(this).getNonRTOProductList(PRODUCT_ID, ProductActivity.this);
-        }
-    }
+//        dataBaseController = new DataBaseController(ProductActivity.this);
+//        loginEntity = dataBaseController.getUserData();
+//        CityList = new ArrayList<String>();
+//        RtoList = new ArrayList<String>();
+//        OrderID = 0;
+//        bindClient();
+//
+//        if (SERVICE_TYPE.equals("RTO")) {
+//            textCity.setText("Select City");
+//            showDialog();
+//            new ProductController(this).getRTOProductList(PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), ProductActivity.this);
+//        } else {
+//
+//            acCity.setVisibility(View.VISIBLE);
+//
+//            spCity.setVisibility(View.GONE);
+//            spRTO.setVisibility(View.GONE);
+//            lyRTO.setVisibility(View.GONE);
+//            textCity.setText("Enter City");
+//
+//
+//            showDialog();
+//            new ProductController(this).getNonRTOProductList(PRODUCT_ID, ProductActivity.this);
+//        }
+ //   }
 
 
 //    View.OnFocusChangeListener acCityFocusChange = new View.OnFocusChangeListener() {
@@ -932,10 +925,10 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 acCity.setText(CITY_NAME);
 
             }
-        }else if  (requestCode == Constants.UPLOAD_FILE) {
+        } else if (requestCode == Constants.UPLOAD_FILE) {
             if (data != null) {
 
-                Toast.makeText(this,"data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "data", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -952,3 +945,4 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
 
 }
+

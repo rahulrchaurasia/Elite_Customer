@@ -1,7 +1,6 @@
 package com.pb.elite.servicelist.adapter;
 
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.pb.elite.R;
-import com.pb.elite.core.model.NONRTOServiceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.servicelist.NonRTOListFragment;
 
@@ -27,10 +25,10 @@ public class NonRTOServiceAdapter extends RecyclerView.Adapter<NonRTOServiceAdap
 
 
     Fragment mContext;
-    List<NONRTOServiceEntity> NonRTOList;
+    List<RTOServiceEntity> NonRTOList;
 
 
-    public NonRTOServiceAdapter(Fragment mContext, List<NONRTOServiceEntity> nonRTOList) {
+    public NonRTOServiceAdapter(Fragment mContext, List<RTOServiceEntity> nonRTOList) {
         this.mContext = mContext;
         this.NonRTOList = nonRTOList;
 
@@ -71,14 +69,9 @@ public class NonRTOServiceAdapter extends RecyclerView.Adapter<NonRTOServiceAdap
     public void onBindViewHolder(ProductItem holder, int position) {
 
 
-        final NONRTOServiceEntity entity = NonRTOList.get(position);
+        final RTOServiceEntity entity = NonRTOList.get(position);
 
         holder.txtTitle.setText("" + entity.getName());
-
-//        if(entity.getProduct_logo() != null) {
-//            Glide.with(mContext).load(entity.getProduct_logo())
-//                    .into(holder.ivProduct);
-//        }
 
         Glide.with(mContext).load(entity.getProduct_logo())
                 .fitCenter()
@@ -90,14 +83,13 @@ public class NonRTOServiceAdapter extends RecyclerView.Adapter<NonRTOServiceAdap
             @Override
             public void onClick(View v) {
 
-                ((NonRTOListFragment)mContext).getProduct(entity);
+                ((NonRTOListFragment) mContext).getProduct(entity);
 
             }
         });
 
 
     }
-
 
     @Override
     public int getItemCount() {

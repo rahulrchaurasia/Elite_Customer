@@ -1,6 +1,5 @@
-package com.pb.elite.rtoAdapter;
+package com.pb.elite.rto_fragment.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pb.elite.R;
-import com.pb.elite.core.model.DocProductEnity;
-import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
-import com.pb.elite.product.ProductMainActivity;
-import com.pb.elite.productServiceRtoFragment.AssistanObtainFragment;
-import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
+import com.pb.elite.rto_fragment.AssistanObtainFragment;
+import com.pb.elite.rto_fragment.RenewRcFragment;
 
 import java.util.List;
 
@@ -29,10 +25,12 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
 
     List<RtoProductEntity> rtoProductDisplayList;
 
-    public RtoMainAdapter(Fragment mContext, List<RtoProductEntity> rtoProductDisplayList) {
+    IRTOCity iRTOCity;
+
+    public RtoMainAdapter(Fragment mContext, List<RtoProductEntity> rtoProductDisplayList, IRTOCity irtoCity) {
         this.mContext = mContext;
         this.rtoProductDisplayList = rtoProductDisplayList;
-
+        iRTOCity = irtoCity;
     }
 
     public class RtoItem extends RecyclerView.ViewHolder {
@@ -69,12 +67,12 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mContext instanceof RenewRcFragment) {
+                /*if (mContext instanceof RenewRcFragment) {
                     ((RenewRcFragment) mContext).getRTOBottomSheet(rtoEntity);
                 } else if (mContext instanceof AssistanObtainFragment) {
                     ((AssistanObtainFragment) mContext).getRTOBottomSheet(rtoEntity);
-                }
-
+                }*/
+                iRTOCity.getRTOCity(null,rtoEntity);
 
             }
         });

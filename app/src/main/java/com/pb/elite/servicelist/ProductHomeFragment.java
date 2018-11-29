@@ -14,13 +14,9 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
-import com.pb.elite.core.model.NONRTOServiceEntity;
-import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.ServiceMainEntity;
 import com.pb.elite.core.response.ServiceListResponse;
 import com.pb.elite.servicelist.adapter.ServicePagerAdapter;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -16,27 +16,27 @@ public class Constants {
     public static int PAYMENT_SUCCESS = 1;
     public static int PAYMENT_FAILURE = 0;
     public static String PAYMENT_AMOUNT = "10.05";
+    public static String SERVICE_RTO = "RTO";
+    public static String SERVICE_NONRTO = "NONRTO";
+    public static String SUB_PRODUCT_LIST = "SUB_PRODUCT_LIST";
 
-    public static  String SERVICE_TYPE = "ELITE_SERVICE_TYPE";
+    public static String SERVICE_TYPE = "ELITE_SERVICE_TYPE";
 
     public static String RTO_PRODUCT_DATA = "ELITE_RTO_PRODUCT_DATA";
     public static String NON_RTO_PRODUCT_DATA = "ELITE_NON_RTO_PRODUCT_DATA";
 
     public static String SUB_PRODUCT_DATA = "ELITE_SUB_RTO_PRODUCT_DATA";
 
-    public static  int SEARCH_CITY_CODE = 5;
-    public static  int ORDER_CODE = 2;
-    public static  int UPLOAD_FILE = 4;
+    public static int SEARCH_CITY_CODE = 5;
+    public static int ORDER_CODE = 2;
+    public static int UPLOAD_FILE = 4;
     public static int REQUEST_CODE = 22;
 
-    public static  String SEARCH_CITY_NAME  = "ELITE_SEARCH_CITY_NAME";
-    public static  String SEARCH_CITY_ID  = "ELITE_SEARCH_CITY_ID";
+    public static String SEARCH_CITY_NAME = "ELITE_SEARCH_CITY_NAME";
+    public static String SEARCH_CITY_ID = "ELITE_SEARCH_CITY_ID";
     public static final int PERMISSION_CAMERA_STORACGE_CONSTANT = 103;
     public static final int PERMISSION_CALLBACK_CONSTANT = 100;
     public static final int REQUEST_PERMISSION_SETTING = 101;
-
-
-
 
 
     public static void hideKeyBoard(View view, Context context) {

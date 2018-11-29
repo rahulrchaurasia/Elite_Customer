@@ -2,7 +2,6 @@ package com.pb.elite.servicelist.adapter;
 
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.pb.elite.R;
-import com.pb.elite.core.model.NONRTOServiceEntity;
-import com.pb.elite.core.model.subcategoryEntity;
+import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.servicelist.SubProductActivity;
 
 import java.util.List;
@@ -27,10 +25,10 @@ public class SubProductServiceAdapter extends RecyclerView.Adapter<SubProductSer
 
 
     Activity mContext;
-    List<subcategoryEntity> subPrdList;
+    List<RTOServiceEntity> subPrdList;
 
 
-    public SubProductServiceAdapter(Activity mContext, List<subcategoryEntity> subPrdList) {
+    public SubProductServiceAdapter(Activity mContext, List<RTOServiceEntity> subPrdList) {
         this.mContext = mContext;
         this.subPrdList = subPrdList;
 
@@ -71,7 +69,7 @@ public class SubProductServiceAdapter extends RecyclerView.Adapter<SubProductSer
     public void onBindViewHolder(ProductItem holder, int position) {
 
 
-        final subcategoryEntity entity = subPrdList.get(position);
+        final RTOServiceEntity entity = subPrdList.get(position);
 
         holder.txtTitle.setText("" + entity.getName());
 

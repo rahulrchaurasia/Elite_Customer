@@ -2,25 +2,27 @@ package com.pb.elite.core.model;
 
 import java.util.List;
 
-public  class ServiceMainEntity {
-        private List<RTOServiceEntity> RTO;
-        private List<NONRTOServiceEntity> NONRTO;
+public class ServiceMainEntity {
 
-        public List<RTOServiceEntity> getRTO() {
-            return RTO;
-        }
+    private List<RTOServiceEntity> RTO;
 
-        public void setRTO(List<RTOServiceEntity> RTO) {
-            this.RTO = RTO;
-        }
+    private List<RTOServiceEntity> NONRTO;
 
-        public List<NONRTOServiceEntity> getNONRTO() {
-            return NONRTO;
-        }
-
-        public void setNONRTO(List<NONRTOServiceEntity> NONRTO) {
-            this.NONRTO = NONRTO;
-        }
-
-
+    public List<RTOServiceEntity> getRTO() {
+        return RTO;
     }
+
+    public void setRTO(List<RTOServiceEntity> RTO) {
+        this.RTO = RTO;
+    }
+
+    public List<RTOServiceEntity> getNONRTO() {
+        return NONRTO;
+    }
+
+    public void setNONRTO(List<RTOServiceEntity> NONRTO) {
+        this.NONRTO = NONRTO;
+    }
+
+
+}

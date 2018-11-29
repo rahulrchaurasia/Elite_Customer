@@ -3,6 +3,7 @@ package com.pb.elite.core.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RTOServiceEntity implements Parcelable {
@@ -11,33 +12,6 @@ public class RTOServiceEntity implements Parcelable {
     private String name;
 
     private String catg_id;
-    private String product_logo;
-    private String productcode;
-    private int parent_id;
-    private List<subcategoryEntity> subcategory;
-
-
-    protected RTOServiceEntity(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        catg_id = in.readString();
-        product_logo = in.readString();
-        productcode = in.readString();
-        parent_id = in.readInt();
-        subcategory = in.createTypedArrayList(subcategoryEntity.CREATOR);
-    }
-
-    public static final Creator<RTOServiceEntity> CREATOR = new Creator<RTOServiceEntity>() {
-        @Override
-        public RTOServiceEntity createFromParcel(Parcel in) {
-            return new RTOServiceEntity(in);
-        }
-
-        @Override
-        public RTOServiceEntity[] newArray(int size) {
-            return new RTOServiceEntity[size];
-        }
-    };
 
     public int getId() {
         return id;
@@ -71,14 +45,6 @@ public class RTOServiceEntity implements Parcelable {
         this.product_logo = product_logo;
     }
 
-    public int getParent_id() {
-        return parent_id;
-    }
-
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
-    }
-
     public String getProductcode() {
         return productcode;
     }
@@ -87,13 +53,27 @@ public class RTOServiceEntity implements Parcelable {
         this.productcode = productcode;
     }
 
-    public List<subcategoryEntity> getSubcategory() {
+    public int getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(int parent_id) {
+        this.parent_id = parent_id;
+    }
+
+    public List<RTOServiceEntity> getSubcategory() {
         return subcategory;
     }
 
-    public void setSubcategory(List<subcategoryEntity> subcategory) {
+    public void setSubcategory(List<RTOServiceEntity> subcategory) {
         this.subcategory = subcategory;
     }
+
+    private String product_logo;
+    private String productcode;
+    private int parent_id;
+    private List<RTOServiceEntity> subcategory;
+
 
     @Override
     public int describeContents() {
@@ -102,25 +82,38 @@ public class RTOServiceEntity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(catg_id);
-        dest.writeString(product_logo);
-        dest.writeString(productcode);
-        dest.writeInt(parent_id);
-        dest.writeTypedList(subcategory);
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.catg_id);
+        dest.writeString(this.product_logo);
+        dest.writeString(this.productcode);
+        dest.writeInt(this.parent_id);
+        dest.writeList(this.subcategory);
     }
 
-    /**
-     * id : 97
-     * name : Vehicle Pick or Drop service available in Mum
-     * catg_id : 2
-     * product_logo : http://elite.rupeeboss.comdefault.png
-     * parent_id : 0
-     * subcategory : []
-     */
+    public RTOServiceEntity() {
+    }
 
+    protected RTOServiceEntity(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.catg_id = in.readString();
+        this.product_logo = in.readString();
+        this.productcode = in.readString();
+        this.parent_id = in.readInt();
+        this.subcategory = new ArrayList<RTOServiceEntity>();
+        in.readList(this.subcategory, RTOServiceEntity.class.getClassLoader());
+    }
 
+    public static final Parcelable.Creator<RTOServiceEntity> CREATOR = new Parcelable.Creator<RTOServiceEntity>() {
+        @Override
+        public RTOServiceEntity createFromParcel(Parcel source) {
+            return new RTOServiceEntity(source);
+        }
 
-
+        @Override
+        public RTOServiceEntity[] newArray(int size) {
+            return new RTOServiceEntity[size];
+        }
+    };
 }

@@ -12,13 +12,9 @@ import android.view.ViewGroup;
 
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
-import com.pb.elite.core.model.NONRTOServiceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
-import com.pb.elite.core.model.subcategoryEntity;
-import com.pb.elite.product.ProductActivity;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.servicelist.adapter.NonRTOServiceAdapter;
-import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 import com.pb.elite.servicelist.adapter.ServicePagerAdapter;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -31,7 +27,7 @@ import java.util.List;
  */
 public class NonRTOListFragment extends BaseFragment {
 
-    List<NONRTOServiceEntity> mNonRTOList;
+    List<RTOServiceEntity> mNonRTOList;
     RecyclerView rvProduct;
     PrefManager prefManager;
     NonRTOServiceAdapter mAdapter;
@@ -45,7 +41,7 @@ public class NonRTOListFragment extends BaseFragment {
 
         initialize(view);
         if (getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST) != null) {
-            mNonRTOList =  getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST);
+            mNonRTOList = getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST);
             bindData();
         }
         return view;
@@ -68,17 +64,17 @@ public class NonRTOListFragment extends BaseFragment {
 
     }
 
-    public void getProduct(NONRTOServiceEntity nonrtoServiceEntity) {
+    public void getProduct(RTOServiceEntity nonrtoServiceEntity) {
 
-        if(nonrtoServiceEntity.getSubcategory().size() >0) {
+        if (nonrtoServiceEntity.getSubcategory().size() > 0) {
             Intent intent = new Intent(getActivity(), SubProductActivity.class);
-            intent.putParcelableArrayListExtra("SUB_PRODUCT_LIST", (ArrayList<subcategoryEntity>) nonrtoServiceEntity.getSubcategory());
-            intent.putExtra("TYPE","NONRTO");
+            intent.putParcelableArrayListExtra("SUB_PRODUCT_LIST", (ArrayList<RTOServiceEntity>) nonrtoServiceEntity.getSubcategory());
+            intent.putExtra(Constants.SERVICE_TYPE, Constants.SERVICE_NONRTO);
             startActivity(intent);
-        }else{
+        } else {
             Intent intent = new Intent(getActivity(), ProductMainActivity.class);
             intent.putExtra(Constants.NON_RTO_PRODUCT_DATA, nonrtoServiceEntity);
-            intent.putExtra(Constants.SERVICE_TYPE, "NONRTO");
+            intent.putExtra(Constants.SERVICE_TYPE, Constants.SERVICE_NONRTO);
             startActivity(intent);
         }
     }

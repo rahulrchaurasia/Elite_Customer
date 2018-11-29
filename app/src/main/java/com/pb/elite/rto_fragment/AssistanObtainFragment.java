@@ -1,14 +1,8 @@
-package com.pb.elite.productServiceRtoFragment;
+package com.pb.elite.rto_fragment;
 
 
-import android.app.DownloadManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,15 +29,11 @@ import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CorrectiontEnity;
 import com.pb.elite.core.model.DocProductEnity;
-import com.pb.elite.core.model.MakeEntity;
-import com.pb.elite.core.model.ModelEntity;
-import com.pb.elite.core.model.NonRtoSpeciallistEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
-import com.pb.elite.core.model.subcategoryEntity;
 import com.pb.elite.core.requestmodel.ExtrarequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.core.response.CityResponse;
@@ -52,24 +42,19 @@ import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.product.ProductMainActivity;
-import com.pb.elite.register.MakeAdapter;
-import com.pb.elite.register.ModelAdapter;
-import com.pb.elite.rtoAdapter.CityMainAdapter;
-import com.pb.elite.rtoAdapter.RtoMainAdapter;
+import com.pb.elite.rto_fragment.adapter.CityMainAdapter;
+import com.pb.elite.rto_fragment.adapter.IRTOCity;
+import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-
-import static android.content.Context.DOWNLOAD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AssistanObtainFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
+public class AssistanObtainFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IRTOCity {
 
 
     PrefManager prefManager;
@@ -85,7 +70,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     Button btnBooked;
 
     RTOServiceEntity serviceEntity;
-    subcategoryEntity subRTOEntity;
 
     LinearLayout lvLogo, llDocumentUpload, lyRTO, lyTAT;
     RelativeLayout rlDoc, rlCorrect;
@@ -156,10 +140,10 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
             if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
 
-                subRTOEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
-                PRODUCT_NAME = subRTOEntity.getName();
-                PARENT_PRODUCT_ID = subRTOEntity.getId();
-                PRODUCT_CODE = subRTOEntity.getProductcode();
+                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
+                PRODUCT_NAME = serviceEntity.getName();
+                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_CODE = serviceEntity.getProductcode();
 
                 if (PRODUCT_CODE.equalsIgnoreCase("2.1")) {
                     lyLic.setVisibility(View.GONE);
@@ -229,7 +213,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         if (type.equalsIgnoreCase("CITY")) {
             txtHdr.setText("Select City");
 
-            cityMainAdapter = new CityMainAdapter(AssistanObtainFragment.this, listCityMain);
+            cityMainAdapter = new CityMainAdapter(AssistanObtainFragment.this, listCityMain, this);
             rvCity.setAdapter(cityMainAdapter);
 
 
@@ -241,7 +225,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             txtHdr.setText("Select RTO");
 
             rtoProductDisplayList = rtoProductDisplayMainEntity.getRtolist();
-            rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, rtoProductDisplayList);
+            rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, rtoProductDisplayList,this);
             rvRTO.setAdapter(rtoMainAdapter);
             rvCity.setVisibility(View.GONE);
             rvRTO.setVisibility(View.VISIBLE);
@@ -254,7 +238,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity) {
+/*    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity) {
 
         if (mBottomSheetDialog != null) {
 
@@ -268,9 +252,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
             }
         }
-    }
+    }*/
 
-    public void getRTOBottomSheet(RtoProductEntity rtoEntity) {
+   /* public void getRTOBottomSheet(RtoProductEntity rtoEntity) {
 
         if (mBottomSheetDialog != null) {
 
@@ -285,7 +269,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }
 
 
-    }
+    }*/
 
     //endregion
 
@@ -690,5 +674,32 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }
 
 
+    }
+
+    @Override
+    public void getRTOCity(RtoProductDisplayMainEntity e, RtoProductEntity entity) {
+
+        if (mBottomSheetDialog != null) {
+
+            if (mBottomSheetDialog.isShowing()) {
+
+                if (e != null) {
+                    rtoProductDisplayMainEntity = e;
+
+                    setCityData(rtoProductDisplayMainEntity.getCityname(), rtoProductDisplayMainEntity);
+
+                    mBottomSheetDialog.dismiss();
+
+                } else if (entity != null) {
+
+                    rtoMainEntity = entity;
+
+                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
+                    mBottomSheetDialog.dismiss();
+                }
+
+            }
+
+        }
     }
 }
