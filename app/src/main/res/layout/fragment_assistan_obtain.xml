@@ -188,6 +188,109 @@
 
                         </RelativeLayout>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white" />
+
+                        <LinearLayout
+                            android:id="@+id/llCorrection"
+                            style="@style/LinearLayoutStyle"
+                            android:animateLayoutChanges="true"
+                            android:background="@drawable/custom_grey"
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:hint="Correction in Name">
+
+
+                                <EditText
+                                    android:id="@+id/etName"
+                                    android:maxLines="1"
+                                    android:maxLength="20"
+
+                                    android:inputType="text"
+                                    style="@style/Style.edittext" />
+                                </android.support.design.widget.TextInputLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:hint="Correction in DOB">
+
+
+                                    <EditText
+                                        android:id="@+id/etDOB"
+                                        android:maxLines="1"
+                                        android:maxLength="10"
+
+                                        android:inputType="text"
+                                        style="@style/Style.edittext" />
+                                </android.support.design.widget.TextInputLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:hint="Correction in Address">
+
+
+                                    <EditText
+                                        android:id="@+id/etAddress"
+                                        android:maxLines="1"
+                                        android:maxLength="40"
+
+                                        android:inputType="text"
+                                        style="@style/Style.edittext" />
+                                </android.support.design.widget.TextInputLayout>
+
+                            </LinearLayout>
+
+
+
+
+
+
+                        </LinearLayout>
+
                         <include
                         android:id="@+id/ly_prd_req_doc_hdr"
                         layout="@layout/layout_prd_req_doc_hdr"

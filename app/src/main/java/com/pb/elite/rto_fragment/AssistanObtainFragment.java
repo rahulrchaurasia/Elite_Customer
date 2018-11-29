@@ -60,13 +60,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    // RecyclerView rvCity , rvRTO;
-
-
     EditText etRTO, etRTO_OTH, etCity, etLic;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-    String CITY_ID_NON_RTO = "";
     Button btnBooked;
 
     RTOServiceEntity serviceEntity;
