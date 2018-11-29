@@ -14,6 +14,8 @@ import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.product.ProductMainActivity;
+import com.pb.elite.productServiceRtoFragment.AssistanObtainFragment;
+import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
 
 import java.util.List;
 
@@ -23,18 +25,17 @@ import java.util.List;
 
 public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem> {
 
-    Context mContext;
+    Fragment mContext;
 
     List<RtoProductEntity> rtoProductDisplayList;
 
-    public RtoMainAdapter(Context mContext, List<RtoProductEntity> rtoProductDisplayList) {
+    public RtoMainAdapter(Fragment mContext, List<RtoProductEntity> rtoProductDisplayList) {
         this.mContext = mContext;
         this.rtoProductDisplayList = rtoProductDisplayList;
 
     }
 
-    public class RtoItem extends RecyclerView.ViewHolder
-    {
+    public class RtoItem extends RecyclerView.ViewHolder {
         public TextView txtTitle;
         public LinearLayout lyParent;
 
@@ -43,10 +44,9 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
             super(itemView);
 
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            lyParent  = (LinearLayout) itemView.findViewById(R.id.lyParent);
+            lyParent = (LinearLayout) itemView.findViewById(R.id.lyParent);
         }
     }
-
 
 
     @Override
@@ -55,7 +55,7 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_rto_list_item, parent, false);
 
-        return new RtoMainAdapter.RtoItem (itemView);
+        return new RtoMainAdapter.RtoItem(itemView);
 
     }
 
@@ -64,13 +64,17 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
 
         final RtoProductEntity rtoEntity = rtoProductDisplayList.get(position);
 
-        holder.txtTitle.setText( "" +rtoEntity.getSeries_no() +"-" + rtoEntity.getRto_location());
+        holder.txtTitle.setText("" + rtoEntity.getSeries_no() + "-" + rtoEntity.getRto_location());
 
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mContext instanceof RenewRcFragment) {
+                    ((RenewRcFragment) mContext).getRTOBottomSheet(rtoEntity);
+                } else if (mContext instanceof AssistanObtainFragment) {
+                    ((AssistanObtainFragment) mContext).getRTOBottomSheet(rtoEntity);
+                }
 
-                ((ProductMainActivity)mContext).getRTOBottomSheet(rtoEntity );
 
             }
         });

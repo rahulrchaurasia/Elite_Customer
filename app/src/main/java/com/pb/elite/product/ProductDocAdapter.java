@@ -2,6 +2,7 @@ package com.pb.elite.product;
 
 import android.app.Activity;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.pb.elite.R;
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.productServiceRtoFragment.AssistanObtainFragment;
 import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
 import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 
@@ -24,10 +26,10 @@ import java.util.List;
 
 public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.ProductItem> {
 
-    Fragment mContext;
+    Context mContext;
     List<DocProductEnity> lstDoc;
 
-    public ProductDocAdapter(Fragment mContext, List<DocProductEnity> lstDoc) {
+    public ProductDocAdapter(Context mContext, List<DocProductEnity> lstDoc) {
         this.mContext = mContext;
         this.lstDoc = lstDoc;
 
@@ -72,9 +74,15 @@ public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.Pr
 
         holder.txtDownload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
-                ((RenewRcFragment)mContext).downloadPdf(docProductEnity.getDocumenturl(),docProductEnity.getDocument_name());
+//                if(mContext instanceof RenewRcFragment) {
+//                    ((RenewRcFragment) mContext).downloadPdf(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name());
+//                }else{
+//                    ((AssistanObtainFragment) mContext).downloadPdf(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name());
+//                }
+
+                ((ProductMainActivity) mContext).downloadPdf(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name());
             }
         });
 

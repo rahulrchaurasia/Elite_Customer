@@ -1,7 +1,6 @@
 package com.pb.elite.document;
 
 import android.app.Activity;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pb.elite.R;
-import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.DocumentViewEntity;
 
 import java.util.List;
@@ -56,7 +54,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocIte
     @Override
     public DocumentAdapter.DocItem onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_doc_order, parent, false);
+                .inflate(R.layout.layout_doc_order_item, parent, false);
 
         return new DocumentAdapter.DocItem(itemView);
     }

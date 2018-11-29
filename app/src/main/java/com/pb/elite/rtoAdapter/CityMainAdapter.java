@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.pb.elite.R;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.product.ProductMainActivity;
+import com.pb.elite.productServiceRtoFragment.AssistanObtainFragment;
 import com.pb.elite.productServiceRtoFragment.RenewRcFragment;
 
 import java.util.List;
@@ -23,11 +24,11 @@ import java.util.List;
 public class CityMainAdapter extends RecyclerView.Adapter<CityMainAdapter.CityItem> {
 
 
-    Context mContext;
+    Fragment mContext;
 
     List<RtoProductDisplayMainEntity> rtoCityList;
 
-    public CityMainAdapter(Context mContext, List<RtoProductDisplayMainEntity> rtoCityList) {
+    public CityMainAdapter(Fragment mContext, List<RtoProductDisplayMainEntity> rtoCityList) {
         this.mContext = mContext;
         this.rtoCityList = rtoCityList;
 
@@ -65,13 +66,23 @@ public class CityMainAdapter extends RecyclerView.Adapter<CityMainAdapter.CityIt
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ProductMainActivity)mContext).getCityBottomSheet(cityEntity);
+                if(mContext instanceof RenewRcFragment ) {
+                    ((RenewRcFragment) mContext).getCityBottomSheet(cityEntity);
+                }
+                else if(mContext instanceof AssistanObtainFragment ) {
+                    ((AssistanObtainFragment) mContext).getCityBottomSheet(cityEntity);
+                }
             }
         });
 
 
     }
 
+    public void updateList(List<RtoProductDisplayMainEntity> temprtoCityList)
+    {
+        rtoCityList = temprtoCityList;
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         return rtoCityList.size();

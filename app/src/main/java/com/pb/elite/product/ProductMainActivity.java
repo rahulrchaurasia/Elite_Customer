@@ -1,7 +1,10 @@
 package com.pb.elite.product;
 
+import android.app.DownloadManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -34,7 +39,7 @@ import com.pb.elite.utility.Constants;
 
 import java.util.List;
 
-public class ProductMainActivity extends BaseActivity {
+public class ProductMainActivity extends BaseActivity implements View.OnClickListener {
 
     UserConstatntEntity userConstatntEntity;
 
@@ -49,20 +54,22 @@ public class ProductMainActivity extends BaseActivity {
     NONRTOServiceEntity nonrtoServiceEntity;
     subcategoryEntity subRTOEntity;
     //bottom_sheet_dialog
-    BottomSheetBehavior sheetBehavior;
-    LinearLayout layoutBottomSheet;
+  //  BottomSheetBehavior sheetBehavior;
+ //   LinearLayout layoutBottomSheet;
 
-    RecyclerView rvCity, rvRTO;
-    CityMainAdapter cityMainAdapter;
-    RtoMainAdapter rtoMainAdapter;
-
-    List<RtoProductDisplayMainEntity> listCityMain;
-    List<RtoProductEntity> rtoProductDisplayList;
-
-    RtoProductDisplayMainEntity cityMainEntity;
+//    RecyclerView rvCity, rvRTO;
+//    CityMainAdapter cityMainAdapter;
+//    RtoMainAdapter rtoMainAdapter;
+//
+//    List<RtoProductDisplayMainEntity> listCityMain;
+//    List<RtoProductEntity> rtoProductDisplayList;
+//
+//    RtoProductDisplayMainEntity cityMainEntity;
 
     RenewRcFragment rcFragment;
     AssistanObtainFragment assistanObtainFragment;
+
+ //   ImageView ivCross;
 
     Bundle bundle;
     Fragment mainfragment = null;
@@ -75,23 +82,6 @@ public class ProductMainActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        rvCity = (RecyclerView) findViewById(R.id.rvCity);
-        rvRTO = (RecyclerView) findViewById(R.id.rvRTO);
-
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this);
-        rvCity.setLayoutManager(layoutManager);
-        rvCity.setHasFixedSize(true);
-
-
-        rvRTO.setLayoutManager(layoutManager1);
-        rvRTO.setHasFixedSize(true);
-
-        layoutBottomSheet = findViewById(R.id.bottom_sheet_dialog);
-
-        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
 
 
         // region Filter Type
@@ -108,7 +98,14 @@ public class ProductMainActivity extends BaseActivity {
                 PRODUCT_CODE = serviceEntity.getProductcode();
                 PRODUCT_ID = serviceEntity.getId();
 
-            } else if (getIntent().hasExtra(Constants.SUB_PRODUCT_DATA)) {
+            } else if (getIntent().hasExtra(Constants.NON_RTO_PRODUCT_DATA)) {
+
+                nonrtoServiceEntity = extras.getParcelable(Constants.NON_RTO_PRODUCT_DATA);
+                PRODUCT_NAME = nonrtoServiceEntity.getName();
+                PRODUCT_CODE = nonrtoServiceEntity.getProductcode();
+                PRODUCT_ID = nonrtoServiceEntity.getId();
+
+            }else if (getIntent().hasExtra(Constants.SUB_PRODUCT_DATA)) {
 
                 subRTOEntity = extras.getParcelable(Constants.SUB_PRODUCT_DATA);
                 PRODUCT_NAME = subRTOEntity.getName();
@@ -151,7 +148,7 @@ public class ProductMainActivity extends BaseActivity {
 
 
         } else if ((PRODUCT_CODE.equalsIgnoreCase("2.1")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))
-                || (PRODUCT_CODE.equalsIgnoreCase("2.3")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))) {
+                || (PRODUCT_CODE.equalsIgnoreCase("2.3")) || (PRODUCT_CODE.equalsIgnoreCase("2.4"))) {
 
             assistanObtainFragment = new AssistanObtainFragment();
             return assistanObtainFragment;
@@ -187,90 +184,23 @@ public class ProductMainActivity extends BaseActivity {
         this.finish();
     }
 
-    public void showCityBottomSheetDialog(List<RtoProductDisplayMainEntity> templistCityMain) {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        listCityMain = templistCityMain;
 
-        cityMainAdapter = new CityMainAdapter(ProductMainActivity.this, listCityMain);
-        rvCity.setAdapter(cityMainAdapter);
-        rvCity.setVisibility(View.VISIBLE);
-        rvRTO.setVisibility(View.GONE);
 
-    }
 
-    public void showRTOBottomSheetDialog() {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        rtoProductDisplayList = cityMainEntity.getRtolist();
-        rtoMainAdapter = new RtoMainAdapter(ProductMainActivity.this, rtoProductDisplayList);
-        rvRTO.setAdapter(rtoMainAdapter);
-        rvCity.setVisibility(View.GONE);
-        rvRTO.setVisibility(View.VISIBLE);
 
+    public void downloadPdf(String url, String name) {
+        Toast.makeText(this, "Download started..", Toast.LENGTH_LONG).show();
+        DownloadManager.Request r = new DownloadManager.Request(Uri.parse(url));
+        r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name + ".pdf");
+        r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        r.setMimeType(MimeTypeMap.getFileExtensionFromUrl(url));
+        DownloadManager dm = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+        dm.enqueue(r);
     }
 
 
-    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity  ) {
-        cityMainEntity = cityEntity;
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        if(getServiceNumber()== 1) {
-            if (rcFragment == null) {
-                rcFragment = (RenewRcFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-            }
-
-            rcFragment.setCityData(cityMainEntity.getCityname(), cityMainEntity);
-        }
-        else if(getServiceNumber()== 2) {
-            if (assistanObtainFragment == null) {
-                assistanObtainFragment = (AssistanObtainFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-            }
-
-            assistanObtainFragment.setCityData(cityMainEntity.getCityname(), cityMainEntity);
-        }
-
+    @Override
+    public void onClick(View v) {
 
     }
-
-    public void getRTOBottomSheet(RtoProductEntity rtoEntity ) {
-        // Toast.makeText(this,"RTO ",Toast.LENGTH_SHORT).show();
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        if(getServiceNumber()== 1) {
-            if (rcFragment == null) {
-                rcFragment = (RenewRcFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-            }
-
-            rcFragment.setRTOData(rtoEntity.getSeries_no() + "-" + rtoEntity.getRto_location(), rtoEntity);
-        }
-        else if(getServiceNumber()== 2) {
-            if (assistanObtainFragment == null) {
-                assistanObtainFragment = (AssistanObtainFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-            }
-
-            assistanObtainFragment.setRTOData(rtoEntity.getSeries_no() + "-" + rtoEntity.getRto_location(), rtoEntity);
-        }
-
-    }
-
-
-    private int getServiceNumber()
-    {
-        if ((PRODUCT_CODE.equalsIgnoreCase("1.1")) || (PRODUCT_CODE.equalsIgnoreCase("1.2"))
-                || (PRODUCT_CODE.equalsIgnoreCase("1.3"))) {
-
-            return 1;
-
-
-        } else if ((PRODUCT_CODE.equalsIgnoreCase("2.1")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))
-                || (PRODUCT_CODE.equalsIgnoreCase("2.3")) || (PRODUCT_CODE.equalsIgnoreCase("2.2"))) {
-
-
-            return 2;
-
-        }
-
-        return 0;
-
-    }
-
 }

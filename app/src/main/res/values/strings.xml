@@ -22,6 +22,14 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
 
+    <array name="CorrectionType">
+        <item>Name</item>
+        <item>DOB</item>
+        <item>Driving License</item>
+        <item>Addres</item>
+
+
+    </array>
 
     <string name="supp_Calling">Do you want to call Elite Support Team</string>
     <string name="call_number">9702943935</string>

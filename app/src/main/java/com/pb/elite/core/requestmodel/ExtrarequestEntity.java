@@ -8,16 +8,36 @@ public  class ExtrarequestEntity implements Parcelable{
      * MakeNo : MH02DV3282
      * ModelNo : 87564KJGH87SA4
      */
+    private String VehicleNo;
+    private String DrivingLic;
+
+
 
     private String MakeNo;
     private String ModelNo;
-    private String VehicleNo;
 
+    public ExtrarequestEntity() {
+    }
 
     protected ExtrarequestEntity(Parcel in) {
         MakeNo = in.readString();
         ModelNo = in.readString();
         VehicleNo = in.readString();
+        DrivingLic = in.readString();
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(MakeNo);
+        dest.writeString(ModelNo);
+        dest.writeString(VehicleNo);
+        dest.writeString(DrivingLic);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ExtrarequestEntity> CREATOR = new Creator<ExtrarequestEntity>() {
@@ -31,9 +51,6 @@ public  class ExtrarequestEntity implements Parcelable{
             return new ExtrarequestEntity[size];
         }
     };
-
-    public ExtrarequestEntity() {
-    }
 
     public String getMakeNo() {
         return MakeNo;
@@ -59,18 +76,15 @@ public  class ExtrarequestEntity implements Parcelable{
         VehicleNo = vehicleNo;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getDrivingLic() {
+        return DrivingLic;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(MakeNo);
-        dest.writeString(ModelNo);
-        dest.writeString(VehicleNo);
+    public void setDrivingLic(String drivingLic) {
+        DrivingLic = drivingLic;
     }
+
+
 }
 
 
