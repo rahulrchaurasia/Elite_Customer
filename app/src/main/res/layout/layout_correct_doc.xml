@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_sheet_dialog"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="350dp"
-    android:background="@drawable/custom_grey"
-    android:orientation="vertical"
-    android:layout_margin="8dp"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="0dp"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
-
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/bg_dashboard">
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnClose"
+        android:id="@+id/lyParent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+
         android:orientation="vertical">
 
         <RelativeLayout
@@ -27,17 +26,17 @@
                 style="@style/TextViewStyle.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
+                android:background="@color/colorPrimary"
                 android:gravity="left"
                 android:padding="10dp"
-                android:text="Select City"
+                android:text="Select Field"
                 android:textColor="@color/white" />
 
 
 
 
             <ImageView
-                android:id="@+id/ivCross"
+                android:id="@+id/ivClose"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
@@ -50,26 +49,33 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvCity"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:paddingBottom="5dp"
-            android:visibility="visible">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvProductDoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtHdr"
+            android:paddingBottom="3dp">
 
         </android.support.v7.widget.RecyclerView>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvRTO"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:paddingBottom="5dp"
-            android:visibility="visible">
-
-        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 
-</LinearLayout>
+
+
+
+
+    <Button
+        android:id="@+id/btnSubmit"
+        style="@style/ButtonStyle"
+        android:layout_margin="10dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:text="Submit" />
+
+
+</RelativeLayout>

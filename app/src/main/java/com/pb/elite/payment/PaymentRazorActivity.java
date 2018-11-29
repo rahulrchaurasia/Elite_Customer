@@ -38,7 +38,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     String PRODUCT_NAME = "";
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-    TextView txtprdName, txtAmount;
+    TextView txtprdName, txtAmount,txtName;
     Button btnSubmit;
     InsertOrderRequestEntity orderRequestEntity;
 
@@ -57,6 +57,8 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         OrderID = 0;
 
         initialize();
+
+       txtName.setText(""+loginEntity.getName());
 
         if (getIntent().hasExtra("PRODUCT_NAME_PAYMENT")) {
 
@@ -95,7 +97,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         txtprdName = (TextView) findViewById(R.id.txtprdName);
         txtAmount = (TextView) findViewById(R.id.txtAmount);
-
+        txtName  = (TextView) findViewById(R.id.txtName);
 
     }
 

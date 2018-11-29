@@ -53,11 +53,11 @@
         android:scaleType="center" />
 
 
-d
 
     <Button
         android:id="@+id/btnClose"
         style="@style/ButtonStyle"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

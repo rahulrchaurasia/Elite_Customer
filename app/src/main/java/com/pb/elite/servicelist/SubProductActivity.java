@@ -79,7 +79,7 @@ public class SubProductActivity extends AppCompatActivity {
             intent.putExtra(Constants.SUB_PRODUCT_DATA, subcategoryEntity);
             intent.putExtra(Constants.SERVICE_TYPE, TYPE);
             startActivity(intent);
-            this.finish();
+            //this.finish();
 
     }
 

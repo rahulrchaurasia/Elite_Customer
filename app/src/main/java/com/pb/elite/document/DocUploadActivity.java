@@ -50,7 +50,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 
-public class DocUploadActivity extends BaseActivity implements IResponseSubcriber , BaseActivity.CustomPopUpListener {
+public class DocUploadActivity extends BaseActivity implements IResponseSubcriber, BaseActivity.CustomPopUpListener {
 
 
     private static final int CAMERA_REQUEST = 1888;
@@ -65,13 +65,13 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     int OrderID;
 
 
-
     private String DOC1 = "DOC1", DOC2 = "DOC2", DOC3 = "DOC3", DOC4 = "DOC4";
     int type;
     ///////////
     DataBaseController dataBaseController;
     UserEntity loginEntity;
 
+    TextView txtDocVerify;
     RecyclerView rvProduct;
     DocumentAdapter mAdapter;
 
@@ -92,7 +92,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-          registerCustomPopUp(DocUploadActivity.this);
+        registerCustomPopUp(DocUploadActivity.this);
         if (getIntent().getExtras() != null) {
             OrderID = getIntent().getIntExtra("ORDER_ID", 0);
 
@@ -112,7 +112,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
     private void initialize() {
 
-
+        txtDocVerify = (TextView) findViewById(R.id.txtDocVerify);
         rvProduct = (RecyclerView) findViewById(R.id.rvProduct);
         rvProduct.setHasFixedSize(true);
 
@@ -122,6 +122,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     }
 
     private void setDocumentUpload(String urlPath) {
+
 
 
         if (documentViewEntity != null) {
@@ -220,7 +221,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
                 //Previously Permission Request was cancelled with 'Dont Ask Again',
                 // Redirect to Settings after showing Information about why you need the permission
                 //  permissionAlert(navigationView,"Need Call Permission","This app needs Call permission.");
-                openPopUp(rvProduct, "Need  Permission", "This app needs all permissions.", "GRANT","DENNY",false, true);
+                openPopUp(rvProduct, "Need  Permission", "This app needs all permissions.", "GRANT", "DENNY", false, true);
 
 
             }
@@ -285,6 +286,17 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     }
 
 
+    private boolean checkAllFileUploaded() {
+        if (lstDoc.size() > 0) {
+            for (int pos = 0; pos < lstDoc.size(); pos++) {
+                if (lstDoc.get(pos).getPath().equalsIgnoreCase("")) {
+
+                    return false;
+                }
+            }
+        }
+        return  true;
+    }
 
     @Override
     public void OnSuccess(APIResponse response, String message) {
@@ -301,6 +313,13 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
                 lstDoc = ((DocumentViewResponse) response).getData();
 
+                if(checkAllFileUploaded())
+                {
+                    txtDocVerify.setVisibility(View.VISIBLE);
+                }else{
+                    txtDocVerify.setVisibility(View.GONE);
+                }
+
                 mAdapter = new DocumentAdapter(DocUploadActivity.this, lstDoc);
                 rvProduct.setAdapter(mAdapter);
 
@@ -309,6 +328,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
 
     }
+
 
     @Override
     public void OnFailure(Throwable t) {
@@ -369,7 +389,6 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
         galleryCamPopUp();
     }
-
 
 
     public void getActionView(DocumentViewEntity entity) {
@@ -441,8 +460,6 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
                 }
                 break;
-
-
 
 
         }
