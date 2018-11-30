@@ -15,8 +15,10 @@ import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.non_rto_fragments.PUCFragment;
 import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
+import com.pb.elite.non_rto_fragments.SpecialHealthTopUpFragment;
 import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
 import com.pb.elite.rto_fragment.RenewRcFragment;
@@ -81,9 +83,9 @@ public class ProductMainActivity extends BaseActivity {
         } else if (productEntity.getProductcode().equalsIgnoreCase("10")) {
             return new ProvideHospitalizationFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("11")) {
-            return new ProvideVehicleDamageFragment();
+            return new PUCFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("12")) {
-            return new ProvideVehicleDamageFragment();
+            return new SpecialHealthTopUpFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("13")) {
             return new ProvideVehicleDamageFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("14")) {
