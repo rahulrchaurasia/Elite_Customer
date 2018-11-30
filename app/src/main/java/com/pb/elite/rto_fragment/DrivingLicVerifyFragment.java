@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +31,6 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
-import com.pb.elite.core.model.CorrectiontEnity;
 import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
@@ -56,37 +53,34 @@ import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.DateTimePicker;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AssistanObtainFragment extends BaseFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, IResponseSubcriber, IRTOCity {
+public class DrivingLicVerifyFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IRTOCity {
 
 
+    // region Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etRTO, etRTO_OTH, etCity, etLic;
+    EditText etRTO, etRTO_OTH, etCity;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
 
     RTOServiceEntity serviceEntity;
-
     ScrollView scrollView;
     LinearLayout lvLogo, llDocumentUpload, lyRTO, lyTAT;
     RelativeLayout rlDoc, rlCorrect;
-    LinearLayout lyLic, llCorrection, lyName, lyDOB, lyAddress;
+    LinearLayout  llCorrection ;
     ImageView ivLogo, ivClientLogo, ivArrow, ivLic, ivTick;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
-    EditText etName, etDOB, etAddress;
-    CheckBox chkName, chkDOB, chkAddress;
+    EditText etName, etDOB, etLic;
 
-    TextView textLicMandatory;
 
 
     String PRODUCT_NAME = "";
@@ -98,7 +92,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     int OrderID = 0;
 
 
-    // region Declaration
+
 
     BottomSheetDialog mBottomSheetDialog;
     List<RtoProductDisplayMainEntity> listCityMain;
@@ -114,7 +108,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     //endregion
-
 
     //region datepicker
 
@@ -145,13 +138,10 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_driving_lic_verify, container, false);
 
 
-        View view = inflater.inflate(R.layout.fragment_assistan_obtain, container, false);
         initialize(view);
-
-        rlCorrect.setVisibility(View.GONE);
-        llCorrection.setVisibility(View.GONE);
 
         setOnClickListener();
 
@@ -174,18 +164,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 PRODUCT_CODE = serviceEntity.getProductcode();
 
                 if (PRODUCT_CODE.equalsIgnoreCase("2.1") || PRODUCT_CODE.equalsIgnoreCase("3.1") || PRODUCT_CODE.equalsIgnoreCase("3.2")) {
-                    lyLic.setVisibility(View.GONE);
-
-
-                } else if (PRODUCT_CODE.equalsIgnoreCase("2.2") || PRODUCT_CODE.equalsIgnoreCase("2.3")) {
-                    lyLic.setVisibility(View.VISIBLE);
-
-
-                } else if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
-                    lyLic.setVisibility(View.VISIBLE);
-                    rlCorrect.setVisibility(View.VISIBLE);
-
-
+                   
                 }
 
             }
@@ -201,7 +180,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
         showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), AssistanObtainFragment.this);
+        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), DrivingLicVerifyFragment.this);
 
 
         return view;
@@ -242,7 +221,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         if (type.equalsIgnoreCase("CITY")) {
             txtHdr.setText("Select City");
 
-            cityMainAdapter = new CityMainAdapter(AssistanObtainFragment.this, listCityMain, this);
+            cityMainAdapter = new CityMainAdapter(DrivingLicVerifyFragment.this, listCityMain, this);
             rvCity.setAdapter(cityMainAdapter);
 
 
@@ -254,7 +233,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             txtHdr.setText("Select RTO");
 
             rtoProductDisplayList = rtoProductDisplayMainEntity.getRtolist();
-            rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, rtoProductDisplayList, this);
+            rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, rtoProductDisplayList, this);
             rvRTO.setAdapter(rtoMainAdapter);
             rvCity.setVisibility(View.GONE);
             rvRTO.setVisibility(View.VISIBLE);
@@ -267,41 +246,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-/*    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity) {
 
-        if (mBottomSheetDialog != null) {
-
-            if (mBottomSheetDialog.isShowing()) {
-
-                rtoProductDisplayMainEntity = cityEntity;
-
-                setCityData(rtoProductDisplayMainEntity.getCityname(), rtoProductDisplayMainEntity);
-
-                mBottomSheetDialog.dismiss();
-
-            }
-        }
-    }*/
-
-   /* public void getRTOBottomSheet(RtoProductEntity rtoEntity) {
-
-        if (mBottomSheetDialog != null) {
-
-            if (mBottomSheetDialog.isShowing()) {
-
-                rtoMainEntity = rtoEntity;
-
-                setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
-                mBottomSheetDialog.dismiss();
-
-            }
-        }
-
-
-    }*/
 
     //endregion
-
 
     public void setCityData(String strCityName, RtoProductDisplayMainEntity rtoPrdEntity) {
         etCity.setText("" + strCityName);
@@ -348,7 +295,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         etCity = (EditText) view.findViewById(R.id.etCity);
 
 
-        etLic = (EditText) view.findViewById(R.id.etLic);
+
 
         txtCharges = (TextView) view.findViewById(R.id.txtCharges);
         txtPrdName = (TextView) view.findViewById(R.id.txtPrdName);
@@ -358,11 +305,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         etName = (EditText) view.findViewById(R.id.etName);
         etDOB = (EditText) view.findViewById(R.id.etDOB);
-        etAddress = (EditText) view.findViewById(R.id.etAddress);
-
-        chkName = (CheckBox) view.findViewById(R.id.chkName);
-        chkDOB = (CheckBox) view.findViewById(R.id.chkDOB);
-        chkAddress = (CheckBox) view.findViewById(R.id.chkAddress);
+        etLic = (EditText) view.findViewById(R.id.etLic);
 
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
@@ -373,12 +316,8 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         lyRTO = (LinearLayout) view.findViewById(R.id.lyRTO);
         lyTAT = (LinearLayout) view.findViewById(R.id.lyTAT);
 
-        lyLic = (LinearLayout) view.findViewById(R.id.lyLic);
 
         llCorrection = (LinearLayout) view.findViewById(R.id.llCorrection);
-        lyName   = (LinearLayout) view.findViewById(R.id.lyName);
-        lyDOB   = (LinearLayout) view.findViewById(R.id.lyDOB);
-        lyAddress   = (LinearLayout) view.findViewById(R.id.lyAddress);
 
         ivLogo = (ImageView) view.findViewById(R.id.ivLogo);
         ivClientLogo = (ImageView) view.findViewById(R.id.ivClientLogo);
@@ -408,8 +347,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         etCity.setOnClickListener(this);
         etRTO.setOnClickListener(this);
-
-        chkName.setOnCheckedChangeListener(this);
 
 
     }
@@ -471,38 +408,8 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             return false;
         }
 
-        if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
-            getCustomToast("Please Enter Driving License");
-            return false;
-        }
 
-        if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
-            if ((chkAddress.isChecked() == false) && (chkDOB.isChecked() == false) && (chkName.isChecked() == false)) {
-                getCustomToast("Please Select Atlease One Field");
-                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
 
-                return false;
-            }
-
-            if (chkName.isChecked() && (etName.getText().toString().trim().length() ==0)) {
-                getCustomToast("Please Enter Correction In Name");
-                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
-                return false;
-            }
-            if (chkDOB.isChecked() && (etDOB.getText().toString().trim().length() ==0)) {
-                getCustomToast("Please Enter Correction In DOB");
-                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
-                return false;
-            }
-            if (chkAddress.isChecked() &&  (etAddress.getText().toString().trim().length()==0)) {
-                getCustomToast("Please Enter Correction In Address");
-                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
-                return false;
-            }
-
-            ivTick.setImageDrawable(getResources().getDrawable(R.drawable.tick));
-
-        }
 
         return true;
     }
@@ -629,7 +536,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
             case R.id.rlDoc:
                 showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, AssistanObtainFragment.this);
+                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, DrivingLicVerifyFragment.this);
                 break;
 
 
@@ -732,40 +639,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-        if (buttonView.getId() == R.id.chkName) {
 
-            if (isChecked) {
-
-                lyName.setBackgroundColor(getResources().getColor(R.color.seperator));
-
-            } else {
-                lyName.setBackgroundColor(getResources().getColor(R.color.white));
-            }
-
-        }else if (buttonView.getId() == R.id.chkDOB) {
-
-            if (isChecked) {
-
-                lyDOB.setBackgroundColor(getResources().getColor(R.color.seperator));
-
-            } else {
-                lyDOB.setBackgroundColor(getResources().getColor(R.color.white));
-            }
-
-        }else if (buttonView.getId() == R.id.chkAddress) {
-
-            if (isChecked) {
-
-                lyAddress.setBackgroundColor(getResources().getColor(R.color.seperator));
-
-            } else {
-                lyAddress.setBackgroundColor(getResources().getColor(R.color.white));
-            }
-
-        }
-
-    }
 }

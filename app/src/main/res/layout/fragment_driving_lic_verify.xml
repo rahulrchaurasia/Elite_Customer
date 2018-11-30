@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/white"
-
-    tools:context="com.pb.elite.rto_fragment.AssistanObtainFragment">
+    tools:context="com.pb.elite.rto_fragment.DrivingLicVerifyFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
@@ -79,55 +77,6 @@
 
                         <include layout="@layout/layout_city_rto" />
 
-                        <LinearLayout
-                            android:id="@+id/lyLic"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/txtLic"
-                                    style="@style/TextViewStyle.MediumLarge"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:text="Driving License Number"
-
-                                    android:textColor="@color/black" />
-
-
-                                <ImageView
-                                    android:id="@+id/ivLic"
-                                    style="@style/TextViewStyle.MediumLarge"
-                                    android:layout_width="8dp"
-                                    android:layout_height="8dp"
-                                    android:layout_marginTop="5dp"
-                                   android:src="@drawable/star_img"
-                                    android:visibility="gone"
-                                    android:textSize="18sp" />
-                            </LinearLayout>
-
-                            <EditText
-                                android:id="@+id/etLic"
-                                style="@style/EditTextStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:minLines="1" />
-
-                        </LinearLayout>
 
 
                         <RelativeLayout
@@ -153,18 +102,19 @@
 
                                     android:gravity="left"
 
-                                    android:text="Select Correction Field: "
+                                    android:text="Driving Details"
                                     android:textColor="@color/black" />
 
                                 <ImageView
                                     android:id="@+id/ivTick"
                                     android:layout_marginLeft="10dp"
                                     style="@style/TextViewStyle.MediumRegular"
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp"
-                                    android:src="@drawable/star_img"
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:src="@drawable/tick"
+                                    android:visibility="gone"
 
-                                   />
+                                    />
 
 
                             </LinearLayout>
@@ -186,7 +136,7 @@
                             style="@style/LinearLayoutStyle"
                             android:animateLayoutChanges="true"
                             android:background="@drawable/custom_white"
-
+                           android:orientation="vertical"
                             android:visibility="visible">
 
                             <TextView
@@ -195,101 +145,48 @@
                                 style="@style/TextViewStyle.MediumLarge"
                                 android:padding="3dp"
                                 android:textColor="@color/black"
-                                android:text="Please checked and enter required correction field"/>
+                                android:text="Please enter all required details. "/>
 
-                            <LinearLayout
-                                android:id="@+id/lyName"
+                            <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                               android:layout_marginTop="5dp"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                android:hint="Enter Name">
 
-                                <CheckBox
-                                    android:id="@+id/chkName"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-
-                                <android.support.design.widget.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-
-                                    android:hint="Correction in Name">
+                            <EditText
+                                android:id="@+id/etName"
+                                style="@style/Style.edittext"
+                                android:drawableLeft="@drawable/ic_name"
+                                android:drawablePadding="10dp"
+                                android:maxLength="30" />
+                            </android.support.design.widget.TextInputLayout>
 
 
-                                    <EditText
-                                        android:id="@+id/etName"
-                                        style="@style/Style.edittext"
-                                        android:inputType="text"
-
-                                        android:maxLength="30"
-                                        android:lines="1"
-                                        android:maxLines="1" />
-                                </android.support.design.widget.TextInputLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/lyDOB"
+                            <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="Enter DOB">
 
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                <EditText
+                                    android:id="@+id/etDOB"
+                                    style="@style/Style.edittext"
+                                    android:drawableLeft="@drawable/ic_policy"
+                                    android:drawableRight="@drawable/vector_date"
+                                    android:drawablePadding="10dp"
+                                    android:maxLength="30" />
+                            </android.support.design.widget.TextInputLayout>
 
-                                <CheckBox
-                                    android:id="@+id/chkDOB"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-
-                                <android.support.design.widget.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-
-                                    android:hint="Correction in DOB">
-
-
-                                    <EditText
-                                        android:id="@+id/etDOB"
-                                        style="@style/Style.edittext"
-
-                                        android:drawableRight="@drawable/vector_date"
-                                        android:focusable="false"  />
-                                </android.support.design.widget.TextInputLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/lyAddress"
+                            <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="Enter Driving License">
 
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <CheckBox
-                                    android:id="@+id/chkAddress"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-
-                                <android.support.design.widget.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-
-                                    android:hint="Correction in Address">
-
-
-                                    <EditText
-                                        android:id="@+id/etAddress"
-                                        style="@style/Style.edittext"
-                                        android:inputType="text"
-
-                                        android:maxLength="40"
-                                        android:maxLines="1" />
-                                </android.support.design.widget.TextInputLayout>
-
-                            </LinearLayout>
-
+                                <EditText
+                                    android:id="@+id/etLic"
+                                    style="@style/Style.edittext"
+                                    android:drawableLeft="@drawable/ic_vehicle"
+                                    android:drawablePadding="10dp"
+                                    android:maxLength="30" />
+                            </android.support.design.widget.TextInputLayout>
 
                         </LinearLayout>
 
@@ -406,3 +303,4 @@
         android:text="Book Now" />
 
 </RelativeLayout>
+

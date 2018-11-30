@@ -18,7 +18,9 @@ import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
 import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
+import com.pb.elite.rto_fragment.DrivingLicVerifyFragment;
 import com.pb.elite.rto_fragment.RenewRcFragment;
+import com.pb.elite.rto_fragment.TransferVehicleFragment;
 import com.pb.elite.utility.Constants;
 
 public class ProductMainActivity extends BaseActivity {
@@ -69,10 +71,22 @@ public class ProductMainActivity extends BaseActivity {
         } else if ((productEntity.getProductcode().equalsIgnoreCase("2.1"))
                 || (productEntity.getProductcode().equalsIgnoreCase("2.2"))
                 || (productEntity.getProductcode().equalsIgnoreCase("2.3"))
-                || (productEntity.getProductcode().equalsIgnoreCase("2.4"))) {
+                || (productEntity.getProductcode().equalsIgnoreCase("2.4"))
+                || (productEntity.getProductcode().equalsIgnoreCase("3.1"))
+                || (productEntity.getProductcode().equalsIgnoreCase("3.2"))) {
             AssistanObtainFragment obtainFragment = new AssistanObtainFragment();
             obtainFragment.setArguments(getBundleRTO());
             return obtainFragment;
+        } else if ((productEntity.getProductcode().equalsIgnoreCase("4.1"))
+                || (productEntity.getProductcode().equalsIgnoreCase("4.2"))) {
+            TransferVehicleFragment transferVehicleFragment = new TransferVehicleFragment();
+            transferVehicleFragment.setArguments(getBundleRTO());
+            return transferVehicleFragment;
+        } else if ((productEntity.getProductcode().equalsIgnoreCase("5"))
+                || (productEntity.getProductcode().equalsIgnoreCase("7"))) {
+            DrivingLicVerifyFragment drivingLicVerifyFragment = new DrivingLicVerifyFragment();
+            drivingLicVerifyFragment.setArguments(getBundleRTO());
+            return drivingLicVerifyFragment;
         } else if (productEntity.getProductcode().equalsIgnoreCase("09")  //Miscellaneous
                 || productEntity.getProductcode().equalsIgnoreCase("09")) {
             return new ProvideVehicleDamageFragment();
@@ -130,9 +144,13 @@ public class ProductMainActivity extends BaseActivity {
 
     private void loadFragments(Fragment fragment) {
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frame_layout, fragment);
-        ft.commitAllowingStateLoss();
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_layout, fragment);
+            ft.commitAllowingStateLoss();
+        } else {
+            getCustomToast("Under Construction...");
+        }
     }
 
     //endregion
