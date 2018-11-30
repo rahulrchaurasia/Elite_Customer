@@ -1,6 +1,7 @@
 package com.pb.elite.rto_fragment;
 
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
@@ -12,11 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +52,11 @@ import com.pb.elite.rto_fragment.adapter.IRTOCity;
 import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
+import com.pb.elite.utility.DateTimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -68,12 +75,15 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     RTOServiceEntity serviceEntity;
 
+    ScrollView scrollView;
     LinearLayout lvLogo, llDocumentUpload, lyRTO, lyTAT;
     RelativeLayout rlDoc, rlCorrect;
-    LinearLayout lyLic;
-    ImageView ivLogo, ivClientLogo;
+    LinearLayout lyLic, llCorrection;
+    ImageView ivLogo, ivClientLogo, ivArrow, ivLic, ivTick;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
+    EditText etName, etDOB, etAddress;
+    CheckBox chkName, chkDOB, chkAddress;
 
     TextView textLicMandatory;
 
@@ -86,7 +96,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     String AMOUNT = "0";
     int OrderID = 0;
 
-    List<CorrectiontEnity> correctiontEnityList;
 
     // region Declaration
 
@@ -101,6 +110,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     CityMainAdapter cityMainAdapter;
     RtoMainAdapter rtoMainAdapter;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     //endregion
 
@@ -109,7 +119,31 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         // Required empty public constructor
     }
 
+    //region datepicker
 
+    protected View.OnClickListener datePickerDialog = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            if (view.getId() == R.id.etDOB) {
+                DateTimePicker.showKotakAgeDatePicker(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
+                        if (view1.isShown()) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            String currentDay = simpleDateFormat.format(calendar.getTime());
+                            etDOB.setText(currentDay);
+                        }
+                    }
+                });
+
+            }
+
+        }
+    };
+
+    //endregion
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,9 +153,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_assistan_obtain, container, false);
         initialize(view);
 
+        rlCorrect.setVisibility(View.GONE);
+        llCorrection.setVisibility(View.GONE);
 
-        correctiontEnityList = new ArrayList<CorrectiontEnity>();
-        getCorrectionField();
         setOnClickListener();
 
         dataBaseController = new DataBaseController(getActivity());
@@ -144,15 +178,16 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
                 if (PRODUCT_CODE.equalsIgnoreCase("2.1")) {
                     lyLic.setVisibility(View.GONE);
-                    rlCorrect.setVisibility(View.GONE);
+
 
                 } else if (PRODUCT_CODE.equalsIgnoreCase("2.2") || PRODUCT_CODE.equalsIgnoreCase("2.3")) {
                     lyLic.setVisibility(View.VISIBLE);
-                    rlCorrect.setVisibility(View.GONE);
+
 
                 } else if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
                     lyLic.setVisibility(View.VISIBLE);
                     rlCorrect.setVisibility(View.VISIBLE);
+
 
                 }
 
@@ -308,7 +343,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         prefManager = new PrefManager(getActivity());
 
-
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
 
         etRTO = (EditText) view.findViewById(R.id.etRTO);
@@ -324,7 +359,13 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         txtClientName = (TextView) view.findViewById(R.id.txtClientName);
         txtTAT = (TextView) view.findViewById(R.id.txtTAT);
 
-        textLicMandatory = (TextView) view.findViewById(R.id.textLicMandatory);
+        etName = (EditText) view.findViewById(R.id.etName);
+        etDOB = (EditText) view.findViewById(R.id.etDOB);
+        etAddress = (EditText) view.findViewById(R.id.etAddress);
+
+        chkName = (CheckBox) view.findViewById(R.id.chkName);
+        chkDOB = (CheckBox) view.findViewById(R.id.chkDOB);
+        chkAddress = (CheckBox) view.findViewById(R.id.chkAddress);
 
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
@@ -337,24 +378,21 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         lyLic = (LinearLayout) view.findViewById(R.id.lyLic);
 
+        llCorrection = (LinearLayout) view.findViewById(R.id.llCorrection);
+
         ivLogo = (ImageView) view.findViewById(R.id.ivLogo);
         ivClientLogo = (ImageView) view.findViewById(R.id.ivClientLogo);
+        ivArrow = (ImageView) view.findViewById(R.id.ivArrow);
+        ivLic = (ImageView) view.findViewById(R.id.ivLic);
+        ivTick = (ImageView) view.findViewById(R.id.ivTick);
 
 
     }
 
-
-    private void getCorrectionField() {
-        correctiontEnityList.clear();
-        correctiontEnityList.add(new CorrectiontEnity("0", "Name", false));
-        correctiontEnityList.add(new CorrectiontEnity("1", "DOB", false));
-        correctiontEnityList.add(new CorrectiontEnity("2", "Driving License", false));
-        correctiontEnityList.add(new CorrectiontEnity("2", "Address", false));
-
-    }
 
     private void setOnClickListener() {
 
+        etDOB.setOnClickListener(datePickerDialog);
         etCity.setFocusable(false);
         etCity.setClickable(true);
 
@@ -430,8 +468,36 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }
 
         if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
-            getCustomToast("Please Enter D");
+            getCustomToast("Please Enter Driving License");
             return false;
+        }
+
+        if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
+            if ((chkAddress.isChecked() == false) && (chkDOB.isChecked() == false) && (chkName.isChecked() == false)) {
+                getCustomToast("Please Select Atlease One Field");
+                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
+
+                return false;
+            }
+
+            if (chkName.isChecked()) {
+                getCustomToast("Please Enter Correction in Name");
+                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
+                return false;
+            }
+            if (chkDOB.isChecked()) {
+                getCustomToast("Please Enter Correction in DOB");
+                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
+                return false;
+            }
+            if (chkAddress.isChecked()) {
+                getCustomToast("Please Enter Correction in Name");
+                ivTick.setImageDrawable(getResources().getDrawable(R.drawable.star_img));
+                return false;
+            }
+
+            ivTick.setImageDrawable(getResources().getDrawable(R.drawable.tick));
+
         }
 
         return true;
@@ -483,64 +549,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         alertDialog.show();
         //  alertDialog.getWindow().setLayout(900, 600);
-
-
-    }
-
-
-    private void reqCorrectPopUp(List<CorrectiontEnity> correctiontEnityList) {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
-
-        RecyclerView rvProductDoc;
-        CorrectionAdapter mAdapter = new CorrectionAdapter(getActivity(), correctiontEnityList);
-        Button btnSubmit;
-        ImageView ivClose;
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_correct_doc, null);
-
-
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-
-        // set the custom dialog components - text, image and button
-
-        TextView txtHdr = (TextView) dialogView.findViewById(R.id.txtHdr);
-
-        btnSubmit = (Button) dialogView.findViewById(R.id.btnSubmit);
-        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
-
-        txtHdr.setText("Correction List");
-        btnSubmit.setVisibility(View.VISIBLE);
-        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
-        rvProductDoc.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvProductDoc.setLayoutManager(layoutManager);
-        rvProductDoc.setAdapter(mAdapter);
-
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        alertDialog.setCancelable(false);
-
-        alertDialog.show();
 
 
     }
@@ -599,8 +607,19 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
     @Override
     public void onClick(View view) {
+
+
         switch (view.getId()) {
 
 
@@ -611,7 +630,16 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
             case R.id.rlCorrect:
-                reqCorrectPopUp(correctiontEnityList);
+                setScrollatBottom();
+                if (llCorrection.getVisibility() == View.GONE) {
+                    llCorrection.setVisibility(View.VISIBLE);
+                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.up));
+
+                } else {
+                    llCorrection.setVisibility(View.GONE);
+                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down));
+                }
+
                 break;
 
             case R.id.btnBooked:
@@ -651,7 +679,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
                 break;
             case R.id.etCity:
-
+                setScrollatBottom();
                 if (listCityMain != null) {
 
                     getBottomSheetDialog("CITY");
@@ -660,7 +688,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 break;
 
             case R.id.etRTO:
-
+                setScrollatBottom();
                 if (!etCity.getText().toString().equalsIgnoreCase("")) {
 
                     getBottomSheetDialog("RTO");
