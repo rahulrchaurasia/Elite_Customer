@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/nav_header_vertical_spacing"
+    android:orientation="vertical">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sum Assured">
+
+        <EditText
+            android:id="@+id/etSumAssured"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date of Birth">
+
+        <EditText
+            android:id="@+id/etDOB"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="Covered For" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbIndividual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Individual" />
+
+        <RadioButton
+            android:id="@+id/rbFloater"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="Floater" />
+    </RadioGroup>
+
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="SUBMIT" />
+</LinearLayout>
