@@ -15,8 +15,13 @@ import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.non_rto_fragments.AnalysisHealthPlanFragment;
+import com.pb.elite.non_rto_fragments.ComplimentaryCreditReportFragment;
+import com.pb.elite.non_rto_fragments.LICChangeAssistanceFragment;
+import com.pb.elite.non_rto_fragments.PUCFragment;
 import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
+import com.pb.elite.non_rto_fragments.SpecialHealthTopUpFragment;
 import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
 import com.pb.elite.rto_fragment.RenewRcFragment;
@@ -52,6 +57,8 @@ public class ProductMainActivity extends BaseActivity {
 
             if (productEntity != null)
                 loadFragments(getFragmentFromProduct(productEntity));
+            else
+                getCustomToast("Under construction..");
 
 
         }
@@ -81,21 +88,21 @@ public class ProductMainActivity extends BaseActivity {
         } else if (productEntity.getProductcode().equalsIgnoreCase("10")) {
             return new ProvideHospitalizationFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("11")) {
-            return new ProvideVehicleDamageFragment();
+            return new PUCFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("12")) {
-            return new ProvideVehicleDamageFragment();
+            return new SpecialHealthTopUpFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("13")) {
-            return new ProvideVehicleDamageFragment();
+            return null;
         } else if (productEntity.getProductcode().equalsIgnoreCase("14")) {
-            return new ProvideVehicleDamageFragment();
+            return new AnalysisHealthPlanFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("15")) {
-            return new ProvideVehicleDamageFragment();
+            return new LICChangeAssistanceFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("16")) {
-            return new ProvideVehicleDamageFragment();
+            return null;
         } else if (productEntity.getProductcode().equalsIgnoreCase("17")) {
-            return new ProvideVehicleDamageFragment();
+            return new ComplimentaryCreditReportFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
-            return new ProvideVehicleDamageFragment();
+            return null;
         }
 
         return null;
@@ -132,9 +139,13 @@ public class ProductMainActivity extends BaseActivity {
 
     private void loadFragments(Fragment fragment) {
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frame_layout, fragment);
-        ft.commitAllowingStateLoss();
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_layout, fragment);
+            ft.commitAllowingStateLoss();
+        } else {
+            getCustomToast("Under Construction...");
+        }
     }
 
     //endregion
