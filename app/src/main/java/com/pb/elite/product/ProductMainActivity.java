@@ -15,6 +15,7 @@ import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
 import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
@@ -49,7 +50,8 @@ public class ProductMainActivity extends BaseActivity {
                 productEntity = extras.getParcelable(Constants.SUB_PRODUCT_DATA);
             }
 
-            loadFragments(getFragmentFromProduct(productEntity));
+            if (productEntity != null)
+                loadFragments(getFragmentFromProduct(productEntity));
 
 
         }
@@ -77,7 +79,7 @@ public class ProductMainActivity extends BaseActivity {
                 || productEntity.getProductcode().equalsIgnoreCase("09")) {
             return new ProvideVehicleDamageFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("10")) {
-            return new ProvideVehicleDamageFragment();
+            return new ProvideHospitalizationFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("11")) {
             return new ProvideVehicleDamageFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("12")) {

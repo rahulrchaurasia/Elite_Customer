@@ -10,60 +10,10 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Vehicle No.">
+        android:hint="Name Of Patient">
 
         <EditText
-            android:id="@+id/etVehicleNo"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Accident Date">
-
-            <EditText
-                android:id="@+id/etDate"
-                style="@style/Style.edittext"
-                android:layout_width="match_parent"
-                android:focusable="false"
-                android:padding="@dimen/activity_horizontal_margin" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Accident Time">
-
-            <EditText
-                android:id="@+id/etTime"
-                style="@style/Style.edittext"
-                android:layout_width="match_parent"
-                android:focusable="false"
-                android:padding="@dimen/activity_horizontal_margin" />
-
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Place Of Accident">
-
-        <EditText
-            android:id="@+id/etPlaceOfAccident"
+            android:id="@+id/etPatientName"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
@@ -74,30 +24,32 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="City">
+        android:hint="Hospital Name">
 
         <EditText
-            android:id="@+id/etCity"
+            android:id="@+id/etHospitalNmae"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="RTO">
+        android:hint="Hospitalization Date">
 
         <EditText
-            android:id="@+id/etRTO"
+            android:id="@+id/etHospitalizationDate"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
+            android:focusable="false"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

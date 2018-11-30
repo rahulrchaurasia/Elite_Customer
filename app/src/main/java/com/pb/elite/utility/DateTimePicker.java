@@ -3,6 +3,7 @@ package com.pb.elite.utility;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.text.format.DateFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +21,14 @@ public class DateTimePicker {
 
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
+
+        dialog.show();
+    }
+
+    public static void showOpenDatePickerDialog(Context mContex, DatePickerDialog.OnDateSetListener callBack) {
+        final Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog dialog = new DatePickerDialog(mContex, callBack, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         dialog.show();
     }
@@ -63,10 +72,11 @@ public class DateTimePicker {
         final Calendar c = Calendar.getInstance();
         // Current Hour
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(mContex, callBack,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(mContex,
+                callBack,
                 c.get(Calendar.HOUR_OF_DAY),
                 c.get(Calendar.HOUR),
-                true);
+                DateFormat.is24HourFormat(mContex));
 
         timePickerDialog.show();
     }
@@ -381,7 +391,7 @@ public class DateTimePicker {
         calendar.add(Calendar.MONTH, -6);
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
-       // dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        // dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
 
         dialog.show();
     }
