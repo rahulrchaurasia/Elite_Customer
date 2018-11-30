@@ -1,0 +1,57 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_margin="@dimen/nav_header_vertical_spacing"
+android:orientation="vertical"
+tools:context="com.pb.elite.non_rto_fragments.ComplimentaryloanauditFragment">
+
+
+<android.support.design.widget.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Pan No.">
+
+    <EditText
+        android:id="@+id/etpanNo"
+        style="@style/Style.edittext"
+        android:layout_width="match_parent"
+        android:focusableInTouchMode="true"
+        android:padding="@dimen/activity_horizontal_margin" />
+
+</android.support.design.widget.TextInputLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Name">
+
+        <EditText
+            android:id="@+id/etName"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>
+
+
+<Button
+    style="@style/ButtonStyle"
+    android:id="@+id/submitbtn"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:text="SUBMIT" />
+</LinearLayout>
