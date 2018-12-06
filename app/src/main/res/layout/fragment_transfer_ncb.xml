@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/nav_header_vertical_spacing"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment">
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name of Proposer">
+        android:hint="Vehicle No.">
 
         <EditText
-            android:id="@+id/etNameOfProposer"
+            android:id="@+id/etVehicleNo"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
@@ -20,32 +21,17 @@
 
     </android.support.design.widget.TextInputLayout>
 
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Sum Assured">
+        android:hint="Make">
 
         <EditText
-            android:id="@+id/etSumAssured"
+            android:id="@+id/etMake"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
-            android:inputType="number"
-            android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Date of Birth">
-
-        <EditText
-            android:id="@+id/etDOB"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusable="false"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
@@ -80,52 +66,34 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Covered For" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rbIndividual"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Individual" />
-
-        <RadioButton
-            android:id="@+id/rbFloater"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:text="Floater" />
-    </RadioGroup>
-
-
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="No of Family Members">
+        android:hint="RTO">
 
         <EditText
-            android:id="@+id/etNoOfFamilyMember"
+            android:id="@+id/etRTO"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insurer Company Name">
+
+        <EditText
+            android:id="@+id/etInsCompanyName"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         style="@style/ButtonStyle"

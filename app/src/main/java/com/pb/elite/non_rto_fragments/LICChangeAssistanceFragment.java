@@ -27,7 +27,7 @@ public class LICChangeAssistanceFragment extends BaseFragment implements View.On
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
-    EditText etDOB;
+   // EditText etDOB;
 
     public LICChangeAssistanceFragment() {
         // Required empty public constructor
@@ -38,7 +38,7 @@ public class LICChangeAssistanceFragment extends BaseFragment implements View.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_analysis_health_plan, container, false);
+        View view = inflater.inflate(R.layout.fragment_lic_change_assistance, container, false);
         return view;
     }
 
@@ -49,19 +49,20 @@ public class LICChangeAssistanceFragment extends BaseFragment implements View.On
 
         init(view);
 
-        setListener();
+       // setListener();
 
         super.onViewCreated(view, savedInstanceState);
 
     }
 
     private void setListener() {
-        etDOB.setOnClickListener(this);
+      //  etDOB.setOnClickListener(this);
 
     }
 
     private void init(View view) {
-        etDOB = view.findViewById(R.id.etDOB);
+
+        //etDOB = view.findViewById(R.id.etDOB);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class LICChangeAssistanceFragment extends BaseFragment implements View.On
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(year, monthOfYear, dayOfMonth);
                         String currentDay = simpleDateFormat.format(calendar.getTime());
-                        etDOB.setText(currentDay);
+                      //  etDOB.setText(currentDay);
                     }
                 }
             });
