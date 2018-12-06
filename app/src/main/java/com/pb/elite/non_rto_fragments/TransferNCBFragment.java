@@ -2,6 +2,7 @@ package com.pb.elite.non_rto_fragments;
 
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
@@ -22,14 +24,14 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ComplimentaryCreditReportFragment extends BaseFragment implements View.OnClickListener {
+public class TransferNCBFragment extends BaseFragment implements View.OnClickListener {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
-    EditText etDOB;
+    EditText etDate, etTime;
 
-    public ComplimentaryCreditReportFragment() {
+    public TransferNCBFragment() {
         // Required empty public constructor
     }
 
@@ -38,7 +40,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_complimentary_credit_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_transfer_ncb, container, false);
         return view;
     }
 
@@ -56,18 +58,19 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
     }
 
     private void setListener() {
-        etDOB.setOnClickListener(this);
-
+        etDate.setOnClickListener(this);
+        etTime.setOnClickListener(this);
     }
 
     private void init(View view) {
-        etDOB = view.findViewById(R.id.etDOB);
+        etDate = view.findViewById(R.id.etDate);
+        etTime = view.findViewById(R.id.etTime);
     }
 
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.etDOB) {
+        if (v.getId() == R.id.etDate) {
 
             DateTimePicker.showOpenDatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -76,7 +79,26 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(year, monthOfYear, dayOfMonth);
                         String currentDay = simpleDateFormat.format(calendar.getTime());
-                        etDOB.setText(currentDay);
+                        etDate.setText(currentDay);
+                    }
+                }
+            });
+        } else if (v.getId() == R.id.etTime) {
+
+            DateTimePicker.showTimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    if (view.isShown()) {
+                        String item = "";
+
+                        if (hourOfDay >= 12 && minute > 0)
+                            item = " PM";
+                        else
+                            item = " AM";
+
+
+                        etTime.setText("" + hourOfDay + " : " + minute + item);
+
                     }
                 }
             });

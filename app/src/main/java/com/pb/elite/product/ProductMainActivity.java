@@ -22,6 +22,7 @@ import com.pb.elite.non_rto_fragments.PUCFragment;
 import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
 import com.pb.elite.non_rto_fragments.SpecialHealthTopUpFragment;
+import com.pb.elite.non_rto_fragments.TransferNCBFragment;
 import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
 import com.pb.elite.rto_fragment.DrivingLicVerifyFragment;
@@ -106,7 +107,7 @@ public class ProductMainActivity extends BaseActivity {
         } else if (productEntity.getProductcode().equalsIgnoreCase("12")) {
             return new SpecialHealthTopUpFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("13")) {
-            return null;
+            return new TransferNCBFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("14")) {
             return new AnalysisHealthPlanFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("15")) {
