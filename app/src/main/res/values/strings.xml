@@ -26,6 +26,15 @@
 
     <string name="two_four_Wheeler">Four Wheeler And Two Wheeler </string>
 
+    <array name="array_employee_type">
+        <item>Salaried</item>
+        <item>Self Employed</item>
+        <item>Professional</item>
+
+
+
+    </array>
+
     <array name="CorrectionType">
         <item>Name</item>
         <item>DOB</item>

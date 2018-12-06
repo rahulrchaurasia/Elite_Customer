@@ -5,14 +5,28 @@
     android:layout_margin="@dimen/nav_header_vertical_spacing"
     android:orientation="vertical">
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Proposal Name">
+
+        <EditText
+            android:id="@+id/etNameOfProposer"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name">
+        android:hint="Nominee Name">
 
         <EditText
-            android:id="@+id/etName"
+            android:id="@+id/etNomineeName"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
@@ -23,10 +37,10 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Pan No">
+        android:hint="Proposal Relation With Nominee">
 
         <EditText
-            android:id="@+id/etPanNo"
+            android:id="@+id/etRelationNominee"
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
@@ -77,6 +91,7 @@
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
+
 
     <Button
         style="@style/ButtonStyle"
