@@ -103,12 +103,10 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     String AMOUNT = "0";
     int OrderID = 0;
 
-    String CITY_ID;
+    int CITY_ID;
     // region Declaration
 
     BottomSheetDialog mBottomSheetDialog;
-
-    List<RtoCityMain> RtoList;
 
 
     CityMainEntity cityMainEntity;
@@ -224,9 +222,13 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
         ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
 
-
         rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvRTO.setHasFixedSize(true);
+
+        rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, cityMainEntity.getRTOList(), this);
+        rvRTO.setAdapter(rtoMainAdapter);
+        rvRTO.setVisibility(View.VISIBLE);
+
 
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,16 +242,17 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         });
 
 
-        txtHdr.setText("Select RTO");
-        rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, RtoList, this);
-        rvRTO.setAdapter(rtoMainAdapter);
-        rvRTO.setVisibility(View.VISIBLE);
+            txtHdr.setText("Select RTO");
+
+
+
 
 
         mBottomSheetDialog.show();
 
 
     }
+
 
 
     //endregion
@@ -292,7 +295,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         prefManager = new PrefManager(getActivity());
 
-        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+       // scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
 
         etRTO = (EditText) view.findViewById(R.id.etRTO);
@@ -561,14 +564,14 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-    private void setScrollatBottom() {
-        scrollView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        }, 1000);
-    }
+//    private void setScrollatBottom() {
+//        scrollView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//            }
+//        }, 1000);
+//    }
 
     @Override
     public void onClick(View view) {
@@ -593,7 +596,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                     llCorrection.setVisibility(View.GONE);
                     ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down));
                 }
-                setScrollatBottom();
+              //  setScrollatBottom();
                 break;
 
             case R.id.btnBooked:
@@ -621,7 +624,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 requestEntity.setVehicleno("");
                 requestEntity.setPucexpirydate("");
                 requestEntity.setRto_id("" + rtoID);
-                requestEntity.setCityid("" + Integer.valueOf(CITY_ID));
+                requestEntity.setCityid("" + CITY_ID);
                 requestEntity.setAmount("" + AMOUNT);
                 requestEntity.setPayment_status("0");
                 requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
@@ -640,7 +643,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 break;
 
             case R.id.etRTO:
-                setScrollatBottom();
+               // setScrollatBottom();
                 if (!etCity.getText().toString().equalsIgnoreCase("")) {
 
                     getBottomSheetDialog();
@@ -717,8 +720,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             if (data != null) {
 
                 cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                 RtoList = cityMainEntity.getRTOList();
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID = cityMainEntity.getCity_id();
                 etCity.setText(cityMainEntity.getCityname());
 
             }
