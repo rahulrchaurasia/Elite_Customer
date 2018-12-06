@@ -253,15 +253,15 @@ public class RegisterController implements IRegister {
 
 
     @Override
-    public void getLogin(String mobile, String password, String token,String devId,final IResponseSubcriber iResponseSubcriber) {
+    public void getLogin(String mobile, String password, String token, String devId, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
         body.put("mobile", mobile);
         body.put("password", password);
-        body.put("device_token",token);
-        body.put("device_id",devId);
-        body.put("user_type_id","1");
+        body.put("device_token", token);
+        body.put("device_id", devId);
+        body.put("user_type_id", "1");
 
         registerQuotesNetworkService.getLogin(body).enqueue(new Callback<LoginResponse>() {
             @Override
@@ -590,7 +590,7 @@ public class RegisterController implements IRegister {
     }
 
     @Override
-    public void getUserConstatnt( final IResponseSubcriber iResponseSubcriber) {
+    public void getUserConstatnt(final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
@@ -603,27 +603,31 @@ public class RegisterController implements IRegister {
 
                     if (response.isSuccessful()) {
                         new PrefManager(mContext).storeUserConstatnt(response.body().getData().get(0));
-                        iResponseSubcriber.OnSuccess(response.body(), "");
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
                     }
 
                 } else {
                     //failure
-                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
                 }
             }
 
             @Override
             public void onFailure(Call<UserConsttantResponse> call, Throwable t) {
-                if (t instanceof ConnectException) {
-                    iResponseSubcriber.OnFailure(t);
-                } else if (t instanceof SocketTimeoutException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof UnknownHostException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof NumberFormatException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
-                } else {
-                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
                 }
             }
         });
@@ -641,27 +645,31 @@ public class RegisterController implements IRegister {
 
                     if (response.isSuccessful()) {
                         new PrefManager(mContext).storeCityData(response.body().getData());
-                        iResponseSubcriber.OnSuccess(response.body(), "");
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
                     }
 
                 } else {
                     //failure
-                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
                 }
             }
 
             @Override
             public void onFailure(Call<CityMainResponse> call, Throwable t) {
-                if (t instanceof ConnectException) {
-                    iResponseSubcriber.OnFailure(t);
-                } else if (t instanceof SocketTimeoutException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof UnknownHostException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof NumberFormatException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
-                } else {
-                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
                 }
             }
         });

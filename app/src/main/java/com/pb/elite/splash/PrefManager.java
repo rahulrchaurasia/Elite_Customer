@@ -113,8 +113,8 @@ public class PrefManager {
                 new TypeToken<ArrayList<CityMainEntity>>() {
                 }.getType());
 
-            editor.putString(CITY_CONSTATNT, listCity);
-            return editor.commit();
+        editor.putString(CITY_CONSTATNT, listCity);
+        return editor.commit();
 
 
     }
@@ -122,12 +122,13 @@ public class PrefManager {
     public List<CityMainEntity> getCityData() {
         String listCity = pref.getString(CITY_CONSTATNT, "");
         if (listCity.length() > 0) {
-            Type listType = new TypeToken<List<CityMainEntity>>() {}.getType();
+            Type listType = new TypeToken<List<CityMainEntity>>() {
+            }.getType();
             return (List<CityMainEntity>) new Gson().fromJson(listCity, listType);
 
         } else {
 
-            return    new ArrayList<CityMainEntity>();
+            return new ArrayList<CityMainEntity>();
         }
     }
 
