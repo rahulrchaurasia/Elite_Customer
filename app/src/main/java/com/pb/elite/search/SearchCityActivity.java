@@ -191,6 +191,8 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
                 if (((CityMainResponse) response).getData() != null) {
 
                     CityList = ((CityMainResponse) response).getData();
+                    mAdapter = new SearchCityAdapter(SearchCityActivity.this,CityList);
+                    rvCity.setAdapter(mAdapter);
                 }
             }
         }
