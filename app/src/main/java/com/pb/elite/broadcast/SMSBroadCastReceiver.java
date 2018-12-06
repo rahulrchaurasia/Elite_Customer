@@ -29,10 +29,13 @@ public class SMSBroadCastReceiver extends BroadcastReceiver {
 
                 String Sender = smsm[i].getOriginatingAddress();
                 //Check here sender is yours
-                Intent smsIntent = new Intent("otp");
-                smsIntent.putExtra("message", sms_str);
 
-                LocalBroadcastManager.getInstance(context).sendBroadcast(smsIntent);
+                if(Sender.toUpperCase().contains("RUPEEBOSS")) {
+                    Intent smsIntent = new Intent("otp");
+                    smsIntent.putExtra("message", sms_str);
+
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(smsIntent);
+                }
 
             }
         }

@@ -50,6 +50,18 @@
 
         </RelativeLayout>
 
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:clickable="true" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@color/search_gray"
+            />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvCity"
             android:layout_width="match_parent"
@@ -66,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:paddingBottom="5dp"
+            android:scrollbars="vertical"
             android:visibility="visible">
 
         </android.support.v7.widget.RecyclerView>

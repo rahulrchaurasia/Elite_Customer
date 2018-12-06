@@ -58,7 +58,7 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
         @POST("/api/rto-byproducts")
         Call<RtoLocationReponse> getRTOLocation(@Body HashMap<String, String> body);   // Not in Used
 
-        @POST("/api/get-rto-data")
+        @POST("/api/get-service-list")
         Call<ServiceListResponse> getRtoAndNonRto();     //used
 
         @POST("/api/get-rto-list")

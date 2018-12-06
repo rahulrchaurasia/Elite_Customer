@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pb.elite.R;
+import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
 import com.pb.elite.rto_fragment.RenewRcFragment;
@@ -23,11 +24,11 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
 
     Fragment mContext;
 
-    List<RtoProductEntity> rtoProductDisplayList;
+    List<RtoCityMain> rtoProductDisplayList;
 
     IRTOCity iRTOCity;
 
-    public RtoMainAdapter(Fragment mContext, List<RtoProductEntity> rtoProductDisplayList, IRTOCity irtoCity) {
+    public RtoMainAdapter(Fragment mContext, List<RtoCityMain> rtoProductDisplayList, IRTOCity irtoCity) {
         this.mContext = mContext;
         this.rtoProductDisplayList = rtoProductDisplayList;
         iRTOCity = irtoCity;
@@ -60,19 +61,15 @@ public class RtoMainAdapter extends RecyclerView.Adapter<RtoMainAdapter.RtoItem>
     @Override
     public void onBindViewHolder(RtoMainAdapter.RtoItem holder, int position) {
 
-        final RtoProductEntity rtoEntity = rtoProductDisplayList.get(position);
+        final RtoCityMain rtoEntity = rtoProductDisplayList.get(position);
 
         holder.txtTitle.setText("" + rtoEntity.getSeries_no() + "-" + rtoEntity.getRto_location());
 
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (mContext instanceof RenewRcFragment) {
-                    ((RenewRcFragment) mContext).getRTOBottomSheet(rtoEntity);
-                } else if (mContext instanceof AssistanObtainFragment) {
-                    ((AssistanObtainFragment) mContext).getRTOBottomSheet(rtoEntity);
-                }*/
-                iRTOCity.getRTOCity(null,rtoEntity);
+
+                iRTOCity.getRTOCity(rtoEntity);
 
             }
         });

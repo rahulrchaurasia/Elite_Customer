@@ -11,6 +11,7 @@ import com.pb.elite.core.requestmodel.RegisterRequest;
 import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.AddUserResponse;
 import com.pb.elite.core.response.CarMasterResponse;
+import com.pb.elite.core.response.CityMainResponse;
 import com.pb.elite.core.response.CommonResponse;
 import com.pb.elite.core.response.DBVersionRespone;
 import com.pb.elite.core.response.GetOtpResponse;
@@ -627,6 +628,43 @@ public class RegisterController implements IRegister {
             }
         });
 
+    }
+
+    @Override
+    public void getCityMainMaster(final IResponseSubcriber iResponseSubcriber) {
+
+
+        registerQuotesNetworkService.getCityMainMaster().enqueue(new Callback<CityMainResponse>() {
+            @Override
+            public void onResponse(Call<CityMainResponse> call, Response<CityMainResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        new PrefManager(mContext).storeCityData(response.body().getData());
+                        iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CityMainResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
     }
 
 

@@ -5,32 +5,44 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pb.elite.R;
+import com.pb.elite.core.model.MakeEntity;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
 import com.pb.elite.rto_fragment.RenewRcFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by IN-RB on 26-11-2018.
  */
 
-public class CityMainAdapter extends RecyclerView.Adapter<CityMainAdapter.CityItem> {
+public class CityMainAdapter extends RecyclerView.Adapter<CityMainAdapter.CityItem> implements Filterable {
 
 
     Fragment mContext;
 
     List<RtoProductDisplayMainEntity> rtoCityList;
     IRTOCity iRTOCity;
-
+    ValueFilter valueFilter;
     public CityMainAdapter(Fragment mContext, List<RtoProductDisplayMainEntity> rtoCityList, IRTOCity irtoCity) {
         this.mContext = mContext;
         this.rtoCityList = rtoCityList;
         iRTOCity = irtoCity;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (valueFilter == null) {
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
     }
 
     public class CityItem extends RecyclerView.ViewHolder {
@@ -59,18 +71,13 @@ public class CityMainAdapter extends RecyclerView.Adapter<CityMainAdapter.CityIt
     public void onBindViewHolder(CityMainAdapter.CityItem holder, int position) {
         final RtoProductDisplayMainEntity cityEntity = rtoCityList.get(position);
 
-        holder.txtTitle.setText("" + cityEntity.getCityname());
+       // holder.txtTitle.setText("" + cityEntity.getCityname());
 
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (mContext instanceof RenewRcFragment) {
-                    ((RenewRcFragment) mContext).getCityBottomSheet(cityEntity);
-                } else if (mContext instanceof AssistanObtainFragment) {
-                    ((AssistanObtainFragment) mContext).getCityBottomSheet(cityEntity);
-                }*/
 
-                iRTOCity.getRTOCity(cityEntity, null);
+               // iRTOCity.getRTOCity(cityEntity, null);
             }
         });
 
@@ -86,4 +93,42 @@ public class CityMainAdapter extends RecyclerView.Adapter<CityMainAdapter.CityIt
     public int getItemCount() {
         return rtoCityList.size();
     }
+
+    public Fragment getmContext() {
+        return mContext;
+    }
+
+    public class ValueFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+
+            if (constraint != null && constraint.length() > 0) {
+                List<RtoProductDisplayMainEntity> filterList = new ArrayList<>();
+                for (int i = 0; i < rtoCityList.size(); i++) {
+//                    if ((rtoCityList.get(i).getCityname().toUpperCase()).contains(constraint.toString().toUpperCase())) {
+//                        filterList.add(rtoCityList.get(i));
+//                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            } else {
+                results.count = rtoCityList.size();
+                results.values = rtoCityList;
+            }
+            return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            rtoCityList = (List<RtoProductDisplayMainEntity>) results.values;
+            notifyDataSetChanged();
+        }
+
+
+    }
+
+
 }

@@ -33,6 +33,7 @@ import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
@@ -232,8 +233,8 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
             txtHdr.setText("Select RTO");
 
-            rtoProductDisplayList = rtoProductDisplayMainEntity.getRtolist();
-            rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, rtoProductDisplayList, this);
+           // rtoProductDisplayList = rtoProductDisplayMainEntity.getRtolist();
+         //   rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, rtoProductDisplayList, this);
             rvRTO.setAdapter(rtoMainAdapter);
             rvCity.setVisibility(View.GONE);
             rvRTO.setVisibility(View.VISIBLE);
@@ -256,22 +257,23 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         rtoProductDisplayMainEntity = rtoPrdEntity;
 
         if (rtoProductDisplayMainEntity != null) {
-            if (rtoProductDisplayMainEntity.getCity_id() == 2653) {
-
-                etRTO_OTH.setVisibility(View.VISIBLE);
-                etRTO.setVisibility(View.GONE);
-                lvLogo.setVisibility(View.VISIBLE);
-                setRtoTAT(rtoProductDisplayMainEntity);
-
-
-            } else {
-                etRTO.setVisibility(View.VISIBLE);
-                etRTO_OTH.setVisibility(View.GONE);
-                lvLogo.setVisibility(View.VISIBLE);
-                setRtoTAT(rtoProductDisplayMainEntity);
-
-
-            }
+//            if (rtoProductDisplayMainEntity.getCity_id() == 2653) {
+//
+//                etRTO_OTH.setVisibility(View.VISIBLE);
+//                etRTO.setVisibility(View.GONE);
+//                lvLogo.setVisibility(View.VISIBLE);
+//                setRtoTAT(rtoProductDisplayMainEntity);
+//
+//
+//            }
+//            else {
+//                etRTO.setVisibility(View.VISIBLE);
+//                etRTO_OTH.setVisibility(View.GONE);
+//                lvLogo.setVisibility(View.VISIBLE);
+//                setRtoTAT(rtoProductDisplayMainEntity);
+//
+//
+//            }
         }
     }
 
@@ -360,32 +362,32 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
     }
 
-    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
-
-                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
-                    list.remove(j);
-                    j--;
-                }
-            }
-        }
-        return list;
-    }
+//    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
+//        for (int i = 0; i < list.size(); i++) {
+//            for (int j = i + 1; j < list.size(); j++) {
+//
+//                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
+//                    list.remove(j);
+//                    j--;
+//                }
+//            }
+//        }
+//        return list;
+//    }
 
 
     private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
-        if (rtoProd.getPrice() != null) {
-            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
-            AMOUNT = rtoProd.getPrice().trim();
-        }
-
-        if (rtoProd.getTAT() != null) {
-            lyTAT.setVisibility(View.VISIBLE);
-            txtTAT.setText("" + rtoProd.getTAT());
-        } else {
-            lyTAT.setVisibility(View.GONE);
-        }
+//        if (rtoProd.getPrice() != null) {
+//            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
+//            AMOUNT = rtoProd.getPrice().trim();
+//        }
+//
+//        if (rtoProd.getTAT() != null) {
+//            lyTAT.setVisibility(View.VISIBLE);
+//            txtTAT.setText("" + rtoProd.getTAT());
+//        } else {
+//            lyTAT.setVisibility(View.GONE);
+//        }
 
         Glide.with(getActivity())
                 .load(rtoProd.getProduct_logo())
@@ -486,7 +488,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
 
                     PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                    listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
+                  //  listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
 
 
                 }
@@ -560,7 +562,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
                 }
 
                 //region RTO Payment
-                int cityID = rtoProductDisplayMainEntity.getCity_id();
+              //  int cityID = rtoProductDisplayMainEntity.getCity_id();
                 int rtoID = rtoMainEntity.getRto_id();
                 InsertOrderRequestEntity requestEntity = new InsertOrderRequestEntity();
 
@@ -578,7 +580,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
                 requestEntity.setVehicleno("");
                 requestEntity.setPucexpirydate("");
                 requestEntity.setRto_id("" + rtoID);
-                requestEntity.setCityid("" + cityID);
+               // requestEntity.setCityid("" + cityID);
                 requestEntity.setAmount("" + AMOUNT);
                 requestEntity.setPayment_status("0");
                 requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
@@ -613,28 +615,21 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     }
 
     @Override
-    public void getRTOCity(RtoProductDisplayMainEntity e, RtoProductEntity entity) {
+    public void getRTOCity( RtoCityMain entity) {
 
         if (mBottomSheetDialog != null) {
 
-            if (mBottomSheetDialog.isShowing()) {
-
-                if (e != null) {
-                    rtoProductDisplayMainEntity = e;
-
-                    setCityData(rtoProductDisplayMainEntity.getCityname(), rtoProductDisplayMainEntity);
-
-                    mBottomSheetDialog.dismiss();
-
-                } else if (entity != null) {
-
-                    rtoMainEntity = entity;
-
-                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
-                    mBottomSheetDialog.dismiss();
-                }
-
-            }
+//            if (mBottomSheetDialog.isShowing()) {
+//
+//                if (entity != null) {
+//
+//                    rtoMainEntity = entity;
+//
+//                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
+//                    mBottomSheetDialog.dismiss();
+//                }
+//
+//            }
 
         }
     }

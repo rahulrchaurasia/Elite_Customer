@@ -129,6 +129,61 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/lyVehicleType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:layout_marginLeft="10dp"
+                                android:text="Vehicle Type " />
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="left"
+                                android:layout_gravity="left"
+                                android:orientation="horizontal">
+
+
+                                <RadioGroup
+                                    android:id="@+id/radioGroup"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+                                    android:orientation="vertical">
+
+                                    <RadioButton
+                                        android:id="@+id/rbIndividual"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:checked="true"
+                                        android:text="@string/four_Wheeler" />
+
+                                    <RadioButton
+                                        android:id="@+id/rbFloater"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_weight="1"
+                                        android:text="@string/two_four_Wheeler"  />
+                                </RadioGroup>
+
+
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
 
                         <RelativeLayout
                             android:id="@+id/rlCorrect"
@@ -156,14 +211,15 @@
                                     android:text="Select Correction Field: "
                                     android:textColor="@color/black" />
 
-                                <ImageView
+                                <TextView
                                     android:id="@+id/ivTick"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginLeft="5dp"
                                     style="@style/TextViewStyle.MediumRegular"
                                     android:layout_width="10dp"
                                     android:layout_height="10dp"
-                                    android:src="@drawable/star_img"
-
+                                    android:text="*"
+                                    android:layout_gravity="top"
+                                    android:textColor="@color/red_nav"
                                    />
 
 
@@ -285,6 +341,7 @@
                                         android:inputType="text"
 
                                         android:maxLength="40"
+                                        android:lines="1"
                                         android:maxLines="1" />
                                 </android.support.design.widget.TextInputLayout>
 

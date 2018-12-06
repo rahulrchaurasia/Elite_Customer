@@ -156,7 +156,9 @@
                                 android:id="@+id/etName"
                                 style="@style/Style.edittext"
                                 android:drawableLeft="@drawable/ic_name"
-                                android:drawablePadding="10dp"
+                                android:drawablePadding="5dp"
+                                android:lines="1"
+                                android:maxLines="1"
                                 android:maxLength="30" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -169,9 +171,9 @@
                                 <EditText
                                     android:id="@+id/etDOB"
                                     style="@style/Style.edittext"
-                                    android:drawableLeft="@drawable/ic_policy"
-                                    android:drawableRight="@drawable/vector_date"
-                                    android:drawablePadding="10dp"
+                                    android:drawableLeft="@drawable/vector_date"
+                                    android:drawablePadding="5dp"
+                                    android:focusable="false"
                                     android:maxLength="30" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -184,7 +186,9 @@
                                     android:id="@+id/etLic"
                                     style="@style/Style.edittext"
                                     android:drawableLeft="@drawable/ic_vehicle"
-                                    android:drawablePadding="10dp"
+                                    android:drawablePadding="5dp"
+                                    android:lines="1"
+                                    android:maxLines="1"
                                     android:maxLength="30" />
                             </android.support.design.widget.TextInputLayout>
 

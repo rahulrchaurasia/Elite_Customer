@@ -19,6 +19,7 @@ import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.register.RegisterController;
 import com.pb.elite.core.model.AllCityEntity;
+import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.database.DataBaseController;
@@ -35,7 +36,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
     TextView txtGroup;
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     DataBaseController dataBaseController;
-    List<AllCityEntity> allCityEntityList;
+
 
     int CityVersion;
 
@@ -50,7 +51,6 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
         prefManager = new PrefManager(this);
         dataBaseController = new DataBaseController(SplashScreenActivity.this);
-        allCityEntityList = new ArrayList<AllCityEntity>();
 
         verify();
 
@@ -68,10 +68,10 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
     private void fetchMasters() {
 
-        allCityEntityList = dataBaseController.getAllCity();
 
-        if (allCityEntityList.size() == 0) {     // step 4 (if db version is below than city list is already filled above)
-            new ProductController(SplashScreenActivity.this).getCityMaster(SplashScreenActivity.this);
+
+        if (prefManager.getCityData().size() == 0) {
+            new RegisterController(SplashScreenActivity.this).getCityMainMaster(SplashScreenActivity.this);
         }
 
         if (prefManager.getMake() == null) {

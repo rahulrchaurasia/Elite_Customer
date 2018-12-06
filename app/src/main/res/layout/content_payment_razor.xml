@@ -122,7 +122,7 @@
                     android:background="@drawable/green_button"
                     android:textSize="14sp"
                     android:textColor="#fcfcfc"
-                    android:text="Purchase"
+                    android:text="BUY NOW"
                     />
 
             </LinearLayout>
