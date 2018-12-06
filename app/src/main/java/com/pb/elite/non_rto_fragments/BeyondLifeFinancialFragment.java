@@ -22,14 +22,14 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ComplimentaryCreditReportFragment extends BaseFragment implements View.OnClickListener {
+public class BeyondLifeFinancialFragment extends BaseFragment implements View.OnClickListener {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
     EditText etDOB;
 
-    public ComplimentaryCreditReportFragment() {
+    public BeyondLifeFinancialFragment() {
         // Required empty public constructor
     }
 
@@ -38,7 +38,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_complimentary_credit_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_beyond_life_financial, container, false);
         return view;
     }
 
@@ -56,7 +56,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
     }
 
     private void setListener() {
-       etDOB.setOnClickListener(this);
+        etDOB.setOnClickListener(this);
 
     }
 

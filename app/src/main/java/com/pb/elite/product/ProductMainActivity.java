@@ -16,7 +16,9 @@ import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.non_rto_fragments.AnalysisHealthPlanFragment;
+import com.pb.elite.non_rto_fragments.BeyondLifeFinancialFragment;
 import com.pb.elite.non_rto_fragments.ComplimentaryCreditReportFragment;
+import com.pb.elite.non_rto_fragments.ComplimentaryLoanAuditFragment;
 import com.pb.elite.non_rto_fragments.LICChangeAssistanceFragment;
 import com.pb.elite.non_rto_fragments.PUCFragment;
 import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
@@ -113,11 +115,11 @@ public class ProductMainActivity extends BaseActivity {
         } else if (productEntity.getProductcode().equalsIgnoreCase("15")) {
             return new LICChangeAssistanceFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("16")) {
-            return null;
+            return new BeyondLifeFinancialFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("17")) {
             return new ComplimentaryCreditReportFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
-            return null;
+            return new ComplimentaryLoanAuditFragment();
         }
 
         return null;
