@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle.MediumLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="My Current City"
+                    android:textColor="@color/black" />
+
+
+                <EditText
+                    android:id="@+id/etCity"
+                    style="@style/EditTextStyle"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_drop_down"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:singleLine="true" />
+
+
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Vehicle Finance From">
+
+                    <EditText
+                        android:id="@+id/etFinance"
+                        style="@style/Style.edittext"
+                        android:inputType="number"
+                        android:maxLength="20" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlEditVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/seperator_white"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/TextViewStyle.MediumRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentLeft="true"
+
+                    android:text="Do you have another vehicle"
+                    android:textColor="@color/black" />
+
+
+                <ImageView
+
+                    android:id="@+id/ivArrow"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_edit" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/lightGrey">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/lyVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/bg_dashboard"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Vehicle Number">
+
+                    <EditText
+                        android:id="@+id/etVehicle"
+                        style="@style/Style.edittext"
+                        android:drawableLeft="@drawable/ic_vehicle"
+                        android:drawablePadding="10dp"
+                        android:enabled="false" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+
+</LinearLayout>

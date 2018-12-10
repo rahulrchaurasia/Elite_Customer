@@ -85,7 +85,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     Spinner spRTO, spCity;
     EditText etPincode,etVehicle, etCity;
     List<String> RtoList, CityList;  //ProductList,
-    ArrayAdapter<String> RtoAdapter, CityAdapter;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     String CITY_ID_NON_RTO = "";
@@ -94,16 +93,13 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     RTOServiceEntity serviceEntity;
 
 
-    LinearLayout lvLogo, llDocumentUpload, lyRTO, lyTAT;
+    LinearLayout lyVehicle ,lvLogo, llDocumentUpload, lyRTO, lyTAT;
     RelativeLayout rlDoc, rlEditMakeModel;
     LinearLayout lyMakeModel;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
 
-    LinkedHashMap<String, Integer> mapCity;
-
-    LinkedHashMap<String, Integer> mapLoc;
     AutoCompleteTextView acMake, acModel;
 
     String PRODUCT_NAME = "";
@@ -206,6 +202,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
         rlEditMakeModel = (RelativeLayout) view.findViewById(R.id.rlEditMakeModel);
+        lyVehicle =  (LinearLayout) view.findViewById(R.id.lyVehicle);
         lvLogo = (LinearLayout) view.findViewById(R.id.lvLogo);
         llDocumentUpload = (LinearLayout) view.findViewById(R.id.llDocumentUpload);
         lyRTO = (LinearLayout) view.findViewById(R.id.lyRTO);
@@ -499,58 +496,10 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         acModel.setText("");
         etVehicle.setText("");
         lyMakeModel.setBackgroundColor(getResources().getColor(R.color.white));
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.white));
 
     }
 
-
-    private void reqDocPopUp(List<DocProductEnity> lstDoc) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
-
-        RecyclerView rvProductDoc;
-        ProductDocAdapter mAdapter = new ProductDocAdapter(getActivity(), lstDoc);
-        Button btnClose;
-        ImageView ivClose;
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_doc_prod, null);
-
-
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-        // set the custom dialog components - text, image and button
-        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
-        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
-        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
-        rvProductDoc.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvProductDoc.setLayoutManager(layoutManager);
-        rvProductDoc.setAdapter(mAdapter);
-
-
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        alertDialog.setCancelable(false);
-
-        alertDialog.show();
-        //  alertDialog.getWindow().setLayout(900, 600);
-
-
-    }
 
 
 
@@ -589,14 +538,15 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
                     Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (response instanceof CityResponse) {
-
-
-            if (response.getStatus_code() == 0) {
-
-                //   bindAutoCity();
-            }
         }
+//        else if (response instanceof CityResponse) {
+//
+//
+//            if (response.getStatus_code() == 0) {
+//
+//                //   bindAutoCity();
+//            }
+//        }
 
     }
 

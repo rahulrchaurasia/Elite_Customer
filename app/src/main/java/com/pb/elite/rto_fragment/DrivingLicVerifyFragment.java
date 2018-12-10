@@ -417,54 +417,6 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     }
 
 
-    private void reqDocPopUp(List<DocProductEnity> lstDoc) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
-
-        RecyclerView rvProductDoc;
-        ProductDocAdapter mAdapter = new ProductDocAdapter(getActivity(), lstDoc);
-        Button btnClose;
-        ImageView ivClose;
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_doc_prod, null);
-
-
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-        // set the custom dialog components - text, image and button
-        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
-        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
-        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
-        rvProductDoc.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvProductDoc.setLayoutManager(layoutManager);
-        rvProductDoc.setAdapter(mAdapter);
-
-
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        alertDialog.setCancelable(false);
-
-        alertDialog.show();
-        //  alertDialog.getWindow().setLayout(900, 600);
-
-
-    }
 
 
     @Override

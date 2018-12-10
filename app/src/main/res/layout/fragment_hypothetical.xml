@@ -1,15 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
-    android:layout_marginBottom="5dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment">
+    android:background="@color/white"
+    tools:context="com.pb.elite.rto_fragment.HypotheticalFragment">
 
-
+    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:id="@+id/scrollView"
 
@@ -29,13 +27,6 @@
             android:orientation="vertical">
 
 
-            <include
-                android:id="@+id/ly_prod_hdr_logo"
-                layout="@layout/layout_prod_hdr_logo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,10 +36,17 @@
                 android:paddingRight="8dp"
                 android:paddingTop="8dp">
 
+
+                <include
+                    android:id="@+id/ly_prod_hdr_logo"
+                    layout="@layout/layout_prod_hdr_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <!-- ***************** Add Content Here ****************-->
                 <include
-                    android:id="@+id/ly_provide_vehicle_damage"
-                    layout="@layout/content_provide_vehicle_damage"
+                    android:id="@+id/ly_content_hypothetical"
+                    layout="@layout/content_hypothetical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -71,9 +69,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp" />
 
-
             </LinearLayout>
-
 
         </LinearLayout>
     </ScrollView>
@@ -86,7 +82,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:text="Book Now" />
 
 </RelativeLayout>

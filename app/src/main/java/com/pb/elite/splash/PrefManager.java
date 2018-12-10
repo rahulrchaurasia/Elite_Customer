@@ -9,6 +9,7 @@ import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.MakeEntity;
 import com.pb.elite.core.model.ModelEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.model.VariantEntity;
 import com.pb.elite.core.model.VehicleMasterEntity;
 
@@ -45,12 +46,30 @@ public class PrefManager {
     private static final String IS_DEVICE_TOKEN = "devicetoken";
     public static String DEVICE_ID = "deviceID";
     public static String NOTIFICATION_COUNTER = "Notification_Counter";
+    public static String USER_DATA= "user_data";
 
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
+
+    public boolean storeUserData(UserEntity entity) {
+        editor.putString(USER_DATA, new Gson().toJson(entity));
+        return editor.commit();
+    }
+
+    public UserEntity getUserData() {
+        String userConstatnt = pref.getString(USER_DATA, "");
+
+        if (userConstatnt.length() > 0) {
+            UserEntity userMaster = new Gson().fromJson(userConstatnt, UserEntity.class);
+            return userMaster;
+        } else {
+            return null;
+        }
+    }
+
 
     //region master vehicle
 
@@ -82,7 +101,7 @@ public class PrefManager {
 
     //endregion
 
-    //region master UserData
+    //region master UserConstatnr
 
     public boolean storeUserConstatnt(UserConstatntEntity entity) {
         editor.putString(USER_CONSTATNT, new Gson().toJson(entity));

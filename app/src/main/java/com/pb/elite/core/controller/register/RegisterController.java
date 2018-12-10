@@ -271,6 +271,7 @@ public class RegisterController implements IRegister {
                     //callback of data
                     if (response.body().getStatus_code() == 0) {
                         new AsyncLoginMaster(mContext, response.body().getData().get(0)).execute();
+                        new PrefManager(mContext).storeUserData(response.body().getData().get(0).getUserdetails().get(0));
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
                         //failure
