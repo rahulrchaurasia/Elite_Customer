@@ -102,5 +102,6 @@
     <string name="title_activity_email_us">Email Us</string>
     <string name="title_activity_product_main">ProductMainActivity</string>
     <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_transfer_ownership">TransferOwnership</string>
 
 </resources>

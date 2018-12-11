@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextViewStyle.MediumLarge"
+            android:layout_marginLeft="@dimen/input_label_horizontal_spacing"
             android:textColor="@color/black"
             android:layout_marginTop="5dp"
             android:text="My Current City" />
@@ -40,6 +41,7 @@
             style="@style/TextViewStyle.MediumLarge"
             android:textColor="@color/black"
             android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/input_label_horizontal_spacing"
             android:text="My Nearest RTO"
             />
 

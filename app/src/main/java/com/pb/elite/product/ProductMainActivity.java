@@ -26,11 +26,14 @@ import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
 import com.pb.elite.non_rto_fragments.SpecialHealthTopUpFragment;
 import com.pb.elite.non_rto_fragments.TransferNCBFragment;
 import com.pb.elite.payment.PaymentRazorActivity;
+import com.pb.elite.rto_fragment.AddressEndorsementFragment;
 import com.pb.elite.rto_fragment.AssistanObtainFragment;
 import com.pb.elite.rto_fragment.DrivingLicVerifyFragment;
 import com.pb.elite.rto_fragment.HypotheticalFragment;
 import com.pb.elite.rto_fragment.RenewRcFragment;
-import com.pb.elite.rto_fragment.TransferVehicleFragment;
+import com.pb.elite.rto_fragment.SmartCardLicFragment;
+import com.pb.elite.rto_fragment.TransferOwnershipFragment;
+import com.pb.elite.rto_fragment.VehicleRegistCertificateFragment;
 import com.pb.elite.utility.Constants;
 
 public class ProductMainActivity extends BaseActivity {
@@ -95,15 +98,33 @@ public class ProductMainActivity extends BaseActivity {
             return hypotheticalFragment;
         }  else if ((productEntity.getProductcode().equalsIgnoreCase("4.1"))
                 || (productEntity.getProductcode().equalsIgnoreCase("4.2"))) {
-            TransferVehicleFragment transferVehicleFragment = new TransferVehicleFragment();
+            TransferOwnershipFragment transferVehicleFragment = new TransferOwnershipFragment();
             transferVehicleFragment.setArguments(getBundleRTO());
             return transferVehicleFragment;
-        } else if ((productEntity.getProductcode().equalsIgnoreCase("5"))
-                || (productEntity.getProductcode().equalsIgnoreCase("7"))) {
+        } else if ((productEntity.getProductcode().equalsIgnoreCase("5"))) {
             DrivingLicVerifyFragment drivingLicVerifyFragment = new DrivingLicVerifyFragment();
             drivingLicVerifyFragment.setArguments(getBundleRTO());
             return drivingLicVerifyFragment;
-        } else if (productEntity.getProductcode().equalsIgnoreCase("09")  //Miscellaneous
+        }else if ((productEntity.getProductcode().equalsIgnoreCase("6"))) {
+            AddressEndorsementFragment addressEndorsementFragment = new AddressEndorsementFragment();
+            addressEndorsementFragment.setArguments(getBundleRTO());
+            return addressEndorsementFragment;
+        } else if ((productEntity.getProductcode().equalsIgnoreCase("7"))) {
+            SmartCardLicFragment smartCardLicFragment = new SmartCardLicFragment();
+            smartCardLicFragment.setArguments(getBundleRTO());
+            return smartCardLicFragment;
+        }
+        else if ((productEntity.getProductcode().equalsIgnoreCase("8"))) {
+            VehicleRegistCertificateFragment certificateFragment = new VehicleRegistCertificateFragment();
+            certificateFragment.setArguments(getBundleRTO());
+            return certificateFragment;
+        }
+        /*////////////////////////////////////////////////////////////////////////////////
+                                            Miscellaneous
+        ///////////////////////////////////////////////////////////////////////////////// */
+
+
+        else if (productEntity.getProductcode().equalsIgnoreCase("09")  //
                 || productEntity.getProductcode().equalsIgnoreCase("09")) {
             return new ProvideVehicleDamageFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("10")) {

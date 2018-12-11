@@ -127,7 +127,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
         etCity = (EditText) view.findViewById(R.id.etCity);
-        etVehicle = (EditText) view.findViewById(R.id.etCity);
+        etVehicle = (EditText) view.findViewById(R.id.etVehicle);
         etFinance = (EditText) view.findViewById(R.id.etFinance);
 
         txtCharges = (TextView) view.findViewById(R.id.txtCharges);

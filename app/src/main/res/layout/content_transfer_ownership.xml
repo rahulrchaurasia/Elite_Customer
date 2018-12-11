@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:orientation="vertical">
 
 
@@ -38,8 +37,11 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:minLines="1"
-                android:singleLine="true"
-                android:text="" />
+                android:text=""
+                android:singleLine="true" />
+
+
+
 
 
         </LinearLayout>
@@ -47,22 +49,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Vehicle Finance From">
+                android:hint="New Ower">
 
                 <EditText
                     android:id="@+id/etFinance"
                     style="@style/Style.edittext"
                     android:focusableInTouchMode="true"
+                    android:padding="@dimen/activity_horizontal_margin"
                     android:inputType="text"
-                    android:maxLength="30"
-                    android:padding="@dimen/activity_horizontal_margin" />
+                    android:maxLength="30" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -121,9 +122,9 @@
                     style="@style/Style.edittext"
                     android:drawableLeft="@drawable/ic_vehicle"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
                     android:focusableInTouchMode="true"
-                    android:padding="@dimen/activity_horizontal_margin" />
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:enabled="false" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -131,7 +132,11 @@
         </LinearLayout>
 
 
+
+
+
     </LinearLayout>
 
 
 </LinearLayout>
+

@@ -498,11 +498,11 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
                 if (llCorrection.getVisibility() == View.GONE) {
                     llCorrection.setVisibility(View.VISIBLE);
-                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.up));
+                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.up_arrow));
 
                 } else {
                     llCorrection.setVisibility(View.GONE);
-                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down));
+                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
                 }
                 setScrollatBottom();
                 break;

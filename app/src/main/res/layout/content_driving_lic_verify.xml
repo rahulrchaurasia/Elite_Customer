@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_city_rto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="My Pincode">
+
+            <EditText
+                android:id="@+id/etPincode"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:maxLength="6" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlCorrect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@color/seperator_white"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/lyDoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextViewStyle.MediumLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:gravity="left"
+
+                android:text="Driving Details"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/ivTick"
+                android:layout_marginLeft="10dp"
+                style="@style/TextViewStyle.MediumRegular"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/tick"
+                android:visibility="gone"
+                />
+
+
+        </LinearLayout>
+
+        <ImageView
+
+            android:id="@+id/ivArrow"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/down_arrow" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llCorrection"
+        style="@style/LinearLayoutStyle"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/custom_white"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextViewStyle.MediumLarge"
+            android:padding="3dp"
+            android:textColor="@color/black"
+            android:text="Please enter all required details. "/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name">
+
+            <EditText
+                android:id="@+id/etName"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_name"
+                android:lines="1"
+                android:maxLines="1"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/input_label_vertical_spacing"
+                android:maxLength="30" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter DOB">
+
+            <EditText
+                android:id="@+id/etDOB"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/vector_date"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/input_label_vertical_spacing"
+                android:focusable="false"
+                android:maxLength="30" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Driving License">
+
+            <EditText
+                android:id="@+id/etLic"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_vehicle"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/input_label_vertical_spacing"
+                android:lines="1"
+                android:maxLines="1"
+                android:maxLength="30" />
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -300,6 +300,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pb.elite.HomeActivity" />
         </activity>
+        <activity
+            android:name=".rto_fragment.TransferOwnership"
+            android:label="@string/title_activity_transfer_ownership"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/layout_city_rto" />
@@ -204,7 +203,8 @@
                     android:id="@+id/etName"
                     style="@style/Style.edittext"
                     android:inputType="text"
-
+                    android:focusableInTouchMode="true"
+                    android:padding="@dimen/input_label_vertical_spacing"
                     android:lines="1"
                     android:maxLength="30"
                     android:maxLines="1" />
@@ -235,6 +235,8 @@
                 <EditText
                     android:id="@+id/etDOB"
                     style="@style/Style.edittext"
+                    android:focusableInTouchMode="true"
+                    android:padding="@dimen/input_label_vertical_spacing"
 
                     android:drawableRight="@drawable/vector_date"
                     android:focusable="false" />
@@ -266,7 +268,8 @@
                     android:id="@+id/etAddress"
                     style="@style/Style.edittext"
                     android:inputType="text"
-
+                    android:focusableInTouchMode="true"
+                    android:padding="@dimen/input_label_vertical_spacing"
                     android:lines="1"
                     android:maxLength="40"
                     android:maxLines="1" />
