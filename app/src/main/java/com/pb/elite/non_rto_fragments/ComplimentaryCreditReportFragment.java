@@ -38,7 +38,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_analysis_health_plan, container, false);
+        View view = inflater.inflate(R.layout.fragment_complimentary_credit_report, container, false);
         return view;
     }
 
@@ -56,7 +56,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
     }
 
     private void setListener() {
-        etDOB.setOnClickListener(this);
+       etDOB.setOnClickListener(this);
 
     }
 

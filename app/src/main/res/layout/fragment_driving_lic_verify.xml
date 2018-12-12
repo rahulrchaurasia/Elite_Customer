@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:layout_marginBottom="5dp"
+    tools:context="com.pb.elite.rto_fragment.DrivingLicVerifyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnBooked"
+        android:layout_alignParentTop="true"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingBottom="10dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <include
+                android:id="@+id/ly_prod_hdr_logo"
+                layout="@layout/layout_prod_hdr_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_prod_hdr_logo"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp">
+
+
+                <!-- ***************** Add Content Here ****************-->
+                <include
+                    android:id="@+id/ly_driving_lic_verify"
+                    layout="@layout/content_driving_lic_verify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--***************** End *****************-->
+
+
+
+                        <include
+                            android:id="@+id/ly_prd_req_doc_hdr"
+                            layout="@layout/layout_prd_req_doc_hdr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp" />
+
+                <include
+                    android:id="@+id/ly_tat_displa"
+                    layout="@layout/layout_tat_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+
+
+                    </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnBooked"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/input_label_vertical_spacing"
+        android:text="Book Now" />
+
+</RelativeLayout>
+

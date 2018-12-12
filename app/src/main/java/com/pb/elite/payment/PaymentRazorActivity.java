@@ -66,7 +66,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
 
             PRODUCT_NAME = orderRequestEntity.getProdName();
             AMOUNT_PAYMENT = (Long.valueOf(orderRequestEntity.getAmount()));
-            txtAmount.setText("" + "\u20B9" + " " + AMOUNT_PAYMENT);
+            txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
             txtprdName.setText(PRODUCT_NAME);
 
 

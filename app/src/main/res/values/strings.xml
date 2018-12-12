@@ -22,6 +22,18 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
 
+    <string name="four_Wheeler">Four Wheeler</string>
+
+    <string name="two_four_Wheeler">Four Wheeler And Two Wheeler </string>
+
+    <array name="array_employee_type">
+        <item>Salaried</item>
+        <item>Self Employed</item>
+        <item>Professional</item>
+
+
+    </array>
+
     <array name="CorrectionType">
         <item>Name</item>
         <item>DOB</item>
@@ -76,7 +88,7 @@
     <string name="title_activity_order_detail">OrderDetailActivity</string>
     <string name="title_activity_forgot_password">Forgot Password</string>
     <string name="title_activity_dem">DemActivity</string>
-    <string name="title_activity_payment_razor">Payment Gateway</string>
+    <string name="title_activity_payment_razor">Payment</string>
     <string name="title_activity_product_display">ProductDisplayActivity</string>
     <string name="title_activity_sub_product">Service List</string>
     <string name="title_activity_doc_upload">Upload Document</string>
@@ -90,5 +102,6 @@
     <string name="title_activity_email_us">Email Us</string>
     <string name="title_activity_product_main">ProductMainActivity</string>
     <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_transfer_ownership">TransferOwnership</string>
 
 </resources>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_city_rto" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="My Pincode">
+
+            <EditText
+                android:id="@+id/etPincode"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:maxLength="6" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Driving License Number">
+
+            <EditText
+                android:id="@+id/etLicNo"
+                style="@style/Style.edittext"
+                android:focusableInTouchMode="true"
+                android:inputType="text"
+                android:maxLength="30"
+                android:padding="@dimen/activity_horizontal_margin" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Driving License Owner Name">
+
+            <EditText
+                android:id="@+id/etLicOwnerName"
+                style="@style/Style.edittext"
+                android:focusableInTouchMode="true"
+                android:inputType="text"
+                android:maxLength="30"
+                android:padding="@dimen/activity_horizontal_margin" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Driving License Owner Dob">
+
+            <EditText
+                android:id="@+id/etLicOwnerDob"
+                style="@style/Style.edittext"
+                android:focusableInTouchMode="true"
+                android:drawableLeft="@drawable/vector_date"
+               android:drawablePadding="5dp"
+                android:inputType="text"
+                android:maxLength="30"
+                android:focusable="false"
+                android:padding="@dimen/activity_horizontal_margin" />
+
+
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>

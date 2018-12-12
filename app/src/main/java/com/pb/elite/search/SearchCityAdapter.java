@@ -5,14 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pb.elite.R;
 import com.pb.elite.core.model.AllCityEntity;
+import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.database.DataBaseController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Case;
@@ -22,16 +27,22 @@ import io.realm.Sort;
  * Created by IN-RB on 09-08-2018.
  */
 
-public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.ProductItem> {
+public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.ProductItem> implements Filterable {
 
     Activity mContext;
-    List<AllCityEntity> CityList;
+    List<CityMainEntity> CityList;
+
     DataBaseController dataBaseController;
-    public SearchCityAdapter(Activity mContext, List<AllCityEntity> CityList) {
+
+
+    public SearchCityAdapter(Activity mContext, List<CityMainEntity> CityList) {
         this.mContext = mContext;
         this.CityList = CityList;
+
         dataBaseController = new DataBaseController(this.mContext);
     }
+
+
 
 
     public class ProductItem extends RecyclerView.ViewHolder
@@ -60,36 +71,61 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Pr
     @Override
     public void onBindViewHolder(ProductItem holder, int position) {
 
-        final AllCityEntity entity = CityList.get(position);
+        final CityMainEntity entity = CityList.get(position);
 
         holder.txtTitle.setText( "" +entity.getCityname().toUpperCase());
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ((SearchCityActivity)mContext).getNonRtoCity(entity);
+                ((SearchCityActivity)mContext).getCity(entity);
             }
         });
 
     }
 
-    public void filer(String strSearch) {
-        List<AllCityEntity> lstCityfilter;
 
-
-        lstCityfilter =  dataBaseController.getCityQueryList(strSearch);
-
-        CityList = lstCityfilter;
-        notifyDataSetChanged();
-    }
-
-    public void findAll(List<AllCityEntity> lstList) {
-        CityList = lstList;
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {
         return CityList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+
+                if (constraint != null && constraint.length() > 0) {
+                    List<CityMainEntity> filterList = new ArrayList<>();
+                    for (int i = 0; i < CityList.size(); i++) {
+                        if ((CityList.get(i).getCityname().toUpperCase()).contains(constraint.toString().toUpperCase())) {
+                            filterList.add(CityList.get(i));
+                        }
+                    }
+                    results.count = filterList.size();
+                    results.values = filterList;
+                } else {
+                    results.count = CityList.size();
+                    results.values = CityList;
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                CityList = (ArrayList<CityMainEntity>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+
+    }
+
+    public void   findAll( List<CityMainEntity> cityList)
+    {
+        CityList = cityList;
+        notifyDataSetChanged();
     }
 }

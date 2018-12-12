@@ -1,80 +1,114 @@
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:layout_margin="@dimen/nav_header_vertical_spacing"
-android:orientation="vertical"
-tools:context="com.pb.elite.non_rto_fragments.ComplimentaryloanauditFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/nav_header_vertical_spacing"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="Name">
 
+        <EditText
+            android:id="@+id/etName"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
 
+    </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Name">
-
-            <EditText
-                android:id="@+id/etName"
-                style="@style/Style.edittext"
-                android:layout_width="match_parent"
-                android:focusable="false"
-                android:padding="@dimen/activity_horizontal_margin" />
-
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-
-    <LinearLayout
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="Date of Birth">
 
+        <EditText
+            android:id="@+id/etDOB"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:padding="@dimen/activity_horizontal_margin" />
 
+    </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="DOB">
-
-            <EditText
-                android:id="@+id/etDOB"
-                style="@style/Style.edittext"
-                android:layout_width="match_parent"
-                android:focusable="false"
-                android:padding="@dimen/activity_horizontal_margin" />
-
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-<android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Any existing EMI? Provide Amount">
-
-    <EditText
-        android:id="@+id/etemi"
-        style="@style/Style.edittext"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:focusable="false"
-        android:padding="@dimen/activity_horizontal_margin" />
+        android:layout_height="wrap_content"
+        android:hint="Annual Income According to loan eligibility">
 
-</android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/etNomineeName"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/array_employee_type"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Any Existing EMI?" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="EMI Amount">
+
+        <EditText
+            android:id="@+id/etEMIAmount"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
 
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="My Current City">
+
+        <EditText
+            android:id="@+id/etCity"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="My Current Pincode">
+
+        <EditText
+            android:id="@+id/etPincode"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:maxLength="6"
+            android:padding="@dimen/activity_horizontal_margin" />
+
+    </android.support.design.widget.TextInputLayout>
 
 
-<Button
-    style="@style/ButtonStyle"
-    android:id="@+id/submitbtn"
-
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    android:text="SUBMIT" />
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="SUBMIT" />
 </LinearLayout>

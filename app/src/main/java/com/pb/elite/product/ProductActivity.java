@@ -554,7 +554,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         for (RtoProductDisplayMainEntity rtoObject : rtoCityList) {
 
 
-            mapCity.put(rtoObject.getCityname().toUpperCase(), rtoObject.getCity_id());    // adding in Map
+           // mapCity.put(rtoObject.getCityname().toUpperCase(), rtoObject.getCity_id());    // adding in Map
             //  mapCity.put("" + i + rtoObject.getCityname().toUpperCase(),  i + rtoObject.getCity_id());
 
             //  i= i+1;
@@ -593,17 +593,17 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
-        if (rtoProd.getPrice() != null) {
-            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
-            AMOUNT = rtoProd.getPrice().trim();
-        }
-
-        if (rtoProd.getTAT() != null) {
-            lyTAT.setVisibility(View.VISIBLE);
-            txtTAT.setText("" + rtoProd.getTAT());
-        } else {
-            lyTAT.setVisibility(View.GONE);
-        }
+//        if (rtoProd.getPrice() != null) {
+//            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
+//            AMOUNT = rtoProd.getPrice().trim();
+//        }
+//
+//        if (rtoProd.getTAT() != null) {
+//            lyTAT.setVisibility(View.VISIBLE);
+//            txtTAT.setText("" + rtoProd.getTAT());
+//        } else {
+//            lyTAT.setVisibility(View.GONE);
+//        }
 
         Glide.with(ProductActivity.this)
                 .load(rtoProd.getProduct_logo())
@@ -707,9 +707,9 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                     spCity.setVisibility(View.VISIBLE);
                     acCity.setVisibility(View.GONE);
 
-                    List<RtoProductDisplayMainEntity> listCity = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
+                //    List<RtoProductDisplayMainEntity> listCity = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
 
-                    bindRTOSpinner(listCity);
+                //    bindRTOSpinner(listCity);
 
 
                 }
@@ -753,18 +753,18 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
-
-                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
-                    list.remove(j);
-                    j--;
-                }
-            }
-        }
-        return list;
-    }
+//    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
+//        for (int i = 0; i < list.size(); i++) {
+//            for (int j = i + 1; j < list.size(); j++) {
+//
+//                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
+//                    list.remove(j);
+//                    j--;
+//                }
+//            }
+//        }
+//        return list;
+//    }
 
 
     private void bindRTOSpinner(final List<RtoProductDisplayMainEntity> rtoProductDisplayList) {
@@ -772,11 +772,11 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
         RtoProductDisplayMainEntity rtoEntity = new RtoProductDisplayMainEntity();
 
-        rtoEntity.setCity_id(0);
-        rtoEntity.setCityname("Select");
-        rtoEntity.setProd_id(0);
-        rtoEntity.setPrice("");
-        rtoEntity.setTAT("");
+//        rtoEntity.setCity_id(0);
+//        rtoEntity.setCityname("Select");
+//        rtoEntity.setProd_id(0);
+//        rtoEntity.setPrice("");
+//        rtoEntity.setTAT("");
         rtoEntity.setProduct_logo("");
 
         rtoProductDisplayList.add(0, rtoEntity);
@@ -793,31 +793,34 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                     clearCity();
 
 
-                } else if (rtoProductDisplayList.get(position).getCity_id() == 2653) {
-
-                    etRTO.setVisibility(View.VISIBLE);
-                    spRTO.setVisibility(View.GONE);
-                    lvLogo.setVisibility(View.VISIBLE);
-                    setRtoTAT(rtoProductDisplayList.get(position));
-
-                } else if (rtoProductDisplayList.get(position).getRtolist() != null) {
-
-                    if (rtoProductDisplayList.get(position).getRtolist().size() > 0) {
-
-                        spRTO.setVisibility(View.VISIBLE);
-                        etRTO.setVisibility(View.GONE);
-                        RtoList = getRTOLocList(rtoProductDisplayList.get(position).getRtolist());
-                        RtoAdapter = new ArrayAdapter(ProductActivity.this, R.layout.spinner_item, RtoList);
-                        spRTO.setAdapter(RtoAdapter);
-
-                        lvLogo.setVisibility(View.VISIBLE);
-                        setRtoTAT(rtoProductDisplayList.get(position));
-
-
-                    } else {
-                        clearCity();
-                    }
-                } else {
+                }
+//                else if (rtoProductDisplayList.get(position).getCity_id() == 2653) {
+//
+//                    etRTO.setVisibility(View.VISIBLE);
+//                    spRTO.setVisibility(View.GONE);
+//                    lvLogo.setVisibility(View.VISIBLE);
+//                    setRtoTAT(rtoProductDisplayList.get(position));
+//
+//                }
+//                else if (rtoProductDisplayList.get(position).getRtolist() != null) {
+//
+//                    if (rtoProductDisplayList.get(position).getRtolist().size() > 0) {
+//
+//                        spRTO.setVisibility(View.VISIBLE);
+//                        etRTO.setVisibility(View.GONE);
+//                        RtoList = getRTOLocList(rtoProductDisplayList.get(position).getRtolist());
+//                        RtoAdapter = new ArrayAdapter(ProductActivity.this, R.layout.spinner_item, RtoList);
+//                        spRTO.setAdapter(RtoAdapter);
+//
+//                        lvLogo.setVisibility(View.VISIBLE);
+//                        setRtoTAT(rtoProductDisplayList.get(position));
+//
+//
+//                    } else {
+//                        clearCity();
+//                    }
+//                }
+                else {
                     clearCity();
                 }
 
@@ -920,9 +923,9 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         if (requestCode == Constants.SEARCH_CITY_CODE) {
             if (data != null) {
 
-                String CITY_NAME = data.getStringExtra(Constants.SEARCH_CITY_NAME);
+//                String CITY_NAME = data.getStringExtra(Constants.SEARCH_CITY_NAME);
                 CITY_ID_NON_RTO = data.getStringExtra(Constants.SEARCH_CITY_ID);
-                acCity.setText(CITY_NAME);
+             //   acCity.setText(CITY_NAME);
 
             }
         } else if (requestCode == Constants.UPLOAD_FILE) {

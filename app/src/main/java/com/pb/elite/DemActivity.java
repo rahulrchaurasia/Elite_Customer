@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.pb.elite.core.model.CorrectiontEnity;
-import com.pb.elite.rto_fragment.CorrectionAdapter;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class DemActivity extends BaseActivity implements View.OnClickListener {
     List<CorrectiontEnity> correctiontEnityList;
 
     RecyclerView rvProductDoc;
-    CorrectionAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +90,7 @@ public class DemActivity extends BaseActivity implements View.OnClickListener {
         if(view.getId() == R.id.btn_bottom_expand)
         {
              sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-             mAdapter = new CorrectionAdapter(this, correctiontEnityList);
-            rvProductDoc.setAdapter(mAdapter);
+
         }
         else if(view.getId() == R.id.btn_bottom_collapse){
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

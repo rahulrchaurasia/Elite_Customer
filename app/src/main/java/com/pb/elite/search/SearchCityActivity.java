@@ -23,22 +23,30 @@ import android.widget.Toast;
 
 import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
+import com.pb.elite.core.APIResponse;
+import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.register.RegisterController;
 import com.pb.elite.core.model.AllCityEntity;
+import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.response.CityMainResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.splash.PrefManager;
+import com.pb.elite.splash.SplashScreenActivity;
 import com.pb.elite.utility.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchCityActivity extends BaseActivity implements View.OnClickListener {
+public class SearchCityActivity extends BaseActivity implements View.OnClickListener , IResponseSubcriber {
 
     DataBaseController dataBaseController;
+    PrefManager prefManager;
     UserEntity loginEntity;
     RecyclerView rvCity;
     SearchCityAdapter mAdapter;
-    List<AllCityEntity> CityList;
+    List<CityMainEntity> CityList;
     LinearLayout lyOtherCity;
     private SearchView.OnQueryTextListener queryTextListener;     // for Option Menu
 
@@ -52,13 +60,17 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        prefManager = new PrefManager(this);
         initialize();
-        CityList = dataBaseController.getCityMainList();
+
+        CityList = prefManager.getCityData();
         if(CityList.size() >0)
         {
             mAdapter = new SearchCityAdapter(SearchCityActivity.this,CityList);
             rvCity.setAdapter(mAdapter);
+        }else{
+            showDialog();
+            new RegisterController(SearchCityActivity.this).getCityMainMaster(SearchCityActivity.this);
         }
 
 
@@ -107,8 +119,9 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
                 @Override
                 public boolean onQueryTextChange(String newText) {
 
+
                     if (newText.length() > 0) {
-                        mAdapter.filer(newText);
+                        mAdapter.getFilter().filter(newText);
                     }
                     else {
                         mAdapter.findAll(CityList);
@@ -128,11 +141,10 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    public void getNonRtoCity(AllCityEntity allCityEntity)
+    public void getCity(CityMainEntity allCityEntity)
     {
         Intent intent=new Intent();
-        intent.putExtra(Constants.SEARCH_CITY_NAME,allCityEntity.getCityname());
-        intent.putExtra(Constants.SEARCH_CITY_ID,String.valueOf(allCityEntity.getCity_id()));
+        intent.putExtra(Constants.SEARCH_CITY_DATA,allCityEntity);
         setResult(Constants.SEARCH_CITY_CODE,intent);
         finish();      //finishing activity
 
@@ -145,7 +157,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
         if(view.getId() == R.id.lyOtherCity)
         {
             Intent intent=new Intent();
-            intent.putExtra(Constants.SEARCH_CITY_NAME,"OTHER CITY");
+            intent.putExtra(Constants.SEARCH_CITY_DATA,"OTHER CITY");
             intent.putExtra(Constants.SEARCH_CITY_ID,"2653");
             setResult(Constants.SEARCH_CITY_CODE,intent);
             finish();
@@ -170,5 +182,25 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     }
 
 
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+        cancelDialog();
+        if (response instanceof CityMainResponse) {
+            if (response.getStatus_code() == 0) {
 
+                if (((CityMainResponse) response).getData() != null) {
+
+                    CityList = ((CityMainResponse) response).getData();
+                    mAdapter = new SearchCityAdapter(SearchCityActivity.this,CityList);
+                    rvCity.setAdapter(mAdapter);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+        cancelDialog();
+        Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 }

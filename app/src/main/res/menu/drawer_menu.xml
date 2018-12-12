@@ -20,7 +20,7 @@
 
         <item
             android:id="@+id/nav_order"
-            android:visible="true"
+            android:visible="false"
             android:title="Request Detail" />
 
         <!--<item-->

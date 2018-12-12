@@ -1,5 +1,6 @@
 package com.pb.elite.rto_fragment.adapter;
 
+import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 
@@ -9,5 +10,5 @@ import com.pb.elite.core.model.RtoProductEntity;
 
 public interface IRTOCity {
 
-    void getRTOCity(RtoProductDisplayMainEntity e, RtoProductEntity entity);
+    void getRTOCity( RtoCityMain entity);
 }

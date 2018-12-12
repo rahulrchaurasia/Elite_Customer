@@ -17,9 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextViewStyle.MediumLarge"
+            android:layout_marginLeft="@dimen/input_label_horizontal_spacing"
             android:textColor="@color/black"
             android:layout_marginTop="5dp"
-            android:text="City" />
+            android:text="My Current City" />
 
 
         <EditText
@@ -40,7 +41,8 @@
             style="@style/TextViewStyle.MediumLarge"
             android:textColor="@color/black"
             android:layout_marginTop="5dp"
-            android:text="RTO"
+            android:layout_marginLeft="@dimen/input_label_horizontal_spacing"
+            android:text="My Nearest RTO"
             />
 
 

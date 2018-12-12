@@ -10,8 +10,6 @@ import java.util.List;
  */
 
 public class RtoProductDisplayResponse extends APIResponse {
-
-
     private List<RtoProductDisplayMainEntity> Data;
 
     public List<RtoProductDisplayMainEntity> getData() {
@@ -21,6 +19,12 @@ public class RtoProductDisplayResponse extends APIResponse {
     public void setData(List<RtoProductDisplayMainEntity> Data) {
         this.Data = Data;
     }
+
+
+
+
+
+
 
 
 }

@@ -4,12 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.MakeEntity;
 import com.pb.elite.core.model.ModelEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.model.VariantEntity;
 import com.pb.elite.core.model.VehicleMasterEntity;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrefManager {
@@ -34,16 +41,35 @@ public class PrefManager {
 
     private static final String VEHICLE_MASTER = "vehicle_data";
     private static final String USER_CONSTATNT = "user_constatnt";
+    private static final String CITY_CONSTATNT = "cityr_constatnt";
 
     private static final String IS_DEVICE_TOKEN = "devicetoken";
     public static String DEVICE_ID = "deviceID";
     public static String NOTIFICATION_COUNTER = "Notification_Counter";
+    public static String USER_DATA= "user_data";
 
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
+
+    public boolean storeUserData(UserEntity entity) {
+        editor.putString(USER_DATA, new Gson().toJson(entity));
+        return editor.commit();
+    }
+
+    public UserEntity getUserData() {
+        String userConstatnt = pref.getString(USER_DATA, "");
+
+        if (userConstatnt.length() > 0) {
+            UserEntity userMaster = new Gson().fromJson(userConstatnt, UserEntity.class);
+            return userMaster;
+        } else {
+            return null;
+        }
+    }
+
 
     //region master vehicle
 
@@ -75,7 +101,7 @@ public class PrefManager {
 
     //endregion
 
-    //region master vehicle
+    //region master UserConstatnr
 
     public boolean storeUserConstatnt(UserConstatntEntity entity) {
         editor.putString(USER_CONSTATNT, new Gson().toJson(entity));
@@ -94,6 +120,36 @@ public class PrefManager {
     }
 
 
+    //endregion
+
+    //region master CityData
+
+    public boolean storeCityData(List<CityMainEntity> lstCityMain) {
+
+        Gson gson = new Gson();
+        String listCity = gson.toJson(
+                lstCityMain,
+                new TypeToken<ArrayList<CityMainEntity>>() {
+                }.getType());
+
+        editor.putString(CITY_CONSTATNT, listCity);
+        return editor.commit();
+
+
+    }
+
+    public List<CityMainEntity> getCityData() {
+        String listCity = pref.getString(CITY_CONSTATNT, "");
+        if (listCity.length() > 0) {
+            Type listType = new TypeToken<List<CityMainEntity>>() {
+            }.getType();
+            return (List<CityMainEntity>) new Gson().fromJson(listCity, listType);
+
+        } else {
+
+            return new ArrayList<CityMainEntity>();
+        }
+    }
 
 
     //endregion
@@ -169,8 +225,7 @@ public class PrefManager {
     }
 
 
-    public  void setDeviceID(String deviceID)
-    {
+    public void setDeviceID(String deviceID) {
         editor.putString(DEVICE_ID, deviceID);
 
         editor.commit();

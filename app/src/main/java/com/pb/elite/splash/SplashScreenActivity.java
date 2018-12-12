@@ -16,9 +16,7 @@ import com.pb.elite.HomeActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
-import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.register.RegisterController;
-import com.pb.elite.core.model.AllCityEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.database.DataBaseController;
@@ -26,18 +24,12 @@ import com.pb.elite.login.LoginActivity;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.welcome.WelcomeActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SplashScreenActivity extends BaseActivity implements IResponseSubcriber {
 
     PrefManager prefManager;
     TextView txtGroup;
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 2500;
     DataBaseController dataBaseController;
-    List<AllCityEntity> allCityEntityList;
-
-    int CityVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +42,6 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
         prefManager = new PrefManager(this);
         dataBaseController = new DataBaseController(SplashScreenActivity.this);
-        allCityEntityList = new ArrayList<AllCityEntity>();
 
         verify();
 
@@ -63,58 +54,37 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
     private void fetchUserConstatnt() {
         //getUserConstatnt
-        new RegisterController(this).getUserConstatnt(SplashScreenActivity.this);
+        new RegisterController(this).getUserConstatnt(null);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchMasters();
     }
 
     private void fetchMasters() {
 
-        allCityEntityList = dataBaseController.getAllCity();
-
-        if (allCityEntityList.size() == 0) {     // step 4 (if db version is below than city list is already filled above)
-            new ProductController(SplashScreenActivity.this).getCityMaster(SplashScreenActivity.this);
+        if (prefManager.getCityData().size() == 0) {
+            new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
         }
 
         if (prefManager.getMake() == null) {
             fetchCar();
         }
 
-        if (prefManager.getMake() == null) {
-            fetchCar();
-        }
-
-        UserEntity loginEntity = dataBaseController.getUserData();
-        if (loginEntity != null) {
+        if (dataBaseController.getUserData() != null) {
             fetchUserConstatnt();
         }
 
 
-        if (loginEntity != null) {
-            startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
-
-        } else {
-            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-
-        }
     }
 
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-//        if (response instanceof DBVersionRespone) {  //step2
-//            if (response.getStatus_code() == 0) {
-//
-//                CityVersion = ((DBVersionRespone) response).getData().get(0).getCity_Version();
-//
-//                if (prefManager.getCityVersion() < CityVersion) {
-//                    prefManager.setCityVersionUpdate(CityVersion);
-//                    new ProductController(SplashScreenActivity.this).getCityMaster(SplashScreenActivity.this);
-//                }
-//                fetchCityMasters();
-//
-//            }
-//        }
-
         if (response instanceof CityResponse) {  //step3
             if (response.getStatus_code() == 0) {
 
@@ -154,13 +124,22 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
             if (prefManager.isFirstTimeLaunch()) {
                 startActivity(new Intent(this, WelcomeActivity.class));
             } else {
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
                         //  new RegisterController(SplashScreenActivity.this).getDbVersion(SplashScreenActivity.this);  //step1
-                        fetchMasters();
-                        
+                        UserEntity loginEntity = dataBaseController.getUserData();
+                        if (loginEntity != null) {
+                            startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
+
+                        } else {
+                            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+
+                        }
+                        //fetchMasters();
+
                     }
                 }, SPLASH_DISPLAY_LENGTH);
 

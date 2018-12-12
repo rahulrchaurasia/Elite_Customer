@@ -1,22 +1,31 @@
 package com.pb.elite.rto_fragment;
 
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +37,11 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
+import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.CorrectiontEnity;
 import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
@@ -41,45 +52,50 @@ import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.core.response.ProductDocumentResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.product.ProductActivity;
 import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.rto_fragment.adapter.CityMainAdapter;
 import com.pb.elite.rto_fragment.adapter.IRTOCity;
 import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
+import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
+import com.pb.elite.utility.DateTimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AssistanObtainFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IRTOCity {
+public class AssistanObtainFragment extends BaseFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, IResponseSubcriber, IRTOCity {
 
 
+    // region Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
-
-    // RecyclerView rvCity , rvRTO;
-
 
     EditText etRTO, etRTO_OTH, etCity, etLic;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-    String CITY_ID_NON_RTO = "";
     Button btnBooked;
 
     RTOServiceEntity serviceEntity;
 
+    ScrollView scrollView;
     LinearLayout lvLogo, llDocumentUpload, lyRTO, lyTAT;
     RelativeLayout rlDoc, rlCorrect;
-    LinearLayout lyLic;
-    ImageView ivLogo, ivClientLogo;
+    LinearLayout lyLic, llCorrection, lyName, lyDOB, lyAddress, lyVehicleType;
+    ImageView ivLogo, ivClientLogo, ivArrow, ivLic;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
+    EditText etName, etDOB, etAddress;
+    CheckBox chkName, chkDOB, chkAddress;
 
-    TextView textLicMandatory;
+    TextView ivTick;
 
 
     String PRODUCT_NAME = "";
@@ -90,30 +106,49 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     String AMOUNT = "0";
     int OrderID = 0;
 
-    List<CorrectiontEnity> correctiontEnityList;
+    int CITY_ID;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    // region Declaration
+    // region Botom sheetDeclaration
 
     BottomSheetDialog mBottomSheetDialog;
-    List<RtoProductDisplayMainEntity> listCityMain;
-    List<RtoProductEntity> rtoProductDisplayList;
 
 
-    RtoProductDisplayMainEntity rtoProductDisplayMainEntity;
-    RtoProductEntity rtoMainEntity;
+    CityMainEntity cityMainEntity;
+    RtoCityMain rtoMainEntity;
 
-
-    CityMainAdapter cityMainAdapter;
     RtoMainAdapter rtoMainAdapter;
 
     //endregion
 
-
-    public AssistanObtainFragment() {
-        // Required empty public constructor
-    }
+    //endregion
 
 
+    //region datepicker
+
+    protected View.OnClickListener datePickerDialog = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            if (view.getId() == R.id.etDOB) {
+                DateTimePicker.showAgePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
+                        if (view1.isShown()) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            String currentDay = simpleDateFormat.format(calendar.getTime());
+                            etDOB.setText(currentDay);
+                        }
+                    }
+                });
+
+            }
+
+        }
+    };
+
+    //endregion
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,9 +158,10 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_assistan_obtain, container, false);
         initialize(view);
 
+        rlCorrect.setVisibility(View.GONE);
+        llCorrection.setVisibility(View.GONE);
+        lyVehicleType.setVisibility(View.GONE);
 
-        correctiontEnityList = new ArrayList<CorrectiontEnity>();
-        getCorrectionField();
         setOnClickListener();
 
         dataBaseController = new DataBaseController(getActivity());
@@ -148,13 +184,14 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
                 if (PRODUCT_CODE.equalsIgnoreCase("2.1")) {
                     lyLic.setVisibility(View.GONE);
-                    rlCorrect.setVisibility(View.GONE);
+                    lyVehicleType.setVisibility(View.VISIBLE);
+
 
                 } else if (PRODUCT_CODE.equalsIgnoreCase("2.2") || PRODUCT_CODE.equalsIgnoreCase("2.3")) {
                     lyLic.setVisibility(View.VISIBLE);
-                    rlCorrect.setVisibility(View.GONE);
+                    lyVehicleType.setVisibility(View.VISIBLE);
 
-                } else if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
+                }else if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
                     lyLic.setVisibility(View.VISIBLE);
                     rlCorrect.setVisibility(View.VISIBLE);
 
@@ -181,7 +218,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
     //region bottomSheetDialog
-    public void getBottomSheetDialog(String type) {
+    public void getBottomSheetDialog() {
 
         mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
@@ -189,16 +226,16 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         mBottomSheetDialog.setContentView(sheetView);
         TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
-        RecyclerView rvCity = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvCity);
         RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
         ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
 
-
-        rvCity.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvCity.setHasFixedSize(true);
-
         rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvRTO.setHasFixedSize(true);
+        rvRTO.setNestedScrollingEnabled(false);
+        rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, cityMainEntity.getRTOList(), this);
+        rvRTO.setAdapter(rtoMainAdapter);
+        rvRTO.setVisibility(View.VISIBLE);
+
 
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,96 +248,47 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             }
         });
 
-        if (type.equalsIgnoreCase("CITY")) {
-            txtHdr.setText("Select City");
 
-            cityMainAdapter = new CityMainAdapter(AssistanObtainFragment.this, listCityMain, this);
-            rvCity.setAdapter(cityMainAdapter);
+        txtHdr.setText("Select RTO");
 
-
-            rvCity.setVisibility(View.VISIBLE);
-            rvRTO.setVisibility(View.GONE);
-
-        } else {
-
-            txtHdr.setText("Select RTO");
-
-            rtoProductDisplayList = rtoProductDisplayMainEntity.getRtolist();
-            rtoMainAdapter = new RtoMainAdapter(AssistanObtainFragment.this, rtoProductDisplayList, this);
-            rvRTO.setAdapter(rtoMainAdapter);
-            rvCity.setVisibility(View.GONE);
-            rvRTO.setVisibility(View.VISIBLE);
-
-        }
-
-
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(true);
         mBottomSheetDialog.show();
+
 
 
     }
 
-/*    public void getCityBottomSheet(RtoProductDisplayMainEntity cityEntity) {
-
-        if (mBottomSheetDialog != null) {
-
-            if (mBottomSheetDialog.isShowing()) {
-
-                rtoProductDisplayMainEntity = cityEntity;
-
-                setCityData(rtoProductDisplayMainEntity.getCityname(), rtoProductDisplayMainEntity);
-
-                mBottomSheetDialog.dismiss();
-
-            }
-        }
-    }*/
-
-   /* public void getRTOBottomSheet(RtoProductEntity rtoEntity) {
-
-        if (mBottomSheetDialog != null) {
-
-            if (mBottomSheetDialog.isShowing()) {
-
-                rtoMainEntity = rtoEntity;
-
-                setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
-                mBottomSheetDialog.dismiss();
-
-            }
-        }
-
-
-    }*/
 
     //endregion
 
 
-    public void setCityData(String strCityName, RtoProductDisplayMainEntity rtoPrdEntity) {
+    public void setCityData(String strCityName, CityMainEntity rtoPrdEntity) {
         etCity.setText("" + strCityName);
         etRTO.setText("");
-        rtoProductDisplayMainEntity = rtoPrdEntity;
+        cityMainEntity = rtoPrdEntity;
 
-        if (rtoProductDisplayMainEntity != null) {
-            if (rtoProductDisplayMainEntity.getCity_id() == 2653) {
-
-                etRTO_OTH.setVisibility(View.VISIBLE);
-                etRTO.setVisibility(View.GONE);
-                lvLogo.setVisibility(View.VISIBLE);
-                setRtoTAT(rtoProductDisplayMainEntity);
-
-
-            } else {
-                etRTO.setVisibility(View.VISIBLE);
-                etRTO_OTH.setVisibility(View.GONE);
-                lvLogo.setVisibility(View.VISIBLE);
-                setRtoTAT(rtoProductDisplayMainEntity);
-
-
-            }
-        }
+//        if (cityMainEntity != null) {
+//            if (cityMainEntity.getCity_id() == 2653) {
+//
+//                etRTO_OTH.setVisibility(View.VISIBLE);
+//                etRTO.setVisibility(View.GONE);
+//                lvLogo.setVisibility(View.VISIBLE);
+//                setRtoTAT(cityMainEntity);
+//
+//
+//            } else {
+//                etRTO.setVisibility(View.VISIBLE);
+//                etRTO_OTH.setVisibility(View.GONE);
+//                lvLogo.setVisibility(View.VISIBLE);
+//                setRtoTAT(cityMainEntity);
+//
+//
+//            }
+//        }
     }
 
-    public void setRTOData(String strRTOName, RtoProductEntity rtoEntity) {
+    public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
         etRTO.setText("" + strRTOName);
 
         rtoMainEntity = rtoEntity;
@@ -312,7 +300,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         prefManager = new PrefManager(getActivity());
 
-
+         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
 
         etRTO = (EditText) view.findViewById(R.id.etRTO);
@@ -328,7 +316,13 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         txtClientName = (TextView) view.findViewById(R.id.txtClientName);
         txtTAT = (TextView) view.findViewById(R.id.txtTAT);
 
-        textLicMandatory = (TextView) view.findViewById(R.id.textLicMandatory);
+        etName = (EditText) view.findViewById(R.id.etName);
+        etDOB = (EditText) view.findViewById(R.id.etDOB);
+        etAddress = (EditText) view.findViewById(R.id.etAddress);
+
+        chkName = (CheckBox) view.findViewById(R.id.chkName);
+        chkDOB = (CheckBox) view.findViewById(R.id.chkDOB);
+        chkAddress = (CheckBox) view.findViewById(R.id.chkAddress);
 
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
@@ -341,24 +335,26 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         lyLic = (LinearLayout) view.findViewById(R.id.lyLic);
 
+        llCorrection = (LinearLayout) view.findViewById(R.id.llCorrection);
+        lyName = (LinearLayout) view.findViewById(R.id.lyName);
+        lyDOB = (LinearLayout) view.findViewById(R.id.lyDOB);
+        lyAddress = (LinearLayout) view.findViewById(R.id.lyAddress);
+        lyVehicleType = (LinearLayout) view.findViewById(R.id.lyVehicleType);
+
+
         ivLogo = (ImageView) view.findViewById(R.id.ivLogo);
         ivClientLogo = (ImageView) view.findViewById(R.id.ivClientLogo);
+        ivArrow = (ImageView) view.findViewById(R.id.ivArrow);
+        ivLic = (ImageView) view.findViewById(R.id.ivLic);
+        ivTick = (TextView) view.findViewById(R.id.ivTick);
 
 
     }
 
-
-    private void getCorrectionField() {
-        correctiontEnityList.clear();
-        correctiontEnityList.add(new CorrectiontEnity("0", "Name", false));
-        correctiontEnityList.add(new CorrectiontEnity("1", "DOB", false));
-        correctiontEnityList.add(new CorrectiontEnity("2", "Driving License", false));
-        correctiontEnityList.add(new CorrectiontEnity("2", "Address", false));
-
-    }
 
     private void setOnClickListener() {
 
+        etDOB.setOnClickListener(datePickerDialog);
         etCity.setFocusable(false);
         etCity.setClickable(true);
 
@@ -373,6 +369,8 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         etCity.setOnClickListener(this);
         etRTO.setOnClickListener(this);
 
+        chkName.setOnCheckedChangeListener(this);
+
 
     }
 
@@ -385,32 +383,32 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
-
-                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
-                    list.remove(j);
-                    j--;
-                }
-            }
-        }
-        return list;
-    }
+//    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
+//        for (int i = 0; i < list.size(); i++) {
+//            for (int j = i + 1; j < list.size(); j++) {
+//
+//                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
+//                    list.remove(j);
+//                    j--;
+//                }
+//            }
+//        }
+//        return list;
+//    }
 
 
     private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
-        if (rtoProd.getPrice() != null) {
-            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
-            AMOUNT = rtoProd.getPrice().trim();
-        }
-
-        if (rtoProd.getTAT() != null) {
-            lyTAT.setVisibility(View.VISIBLE);
-            txtTAT.setText("" + rtoProd.getTAT());
-        } else {
-            lyTAT.setVisibility(View.GONE);
-        }
+//        if (rtoProd.getPrice() != null) {
+//            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
+//            AMOUNT = rtoProd.getPrice().trim();
+//        }
+//
+//        if (rtoProd.getTAT() != null) {
+//            lyTAT.setVisibility(View.VISIBLE);
+//            txtTAT.setText("" + rtoProd.getTAT());
+//        } else {
+//            lyTAT.setVisibility(View.GONE);
+//        }
 
         Glide.with(getActivity())
                 .load(rtoProd.getProduct_logo())
@@ -434,120 +432,43 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }
 
         if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
-            getCustomToast("Please Enter D");
+            getCustomToast("Please Enter Driving License");
             return false;
+        }
+
+        if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
+            if ((chkAddress.isChecked() == false) && (chkDOB.isChecked() == false) && (chkName.isChecked() == false)) {
+                getCustomToast("Please Select Atlease One Field");
+                ivTick.setVisibility(View.VISIBLE);
+
+                return false;
+            }
+
+            if (chkName.isChecked() && (etName.getText().toString().trim().length() == 0)) {
+                getCustomToast("Please Enter Correction In Name");
+                ivTick.setVisibility(View.VISIBLE);
+                return false;
+            }
+            if (chkDOB.isChecked() && (etDOB.getText().toString().trim().length() == 0)) {
+                getCustomToast("Please Enter Correction In DOB");
+                ivTick.setVisibility(View.VISIBLE);
+                return false;
+            }
+            if (chkAddress.isChecked() && (etAddress.getText().toString().trim().length() == 0)) {
+                getCustomToast("Please Enter Correction In Address");
+                ivTick.setVisibility(View.VISIBLE);
+                return false;
+            }
+
+            ivTick.setVisibility(View.GONE);
+
         }
 
         return true;
     }
 
 
-    private void reqDocPopUp(List<DocProductEnity> lstDoc) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
-        RecyclerView rvProductDoc;
-        ProductDocAdapter mAdapter = new ProductDocAdapter(getActivity(), lstDoc);
-        Button btnClose;
-        ImageView ivClose;
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_doc_prod, null);
-
-
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-        // set the custom dialog components - text, image and button
-        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
-        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
-        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
-        rvProductDoc.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvProductDoc.setLayoutManager(layoutManager);
-        rvProductDoc.setAdapter(mAdapter);
-
-
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        alertDialog.setCancelable(false);
-
-        alertDialog.show();
-        //  alertDialog.getWindow().setLayout(900, 600);
-
-
-    }
-
-
-    private void reqCorrectPopUp(List<CorrectiontEnity> correctiontEnityList) {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
-
-        RecyclerView rvProductDoc;
-        CorrectionAdapter mAdapter = new CorrectionAdapter(getActivity(), correctiontEnityList);
-        Button btnSubmit;
-        ImageView ivClose;
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.layout_correct_doc, null);
-
-
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-
-        // set the custom dialog components - text, image and button
-
-        TextView txtHdr = (TextView) dialogView.findViewById(R.id.txtHdr);
-
-        btnSubmit = (Button) dialogView.findViewById(R.id.btnSubmit);
-        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
-
-        txtHdr.setText("Correction List");
-        btnSubmit.setVisibility(View.VISIBLE);
-        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
-        rvProductDoc.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvProductDoc.setLayoutManager(layoutManager);
-        rvProductDoc.setAdapter(mAdapter);
-
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-
-        alertDialog.setCancelable(false);
-
-        alertDialog.show();
-
-
-    }
 
 
     @Override
@@ -571,7 +492,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
                     PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                    listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
+                    //     listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
 
 
                 }
@@ -603,8 +524,19 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
     @Override
     public void onClick(View view) {
+
+
         switch (view.getId()) {
 
 
@@ -615,7 +547,16 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
             case R.id.rlCorrect:
-                reqCorrectPopUp(correctiontEnityList);
+
+                if (llCorrection.getVisibility() == View.GONE) {
+                    llCorrection.setVisibility(View.VISIBLE);
+                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.up_arrow));
+
+                } else {
+                    llCorrection.setVisibility(View.GONE);
+                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
+                }
+                //  setScrollatBottom();
                 break;
 
             case R.id.btnBooked:
@@ -625,8 +566,8 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 }
 
                 //region RTO Payment
-                int cityID = rtoProductDisplayMainEntity.getCity_id();
-                int rtoID = rtoMainEntity.getRto_id();
+
+                int rtoID = rtoMainEntity.getId();
                 InsertOrderRequestEntity requestEntity = new InsertOrderRequestEntity();
 
                 ExtrarequestEntity extrarequest = new ExtrarequestEntity();
@@ -643,7 +584,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 requestEntity.setVehicleno("");
                 requestEntity.setPucexpirydate("");
                 requestEntity.setRto_id("" + rtoID);
-                requestEntity.setCityid("" + cityID);
+                requestEntity.setCityid("" + CITY_ID);
                 requestEntity.setAmount("" + AMOUNT);
                 requestEntity.setPayment_status("0");
                 requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
@@ -656,18 +597,16 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 break;
             case R.id.etCity:
 
-                if (listCityMain != null) {
+                startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
-                    getBottomSheetDialog("CITY");
-                }
 
                 break;
 
             case R.id.etRTO:
-
+                // setScrollatBottom();
                 if (!etCity.getText().toString().equalsIgnoreCase("")) {
 
-                    getBottomSheetDialog("RTO");
+                    getBottomSheetDialog();
                 } else {
                     getCustomToast("Select City");
                 }
@@ -678,20 +617,12 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
-    public void getRTOCity(RtoProductDisplayMainEntity e, RtoProductEntity entity) {
+    public void getRTOCity(RtoCityMain entity) {
 
         if (mBottomSheetDialog != null) {
 
             if (mBottomSheetDialog.isShowing()) {
-
-                if (e != null) {
-                    rtoProductDisplayMainEntity = e;
-
-                    setCityData(rtoProductDisplayMainEntity.getCityname(), rtoProductDisplayMainEntity);
-
-                    mBottomSheetDialog.dismiss();
-
-                } else if (entity != null) {
+                if (entity != null) {
 
                     rtoMainEntity = entity;
 
@@ -702,5 +633,58 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             }
 
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        if (buttonView.getId() == R.id.chkName) {
+
+            if (isChecked) {
+
+                lyName.setBackgroundColor(getResources().getColor(R.color.seperator));
+
+            } else {
+                lyName.setBackgroundColor(getResources().getColor(R.color.white));
+            }
+
+        } else if (buttonView.getId() == R.id.chkDOB) {
+
+            if (isChecked) {
+
+                lyDOB.setBackgroundColor(getResources().getColor(R.color.seperator));
+
+            } else {
+                lyDOB.setBackgroundColor(getResources().getColor(R.color.white));
+            }
+
+        } else if (buttonView.getId() == R.id.chkAddress) {
+
+            if (isChecked) {
+
+                lyAddress.setBackgroundColor(getResources().getColor(R.color.seperator));
+
+            } else {
+                lyAddress.setBackgroundColor(getResources().getColor(R.color.white));
+            }
+
+        }
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.SEARCH_CITY_CODE) {
+            if (data != null) {
+
+                cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                CITY_ID = cityMainEntity.getCity_id();
+                etCity.setText(cityMainEntity.getCityname());
+
+            }
+        }
+
     }
 }

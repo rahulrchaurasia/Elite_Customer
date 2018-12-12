@@ -40,4 +40,8 @@ public interface IRegister {
     void getCarVehicleMaster();
 
     void getUserConstatnt( IResponseSubcriber iResponseSubcriber);
+
+    void getCityMainMaster( IResponseSubcriber iResponseSubcriber);
+
+
 }
