@@ -17,6 +17,7 @@ import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.non_rto_fragments.AnalysisHealthPlanFragment;
 import com.pb.elite.non_rto_fragments.ComplimentaryCreditReportFragment;
+import com.pb.elite.non_rto_fragments.ComplimentaryloanauditFragment;
 import com.pb.elite.non_rto_fragments.LICChangeAssistanceFragment;
 import com.pb.elite.non_rto_fragments.PUCFragment;
 import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
@@ -102,7 +103,7 @@ public class ProductMainActivity extends BaseActivity {
         } else if (productEntity.getProductcode().equalsIgnoreCase("17")) {
             return new ComplimentaryCreditReportFragment();
         } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
-            return null;
+            return  new ComplimentaryloanauditFragment();
         }
 
         return null;
