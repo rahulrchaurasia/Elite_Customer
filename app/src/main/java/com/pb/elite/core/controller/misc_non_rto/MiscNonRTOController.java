@@ -11,6 +11,7 @@ import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
+import com.pb.elite.core.response.MotorInsuranceListResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.splash.PrefManager;
@@ -38,6 +39,45 @@ public class MiscNonRTOController implements INonRTO {
         miscNonRtoNetworkService = new MiscNonRtoRequestBuilder().getService();
         mContext = context;
         prefManager = new PrefManager(mContext);
+    }
+
+    @Override
+    public void getMotorInsuranceList(final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.getMotorInsuranceList().enqueue(new Callback<MotorInsuranceListResponse>() {
+            @Override
+            public void onResponse(Call<MotorInsuranceListResponse> call, Response<MotorInsuranceListResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MotorInsuranceListResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
     }
 
     @Override

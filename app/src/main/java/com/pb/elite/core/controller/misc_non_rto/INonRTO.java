@@ -28,4 +28,6 @@ public interface INonRTO {
     void saveLifeInsurancePolicyNominee(LifeInsurancePolicyNomineeRequestEntity entity, IResponseSubcriber iResponseSubcriber);
 
     void getProductTAT(ProductPriceRequestEntity entity, IResponseSubcriber iResponseSubcriber);
+
+    void getMotorInsuranceList(IResponseSubcriber iResponseSubcriber);
 }

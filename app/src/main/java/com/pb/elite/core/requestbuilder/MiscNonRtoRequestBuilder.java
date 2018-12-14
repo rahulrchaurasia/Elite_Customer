@@ -8,6 +8,7 @@ import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
+import com.pb.elite.core.response.MotorInsuranceListResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 
@@ -26,6 +27,10 @@ public class MiscNonRtoRequestBuilder extends RetroRequestBuilder {
 
         @POST("/api/get-product-price")
         Call<ProductPriceResponse> getProductTAT(@Body ProductPriceRequestEntity entity);
+
+        @POST("/api/get-motor-insurance")
+        Call<MotorInsuranceListResponse> getMotorInsuranceList();
+
 
         @POST("/api/order-save-misc-claim-assi-service1")
         Call<ProvideClaimAssResponse> saveProvideClaimAssistance(@Body ProvideClaimAssRequestEntity requestEntity);
