@@ -175,7 +175,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         etVehicle.setEnabled(true);
 
         etVehicle.setText("");
-        lyVehicle.setBackgroundColor(getResources().getColor(R.color.white));
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_content));
 
     }
 
