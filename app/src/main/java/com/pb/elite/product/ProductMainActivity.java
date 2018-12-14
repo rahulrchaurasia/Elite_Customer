@@ -18,7 +18,8 @@ import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.non_rto_fragments.AnalysisHealthPlanFragment;
 import com.pb.elite.non_rto_fragments.BeyondLifeFinancialFragment;
 import com.pb.elite.non_rto_fragments.ComplimentaryCreditReportFragment;
-import com.pb.elite.non_rto_fragments.ComplimentaryLoanauditFragment;
+
+import com.pb.elite.non_rto_fragments.ComplimentaryLoanAuditFragment;
 import com.pb.elite.non_rto_fragments.LICChangeAssistanceFragment;
 import com.pb.elite.non_rto_fragments.PUCFragment;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
@@ -165,7 +166,7 @@ public class ProductMainActivity extends BaseActivity {
             return  complimentaryCreditReportFragment;
 
         } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
-            ComplimentaryLoanauditFragment complimentaryLoanauditFragment = new ComplimentaryLoanauditFragment();
+            ComplimentaryLoanAuditFragment complimentaryLoanauditFragment = new ComplimentaryLoanAuditFragment();
             complimentaryLoanauditFragment.setArguments(getBundleRTO());
             return complimentaryLoanauditFragment;
         }
