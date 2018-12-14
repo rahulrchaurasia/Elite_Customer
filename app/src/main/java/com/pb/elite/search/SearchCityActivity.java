@@ -154,14 +154,14 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
 
-        if(view.getId() == R.id.lyOtherCity)
-        {
-            Intent intent=new Intent();
-            intent.putExtra(Constants.SEARCH_CITY_DATA,"OTHER CITY");
-            intent.putExtra(Constants.SEARCH_CITY_ID,"2653");
-            setResult(Constants.SEARCH_CITY_CODE,intent);
-            finish();
-        }
+//        if(view.getId() == R.id.lyOtherCity)
+//        {
+//            Intent intent=new Intent();
+//            intent.putExtra(Constants.SEARCH_CITY_DATA,"OTHER CITY");
+//            intent.putExtra(Constants.SEARCH_CITY_ID,"2653");
+//            setResult(Constants.SEARCH_CITY_CODE,intent);
+//            finish();
+//        }
 
     }
 

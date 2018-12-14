@@ -102,45 +102,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_provide_vehicle_damage, container, false);
 
-        initialize(view);
-
-        setOnClickListener();
-
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = prefManager.getUserData();
-        userConstatntEntity = prefManager.getUserConstatnt();
-
-        OrderID = 0;
-        bindData();
-
-        // region Filter Type
-
-        if (getArguments() != null) {
-
-
-            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
-
-                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
-                PRODUCT_NAME = serviceEntity.getName();
-                PARENT_PRODUCT_ID = serviceEntity.getId();
-                PRODUCT_CODE = serviceEntity.getProductcode();
-
-
-            }
-
-            //endregion
-
-            txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
-        }
-
-
-        // endregion
-
-
-        showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), this);
-
 
         return view;
     }
@@ -223,6 +184,47 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         mContext = view.getContext();
+
+        initialize(view);
+
+        setOnClickListener();
+
+        dataBaseController = new DataBaseController(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
+
+        OrderID = 0;
+        bindData();
+
+        // region Filter Type
+
+        if (getArguments() != null) {
+
+
+            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
+
+                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
+                PRODUCT_NAME = serviceEntity.getName();
+                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_CODE = serviceEntity.getProductcode();
+
+
+            }
+
+            //endregion
+
+            txtPrdName.setText("" + PRODUCT_NAME);
+            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+        }
+
+
+        // endregion
+
+
+        showDialog();
+        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), this);
+
+
 
         super.onViewCreated(view, savedInstanceState);
 
@@ -383,7 +385,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID =  String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
 

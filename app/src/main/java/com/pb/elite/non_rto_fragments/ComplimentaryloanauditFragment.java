@@ -29,9 +29,7 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
     private Context mContext;
     EditText etDOB;
 
-    public ComplimentaryLoanAuditFragment() {
-        // Required empty public constructor
-    }
+
 
 
     @Override
