@@ -30,4 +30,6 @@ public interface INonRTO {
     void getProductTAT(ProductPriceRequestEntity entity, IResponseSubcriber iResponseSubcriber);
 
     void getMotorInsuranceList(IResponseSubcriber iResponseSubcriber);
+
+    void getHealthInsuranceList(IResponseSubcriber iResponseSubcriber);
 }

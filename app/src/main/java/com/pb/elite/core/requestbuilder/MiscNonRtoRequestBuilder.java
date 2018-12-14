@@ -31,6 +31,9 @@ public class MiscNonRtoRequestBuilder extends RetroRequestBuilder {
         @POST("/api/get-motor-insurance")
         Call<MotorInsuranceListResponse> getMotorInsuranceList();
 
+        @POST("/api/get-health-insurance")
+        Call<MotorInsuranceListResponse> getHealthInsuranceList();
+
 
         @POST("/api/order-save-misc-claim-assi-service1")
         Call<ProvideClaimAssResponse> saveProvideClaimAssistance(@Body ProvideClaimAssRequestEntity requestEntity);
