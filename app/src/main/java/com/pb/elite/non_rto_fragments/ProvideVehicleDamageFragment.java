@@ -215,6 +215,8 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
             txtPrdName.setText("" + PRODUCT_NAME);
             Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+
+
         }
 
 
