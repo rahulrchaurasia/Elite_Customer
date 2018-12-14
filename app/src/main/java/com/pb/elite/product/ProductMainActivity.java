@@ -18,10 +18,9 @@ import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.non_rto_fragments.AnalysisHealthPlanFragment;
 import com.pb.elite.non_rto_fragments.BeyondLifeFinancialFragment;
 import com.pb.elite.non_rto_fragments.ComplimentaryCreditReportFragment;
-import com.pb.elite.non_rto_fragments.ComplimentaryLoanAuditFragment;
+import com.pb.elite.non_rto_fragments.ComplimentaryLoanauditFragment;
 import com.pb.elite.non_rto_fragments.LICChangeAssistanceFragment;
 import com.pb.elite.non_rto_fragments.PUCFragment;
-import com.pb.elite.non_rto_fragments.ProvideHospitalizationFragment;
 import com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment;
 import com.pb.elite.non_rto_fragments.SpecialHealthTopUpFragment;
 import com.pb.elite.non_rto_fragments.TransferNCBFragment;
@@ -166,9 +165,9 @@ public class ProductMainActivity extends BaseActivity {
             return  complimentaryCreditReportFragment;
 
         } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
-            ComplimentaryLoanAuditFragment complimentaryLoanAuditFragment = new ComplimentaryLoanAuditFragment();
-            complimentaryLoanAuditFragment.setArguments(getBundleRTO());
-            return complimentaryLoanAuditFragment;
+            ComplimentaryLoanauditFragment complimentaryLoanauditFragment = new ComplimentaryLoanauditFragment();
+            complimentaryLoanauditFragment.setArguments(getBundleRTO());
+            return complimentaryLoanauditFragment;
         }
 
         return null;
