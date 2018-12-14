@@ -1,7 +1,9 @@
 package com.pb.elite.core.requestbuilder;
 
 import com.pb.elite.core.RetroRequestBuilder;
+import com.pb.elite.core.requestmodel.ClaimGuidanceHospRequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.UpdateOrderRequestEntity;
@@ -47,5 +49,11 @@ public class MiscNonRtoRequestBuilder extends RetroRequestBuilder {
 
         @POST("/api/get-product-price")
         Call<ProductPriceResponse> getProductTAT(@Body ProductPriceRequestEntity entity);
+
+        @POST("/api/order-save-claim-guidance-hospi-service2")
+        Call<ProvideClaimAssResponse> saveClaimGuidanceHosp(@Body ClaimGuidanceHospRequestEntity entity);
+
+        @POST("api/save-misc-remider-puc-service-3")
+        Call<ProvideClaimAssResponse> saveMiscRemiderPUC(@Body MiscReminderPUCRequestEntity entity);
     }
 }

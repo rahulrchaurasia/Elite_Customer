@@ -8,7 +8,9 @@ import com.pb.elite.core.controller.product.IProduct;
 import com.pb.elite.core.controller.product.SyncRTOMaster;
 import com.pb.elite.core.requestbuilder.MiscNonRtoRequestBuilder;
 import com.pb.elite.core.requestbuilder.ProductRequestBuilder;
+import com.pb.elite.core.requestmodel.ClaimGuidanceHospRequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.UpdateOrderRequestEntity;
@@ -55,6 +57,84 @@ public class MiscNonRTOController implements INonRTO {
         miscNonRtoNetworkService = new MiscNonRtoRequestBuilder().getService();
         mContext = context;
         prefManager = new PrefManager(mContext);
+    }
+
+    @Override
+    public void saveMiscRemiderPUC(MiscReminderPUCRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.saveMiscRemiderPUC(entity).enqueue(new Callback<ProvideClaimAssResponse>() {
+            @Override
+            public void onResponse(Call<ProvideClaimAssResponse> call, Response<ProvideClaimAssResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProvideClaimAssResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void saveClaimGuidanceHosp(ClaimGuidanceHospRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.saveClaimGuidanceHosp(entity).enqueue(new Callback<ProvideClaimAssResponse>() {
+            @Override
+            public void onResponse(Call<ProvideClaimAssResponse> call, Response<ProvideClaimAssResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProvideClaimAssResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
     }
 
     @Override
