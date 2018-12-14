@@ -60,9 +60,9 @@ import java.util.List;
  */
 public class HypotheticalFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
-    // region Declaration
 
-    // region Common
+
+    // region Common Declration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
@@ -92,7 +92,6 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
     //endregion
 
-    //endregion
 
 
 
@@ -116,6 +115,35 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
         OrderID = 0;
         bindData();
+
+        // region Filter Type
+
+        if (getArguments() != null) {
+
+
+            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
+
+                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
+                PRODUCT_NAME = serviceEntity.getName();
+                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_CODE = serviceEntity.getProductcode();
+
+
+            }
+
+            //endregion
+
+            txtPrdName.setText("" + PRODUCT_NAME);
+            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+        }
+
+
+        // endregion
+
+
+        showDialog();
+        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), HypotheticalFragment.this);
+
 
         return view;
     }
@@ -296,5 +324,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void OnFailure(Throwable t) {
 
+        cancelDialog();
+        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
     }
 }

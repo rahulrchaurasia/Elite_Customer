@@ -1,104 +1,92 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/nav_header_vertical_spacing"
-    android:orientation="vertical"
+
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
+    android:layout_marginBottom="5dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.pb.elite.non_rto_fragments.ProvideVehicleDamageFragment">
 
 
-    <android.support.design.widget.TextInputLayout
+
+    <ScrollView
+        android:id="@+id/scrollView"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Vehicle No.">
+        android:layout_above="@+id/btnBooked"
+        android:layout_alignParentTop="true"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingBottom="10dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical">
 
-        <EditText
-            android:id="@+id/etVehicleNo"
-            style="@style/Style.edittext"
+        <LinearLayout
+
             android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Make">
+            <include
+                android:id="@+id/ly_prod_hdr_logo"
+                layout="@layout/layout_prod_hdr_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/etMake"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
 
-    </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/nav_header_vertical_spacing">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="My Current City">
 
-        <EditText
-            android:id="@+id/etCity"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
+                <!-- ***************** Add Content Here ****************-->
+                <include
+                    android:id="@+id/ly_provide_vehicle_damage"
+                    layout="@layout/content_provide_vehicle_damage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-    </android.support.design.widget.TextInputLayout>
+                <!--***************** End *****************-->
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="My Current Pincode">
 
-        <EditText
-            android:id="@+id/etPincode"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:inputType="number"
-            android:maxLength="6"
-            android:padding="@dimen/activity_horizontal_margin" />
+                <include
+                    android:id="@+id/ly_prd_req_doc_hdr"
+                    layout="@layout/layout_prd_req_doc_hdr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
 
-    </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="RTO">
+                <include
+                    android:id="@+id/ly_tat_display"
+                    layout="@layout/layout_tat_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp" />
 
-        <EditText
-            android:id="@+id/etRTO"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
 
-    </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Insurer Company Name">
 
-        <EditText
-            android:id="@+id/etInsCompanyName"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
+        </LinearLayout>
+    </ScrollView>
 
     <Button
+        android:id="@+id/btnBooked"
         style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:text="SUBMIT" />
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/input_label_vertical_spacing"
+        android:text="Book Now" />
+</RelativeLayout>

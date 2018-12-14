@@ -57,7 +57,7 @@
                 android:drawableLeft="@drawable/ic_vehicle"
                 android:drawablePadding="10dp"
                 android:focusableInTouchMode="true"
-                android:padding="@dimen/activity_horizontal_margin"
+                android:padding="@dimen/nav_header_vertical_spacing"
                 android:enabled="false" />
 
         </android.support.design.widget.TextInputLayout>
@@ -66,79 +66,26 @@
     </LinearLayout>
 
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
     <android.support.design.widget.TextInputLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:hint="Accident Date">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="PUC Expiry Date">
 
-    <EditText
-    android:id="@+id/etDate"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusable="false"
-    android:padding="@dimen/activity_horizontal_margin" />
+        <EditText
+            android:id="@+id/etDate"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:drawableRight="@drawable/vector_date"
+             />
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:hint="Accident Time">
-
-    <EditText
-    android:id="@+id/etTime"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusable="false"
-    android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Place Of Accident">
-
-    <EditText
-    android:id="@+id/etPlaceOfAccident"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
-
-
-
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Insurer Company Name">
-
-    <EditText
-    android:id="@+id/etInsCompanyName"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
 
     <include
         layout="@layout/layout_city_pincode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-
-
 
 </LinearLayout>

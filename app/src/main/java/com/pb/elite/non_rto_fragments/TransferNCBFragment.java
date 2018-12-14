@@ -26,6 +26,7 @@ import java.util.Calendar;
  */
 public class TransferNCBFragment extends BaseFragment implements View.OnClickListener {
 
+    // Service 13
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
@@ -49,9 +50,9 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
         mContext = view.getContext();
 
-        init(view);
-
-        setListener();
+//        init(view);
+//
+//        setListener();
 
         super.onViewCreated(view, savedInstanceState);
 

@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="My Pincode">
+            android:hint="My Current Pincode">
 
             <EditText
                 android:id="@+id/etPincode"
