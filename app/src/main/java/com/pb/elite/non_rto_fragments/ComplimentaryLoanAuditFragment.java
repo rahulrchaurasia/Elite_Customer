@@ -1,11 +1,9 @@
 package com.pb.elite.non_rto_fragments;
 
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +17,12 @@ import com.pb.elite.utility.DateTimePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ComplimentaryLoanAuditFragment extends BaseFragment implements View.OnClickListener {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
     EditText etDOB;
-
-
 
 
     @Override
