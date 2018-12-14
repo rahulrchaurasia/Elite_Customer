@@ -9,13 +9,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Rajeev Ranjan on 22/01/2018.
- */
 
 public class RetroRequestBuilder {
 
-    //protected String url = "http://services.rupeeboss.com/LoginDtls.svc/";
     static Retrofit restAdapter = null;
     // production url
     public static String URL = "http://elite.rupeeboss.com";
@@ -30,9 +26,9 @@ public class RetroRequestBuilder {
                     .create();
 
             okhttp3.OkHttpClient okHttpClient = new okhttp3.OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.MINUTES)
-                    .writeTimeout(10, TimeUnit.MINUTES)
-                    .readTimeout(10, TimeUnit.MINUTES)
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .writeTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
                     .addInterceptor(interceptor)
                     .build();
 
