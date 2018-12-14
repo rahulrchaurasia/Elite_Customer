@@ -4,128 +4,144 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Vehicle No.">
+    <RelativeLayout
+        android:id="@+id/rlEditVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/seperator_white"
+        android:padding="10dp">
 
-    <EditText
-    android:id="@+id/etVehicleNo"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
+        <TextView
+            style="@style/TextViewStyle.MediumRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    </android.support.design.widget.TextInputLayout>
+            android:layout_alignParentLeft="true"
+
+            android:text="Do you have another vehicle"
+            android:textColor="@color/black" />
+
+
+        <ImageView
+
+            android:id="@+id/ivArrow"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_edit" />
+
+    </RelativeLayout>
+
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+        android:id="@+id/lyVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/bg_dashboard"
+        android:orientation="horizontal">
 
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:hint="Accident Date">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Vehicle Number">
 
-    <EditText
-    android:id="@+id/etDate"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusable="false"
-    android:padding="@dimen/activity_horizontal_margin" />
+            <EditText
+                android:id="@+id/etVehicle"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_vehicle"
+                android:drawablePadding="10dp"
+                android:enabled="false"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/input_label_vertical_spacing" />
 
-    </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:hint="Accident Time">
 
-    <EditText
-    android:id="@+id/etTime"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusable="false"
-    android:padding="@dimen/activity_horizontal_margin" />
+    </LinearLayout>
 
-    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Accident Date">
+
+            <EditText
+                android:id="@+id/etDate"
+                style="@style/Style.edittext"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:padding="@dimen/activity_horizontal_margin" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Accident Time">
+
+            <EditText
+                android:id="@+id/etTime"
+                style="@style/Style.edittext"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:padding="@dimen/activity_horizontal_margin" />
+
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Place Of Accident">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Place Of Accident">
 
-    <EditText
-    android:id="@+id/etPlaceOfAccident"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
+        <EditText
+            android:id="@+id/etPlaceOfAccident"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
+
 
     <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="My Current City">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insurer Company Name">
 
-    <EditText
-    android:id="@+id/etCity"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="My Current Pincode">
-
-    <EditText
-    android:id="@+id/etPincode"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:inputType="number"
-    android:maxLength="6"
-    android:padding="@dimen/activity_horizontal_margin" />
+        <EditText
+            android:id="@+id/etInsCompanyName"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="RTO">
-
-    <EditText
-    android:id="@+id/etRTO"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Insurer Company Name">
-
-    <EditText
-    android:id="@+id/etInsCompanyName"
-    style="@style/Style.edittext"
-    android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
-    android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
-
+    <include
+        layout="@layout/layout_city_pincode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

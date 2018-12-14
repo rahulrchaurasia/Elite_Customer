@@ -126,25 +126,49 @@ public class ProductMainActivity extends BaseActivity {
 
         else if (productEntity.getProductcode().equalsIgnoreCase("09")  //
                 || productEntity.getProductcode().equalsIgnoreCase("09")) {
-            return new ProvideVehicleDamageFragment();
+            ProvideVehicleDamageFragment provideVehicleDamageFragment = new ProvideVehicleDamageFragment();
+            provideVehicleDamageFragment.setArguments(getBundleRTO());
+            return provideVehicleDamageFragment;
         } else if (productEntity.getProductcode().equalsIgnoreCase("10")) {
-            return new ProvideHospitalizationFragment();
+            ProvideVehicleDamageFragment provideVehicleDamageFragment = new ProvideVehicleDamageFragment();
+            provideVehicleDamageFragment.setArguments(getBundleRTO());
+            return provideVehicleDamageFragment;
         } else if (productEntity.getProductcode().equalsIgnoreCase("11")) {
-            return new PUCFragment();
+            PUCFragment pucFragment = new PUCFragment();
+            pucFragment.setArguments(getBundleRTO());
+            return pucFragment;
         } else if (productEntity.getProductcode().equalsIgnoreCase("12")) {
-            return new SpecialHealthTopUpFragment();
+            SpecialHealthTopUpFragment specialHealthTopUpFragment = new SpecialHealthTopUpFragment();
+            specialHealthTopUpFragment.setArguments(getBundleRTO());
+            return specialHealthTopUpFragment;
         } else if (productEntity.getProductcode().equalsIgnoreCase("13")) {
-            return new TransferNCBFragment();
+            TransferNCBFragment transferNCBFragment = new TransferNCBFragment();
+            transferNCBFragment.setArguments(getBundleRTO());
+            return transferNCBFragment;
+
         } else if (productEntity.getProductcode().equalsIgnoreCase("14")) {
-            return new AnalysisHealthPlanFragment();
+            AnalysisHealthPlanFragment analysisHealthPlanFragment = new AnalysisHealthPlanFragment();
+            analysisHealthPlanFragment.setArguments(getBundleRTO());
+            return analysisHealthPlanFragment;
+
         } else if (productEntity.getProductcode().equalsIgnoreCase("15")) {
-            return new LICChangeAssistanceFragment();
+            LICChangeAssistanceFragment licChangeAssistanceFragment = new LICChangeAssistanceFragment();
+            licChangeAssistanceFragment.setArguments(getBundleRTO());
+            return licChangeAssistanceFragment;
         } else if (productEntity.getProductcode().equalsIgnoreCase("16")) {
-            return new BeyondLifeFinancialFragment();
+            BeyondLifeFinancialFragment beyondLifeFinancialFragment = new BeyondLifeFinancialFragment();
+            beyondLifeFinancialFragment.setArguments(getBundleRTO());
+            return beyondLifeFinancialFragment;
+
         } else if (productEntity.getProductcode().equalsIgnoreCase("17")) {
-            return new ComplimentaryCreditReportFragment();
+            ComplimentaryCreditReportFragment complimentaryCreditReportFragment = new ComplimentaryCreditReportFragment();
+            complimentaryCreditReportFragment.setArguments(getBundleRTO());
+            return  complimentaryCreditReportFragment;
+
         } else if (productEntity.getProductcode().equalsIgnoreCase("18")) {
-            return new ComplimentaryLoanAuditFragment();
+            ComplimentaryLoanAuditFragment complimentaryLoanAuditFragment = new ComplimentaryLoanAuditFragment();
+            complimentaryLoanAuditFragment.setArguments(getBundleRTO());
+            return complimentaryLoanAuditFragment;
         }
 
         return null;

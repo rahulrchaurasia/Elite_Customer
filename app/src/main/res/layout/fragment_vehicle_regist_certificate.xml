@@ -45,7 +45,7 @@
                 <!-- ***************** Add Content Here ****************-->
                 <include
                     android:id="@+id/ly_address_endorsement"
-                    layout="@layout/content_address_endorsement"
+                    layout="@layout/content_vehicle_regist_certificate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

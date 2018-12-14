@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="My Current Pincode">
+
+            <EditText
+                android:id="@+id/etPincode"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:maxLength="6" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextViewStyle.MediumLarge"
+            android:layout_marginLeft="@dimen/input_label_horizontal_spacing"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:text="My Current City" />
+
+
+        <EditText
+            android:id="@+id/etCity"
+            style="@style/EditTextStyle"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:minLines="1"
+            android:singleLine="true"
+            android:drawableRight="@drawable/ic_drop_down"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextViewStyle.MediumLarge"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/input_label_horizontal_spacing"
+            android:text="My Nearest RTO"
+            />
+
+
+        <EditText
+            android:id="@+id/etRTO"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:minLines="1"
+            android:singleLine="true"
+            android:drawableRight="@drawable/ic_drop_down"
+            android:ellipsize="end"/>
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+
+
+
+
+
+
+
+        <EditText
+            android:id="@+id/etRTO_OTH"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

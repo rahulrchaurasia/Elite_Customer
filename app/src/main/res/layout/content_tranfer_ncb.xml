@@ -36,7 +36,6 @@
 
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/lyVehicle"
         android:layout_width="match_parent"
@@ -56,47 +55,48 @@
                 style="@style/Style.edittext"
                 android:drawableLeft="@drawable/ic_vehicle"
                 android:drawablePadding="10dp"
-                android:enabled="false"
                 android:focusableInTouchMode="true"
-                android:padding="@dimen/nav_header_vertical_spacing" />
+                android:padding="@dimen/activity_horizontal_margin"
+                android:enabled="false" />
 
         </android.support.design.widget.TextInputLayout>
 
 
     </LinearLayout>
-
-    <LinearLayout
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:hint="Make">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Correct Address">
+        <EditText
+            android:id="@+id/etMake"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
 
-            <EditText
-                android:id="@+id/etCorrect"
-                style="@style/Style.edittext"
-                android:focusableInTouchMode="true"
-                android:inputType="text"
-                android:maxLength="80"
-                android:maxLines="1"
-                android:minLines="1"
-                android:lines="1"
-                android:padding="@dimen/activity_horizontal_margin" />
+    </android.support.design.widget.TextInputLayout>
 
-        </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insurer Company Name">
 
+        <EditText
+            android:id="@+id/etInsCompanyName"
+            style="@style/Style.edittext"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/activity_horizontal_margin" />
 
-    </LinearLayout>
+    </android.support.design.widget.TextInputLayout>
+
 
     <include
-        layout="@layout/layout_city_pincode"
+        layout="@layout/layout_city_rto_pincode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
 
 

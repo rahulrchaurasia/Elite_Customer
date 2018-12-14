@@ -62,8 +62,9 @@ import java.util.List;
  */
 public class DrivingLicVerifyFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IRTOCity {
 
+    // Service : 5
 
-    // region Declaration
+    // region  Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
@@ -164,9 +165,6 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
                 PARENT_PRODUCT_ID = serviceEntity.getId();
                 PRODUCT_CODE = serviceEntity.getProductcode();
 
-                if (PRODUCT_CODE.equalsIgnoreCase("2.1") || PRODUCT_CODE.equalsIgnoreCase("3.1") || PRODUCT_CODE.equalsIgnoreCase("3.2")) {
-                   
-                }
 
             }
 

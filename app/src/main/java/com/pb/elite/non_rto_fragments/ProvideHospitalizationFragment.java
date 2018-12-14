@@ -49,9 +49,9 @@ public class ProvideHospitalizationFragment extends BaseFragment implements View
 
         mContext = view.getContext();
 
-        init(view);
-
-        setListener();
+//        init(view);
+//
+//        setListener();
 
         super.onViewCreated(view, savedInstanceState);
 
