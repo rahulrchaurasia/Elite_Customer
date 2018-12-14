@@ -10,12 +10,13 @@
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:visibility="gone"
             android:layout_marginLeft="5dp" />
 
         <LinearLayout

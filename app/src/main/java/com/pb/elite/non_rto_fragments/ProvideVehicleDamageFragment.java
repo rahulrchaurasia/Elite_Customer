@@ -27,12 +27,19 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
+import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
+import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.rto_fragment.TransferOwnershipFragment;
@@ -52,17 +59,17 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     // Service : 9
 
 
-
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
-    EditText etDate, etTime;
+    EditText etDate, etTime, etPlaceOfAccident, etInsCompanyName;
+
 
     // region Common Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText  etCity ,  etVehicle ;
+    EditText etCity, etVehicle, etPincode;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -70,8 +77,8 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     RTOServiceEntity serviceEntity;
 
     ScrollView scrollView;
-    LinearLayout lyVehicle ,lvLogo, lyTAT;
-    RelativeLayout rlDoc ,rlEditVehicle;
+    LinearLayout lyVehicle, lvLogo, lyTAT;
+    RelativeLayout rlDoc, rlEditVehicle;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -81,10 +88,10 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     int PRODUCT_ID = 0;
     int PARENT_PRODUCT_ID = 0;
 
-    String AMOUNT = "0";
     int OrderID = 0;
 
-    String CITY_ID;
+    String CITY_ID = "";
+    ProductPriceEntity productPriceEntity;
 
     //endregion
 
@@ -132,7 +139,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
 
         showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(),this);
+        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), this);
 
 
         return view;
@@ -145,6 +152,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
         etCity = (EditText) view.findViewById(R.id.etCity);
+        etPincode = (EditText) view.findViewById(R.id.etPincode);
         etVehicle = (EditText) view.findViewById(R.id.etVehicle);
 
 
@@ -169,6 +177,8 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
         etDate = view.findViewById(R.id.etDate);
         etTime = view.findViewById(R.id.etTime);
+        etPlaceOfAccident = view.findViewById(R.id.etPlaceOfAccident);
+        etInsCompanyName = view.findViewById(R.id.etInsCompanyName);
 
 
     }
@@ -186,7 +196,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
-
 
 
     }
@@ -210,8 +219,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     }
 
 
-
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
@@ -221,6 +228,72 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
     }
 
+    private boolean validate() {
+        if (!isEmpty(etVehicle)) {
+            etVehicle.requestFocus();
+            etVehicle.setError("Enter Vehicle Number");
+            return false;
+        } else if (!isEmpty(etDate)) {
+            etDate.requestFocus();
+            etDate.setError("Enter Accident Date");
+            return false;
+        } else if (!isEmpty(etTime)) {
+            etTime.requestFocus();
+            etTime.setError("Enter Accident Time");
+            return false;
+        } else if (!isEmpty(etPlaceOfAccident)) {
+            etPlaceOfAccident.requestFocus();
+            etPlaceOfAccident.setError("Enter Place Of Accident");
+            return false;
+        } else if (!isEmpty(etInsCompanyName)) {
+            etInsCompanyName.requestFocus();
+            etInsCompanyName.setError("Enter Insurer Company Name");
+            return false;
+        } else if (!isEmpty(etCity)) {
+            etCity.requestFocus();
+            etCity.setError("Enter City");
+            return false;
+        }
+        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
+            etPincode.requestFocus();
+            etPincode.setError("Enter Pincode");
+            return false;
+        }
+        return true;
+    }
+
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
+
+        } else {
+            lvLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void saveData()
+    {
+
+        showDialog();
+        ProvideClaimAssRequestEntity requestEntity = new ProvideClaimAssRequestEntity();
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("0");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setVehicleno(etVehicle.getText().toString());
+        requestEntity.setPincode(etPincode.getText().toString());
+        requestEntity.setAssistant_date(etDate.getText().toString());
+        requestEntity.setAssistant_time(etTime.getText().toString());
+        requestEntity.setAssistant_place(etPlaceOfAccident.getText().toString());
+        requestEntity.setInsure_company_name(etInsCompanyName.getText().toString());
+
+        new MiscNonRTOController(mContext).saveProvideClaimAssistance(requestEntity,this);
+    }
 
     @Override
     public void onClick(View view) {
@@ -230,7 +303,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
             case R.id.etDate:
 
-                DateTimePicker.showOpenDatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                DateTimePicker.showDatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
                         if (view1.isShown()) {
@@ -238,6 +311,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                             calendar.set(year, monthOfYear, dayOfMonth);
                             String currentDay = simpleDateFormat.format(calendar.getTime());
                             etDate.setText(currentDay);
+                            etDate.setError(null);
                         }
                     }
                 });
@@ -250,7 +324,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         if (view.isShown()) {
                             String item = "";
-
                             if (hourOfDay >= 12 && minute > 0)
                                 item = " PM";
                             else
@@ -258,6 +331,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
 
                             etTime.setText("" + hourOfDay + " : " + minute + item);
+                            etTime.setError(null);
 
                         }
                     }
@@ -278,11 +352,22 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 break;
             case R.id.btnBooked:
 
+                if (validate() == false) {
+                    return;
+                } else {
+
+                    saveData();
+                }
 
                 break;
 
             case R.id.etCity:
 
+                if (!isEmpty(etVehicle)) {
+                    etVehicle.requestFocus();
+                    etVehicle.setError("Enter Vehicle Number");
+                    return;
+                }
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
@@ -300,6 +385,23 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
                 CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(etVehicle.getText().toString());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
@@ -328,15 +430,32 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                     reqDocPopUp(((ProductDocumentResponse) response).getData());
                 } else {
 
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
+                    getCustomToast("No Data Available");
                 }
             }
+        } else if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
         }
+        else if (response instanceof ProvideClaimAssResponse) {
+            if (response.getStatus_code() == 0) {
+
+                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+
+            }
+        }
+        //
     }
 
     @Override
     public void OnFailure(Throwable t) {
         cancelDialog();
-        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,6 +3,7 @@ package com.pb.elite;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.document.DocUploadActivity;
+import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.utility.Utility;
 
@@ -303,6 +306,53 @@ public class BaseFragment extends Fragment {
 
             }
         });
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.show();
+        //  alertDialog.getWindow().setLayout(900, 600);
+
+
+    }
+
+
+    public void showMiscPaymentAlert(final View view, String strhdr, String DisplayMessage, final int OrderID) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
+
+
+        Button btnClose;
+        TextView txtHdr ,txtMessage;
+
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.layout_success_message, null);
+
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
+        txtMessage = (TextView) dialogView.findViewById(R.id.txtMessage);
+        txtHdr = (TextView) dialogView.findViewById(R.id.txtHdr);
+
+        txtHdr.setText(""+ strhdr);
+        txtMessage.setText("" + DisplayMessage);
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                startActivity(new Intent(getActivity(), DocUploadActivity.class)
+                        .putExtra("ORDER_ID", OrderID));
+
+                getActivity().finish();
+
+
+            }
+        });
+
 
         alertDialog.setCancelable(false);
 
