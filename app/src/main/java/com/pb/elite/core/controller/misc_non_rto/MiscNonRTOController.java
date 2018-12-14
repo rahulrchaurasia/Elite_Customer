@@ -9,6 +9,7 @@ import com.pb.elite.core.controller.product.SyncRTOMaster;
 import com.pb.elite.core.requestbuilder.MiscNonRtoRequestBuilder;
 import com.pb.elite.core.requestbuilder.ProductRequestBuilder;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.UpdateOrderRequestEntity;
 import com.pb.elite.core.response.CityResponse;
@@ -20,6 +21,7 @@ import com.pb.elite.core.response.NotificationResponse;
 import com.pb.elite.core.response.OrderDetailResponse;
 import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProductResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.core.response.RtoLocationReponse;
@@ -53,6 +55,44 @@ public class MiscNonRTOController implements INonRTO {
         miscNonRtoNetworkService = new MiscNonRtoRequestBuilder().getService();
         mContext = context;
         prefManager = new PrefManager(mContext);
+    }
+
+    @Override
+    public void getProductTAT(ProductPriceRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.getProductTAT(entity).enqueue(new Callback<ProductPriceResponse>() {
+            @Override
+            public void onResponse(Call<ProductPriceResponse> call, Response<ProductPriceResponse> response) {
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductPriceResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
     }
 
     @Override
