@@ -207,16 +207,11 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+
         }
 
 
         // endregion
-
-
-        showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(),this);
-
         super.onViewCreated(view, savedInstanceState);
 
     }
@@ -382,16 +377,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
+    if (response instanceof ProductDocumentResponse) {
             if (response.getStatus_code() == 0) {
 
                 if (((ProductDocumentResponse) response).getData() != null) {

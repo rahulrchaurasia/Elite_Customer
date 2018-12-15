@@ -42,6 +42,7 @@ import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -82,7 +83,6 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     String PRODUCT_NAME = "";
     String PRODUCT_CODE = "";
     int PRODUCT_ID = 0;
-    int PARENT_PRODUCT_ID = 0;
 
     String AMOUNT = "0";
     int OrderID = 0;
@@ -200,7 +200,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
 
                 serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
                 PRODUCT_NAME = serviceEntity.getName();
-                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_ID = serviceEntity.getId();
                 PRODUCT_CODE = serviceEntity.getProductcode();
 
 
@@ -209,15 +209,10 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
         }
 
 
         // endregion
-
-
-        showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(),this);
 
         super.onViewCreated(view, savedInstanceState);
 
@@ -299,8 +294,8 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
 
 
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, this);
+
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -369,27 +364,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    getCustomToast("No Data Available");
-                }
-            }
-        } else if (response instanceof ProductPriceResponse) {
+        if (response instanceof ProductPriceResponse) {
             if (response.getStatus_code() == 0) {
 
                 productPriceEntity = ((ProductPriceResponse) response).getData().get(0);

@@ -11,23 +11,29 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -310,5 +316,53 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Email via..."));
     }
 
+    public void reqDocPopUp(List<DocProductEnity> lstDoc) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+
+        RecyclerView rvProductDoc;
+        ProductDocAdapter mAdapter = new ProductDocAdapter(this, lstDoc);
+        Button btnClose;
+        ImageView ivClose;
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.layout_doc_prod, null);
+
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
+        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
+        rvProductDoc = (RecyclerView) dialogView.findViewById(R.id.rvProductDoc);
+        rvProductDoc.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        rvProductDoc.setLayoutManager(layoutManager);
+        rvProductDoc.setAdapter(mAdapter);
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+            }
+        });
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.show();
+        //  alertDialog.getWindow().setLayout(900, 600);
+
+
+    }
 
 }

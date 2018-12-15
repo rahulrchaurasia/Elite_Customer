@@ -317,7 +317,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         txtClientName.setText("Reliance General Insurance");
     }
 
-    private void reqDocPopUp(List<DocProductEnity> lstDoc) {
+    private void reqDocPopUp1(List<DocProductEnity> lstDoc) {
 //        AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this, R.style.CustomDialog);
 //
 //        RecyclerView rvProductDoc;
@@ -736,7 +736,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
                 if (((ProductDocumentResponse) response).getData() != null) {
 
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
+                    reqDocPopUp1(((ProductDocumentResponse) response).getData());
                 } else {
 
                     Toast.makeText(this, "No Data Available", Toast.LENGTH_SHORT).show();

@@ -31,28 +31,22 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
-import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
+
 import com.pb.elite.core.model.InsuranceCompanyEntity;
 import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
-import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.response.MotorInsuranceListResponse;
-import com.pb.elite.core.response.OrderResponse;
-import com.pb.elite.core.response.ProductDocumentResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
-import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.non_rto_fragments.adapter.IInsurer;
 import com.pb.elite.non_rto_fragments.adapter.InsurerMainAdapter;
-import com.pb.elite.rto_fragment.AssistanObtainFragment;
-import com.pb.elite.rto_fragment.TransferOwnershipFragment;
-import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -65,7 +59,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProvideVehicleDamageFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber ,IInsurer {
+public class ProvideVehicleDamageFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IInsurer {
 
     // Service : 9
 
@@ -97,7 +91,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     String PRODUCT_NAME = "";
     String PRODUCT_CODE = "";
     int PRODUCT_ID = 0;
-    int PARENT_PRODUCT_ID = 0;
 
     int OrderID = 0;
 
@@ -107,6 +100,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     // region Botom sheetDeclaration
     BottomSheetDialog mBottomSheetDialog;
     List<InsuranceCompanyEntity> insuranceCompanyEntityList;
+
     InsuranceCompanyEntity insuranceCompanyEntity;
     InsurerMainAdapter insurerMainAdapter;
 
@@ -150,9 +144,8 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
                 serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
                 PRODUCT_NAME = serviceEntity.getName();
-                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_ID = serviceEntity.getId();
                 PRODUCT_CODE = serviceEntity.getProductcode();
-
 
             }
 
@@ -167,9 +160,12 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
 
         showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), this);
 
-
+        if (PRODUCT_CODE.equalsIgnoreCase("09")) {
+            new MiscNonRTOController(mContext).getMotorInsuranceList(this);
+        } else {
+            new MiscNonRTOController(mContext).getHealthInsuranceList(this);
+        }
 
         super.onViewCreated(view, savedInstanceState);
 
@@ -219,11 +215,15 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         etCity.setFocusable(false);
         etCity.setClickable(true);
 
+        etInsCompanyName.setFocusable(false);
+        etInsCompanyName.setClickable(true);
+
         rlDoc.setOnClickListener(this);
         rlEditVehicle.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
 
         etCity.setOnClickListener(this);
+
         etInsCompanyName.setOnClickListener(this);
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
@@ -264,7 +264,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvRTO.setHasFixedSize(true);
         rvRTO.setNestedScrollingEnabled(false);
-        insurerMainAdapter = new InsurerMainAdapter(ProvideVehicleDamageFragment.this,insuranceCompanyEntityList, this);
+        insurerMainAdapter = new InsurerMainAdapter(ProvideVehicleDamageFragment.this, insuranceCompanyEntityList, this);
         rvRTO.setAdapter(insurerMainAdapter);
         rvRTO.setVisibility(View.VISIBLE);
 
@@ -286,7 +286,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         mBottomSheetDialog.setCancelable(false);
         mBottomSheetDialog.setCanceledOnTouchOutside(true);
         mBottomSheetDialog.show();
-
 
 
     }
@@ -340,8 +339,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         }
     }
 
-    private void saveData()
-    {
+    private void saveData() {
 
         showDialog();
         ProvideClaimAssRequestEntity requestEntity = new ProvideClaimAssRequestEntity();
@@ -357,9 +355,9 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         requestEntity.setAssistant_date(etDate.getText().toString());
         requestEntity.setAssistant_time(etTime.getText().toString());
         requestEntity.setAssistant_place(etPlaceOfAccident.getText().toString());
-        requestEntity.setInsure_company_name(""+insuranceCompanyEntity.getMotor_Insurance_Id());
+        requestEntity.setInsure_company_name("" + insuranceCompanyEntity.getInsurance_Id());
 
-        new MiscNonRTOController(mContext).saveProvideClaimAssistance(requestEntity,this);
+        new MiscNonRTOController(mContext).saveProvideClaimAssistance(requestEntity, this);
     }
 
     @Override
@@ -408,8 +406,8 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 break;
 
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, this);
+
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -430,10 +428,13 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
             case R.id.etInsCompanyName:
 
-                if(insuranceCompanyEntityList !=null && insuranceCompanyEntityList.size() >0)
-                {
-                    getBottomSheetDialog();
+
+                if (PRODUCT_CODE.equalsIgnoreCase("09")) {
+                    if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
+                        getBottomSheetDialog();
+                    }
                 }
+
                 break;
 
             case R.id.etCity:
@@ -458,7 +459,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID =  String.valueOf(cityMainEntity.getCity_id());
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
 
@@ -487,62 +488,31 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
+        cancelDialog();
+        if (response instanceof ProductPriceResponse) {
 
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-
-                    if(PRODUCT_CODE.equalsIgnoreCase("09"))
-                    {
-                        new MiscNonRTOController(mContext).getMotorInsuranceList(this);
-                    }else{
-                        new MiscNonRTOController(mContext).getHealthInsuranceList(this);
-                    }
-
-
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            cancelDialog();
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    getCustomToast("No Data Available");
-                }
-            }
-        } else if (response instanceof ProductPriceResponse) {
-            cancelDialog();
             if (response.getStatus_code() == 0) {
 
                 productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
                 getTatData();
 
             }
-        }
-        else if (response instanceof ProvideClaimAssResponse) {
+        } else if (response instanceof ProvideClaimAssResponse) {
             cancelDialog();
             if (response.getStatus_code() == 0) {
 
                 OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
                 String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
 
             }
-        }else if (response instanceof MotorInsuranceListResponse) {
+        } else if (response instanceof MotorInsuranceListResponse) {
             cancelDialog();
             if (response.getStatus_code() == 0) {
 
                 insuranceCompanyEntityList = ((MotorInsuranceListResponse) response).getData();
 
-
-
+                //
             }
         }
         //
@@ -563,7 +533,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 if (entity != null) {
 
                     insuranceCompanyEntity = entity;
-                    etInsCompanyName.setText(""+ insuranceCompanyEntity.getMotor_Insurance_Name());
+                    etInsCompanyName.setText("" + insuranceCompanyEntity.getInsurance_Name());
                     mBottomSheetDialog.dismiss();
                 }
 

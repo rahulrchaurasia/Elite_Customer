@@ -63,7 +63,7 @@ public class InsurerMainAdapter extends RecyclerView.Adapter<InsurerMainAdapter.
 
         final InsuranceCompanyEntity insuranceCompanyEntity = insuranceCompanyEntityList.get(position);
 
-        holder.txtTitle.setText("" + insuranceCompanyEntity.getMotor_Insurance_Name());
+        holder.txtTitle.setText("" + insuranceCompanyEntity.getInsurance_Name());
 
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override

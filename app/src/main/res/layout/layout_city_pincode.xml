@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:text="My Current City"
-        android:textColor="@color/black" />
+        android:text="My Current City" />
 
 
     <EditText
