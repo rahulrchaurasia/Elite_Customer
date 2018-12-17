@@ -38,10 +38,6 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
 
         mContext = view.getContext();
 
-        init(view);
-
-        setListener();
-
         super.onViewCreated(view, savedInstanceState);
 
     }

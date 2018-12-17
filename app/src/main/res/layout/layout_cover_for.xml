@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/seperator_white"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="Covered For" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbIndividual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Individual" />
+
+        <RadioButton
+            android:id="@+id/rbFloater"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="Floater" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/lyFamily"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextViewStyle.MediumLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:text="No. Of Family Member" />
+
+
+
+        <Spinner
+            android:id="@+id/spNoOfFamily"
+            style="@style/SpinnerStyle.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/FamilyMemNo"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:gravity="center" />
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

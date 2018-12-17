@@ -4,18 +4,47 @@ package com.pb.elite.non_rto_fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
+import com.pb.elite.core.APIResponse;
+import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
+import com.pb.elite.core.model.CityMainEntity;
+import com.pb.elite.core.model.ProductPriceEntity;
+import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.response.ProductPriceResponse;
+import com.pb.elite.core.response.ProvideClaimAssResponse;
+import com.pb.elite.database.DataBaseController;
+import com.pb.elite.product.ProductMainActivity;
+import com.pb.elite.search.SearchCityActivity;
+import com.pb.elite.splash.PrefManager;
+import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.DateTimePicker;
 
 import java.text.SimpleDateFormat;
@@ -24,17 +53,41 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TransferNCBFragment extends BaseFragment implements View.OnClickListener {
+public class TransferNCBFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
     // Service 13
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
-    EditText etDate, etTime;
+    // region Common Declaration
+    PrefManager prefManager;
+    UserConstatntEntity userConstatntEntity;
 
-    public TransferNCBFragment() {
-        // Required empty public constructor
-    }
+    EditText etVehicle,  etMake, etInsCompanyName, etPincode, etCity,  etRTO;
+    DataBaseController dataBaseController;
+    UserEntity loginEntity;
+    Button btnBooked;
+
+
+    RTOServiceEntity serviceEntity;
+
+    ScrollView scrollView;
+    LinearLayout lyVehicle, lvLogo, lyTAT ;
+    RelativeLayout rlDoc ,rlEditVehicle;;
+    ImageView ivLogo, ivClientLogo;
+
+    TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
+
+    String PRODUCT_NAME = "";
+    String PRODUCT_CODE = "";
+    int PRODUCT_ID = 0;
+
+
+    String AMOUNT = "0";
+    int OrderID = 0;
+
+    String CITY_ID;
+    ProductPriceEntity productPriceEntity;
+    //endregion
 
 
     @Override
@@ -45,65 +98,244 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         return view;
     }
 
+    private void initialize(View view) {
+
+        prefManager = new PrefManager(getActivity());
+
+        scrollView =  view.findViewById(R.id.scrollView);
+        btnBooked =  view.findViewById(R.id.btnBooked);
+        etCity =  view.findViewById(R.id.etCity);
+        etPincode =  view.findViewById(R.id.etPincode);
+        etVehicle =  view.findViewById(R.id.etVehicle);
+        etRTO   =  view.findViewById(R.id.etRTO);
+        etMake   =  view.findViewById(R.id.etMake);
+        etInsCompanyName = view.findViewById(R.id.etInsCompanyName);
+
+        txtCharges =  view.findViewById(R.id.txtCharges);
+        txtPrdName =  view.findViewById(R.id.txtPrdName);
+        txtDoc =  view.findViewById(R.id.txtDoc);
+        txtClientName =  view.findViewById(R.id.txtClientName);
+        txtTAT =  view.findViewById(R.id.txtTAT);
+
+        rlDoc = view.findViewById(R.id.rlDoc);
+        rlEditVehicle =  view.findViewById(R.id.rlEditVehicle);
+
+        lyVehicle =  view.findViewById(R.id.lyVehicle);
+        lvLogo =  view.findViewById(R.id.lvLogo);
+
+
+        lyTAT = view.findViewById(R.id.lyTAT);
+
+
+        ivLogo =  view.findViewById(R.id.ivLogo);
+        ivClientLogo = view.findViewById(R.id.ivClientLogo);
+
+
+
+
+
+    }
+
+    private void setOnClickListener() {
+
+        etCity.setFocusable(false);
+        etCity.setClickable(true);
+        etCity.setOnClickListener(this);
+
+        rlDoc.setOnClickListener(this);
+        btnBooked.setOnClickListener(this);
+
+
+
+
+
+    }
+
+    private void bindData() {
+        Glide.with(getActivity())
+                .load(userConstatntEntity.getCompanylogo())
+                .into(ivClientLogo);
+
+        txtClientName.setText(userConstatntEntity.getCompanyname());
+
+
+    }
+
+    private boolean validate() {
+
+        if (!validateCity(etCity)) {
+
+            return false;
+        }
+        if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
+        return true;
+    }
+
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
+
+        } else {
+            lvLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void setVehicleEdiatable() {
+        etVehicle.setEnabled(true);
+
+        etVehicle.setText("");
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_content));
+
+    }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         mContext = view.getContext();
 
-//        init(view);
-//
-//        setListener();
+        initialize(view);
+
+        setOnClickListener();
+
+        dataBaseController = new DataBaseController(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
+
+        OrderID = 0;
+        bindData();
+
+        // region Filter Type
+
+        if (getArguments() != null) {
+
+
+            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
+
+                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
+                PRODUCT_NAME = serviceEntity.getName();
+                PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_CODE = serviceEntity.getProductcode();
+
+
+            }
+
+            //endregion
+
+            txtPrdName.setText("" + PRODUCT_NAME);
+
+        }
+
 
         super.onViewCreated(view, savedInstanceState);
 
     }
 
-    private void setListener() {
-        etDate.setOnClickListener(this);
-        etTime.setOnClickListener(this);
+
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+
+            case R.id.rlEditVehicle:
+
+                setVehicleEdiatable();
+                break;
+
+            case R.id.rlDoc:
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
+                break;
+
+
+            case R.id.btnBooked:
+                if (validate() == false) {
+                    return;
+                } else {
+
+                   // saveData();
+                }
+
+                break;
+
+            case R.id.etCity:
+
+                startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
+
+                break;
+
+
+
+
+        }
+
     }
 
-    private void init(View view) {
-        etDate = view.findViewById(R.id.etDate);
-        etTime = view.findViewById(R.id.etTime);
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.SEARCH_CITY_CODE) {
+            if (data != null) {
+
+                CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
+                etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                //   entity.setVehicleno(etVehicle.getText().toString());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
+
+            }
+        }
+
+    }
+
+
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+
+        cancelDialog();
+        if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
+        } else if (response instanceof ProvideClaimAssResponse) {
+            if (response.getStatus_code() == 0) {
+
+                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
+
+            }
+        }
+        //
     }
 
     @Override
-    public void onClick(View v) {
-
-        if (v.getId() == R.id.etDate) {
-
-            DateTimePicker.showOpenDatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
-                    if (view1.isShown()) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        String currentDay = simpleDateFormat.format(calendar.getTime());
-                        etDate.setText(currentDay);
-                    }
-                }
-            });
-        } else if (v.getId() == R.id.etTime) {
-
-            DateTimePicker.showTimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    if (view.isShown()) {
-                        String item = "";
-
-                        if (hourOfDay >= 12 && minute > 0)
-                            item = " PM";
-                        else
-                            item = " AM";
-
-
-                        etTime.setText("" + hourOfDay + " : " + minute + item);
-
-                    }
-                }
-            });
-        }
-
+    public void OnFailure(Throwable t) {
+        cancelDialog();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

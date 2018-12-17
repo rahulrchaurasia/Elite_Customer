@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/EliteCustomer.iml" filepath="$PROJECT_DIR$/EliteCustomer.iml" />
+      <module fileurl="file://D:\Rajeev\AndroidProjects\Elite_Customer_14_Dec\Elite_Customer\EliteCustomer.iml" filepath="D:\Rajeev\AndroidProjects\Elite_Customer_14_Dec\Elite_Customer\EliteCustomer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Elite_Customer.iml" filepath="$PROJECT_DIR$/Elite_Customer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

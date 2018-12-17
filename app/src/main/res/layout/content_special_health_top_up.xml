@@ -50,53 +50,11 @@
 
     </android.support.design.widget.TextInputLayout>
 
-
-    <TextView
+    <include
+        layout="@layout/layout_cover_for"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Covered For" />
+        android:layout_height="wrap_content" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rbIndividual"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Individual" />
-
-        <RadioButton
-            android:id="@+id/rbFloater"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:text="Floater" />
-    </RadioGroup>
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="No of Family Members">
-
-        <EditText
-            android:id="@+id/etNoOfFamilyMember"
-            style="@style/Style.edittext"
-            android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin" />
-
-    </android.support.design.widget.TextInputLayout>
 
     <include
         layout="@layout/layout_city_pincode"

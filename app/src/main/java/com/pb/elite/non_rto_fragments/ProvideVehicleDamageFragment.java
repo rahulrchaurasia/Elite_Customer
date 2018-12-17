@@ -176,31 +176,31 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
         prefManager = new PrefManager(getActivity());
 
-        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
-        btnBooked = (Button) view.findViewById(R.id.btnBooked);
-        etCity = (EditText) view.findViewById(R.id.etCity);
-        etPincode = (EditText) view.findViewById(R.id.etPincode);
-        etVehicle = (EditText) view.findViewById(R.id.etVehicle);
+        scrollView =  view.findViewById(R.id.scrollView);
+        btnBooked =  view.findViewById(R.id.btnBooked);
+        etCity =  view.findViewById(R.id.etCity);
+        etPincode =  view.findViewById(R.id.etPincode);
+        etVehicle =  view.findViewById(R.id.etVehicle);
 
 
-        txtCharges = (TextView) view.findViewById(R.id.txtCharges);
-        txtPrdName = (TextView) view.findViewById(R.id.txtPrdName);
-        txtDoc = (TextView) view.findViewById(R.id.txtDoc);
-        txtClientName = (TextView) view.findViewById(R.id.txtClientName);
-        txtTAT = (TextView) view.findViewById(R.id.txtTAT);
+        txtCharges =  view.findViewById(R.id.txtCharges);
+        txtPrdName =  view.findViewById(R.id.txtPrdName);
+        txtDoc =  view.findViewById(R.id.txtDoc);
+        txtClientName =  view.findViewById(R.id.txtClientName);
+        txtTAT =  view.findViewById(R.id.txtTAT);
 
-        rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
-        rlEditVehicle = (RelativeLayout) view.findViewById(R.id.rlEditVehicle);
+        rlDoc =  view.findViewById(R.id.rlDoc);
+        rlEditVehicle =  view.findViewById(R.id.rlEditVehicle);
 
-        lyVehicle = (LinearLayout) view.findViewById(R.id.lyVehicle);
-        lvLogo = (LinearLayout) view.findViewById(R.id.lvLogo);
-
-
-        lyTAT = (LinearLayout) view.findViewById(R.id.lyTAT);
+        lyVehicle =  view.findViewById(R.id.lyVehicle);
+        lvLogo =  view.findViewById(R.id.lvLogo);
 
 
-        ivLogo = (ImageView) view.findViewById(R.id.ivLogo);
-        ivClientLogo = (ImageView) view.findViewById(R.id.ivClientLogo);
+        lyTAT =  view.findViewById(R.id.lyTAT);
+
+
+        ivLogo =  view.findViewById(R.id.ivLogo);
+        ivClientLogo =  view.findViewById(R.id.ivClientLogo);
 
         etDate = view.findViewById(R.id.etDate);
         etTime = view.findViewById(R.id.etTime);
@@ -368,7 +368,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
             case R.id.etDate:
 
-                DateTimePicker.showDatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                DateTimePicker.showPrevPickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
                         if (view1.isShown()) {

@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,20 +31,17 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
-import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
-import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
-import com.pb.elite.core.response.ProductDocumentResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
-import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -53,30 +53,33 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnClickListener , IResponseSubcriber {
+public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnClickListener,CompoundButton.OnCheckedChangeListener, IResponseSubcriber {
 
+    // Service 12
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private Context mContext;
-    EditText etNameOfProposer , etSumAssured ,etDOB,  etNoOfFamilyMember;
+    EditText etNameOfProposer, etSumAssured, etDOB;
 
+    Spinner spNoOfFamily;
     RadioGroup radioGroup;
-    RadioButton rbIndividual ,  rbFloater;
+    RadioButton rbIndividual, rbFloater;
 
     // region Common Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etPincode,  etCity  ;
+    EditText etPincode, etCity;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
 
+
     RTOServiceEntity serviceEntity;
 
     ScrollView scrollView;
-    LinearLayout lyVehicle ,lvLogo, lyTAT;
-    RelativeLayout rlDoc ,rlEditVehicle;
+    LinearLayout lyVehicle, lvLogo, lyTAT ,lyFamily;
+    RelativeLayout rlDoc;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -84,7 +87,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     String PRODUCT_NAME = "";
     String PRODUCT_CODE = "";
     int PRODUCT_ID = 0;
-    int PARENT_PRODUCT_ID = 0;
+
 
     String AMOUNT = "0";
     int OrderID = 0;
@@ -108,12 +111,13 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
         etCity = (EditText) view.findViewById(R.id.etCity);
-        etPincode =  (EditText) view.findViewById(R.id.etPincode);
+        etPincode = (EditText) view.findViewById(R.id.etPincode);
 
 
-        etNameOfProposer  =  (EditText) view.findViewById(R.id.etNameOfProposer );
-        etSumAssured  =  (EditText) view.findViewById(R.id.etSumAssured);
-        etNoOfFamilyMember  =  (EditText) view.findViewById(R.id.etNoOfFamilyMember);
+        etNameOfProposer = (EditText) view.findViewById(R.id.etNameOfProposer);
+        etSumAssured = (EditText) view.findViewById(R.id.etSumAssured);
+
+
 
         radioGroup = view.findViewById(R.id.radioGroup);
         rbFloater = view.findViewById(R.id.rbFloater);
@@ -126,7 +130,6 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
         txtTAT = (TextView) view.findViewById(R.id.txtTAT);
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
-        rlEditVehicle = (RelativeLayout) view.findViewById(R.id.rlEditVehicle);
 
         lyVehicle = (LinearLayout) view.findViewById(R.id.lyVehicle);
         lvLogo = (LinearLayout) view.findViewById(R.id.lvLogo);
@@ -140,7 +143,15 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
         etDOB = view.findViewById(R.id.etDOB);
 
+        // region Floater
+        radioGroup   = view.findViewById(R.id.radioGroup);
+        rbIndividual = view.findViewById(R.id.rbIndividual);
+        rbFloater = view.findViewById(R.id.rbFloater);
 
+        lyFamily = view.findViewById(R.id.lyFamily);
+        spNoOfFamily = view.findViewById(R.id.spNoOfFamily);
+
+        //endregion
 
 
     }
@@ -154,9 +165,10 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
         rlDoc.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
 
-
-
         etDOB.setOnClickListener(this);
+
+        rbFloater.setOnCheckedChangeListener(this);
+        rbIndividual.setOnCheckedChangeListener(this);
 
 
 
@@ -198,7 +210,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
                 serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
                 PRODUCT_NAME = serviceEntity.getName();
-                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_ID = serviceEntity.getId();
                 PRODUCT_CODE = serviceEntity.getProductcode();
 
 
@@ -217,27 +229,24 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     }
 
     private boolean validate() {
-        if (!isEmpty(etNameOfProposer  )) {
+        if (!isEmpty(etNameOfProposer)) {
             etNameOfProposer.requestFocus();
             etNameOfProposer.setError("Enter Name Of Proposer");
             return false;
 
-        }
-        else if (!isEmpty(etSumAssured)) {
+        } else if (!isEmpty(etSumAssured)) {
             etSumAssured.requestFocus();
             etSumAssured.setError("Enter Sum Assured");
             return false;
-        }
-        else if (!isEmpty(etDOB)) {
+        } else if (!isEmpty(etDOB)) {
             etDOB.requestFocus();
             etDOB.setError("Enter Accident DOB");
             return false;
-        }
-       else if (!isEmpty(etNameOfProposer)) {
-            etNameOfProposer.requestFocus();
-            etNameOfProposer.setError("Enter No of Family Member");
+        } else if (spNoOfFamily.getSelectedItemPosition() == 0) {
+            getCustomToast("Please Select No. Of Family Member");
             return false;
-        } else if (!isEmpty(etCity)) {
+        }
+        else if (!isEmpty(etCity)) {
             etCity.requestFocus();
             etCity.setError("Enter City");
             return false;
@@ -261,14 +270,15 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
         }
     }
 
-    private void saveData()
-    {
+
+
+    private void saveData() {
 
         showDialog();
         SpecialBenefitsRequestEntity requestEntity = new SpecialBenefitsRequestEntity();
         requestEntity.setAmount(txtCharges.getText().toString());
         requestEntity.setCityid(String.valueOf(CITY_ID));
-        requestEntity.setPayment_status("0");
+        requestEntity.setPayment_status("1");
         requestEntity.setProdid(String.valueOf(PRODUCT_ID));
         requestEntity.setRto_id(productPriceEntity.getRto_id());
         requestEntity.setTransaction_id("");
@@ -286,17 +296,18 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             requestEntity.setCovered_for(rbFloater.getText().toString());
         }
 
-        requestEntity.setNo_family_member(etNoOfFamilyMember.getText().toString());
+        requestEntity.setNo_family_member(spNoOfFamily.getSelectedItem().toString());
 
-        new MiscNonRTOController(mContext).saveSpecialBenifits(requestEntity,this);
+        new MiscNonRTOController(mContext).saveSpecialBenifits(requestEntity, this);
     }
+
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
             case R.id.etDOB:
 
-                DateTimePicker.showOpenDatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                DateTimePicker.showPrevPickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
                         if (view1.isShown()) {
@@ -311,8 +322,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
 
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, this);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -324,7 +334,6 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
                     saveData();
                 }
 
-
                 break;
 
             case R.id.etCity:
@@ -334,10 +343,13 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
                 break;
 
 
+
+
         }
 
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -345,7 +357,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID =  String.valueOf(cityMainEntity.getCity_id());
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
 
@@ -353,7 +365,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
                 //region call Price Controller
                 ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
-             //   entity.setVehicleno(etVehicle.getText().toString());
+                //   entity.setVehicleno(etVehicle.getText().toString());
                 entity.setCityid(CITY_ID);
                 entity.setProduct_id(String.valueOf(PRODUCT_ID));
                 entity.setProductcode(PRODUCT_CODE);
@@ -371,37 +383,23 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     }
 
 
-
-
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-    if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    getCustomToast("No Data Available");
-                }
-            }
-        } else if (response instanceof ProductPriceResponse) {
+        if (response instanceof ProductPriceResponse) {
             if (response.getStatus_code() == 0) {
 
                 productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
                 getTatData();
 
             }
-        }
-        else if (response instanceof ProvideClaimAssResponse) {
+        } else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
                 OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
                 String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
 
             }
         }
@@ -411,6 +409,24 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     @Override
     public void OnFailure(Throwable t) {
         cancelDialog();
-        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        if (buttonView.getId() == R.id.rbFloater) {
+
+            if (isChecked) {
+                lyFamily.setVisibility(View.VISIBLE);
+
+            }
+        }else  if (buttonView.getId() == R.id.rbIndividual) {
+
+            if (isChecked) {
+                lyFamily.setVisibility(View.GONE);
+
+            }
+        }
     }
 }

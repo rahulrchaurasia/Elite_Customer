@@ -370,6 +370,8 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         etRTO.setOnClickListener(this);
 
         chkName.setOnCheckedChangeListener(this);
+        chkDOB.setOnCheckedChangeListener(this);
+        chkAddress.setOnCheckedChangeListener(this);
 
 
     }

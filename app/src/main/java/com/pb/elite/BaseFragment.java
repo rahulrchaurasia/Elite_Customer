@@ -362,5 +362,36 @@ public class BaseFragment extends Fragment {
 
     }
 
+    public boolean validateCity (EditText etCity)
+    {
+        if (!isEmpty(etCity)){
+        etCity.requestFocus();
+        etCity.setError("Enter City");
+        return false;
+        }else{
+            return  true;
+        }
+    }
+
+    public boolean validatePinCode (EditText etPincode) {
+        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
+            etPincode.requestFocus();
+            etPincode.setError("Enter Pincode");
+            return false;
+        }else{
+            return  true;
+        }
+    }
+
+    public boolean validateVehicle (EditText etVehicle)
+    {
+        if (!isEmpty(etVehicle)) {
+            etVehicle.requestFocus();
+            etVehicle.setError("Enter Vehicle Number");
+            return false;
+        } else{
+            return  true;
+        }
+    }
 
 }

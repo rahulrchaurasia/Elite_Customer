@@ -447,7 +447,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -491,7 +491,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
