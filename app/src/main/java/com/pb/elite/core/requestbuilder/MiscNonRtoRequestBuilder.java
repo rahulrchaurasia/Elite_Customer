@@ -2,12 +2,16 @@ package com.pb.elite.core.requestbuilder;
 
 import com.pb.elite.core.RetroRequestBuilder;
 import com.pb.elite.core.requestmodel.AnalysisCurrentHealthRequestEntity;
+import com.pb.elite.core.requestmodel.BeyondLifeFinancialRequestEntity;
 import com.pb.elite.core.requestmodel.ClaimGuidanceHospRequestEntity;
+import com.pb.elite.core.requestmodel.ComplimentaryCreditReportRequestEntity;
+import com.pb.elite.core.requestmodel.ComplimentaryLoanAuditRequestEntity;
 import com.pb.elite.core.requestmodel.LifeInsurancePolicyNomineeRequestEntity;
 import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
+import com.pb.elite.core.requestmodel.TransferBenefitsNCBRequestEntity;
 import com.pb.elite.core.response.MotorInsuranceListResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
@@ -47,11 +51,24 @@ public class MiscNonRtoRequestBuilder extends RetroRequestBuilder {
         @POST("/api/save-special-beanifiets-service-4")
         Call<ProvideClaimAssResponse> saveSpecialBenifits(@Body SpecialBenefitsRequestEntity entity);
 
+        @POST("/api/save-transfer-ncb-benefits-service-5")
+        Call<ProvideClaimAssResponse> saveTransferNCBBenefits(@Body TransferBenefitsNCBRequestEntity entity);
+
         @POST("/api/save-analysis-current-health-service-6")
         Call<ProvideClaimAssResponse> saveAnalysisCurrentHealth(@Body AnalysisCurrentHealthRequestEntity entity);
 
         @POST("/api/save-life-insurance-policy-nominee-service-7")
         Call<ProvideClaimAssResponse> saveLifeInsurancePolicyNominee(@Body LifeInsurancePolicyNomineeRequestEntity entity);
+
+        @POST("/api/save-beyond-life-financial-service-8")
+        Call<ProvideClaimAssResponse> saveBeyondLifeFinancial(@Body BeyondLifeFinancialRequestEntity entity);
+
+        @POST("/api/save-complimentary-credit-report-service-9")
+        Call<ProvideClaimAssResponse> saveComplimentaryCreditReport(@Body ComplimentaryCreditReportRequestEntity entity);
+
+        @POST("/api/save-complimentary-loan-audit-service-10")
+        Call<ProvideClaimAssResponse> saveComplimentaryLoanAudit(@Body ComplimentaryLoanAuditRequestEntity entity);
+
 
     }
 }
