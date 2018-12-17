@@ -495,8 +495,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         acMake.setText("");
         acModel.setText("");
         etVehicle.setText("");
-        lyMakeModel.setBackgroundColor(getResources().getColor(R.color.white));
-        lyVehicle.setBackgroundColor(getResources().getColor(R.color.white));
+        lyMakeModel.setBackgroundColor(getResources().getColor(R.color.bg_content));
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_content));
 
     }
 

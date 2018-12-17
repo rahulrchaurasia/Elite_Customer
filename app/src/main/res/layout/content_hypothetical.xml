@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:orientation="vertical">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
 
     <LinearLayout
@@ -11,63 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle.MediumLarge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="My Current City"
-                android:textColor="@color/black" />
-
-
-            <EditText
-                android:id="@+id/etCity"
-                style="@style/EditTextStyle"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_drop_down"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:minLines="1"
-                android:singleLine="true"
-                android:text="" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Vehicle Finance From">
-
-                <EditText
-                    android:id="@+id/etFinance"
-                    style="@style/Style.edittext"
-                    android:focusableInTouchMode="true"
-                    android:inputType="text"
-                    android:maxLength="30"
-                    android:padding="@dimen/activity_horizontal_margin" />
-
-            </android.support.design.widget.TextInputLayout>
-
-
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rlEditVehicle"
@@ -129,6 +73,67 @@
 
 
         </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Vehicle Finance From">
+
+                <EditText
+                    android:id="@+id/etFinance"
+                    style="@style/Style.edittext"
+                    android:focusableInTouchMode="true"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:padding="@dimen/activity_horizontal_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewStyle.MediumDark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="My Current City"
+                android:textColor="@color/black" />
+
+
+            <EditText
+                android:id="@+id/etCity"
+                style="@style/EditTextStyle"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_drop_down"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:minLines="1"
+                android:singleLine="true"
+                android:text="" />
+
+
+        </LinearLayout>
+
+
 
 
     </LinearLayout>

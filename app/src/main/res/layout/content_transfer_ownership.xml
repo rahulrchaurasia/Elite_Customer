@@ -2,49 +2,79 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
 
-    <LinearLayout
+
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+        android:id="@+id/rlEditVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/seperator_white"
+        android:padding="10dp">
+
+        <TextView
+            style="@style/TextViewStyle.MediumRegular"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
 
-            <TextView
-                style="@style/TextViewStyle.MediumLarge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="My Current City"
-                android:textColor="@color/black" />
+            android:layout_alignParentLeft="true"
 
+            android:text="Do you have another vehicle"
+            android:textColor="@color/black" />
+
+
+        <ImageView
+
+            android:id="@+id/ivArrow"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_edit" />
+
+    </RelativeLayout>
+
+         <LinearLayout
+        android:id="@+id/lyVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/bg_edit"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Vehicle Number">
 
             <EditText
-                android:id="@+id/etCity"
-                style="@style/EditTextStyle"
+                android:id="@+id/etVehicle"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_vehicle"
+                android:drawablePadding="10dp"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:enabled="false" />
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_drop_down"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:minLines="1"
-                android:text=""
-                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
 
 
+    </LinearLayout>
 
 
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,66 +100,45 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rlEditVehicle"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextViewStyle.MediumLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:background="@color/seperator_white"
-            android:padding="10dp">
-
-            <TextView
-                style="@style/TextViewStyle.MediumRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_alignParentLeft="true"
-
-                android:text="Do you have another vehicle"
-                android:textColor="@color/black" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="My Current City"
+            android:textColor="@color/black" />
 
 
-            <ImageView
+        <EditText
+            android:id="@+id/etCity"
+            style="@style/EditTextStyle"
 
-                android:id="@+id/ivArrow"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_edit" />
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/lyVehicle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/bg_dashboard"
-            android:orientation="horizontal">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Vehicle Number">
-
-                <EditText
-                    android:id="@+id/etVehicle"
-                    style="@style/Style.edittext"
-                    android:drawableLeft="@drawable/ic_vehicle"
-                    android:drawablePadding="10dp"
-                    android:focusableInTouchMode="true"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    android:enabled="false" />
-
-            </android.support.design.widget.TextInputLayout>
+            android:drawableRight="@drawable/ic_drop_down"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:minLines="1"
+            android:text=""
+            android:singleLine="true" />
 
 
-        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
 
 
 
