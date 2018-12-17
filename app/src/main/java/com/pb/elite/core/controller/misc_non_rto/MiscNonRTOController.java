@@ -5,12 +5,16 @@ import android.content.Context;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.requestbuilder.MiscNonRtoRequestBuilder;
 import com.pb.elite.core.requestmodel.AnalysisCurrentHealthRequestEntity;
+import com.pb.elite.core.requestmodel.BeyondLifeFinancialRequestEntity;
 import com.pb.elite.core.requestmodel.ClaimGuidanceHospRequestEntity;
+import com.pb.elite.core.requestmodel.ComplimentaryCreditReportRequestEntity;
+import com.pb.elite.core.requestmodel.ComplimentaryLoanAuditRequestEntity;
 import com.pb.elite.core.requestmodel.LifeInsurancePolicyNomineeRequestEntity;
 import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
 import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
+import com.pb.elite.core.requestmodel.TransferBenefitsNCBRequestEntity;
 import com.pb.elite.core.response.MotorInsuranceListResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
@@ -39,6 +43,163 @@ public class MiscNonRTOController implements INonRTO {
         miscNonRtoNetworkService = new MiscNonRtoRequestBuilder().getService();
         mContext = context;
         prefManager = new PrefManager(mContext);
+    }
+
+    @Override
+    public void saveTransferNCBBenefits(TransferBenefitsNCBRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.saveTransferNCBBenefits(entity).enqueue(new Callback<ProvideClaimAssResponse>() {
+            @Override
+            public void onResponse(Call<ProvideClaimAssResponse> call, Response<ProvideClaimAssResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProvideClaimAssResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void saveBeyondLifeFinancial(BeyondLifeFinancialRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.saveBeyondLifeFinancial(entity).enqueue(new Callback<ProvideClaimAssResponse>() {
+            @Override
+            public void onResponse(Call<ProvideClaimAssResponse> call, Response<ProvideClaimAssResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProvideClaimAssResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void saveComplimentaryCreditReport(ComplimentaryCreditReportRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.saveComplimentaryCreditReport(entity).enqueue(new Callback<ProvideClaimAssResponse>() {
+            @Override
+            public void onResponse(Call<ProvideClaimAssResponse> call, Response<ProvideClaimAssResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProvideClaimAssResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void saveComplimentaryLoanAudit(ComplimentaryLoanAuditRequestEntity entity, final IResponseSubcriber iResponseSubcriber) {
+
+        miscNonRtoNetworkService.saveComplimentaryLoanAudit(entity).enqueue(new Callback<ProvideClaimAssResponse>() {
+            @Override
+            public void onResponse(Call<ProvideClaimAssResponse> call, Response<ProvideClaimAssResponse> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus_code() == 0) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(""));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProvideClaimAssResponse> call, Throwable t) {
+
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+
+            }
+        });
     }
 
     @Override
