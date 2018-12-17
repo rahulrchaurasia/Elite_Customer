@@ -405,10 +405,6 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
                 break;
 
-            case R.id.rlDoc:
-
-                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
-                break;
 
 
             case R.id.rlEditVehicle:

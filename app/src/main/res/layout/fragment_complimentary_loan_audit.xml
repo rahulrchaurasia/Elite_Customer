@@ -55,6 +55,10 @@
 
                     <!--***************** End *****************-->
 
+                    <include
+                        layout="@layout/layout_city_pincode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <include
                         android:id="@+id/ly_prd_req_doc_hdr"
