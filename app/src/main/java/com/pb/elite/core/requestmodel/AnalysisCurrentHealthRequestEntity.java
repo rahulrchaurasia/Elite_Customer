@@ -28,10 +28,12 @@ public class AnalysisCurrentHealthRequestEntity {
     private String payment_status;
     private String prodid;
     private String rto_id;
+
     private String transaction_id;
     private String userid;
     private String pincode;
     private String name_of_praposal;
+
     private String sume_assured;
     private String DOB;
     private String covered_for;

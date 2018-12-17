@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
@@ -14,6 +16,8 @@
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
+            android:inputType="text"
+            android:maxLength="80"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
@@ -28,6 +32,8 @@
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
+            android:inputType="text"
+            android:maxLength="80"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
@@ -42,8 +48,8 @@
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
-            android:inputType="number"
-            android:maxLength="6"
+            android:inputType="text"
+            android:maxLength="80"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>

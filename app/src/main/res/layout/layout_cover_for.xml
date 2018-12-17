@@ -8,11 +8,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+       style="@style/TextViewStyle.Medium"
         android:padding="10dp"
         android:background="@color/seperator_white"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:textColor="@color/black"
         android:text="Covered For" />
 
     <RadioGroup

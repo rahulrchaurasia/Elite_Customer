@@ -220,6 +220,11 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
+        if(cityMainEntity.getRTOList().size() == 0)
+        {
+            getCustomToast("No RTO Available");
+        }
+
         mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
         View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
@@ -259,6 +264,12 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
+    public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
+        etRTO.setText("" + strRTOName);
+
+        rtoMainEntity = rtoEntity;
+
+    }
 
     //endregion
 
@@ -288,12 +299,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 //        }
     }
 
-    public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
-        etRTO.setText("" + strRTOName);
 
-        rtoMainEntity = rtoEntity;
-
-    }
 
 
     private void initialize(View view) {

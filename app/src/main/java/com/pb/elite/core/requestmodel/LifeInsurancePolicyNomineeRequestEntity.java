@@ -25,10 +25,12 @@ public class LifeInsurancePolicyNomineeRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String pincode;
+
     private String nominee_name;
     private String relation_with_nominee;
     private String insure_company_name;

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -362,12 +363,80 @@ public class BaseFragment extends Fragment {
 
     }
 
+
+
+
+    public boolean validateMake (AutoCompleteTextView acMake , boolean IsMakeValid)
+    {
+
+        if (!isEmpty(acMake)){
+            acMake.requestFocus();
+            acMake.setError("Enter Make");
+            return false;
+        } else if (IsMakeValid == false) {
+            acMake.requestFocus();
+            acMake.setError("Invalid Make");
+            return false;
+
+        }
+        else{
+            return true;
+        }
+    }
+
+    public boolean validateInsCompName (EditText etInsComName)
+    {
+
+        if (!isEmpty(etInsComName)){
+            etInsComName.requestFocus();
+            etInsComName.setError("Enter Insurer Company Name");
+            return false;
+        }else{
+            return  true;
+        }
+    }
+
+    public boolean validateNominee (EditText etName)
+    {
+
+        if (!isEmpty(etName)){
+            etName.requestFocus();
+            etName.setError("Enter Nominee Name");
+            return false;
+        }else{
+            return  true;
+        }
+    }
+    public boolean validateNomineeRel (EditText etName)
+    {
+
+        if (!isEmpty(etName)){
+            etName.requestFocus();
+            etName.setError("Enter Relation with Nominee");
+            return false;
+        }else{
+            return  true;
+        }
+    }
     public boolean validateCity (EditText etCity)
     {
+
         if (!isEmpty(etCity)){
         etCity.requestFocus();
         etCity.setError("Enter City");
         return false;
+        }else{
+            return  true;
+        }
+    }
+
+    public boolean validateRTO (EditText etRTO)
+    {
+
+        if (!isEmpty(etRTO)){
+            etRTO.requestFocus();
+            etRTO.setError("Enter Nearest RTO");
+            return false;
         }else{
             return  true;
         }
@@ -388,6 +457,27 @@ public class BaseFragment extends Fragment {
         if (!isEmpty(etVehicle)) {
             etVehicle.requestFocus();
             etVehicle.setError("Enter Vehicle Number");
+            return false;
+        } else{
+            return  true;
+        }
+    }
+    public boolean validateProposer (EditText etNameOfProposer)
+    {
+        if (!isEmpty(etNameOfProposer)) {
+            etNameOfProposer.requestFocus();
+            etNameOfProposer.setError("Enter Name Of Proposer");
+            return false;
+        } else{
+            return  true;
+        }
+    }
+
+    public boolean validateSumAssured (EditText etSumAssured)
+    {
+        if (!isEmpty(etSumAssured)) {
+            etSumAssured.requestFocus();
+            etSumAssured.setError("Enter Sum Assured");
             return false;
         } else{
             return  true;

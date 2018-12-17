@@ -169,11 +169,17 @@
 
     </style>
 
+    <style name="TextViewStyle.MediumDark" parent="TextViewStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="fontPath">fonts/oxygenregular.ttf</item>
+        <item name="android:textColor">@color/header_dark_text</item>
+    </style>
     <style name="TextViewStyle.MediumLarge" parent="TextViewStyle">
         <item name="android:textSize">15sp</item>
         <item name="fontPath">fonts/oxygenlight.ttf</item>
         <item name="android:textColor">@color/header_light_text</item>
     </style>
+
 
     <style name="TextViewStyle.Medium" parent="TextViewStyle">
         <item name="android:textSize">13sp</item>

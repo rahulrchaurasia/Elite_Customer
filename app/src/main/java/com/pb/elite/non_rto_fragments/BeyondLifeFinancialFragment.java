@@ -47,9 +47,6 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
 
         mContext = view.getContext();
 
-        init(view);
-
-        setListener();
 
         super.onViewCreated(view, savedInstanceState);
 

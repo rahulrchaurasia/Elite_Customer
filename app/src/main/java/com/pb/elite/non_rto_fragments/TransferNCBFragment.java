@@ -7,16 +7,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -35,13 +43,22 @@ import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
+import com.pb.elite.core.requestmodel.TransferBenefitsNCBRequestEntity;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductMainActivity;
+import com.pb.elite.register.MakeAdapter;
+import com.pb.elite.register.ModelAdapter;
+import com.pb.elite.register.SignUpActivity;
+import com.pb.elite.rto_fragment.AssistanObtainFragment;
+import com.pb.elite.rto_fragment.adapter.IRTOCity;
+import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -53,11 +70,12 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TransferNCBFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
+public class TransferNCBFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IRTOCity {
 
     // Service 13
 
     private Context mContext;
+    AutoCompleteTextView acMake ;
     // region Common Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
@@ -87,6 +105,21 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
     String CITY_ID;
     ProductPriceEntity productPriceEntity;
+    boolean IsMakeValid = false;
+    MakeAdapter makeAdapter;
+
+    // region Botom sheetDeclaration
+
+    BottomSheetDialog mBottomSheetDialog;
+
+
+    CityMainEntity cityMainEntity;
+    RtoCityMain rtoMainEntity;
+
+    RtoMainAdapter rtoMainAdapter;
+
+    //endregion
+
     //endregion
 
 
@@ -97,6 +130,63 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_transfer_ncb, container, false);
         return view;
     }
+
+    //region bottomSheetDialog
+    public void getBottomSheetDialog() {
+
+        if(cityMainEntity.getRTOList().size() == 0)
+        {
+            getCustomToast("No RTO Available");
+        }
+        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
+
+        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
+
+        mBottomSheetDialog.setContentView(sheetView);
+        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+
+        rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvRTO.setHasFixedSize(true);
+        rvRTO.setNestedScrollingEnabled(false);
+        rtoMainAdapter = new RtoMainAdapter(TransferNCBFragment.this, cityMainEntity.getRTOList(), this);
+        rvRTO.setAdapter(rtoMainAdapter);
+        rvRTO.setVisibility(View.VISIBLE);
+
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mBottomSheetDialog.isShowing()) {
+
+                    mBottomSheetDialog.dismiss();
+                }
+            }
+        });
+
+
+        txtHdr.setText("Select RTO");
+
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(true);
+        mBottomSheetDialog.show();
+
+
+
+    }
+
+
+    public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
+        etRTO.setText("" + strRTOName);
+
+        rtoMainEntity = rtoEntity;
+
+    }
+
+
+    //endregion
 
     private void initialize(View view) {
 
@@ -130,7 +220,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         ivLogo =  view.findViewById(R.id.ivLogo);
         ivClientLogo = view.findViewById(R.id.ivClientLogo);
 
-
+        acMake = view.findViewById(R.id.acMake);
 
 
 
@@ -142,11 +232,67 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         etCity.setClickable(true);
         etCity.setOnClickListener(this);
 
+        etRTO.setOnClickListener(this);
+
         rlDoc.setOnClickListener(this);
+        rlEditVehicle.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
 
 
 
+
+    }
+
+    private void setMakeListner()
+    {
+        acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                acMake.setError(null);
+                acMake.setSelection(0);
+                IsMakeValid = true;
+
+            }
+        });
+
+
+        acMake.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String str = acMake.getText().toString();
+                ListAdapter listAdapter = acMake.getAdapter();
+                if( acMake.getAdapter()!= null ) {
+                    for (int i = 0; i < listAdapter.getCount(); i++) {
+                        String temp = listAdapter.getItem(i).toString().toUpperCase();
+                        if (str.compareTo(temp) == 0) {
+                            acMake.setError(null);
+
+                            IsMakeValid = true;
+
+
+                            return;
+                        }
+                    }
+                }
+
+                acMake.setError("Invalid Make");
+                acMake.setFocusable(true);
+                IsMakeValid = false;
+
+
+            }
+        });
 
 
     }
@@ -157,21 +303,41 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
                 .into(ivClientLogo);
 
         txtClientName.setText(userConstatntEntity.getCompanyname());
-
-
+        etVehicle.setText(userConstatntEntity.getVehicleno());
+        acMake.setText(""+userConstatntEntity.getMake());
+        IsMakeValid = true;
     }
 
     private boolean validate() {
 
-        if (!validateCity(etCity)) {
+        if (!validateVehicle(etVehicle)) {
+
+            return false;
+        }else if (!validateMake(acMake,IsMakeValid)) {
 
             return false;
         }
-        if (!validatePinCode(etPincode)) {
+        else if (!validateInsCompName(etInsCompanyName)) {
+
+            return false;
+        }
+        else if (!validateCity(etCity)) {
+
+            return false;
+        }
+        else if (!validatePinCode(etPincode)) {
 
             return false;
         }
         return true;
+    }
+
+    private void setVehicleEdiatable() {
+        etVehicle.setEnabled(true);
+
+        etVehicle.setText("");
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_content));
+
     }
 
     private void getTatData() {
@@ -185,12 +351,33 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
-    private void setVehicleEdiatable() {
-        etVehicle.setEnabled(true);
 
-        etVehicle.setText("");
-        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_content));
 
+    private void saveData() {
+
+        showDialog();
+
+        TransferBenefitsNCBRequestEntity requestEntity  = new TransferBenefitsNCBRequestEntity();
+
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setVehicleno(String.valueOf(etVehicle.getText()));
+
+
+        requestEntity.setPincode(etPincode.getText().toString());
+
+        requestEntity.setMake(etMake.getText().toString());
+        requestEntity.setInsure_company_name(etInsCompanyName.getText().toString());
+
+
+
+        new MiscNonRTOController(mContext).saveTransferNCBBenefits(requestEntity, this);
     }
 
 
@@ -206,11 +393,15 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         dataBaseController = new DataBaseController(getActivity());
         loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
-
         OrderID = 0;
+        acMake.setThreshold(2);
+        acMake.setSelection(0);
+
         bindData();
 
-        // region Filter Type
+        makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
+        acMake.setAdapter(makeAdapter);
+        setMakeListner();
 
         if (getArguments() != null) {
 
@@ -258,7 +449,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
                     return;
                 } else {
 
-                   // saveData();
+                    saveData();
                 }
 
                 break;
@@ -269,6 +460,17 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
                 break;
 
+            case R.id.etRTO:
+                // setScrollatBottom();
+                if (!etCity.getText().toString().equalsIgnoreCase("")) {
+
+                    getBottomSheetDialog();
+                } else {
+
+                    etCity.requestFocus();
+                    etCity.setError("Enter City");
+                }
+                break;
 
 
 
@@ -283,10 +485,11 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         if (requestCode == Constants.SEARCH_CITY_CODE) {
             if (data != null) {
 
-                CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                 cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
                 CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
+
 
                 showDialog();
 
@@ -329,6 +532,14 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
                 showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
 
             }
+        }else if (response instanceof ProvideClaimAssResponse) {
+            if (response.getStatus_code() == 0) {
+
+                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
+
+            }
         }
         //
     }
@@ -337,5 +548,24 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     public void OnFailure(Throwable t) {
         cancelDialog();
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getRTOCity(RtoCityMain entity) {
+
+        if (mBottomSheetDialog != null) {
+
+            if (mBottomSheetDialog.isShowing()) {
+                if (entity != null) {
+
+                    rtoMainEntity = entity;
+
+                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
+                    mBottomSheetDialog.dismiss();
+                }
+
+            }
+
+        }
     }
 }

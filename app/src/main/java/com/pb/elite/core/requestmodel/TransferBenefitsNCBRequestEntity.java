@@ -25,10 +25,12 @@ public class TransferBenefitsNCBRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String vehicleno;
+
     private String pincode;
     private String make;
     private String insure_company_name;

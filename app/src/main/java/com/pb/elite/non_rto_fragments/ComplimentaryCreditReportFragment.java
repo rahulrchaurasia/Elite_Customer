@@ -47,9 +47,6 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
 
         mContext = view.getContext();
 
-        init(view);
-
-        setListener();
 
         super.onViewCreated(view, savedInstanceState);
 

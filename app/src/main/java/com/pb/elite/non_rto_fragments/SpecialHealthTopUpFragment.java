@@ -251,7 +251,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             etCity.setError("Enter City");
             return false;
         }
-        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
+       else  if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
             etPincode.requestFocus();
             etPincode.setError("Enter Pincode");
             return false;
@@ -304,6 +304,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
             case R.id.etDOB:
 
