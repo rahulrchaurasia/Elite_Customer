@@ -7,7 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,21 +31,22 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
-import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
+
+import com.pb.elite.core.model.InsuranceCompanyEntity;
 import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
-import com.pb.elite.core.response.OrderResponse;
-import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.MotorInsuranceListResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
-import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.rto_fragment.TransferOwnershipFragment;
+import com.pb.elite.non_rto_fragments.adapter.IInsurer;
+import com.pb.elite.non_rto_fragments.adapter.InsurerMainAdapter;
+import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -50,11 +54,12 @@ import com.pb.elite.utility.DateTimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProvideVehicleDamageFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
+public class ProvideVehicleDamageFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IInsurer {
 
     // Service : 9
 
@@ -86,12 +91,20 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     String PRODUCT_NAME = "";
     String PRODUCT_CODE = "";
     int PRODUCT_ID = 0;
-    int PARENT_PRODUCT_ID = 0;
 
     int OrderID = 0;
 
     String CITY_ID = "";
     ProductPriceEntity productPriceEntity;
+
+    // region Botom sheetDeclaration
+    BottomSheetDialog mBottomSheetDialog;
+    List<InsuranceCompanyEntity> insuranceCompanyEntityList;
+
+    InsuranceCompanyEntity insuranceCompanyEntity;
+    InsurerMainAdapter insurerMainAdapter;
+
+    //endregion
 
     //endregion
 
@@ -105,6 +118,59 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        mContext = view.getContext();
+
+        initialize(view);
+
+        setOnClickListener();
+
+        dataBaseController = new DataBaseController(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
+
+        OrderID = 0;
+        bindData();
+
+        // region Filter Type
+
+        if (getArguments() != null) {
+
+
+            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
+
+                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
+                PRODUCT_NAME = serviceEntity.getName();
+                PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_CODE = serviceEntity.getProductcode();
+
+            }
+
+            //endregion
+
+            txtPrdName.setText("" + PRODUCT_NAME);
+
+        }
+
+
+        // endregion
+
+
+        showDialog();
+
+        if (PRODUCT_CODE.equalsIgnoreCase("09")) {
+            new MiscNonRTOController(mContext).getMotorInsuranceList(this);
+        } else {
+            new MiscNonRTOController(mContext).getHealthInsuranceList(this);
+        }
+
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
 
     private void initialize(View view) {
 
@@ -149,12 +215,16 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         etCity.setFocusable(false);
         etCity.setClickable(true);
 
+        etInsCompanyName.setFocusable(false);
+        etInsCompanyName.setClickable(true);
+
         rlDoc.setOnClickListener(this);
         rlEditVehicle.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
 
         etCity.setOnClickListener(this);
 
+        etInsCompanyName.setOnClickListener(this);
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
 
@@ -175,60 +245,54 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         etVehicle.setEnabled(true);
 
         etVehicle.setText("");
-        lyVehicle.setBackgroundColor(getResources().getColor(R.color.white));
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_content));
 
     }
 
+    //region bottomSheetDialog
+    public void getBottomSheetDialog() {
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
-        mContext = view.getContext();
+        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
 
-        initialize(view);
+        mBottomSheetDialog.setContentView(sheetView);
+        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
 
-        setOnClickListener();
-
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = prefManager.getUserData();
-        userConstatntEntity = prefManager.getUserConstatnt();
-
-        OrderID = 0;
-        bindData();
-
-        // region Filter Type
-
-        if (getArguments() != null) {
+        rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvRTO.setHasFixedSize(true);
+        rvRTO.setNestedScrollingEnabled(false);
+        insurerMainAdapter = new InsurerMainAdapter(ProvideVehicleDamageFragment.this, insuranceCompanyEntityList, this);
+        rvRTO.setAdapter(insurerMainAdapter);
+        rvRTO.setVisibility(View.VISIBLE);
 
 
-            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
-                PRODUCT_NAME = serviceEntity.getName();
-                PARENT_PRODUCT_ID = serviceEntity.getId();
-                PRODUCT_CODE = serviceEntity.getProductcode();
+                if (mBottomSheetDialog.isShowing()) {
 
-
+                    mBottomSheetDialog.dismiss();
+                }
             }
-
-            //endregion
-
-            txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
-        }
+        });
 
 
-        // endregion
+        txtHdr.setText("Select Insurer Company");
 
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(true);
+        mBottomSheetDialog.show();
 
-        showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), this);
-
-
-
-        super.onViewCreated(view, savedInstanceState);
 
     }
+
+
+    //endregion
+
 
     private boolean validate() {
         if (!isEmpty(etVehicle)) {
@@ -275,8 +339,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         }
     }
 
-    private void saveData()
-    {
+    private void saveData() {
 
         showDialog();
         ProvideClaimAssRequestEntity requestEntity = new ProvideClaimAssRequestEntity();
@@ -292,9 +355,9 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         requestEntity.setAssistant_date(etDate.getText().toString());
         requestEntity.setAssistant_time(etTime.getText().toString());
         requestEntity.setAssistant_place(etPlaceOfAccident.getText().toString());
-        requestEntity.setInsure_company_name(etInsCompanyName.getText().toString());
+        requestEntity.setInsure_company_name("" + insuranceCompanyEntity.getInsurance_Id());
 
-        new MiscNonRTOController(mContext).saveProvideClaimAssistance(requestEntity,this);
+        new MiscNonRTOController(mContext).saveProvideClaimAssistance(requestEntity, this);
     }
 
     @Override
@@ -343,8 +406,8 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 break;
 
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, this);
+
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -359,6 +422,17 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 } else {
 
                     saveData();
+                }
+
+                break;
+
+            case R.id.etInsCompanyName:
+
+
+                if (PRODUCT_CODE.equalsIgnoreCase("09")) {
+                    if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
+                        getBottomSheetDialog();
+                    }
                 }
 
                 break;
@@ -385,7 +459,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID =  String.valueOf(cityMainEntity.getCity_id());
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
 
@@ -415,41 +489,30 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
+        if (response instanceof ProductPriceResponse) {
 
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    getCustomToast("No Data Available");
-                }
-            }
-        } else if (response instanceof ProductPriceResponse) {
             if (response.getStatus_code() == 0) {
 
                 productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
                 getTatData();
 
             }
-        }
-        else if (response instanceof ProvideClaimAssResponse) {
+        } else if (response instanceof ProvideClaimAssResponse) {
+            cancelDialog();
             if (response.getStatus_code() == 0) {
 
                 OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
                 String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
 
+            }
+        } else if (response instanceof MotorInsuranceListResponse) {
+            cancelDialog();
+            if (response.getStatus_code() == 0) {
+
+                insuranceCompanyEntityList = ((MotorInsuranceListResponse) response).getData();
+
+                //
             }
         }
         //
@@ -459,5 +522,23 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     public void OnFailure(Throwable t) {
         cancelDialog();
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getInsurer(InsuranceCompanyEntity entity) {
+
+        if (mBottomSheetDialog != null) {
+
+            if (mBottomSheetDialog.isShowing()) {
+                if (entity != null) {
+
+                    insuranceCompanyEntity = entity;
+                    etInsCompanyName.setText("" + insuranceCompanyEntity.getInsurance_Name());
+                    mBottomSheetDialog.dismiss();
+                }
+
+            }
+
+        }
     }
 }

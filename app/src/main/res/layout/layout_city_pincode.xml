@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:text="My Current City"
-        android:textColor="@color/black" />
+        android:text="My Current City" />
 
 
     <EditText
@@ -27,7 +26,8 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:minLines="1"
-        android:singleLine="true" />
+        android:lines="1"
+        />
 
 
     <LinearLayout
@@ -46,7 +46,7 @@
                 android:id="@+id/etPincode"
                 style="@style/Style.edittext"
                 android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="10dp"
+                android:drawablePadding="5dp"
                 android:inputType="number"
                 android:maxLength="6" />
 

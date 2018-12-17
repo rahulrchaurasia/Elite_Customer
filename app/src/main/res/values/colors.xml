@@ -28,6 +28,11 @@
     <color name="divider">#F1F1F1</color>
     <color name="bg">#c9c5c5</color>
     <color name="bg_dashboard">#f5f5f5</color>
+    <color name="bg_content">#fbfbfb</color>
+    <color name="bg_edit">#ebebeb</color>
+
+
+
 
     <color name="header_text_color">#6c747c</color>
     <color name="secondary_text_color">#9ba0a6</color>

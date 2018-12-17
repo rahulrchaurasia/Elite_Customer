@@ -36,34 +36,42 @@
 
     </RelativeLayout>
 
-
     <LinearLayout
-        android:id="@+id/lyVehicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/bg_dashboard"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
+
+        <LinearLayout
+            android:id="@+id/lyVehicle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Vehicle Number">
-
-            <EditText
-                android:id="@+id/etVehicle"
-                style="@style/Style.edittext"
-                android:drawableLeft="@drawable/ic_vehicle"
-                android:drawablePadding="10dp"
-                android:focusableInTouchMode="true"
-                android:padding="@dimen/nav_header_vertical_spacing"
-                android:enabled="false" />
-
-        </android.support.design.widget.TextInputLayout>
+            android:layout_marginTop="8dp"
+            android:background="@color/bg_edit"
+            android:orientation="horizontal">
 
 
-    </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Vehicle Number">
+
+                <EditText
+                    android:id="@+id/etVehicle"
+                    style="@style/Style.edittext"
+                    android:drawableLeft="@drawable/ic_vehicle"
+                    android:drawablePadding="8dp"
+                    android:enabled="false"
+                    android:focusableInTouchMode="true"
+                    android:padding="@dimen/input_label_vertical_spacing" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
 
 
 
@@ -87,5 +95,7 @@
         layout="@layout/layout_city_pincode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

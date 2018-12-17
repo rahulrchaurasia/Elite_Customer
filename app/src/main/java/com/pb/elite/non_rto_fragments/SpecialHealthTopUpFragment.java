@@ -27,12 +27,19 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
+import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
+import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.search.SearchCityActivity;
@@ -83,7 +90,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
     int OrderID = 0;
 
     String CITY_ID;
-
+    ProductPriceEntity productPriceEntity;
     //endregion
 
     @Override
@@ -92,55 +99,6 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_special_health_top_up, container, false);
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-
-        mContext = view.getContext();
-
-        initialize(view);
-
-        setOnClickListener();
-
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = prefManager.getUserData();
-        userConstatntEntity = prefManager.getUserConstatnt();
-
-        OrderID = 0;
-        bindData();
-
-        // region Filter Type
-
-        if (getArguments() != null) {
-
-
-            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
-
-                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
-                PRODUCT_NAME = serviceEntity.getName();
-                PARENT_PRODUCT_ID = serviceEntity.getId();
-                PRODUCT_CODE = serviceEntity.getProductcode();
-
-
-            }
-
-            //endregion
-
-            txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
-        }
-
-
-        // endregion
-
-
-        showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(),this);
-
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     private void initialize(View view) {
@@ -214,7 +172,124 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+
+        mContext = view.getContext();
+
+        initialize(view);
+
+        setOnClickListener();
+
+        dataBaseController = new DataBaseController(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
+
+        OrderID = 0;
+        bindData();
+
+        // region Filter Type
+
+        if (getArguments() != null) {
+
+
+            if (getArguments().getParcelable(Constants.SUB_PRODUCT_DATA) != null) {
+
+                serviceEntity = getArguments().getParcelable(Constants.SUB_PRODUCT_DATA);
+                PRODUCT_NAME = serviceEntity.getName();
+                PARENT_PRODUCT_ID = serviceEntity.getId();
+                PRODUCT_CODE = serviceEntity.getProductcode();
+
+
+            }
+
+            //endregion
+
+            txtPrdName.setText("" + PRODUCT_NAME);
+
+        }
+
+
+        // endregion
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    private boolean validate() {
+        if (!isEmpty(etNameOfProposer  )) {
+            etNameOfProposer.requestFocus();
+            etNameOfProposer.setError("Enter Name Of Proposer");
+            return false;
+
+        }
+        else if (!isEmpty(etSumAssured)) {
+            etSumAssured.requestFocus();
+            etSumAssured.setError("Enter Sum Assured");
+            return false;
+        }
+        else if (!isEmpty(etDOB)) {
+            etDOB.requestFocus();
+            etDOB.setError("Enter Accident DOB");
+            return false;
+        }
+       else if (!isEmpty(etNameOfProposer)) {
+            etNameOfProposer.requestFocus();
+            etNameOfProposer.setError("Enter No of Family Member");
+            return false;
+        } else if (!isEmpty(etCity)) {
+            etCity.requestFocus();
+            etCity.setError("Enter City");
+            return false;
+        }
+        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
+            etPincode.requestFocus();
+            etPincode.setError("Enter Pincode");
+            return false;
+        }
+        return true;
+    }
+
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
+
+        } else {
+            lvLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void saveData()
+    {
+
+        showDialog();
+        SpecialBenefitsRequestEntity requestEntity = new SpecialBenefitsRequestEntity();
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("0");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+
+        requestEntity.setPincode(etPincode.getText().toString());
+        requestEntity.setDOB(etDOB.getText().toString());
+        requestEntity.setSume_assured(etSumAssured.getText().toString());
+        requestEntity.setName_of_praposal(etNameOfProposer.getText().toString());
+
+        if (rbIndividual.isChecked()) {
+            requestEntity.setCovered_for(rbIndividual.getText().toString());//hl
+
+        } else if (rbFloater.isChecked()) {
+            requestEntity.setCovered_for(rbFloater.getText().toString());
+        }
+
+        requestEntity.setNo_family_member(etNoOfFamilyMember.getText().toString());
+
+        new MiscNonRTOController(mContext).saveSpecialBenifits(requestEntity,this);
+    }
     @Override
     public void onClick(View view) {
 
@@ -242,6 +317,12 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
 
             case R.id.btnBooked:
+                if (validate() == false) {
+                    return;
+                } else {
+
+                    saveData();
+                }
 
 
                 break;
@@ -257,7 +338,6 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
 
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -265,8 +345,25 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID =  String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+             //   entity.setVehicleno(etVehicle.getText().toString());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
@@ -275,20 +372,12 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
 
 
 
+
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
+    if (response instanceof ProductDocumentResponse) {
             if (response.getStatus_code() == 0) {
 
                 if (((ProductDocumentResponse) response).getData() != null) {
@@ -296,10 +385,27 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
                     reqDocPopUp(((ProductDocumentResponse) response).getData());
                 } else {
 
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
+                    getCustomToast("No Data Available");
                 }
             }
+        } else if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
         }
+        else if (response instanceof ProvideClaimAssResponse) {
+            if (response.getStatus_code() == 0) {
+
+                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+
+            }
+        }
+        //
     }
 
     @Override

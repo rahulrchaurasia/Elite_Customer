@@ -7,14 +7,26 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
+import com.pb.elite.core.APIResponse;
+import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.product.ProductController;
+import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.response.ProductDocumentResponse;
 import com.pb.elite.non_rto_fragments.AnalysisHealthPlanFragment;
 import com.pb.elite.non_rto_fragments.BeyondLifeFinancialFragment;
 import com.pb.elite.non_rto_fragments.ComplimentaryCreditReportFragment;
@@ -36,7 +48,9 @@ import com.pb.elite.rto_fragment.TransferOwnershipFragment;
 import com.pb.elite.rto_fragment.VehicleRegistCertificateFragment;
 import com.pb.elite.utility.Constants;
 
-public class ProductMainActivity extends BaseActivity {
+import java.util.List;
+
+public class ProductMainActivity extends BaseActivity implements IResponseSubcriber {
 
     String SERVICE_TYPE;
     RTOServiceEntity productEntity;
@@ -124,8 +138,7 @@ public class ProductMainActivity extends BaseActivity {
         ///////////////////////////////////////////////////////////////////////////////// */
 
 
-        else if (productEntity.getProductcode().equalsIgnoreCase("09")  //
-                || productEntity.getProductcode().equalsIgnoreCase("09")) {
+        else if (productEntity.getProductcode().equalsIgnoreCase("09")) {
             ProvideVehicleDamageFragment provideVehicleDamageFragment = new ProvideVehicleDamageFragment();
             provideVehicleDamageFragment.setArguments(getBundleRTO());
             return provideVehicleDamageFragment;
@@ -190,6 +203,15 @@ public class ProductMainActivity extends BaseActivity {
     }
 
 
+    public void getProducDoc(int PRODUCT_ID) {
+
+        showDialog();
+        new ProductController(this).getProducDoc(PRODUCT_ID, ProductMainActivity.this);
+    }
+
+
+
+
     public void downloadPdf(String url, String name) {
         Toast.makeText(this, "Download started..", Toast.LENGTH_LONG).show();
         DownloadManager.Request r = new DownloadManager.Request(Uri.parse(url));
@@ -199,6 +221,8 @@ public class ProductMainActivity extends BaseActivity {
         DownloadManager dm = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
         dm.enqueue(r);
     }
+
+
 
 
     //region load fragment
@@ -212,6 +236,31 @@ public class ProductMainActivity extends BaseActivity {
         } else {
             getCustomToast("Under Construction...");
         }
+    }
+
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+
+        cancelDialog();
+
+        if (response instanceof ProductDocumentResponse) {
+
+            if (response.getStatus_code() == 0) {
+
+                if (((ProductDocumentResponse) response).getData() != null) {
+                    reqDocPopUp(((ProductDocumentResponse) response).getData());
+                } else {
+
+                    getCustomToast("No Data Available");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+        cancelDialog();
+        Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     //endregion
