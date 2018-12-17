@@ -2,6 +2,195 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="8dp"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextAppearence.App.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:hint="Name Of Applicant">
+
+            <EditText
+                android:id="@+id/etNameOfApplicant"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+
+                android:maxLines="1"
+                android:inputType="textCapWords"
+                style="@style/Style.edittext" />
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextAppearence.App.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:hint="Date Of Birth">
+
+            <EditText
+                android:id="@+id/etDOB"
+                style="@style/Style.edittext"
+                android:digits="0123456789"
+                android:focusable="false"  />
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/txtInputSummry"
+                android:background="@color/white"
+                android:text="SELECT TYPE"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="6dp"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+
+                style="@style/TextViewStyle.Large" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/rgloantype"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checkedButton="@+id/rbimghl"
+                    android:gravity="left|center_vertical"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbimgsl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Salaried" />
+
+                    <RadioButton
+                        android:id="@+id/rbimgse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Self Employee" />
+
+                    <RadioButton
+                        android:id="@+id/rbimgpro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Professional" />
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/lightGrey" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextAppearence.App.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:hint="Annual Income According To Loan Eligibility">
+
+
+
+            <EditText
+                android:id="@+id/etloaneligibility"
+                style="@style/Style.edittext"
+                android:digits="0123456789"
+                android:ems="10"
+
+                android:inputType="number"
+                android:maxLength="9" />
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextAppearence.App.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:hint="Existing EMI(If Any)">
+
+
+
+            <EditText
+                android:id="@+id/etExistingEMI"
+                style="@style/Style.edittext"
+                android:digits="0123456789"
+                android:ems="10"
+
+                android:inputType="number"
+                android:maxLength="9" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextAppearence.App.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:hint="Required Loan Amount">
+
+            <EditText
+                android:id="@+id/etRequiredLoanAmount"
+                style="@style/Style.edittext"
+                android:ems="10"
+
+                android:maxLength="5"
+                android:digits="0123456789."
+                android:inputType="numberDecimal"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 </LinearLayout>
