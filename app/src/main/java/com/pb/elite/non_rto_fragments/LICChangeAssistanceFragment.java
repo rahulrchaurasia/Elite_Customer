@@ -51,7 +51,7 @@ import java.util.Calendar;
  */
 public class LICChangeAssistanceFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
-
+    //Service 15
 
     private Context mContext;
     // region Common Declaration

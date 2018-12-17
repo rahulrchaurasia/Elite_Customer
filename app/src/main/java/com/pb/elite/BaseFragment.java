@@ -364,6 +364,11 @@ public class BaseFragment extends Fragment {
     }
 
 
+    public static boolean isValidPan(EditText editText) {
+        String panNo = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+        String panNoAlter = editText.getText().toString().toUpperCase();
+        return !(panNoAlter.isEmpty() || !panNoAlter.matches(panNo));
+    }
 
 
     public boolean validateMake (AutoCompleteTextView acMake , boolean IsMakeValid)
@@ -390,6 +395,18 @@ public class BaseFragment extends Fragment {
         if (!isEmpty(etInsComName)){
             etInsComName.requestFocus();
             etInsComName.setError("Enter Insurer Company Name");
+            return false;
+        }else{
+            return  true;
+        }
+    }
+
+    public boolean validateProposerName (EditText etName)
+    {
+
+        if (!isEmpty(etName)){
+            etName.requestFocus();
+            etName.setError("Enter Proposer Name");
             return false;
         }else{
             return  true;

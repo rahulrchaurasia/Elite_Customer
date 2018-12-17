@@ -25,10 +25,12 @@ public class BeyondLifeFinancialRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String pincode;
+
     private String name_of_praposal;
     private String nominee_name;
     private String relation_with_nominee;

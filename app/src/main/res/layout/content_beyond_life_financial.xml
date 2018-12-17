@@ -9,7 +9,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Proposal Name">
+        android:hint="Proposer Name">
 
         <EditText
             android:id="@+id/etNameOfProposer"
@@ -38,7 +38,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Proposal Relation With Nominee">
+        android:hint="Proposer Relation With Nominee">
 
         <EditText
             android:id="@+id/etRelationNominee"

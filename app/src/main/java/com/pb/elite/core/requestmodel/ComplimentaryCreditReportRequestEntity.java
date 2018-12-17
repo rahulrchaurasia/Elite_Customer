@@ -25,10 +25,12 @@ public class ComplimentaryCreditReportRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String pincode;
+
     private String com_name;
     private String pan_no;
     private String DOB;

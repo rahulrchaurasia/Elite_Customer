@@ -67,8 +67,8 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
     RTOServiceEntity serviceEntity;
 
     ScrollView scrollView;
-    LinearLayout lyVehicle, lvLogo, lyTAT;
-    RelativeLayout rlDoc, rlEditVehicle;
+    LinearLayout  lvLogo, lyTAT;
+    RelativeLayout rlDoc;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -113,7 +113,7 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
         txtTAT =  view.findViewById(R.id.txtTAT);
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
-        rlEditVehicle = (RelativeLayout) view.findViewById(R.id.rlEditVehicle);
+
 
         lvLogo =  view.findViewById(R.id.lvLogo);
         lyTAT =  view.findViewById(R.id.lyTAT);
@@ -127,7 +127,6 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
         etCity.setClickable(true);
 
         rlDoc.setOnClickListener(this);
-        rlEditVehicle.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
 
         etCity.setOnClickListener(this);
