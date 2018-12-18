@@ -53,7 +53,7 @@
 
             <!-- ***************** Add Content Here ****************-->
                 <include
-                    android:id="@+id/ly_content_assistan_obtain"
+                    android:id="@+id/ly_renew_rc"
                     layout="@layout/content_renew_rc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

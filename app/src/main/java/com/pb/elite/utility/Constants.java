@@ -27,6 +27,10 @@ public class Constants {
 
     public static String SUB_PRODUCT_DATA = "ELITE_SUB_RTO_PRODUCT_DATA";
 
+    public static String PAYMENT_REQUEST_BUNDLE = "ELITE_REQUEST_BUNDLE";
+    public static String PRODUCT_PAYMENT_REQUEST = "ELITE_PRODUCT_PAYMENT_REQUEST";
+    public static String REQUEST_TYPE = "ELITE_REQUEST_TYPE ";
+
     public static int SEARCH_CITY_CODE = 5;
     public static int ORDER_CODE = 2;
     public static int UPLOAD_FILE = 4;

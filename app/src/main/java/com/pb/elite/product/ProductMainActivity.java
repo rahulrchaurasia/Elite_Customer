@@ -200,6 +200,10 @@ public class ProductMainActivity extends BaseActivity implements IResponseSubcri
         startActivity(new Intent(ProductMainActivity.this, PaymentRazorActivity.class)
                 .putExtra("PRODUCT_NAME_PAYMENT", requestEntity));
         this.finish();
+
+
+
+
     }
 
 

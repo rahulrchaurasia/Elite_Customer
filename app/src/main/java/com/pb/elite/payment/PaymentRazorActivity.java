@@ -19,12 +19,16 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
+import com.pb.elite.core.controller.rto_service.RTOController;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.RCRequestEntity;
 import com.pb.elite.core.response.OrderResponse;
+import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.utility.Constants;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -41,6 +45,11 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     TextView txtprdName, txtAmount,txtName;
     Button btnSubmit;
     InsertOrderRequestEntity orderRequestEntity;
+
+    String REQUEST_TYPE = "";
+    // Service 1
+    RCRequestEntity rcRequestEntity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,33 +69,44 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
 
        txtName.setText(""+loginEntity.getName());
 
-        if (getIntent().hasExtra("PRODUCT_NAME_PAYMENT")) {
+        Bundle extras = getIntent().getBundleExtra(Constants.PAYMENT_REQUEST_BUNDLE);
+        if (extras != null) {
+             REQUEST_TYPE = extras.getString(Constants.REQUEST_TYPE, "");
 
-            orderRequestEntity = getIntent().getExtras().getParcelable("PRODUCT_NAME_PAYMENT");
-
-            PRODUCT_NAME = orderRequestEntity.getProdName();
-            AMOUNT_PAYMENT = (Long.valueOf(orderRequestEntity.getAmount()));
-            txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
-            txtprdName.setText(PRODUCT_NAME);
-
+            if(REQUEST_TYPE.equals("1"))
+            {
+                // Service 1
+                PRODUCT_NAME = orderRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(orderRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+                rcRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+            }else if(REQUEST_TYPE.equals("2"))
+            {
+                // Service 2
+            }else if(REQUEST_TYPE.equals("3"))
+            {
+                // Service 3
+            }else if(REQUEST_TYPE.equals("4"))
+            {
+                // Service 4
+            }else if(REQUEST_TYPE.equals("5"))
+            {
+                // Service 5
+            }else if(REQUEST_TYPE.equals("6"))
+            {
+                // Service 6
+            }else if(REQUEST_TYPE.equals("7"))
+            {
+                // Service 7
+            }else if(REQUEST_TYPE.equals("8"))
+            {
+                // Service 8
+            }
 
         }
-//        Bundle extras = getIntent().getExtras();
-//        if (extras != null) {
-//
-//            PRODUCT_NAME = extras.getString("PRODUCT_NAME_PAYMENT");
-//            PRODUCT_ID = extras.getInt("PRODUCT_NAME_PAYMENT",0);
-//            RTO_ID = extras.getString("RTO_ID", "0");
-//            AMOUNT_PAYMENT = (Long.valueOf(extras.getString("AMOUNT_PAYMENT", "0"))) ;
-//            txtAmount.setText("" + "\u20B9" + " " + AMOUNT_PAYMENT);
-//            txtprdName.setText(PRODUCT_NAME);
-//        }
 
 
-        /*
-         To ensure faster loading of the Checkout form,
-          call this method as early as possible in your checkout flow.
-         */
         Checkout.preload(getApplicationContext());
 
 
@@ -137,10 +157,16 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void onPaymentSuccess(String razorpayPaymentID) {
         try {
 
-            orderRequestEntity.setPayment_status("1");
-            orderRequestEntity.setTransaction_id(razorpayPaymentID);
-            showDialog();
-            new ProductController(PaymentRazorActivity.this).inserOrderData(orderRequestEntity, this);
+            if(REQUEST_TYPE.equals("1"))
+            {
+                // Service 1
+                rcRequestEntity.setPayment_status("1");
+                rcRequestEntity.setTransaction_id(razorpayPaymentID);
+
+                showDialog();
+                new RTOController(this).saveRCService1(rcRequestEntity,this);
+            }
+
 
 
         } catch (Exception e) {
@@ -154,10 +180,6 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void onPaymentError(int code, String response) {
         try {
             Toast.makeText(this, "Payment failed: " + code + " " + response, Toast.LENGTH_SHORT).show();
-//            orderRequestEntity.setPayment_status("0");
-//            orderRequestEntity.setTransaction_id("");
-//            showDialog();
-//            new ProductController(PaymentRazorActivity.this).inserOrderData(orderRequestEntity, this);
 
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
@@ -196,7 +218,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-        if (response instanceof OrderResponse) {
+        if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
                 OrderID = (((OrderResponse) response).getData().get(0).getId());
@@ -214,49 +236,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         cancelDialog();
     }
 
-    //  @Override
-//    public void onPositiveButtonClick(View view) {
-//
-//        if (view.getId() == R.id.btn_pay) {
-//
-//            if(OrderID > 0) {
-//                startActivity(new Intent(PaymentRazorActivity.this, DocUploadActivity.class)
-//                             .putExtra("ORDER_ID",OrderID));
-//                this.finish();
-//            }
-//        }
-//    }
 
-
-    public void showPaymentAlert1(final View view, String strBody, String DisplayMessage, final int OrderID) {
-        try {
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-            builder.setTitle("Elite");
-
-            builder.setMessage(strBody);
-            String positiveText = "Ok";
-            builder.setPositiveButton(positiveText,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-
-                            startActivity(new Intent(PaymentRazorActivity.this, DocUploadActivity.class)
-                                    .putExtra("ORDER_ID", OrderID));
-
-                            PaymentRazorActivity.this.finish();
-
-
-                        }
-                    });
-            final android.support.v7.app.AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        } catch (Exception ex) {
-            Toast.makeText(this, "Please try again..", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
     public void showPaymentAlert(final View view, String strhdr, String DisplayMessage, final int OrderID) {

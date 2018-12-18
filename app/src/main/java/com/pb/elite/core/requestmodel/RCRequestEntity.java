@@ -1,6 +1,9 @@
 package com.pb.elite.core.requestmodel;
 
-public class RCRequestEntity {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RCRequestEntity implements Parcelable {
 
 
     /**
@@ -21,13 +24,53 @@ public class RCRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String vehicleno;
+
     private String pincode;
     private String make;
     private String model;
+
+
+    public RCRequestEntity() {
+    }
+
+
+    protected RCRequestEntity(Parcel in) {
+        amount = in.readString();
+        cityid = in.readString();
+        payment_status = in.readString();
+        prodid = in.readString();
+        rto_id = in.readString();
+        transaction_id = in.readString();
+        userid = in.readString();
+        vehicleno = in.readString();
+        pincode = in.readString();
+        make = in.readString();
+        model = in.readString();
+
+    }
+
+    public static final Creator<RCRequestEntity> CREATOR = new Creator<RCRequestEntity>() {
+        @Override
+        public RCRequestEntity createFromParcel(Parcel in) {
+            return new RCRequestEntity(in);
+        }
+
+        @Override
+        public RCRequestEntity[] newArray(int size) {
+            return new RCRequestEntity[size];
+        }
+    };
+
+
+
+
+
+
 
     public String getAmount() {
         return amount;
@@ -115,5 +158,26 @@ public class RCRequestEntity {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(amount);
+        dest.writeString(cityid);
+        dest.writeString(payment_status);
+        dest.writeString(prodid);
+        dest.writeString(rto_id);
+        dest.writeString(transaction_id);
+        dest.writeString(userid);
+        dest.writeString(vehicleno);
+        dest.writeString(pincode);
+        dest.writeString(make);
+        dest.writeString(model);
+
     }
 }
