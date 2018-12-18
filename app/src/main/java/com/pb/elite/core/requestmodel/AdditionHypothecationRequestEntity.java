@@ -1,10 +1,13 @@
 package com.pb.elite.core.requestmodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Nilesh Birhade on 18-12-2018.
  */
 
-public class AdditionHypothecationRequestEntity {
+public class AdditionHypothecationRequestEntity  implements Parcelable {
 
 
     /**
@@ -24,12 +27,55 @@ public class AdditionHypothecationRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String vehicleno;
+
     private String pincode;
     private String vehicle_finance_form;
+    private String ProdName;
+
+    protected AdditionHypothecationRequestEntity(Parcel in) {
+        amount = in.readString();
+        cityid = in.readString();
+        payment_status = in.readString();
+        prodid = in.readString();
+        rto_id = in.readString();
+        transaction_id = in.readString();
+        userid = in.readString();
+        vehicleno = in.readString();
+        pincode = in.readString();
+        vehicle_finance_form = in.readString();
+        ProdName = in.readString();
+    }
+
+    public static final Creator<AdditionHypothecationRequestEntity> CREATOR = new Creator<AdditionHypothecationRequestEntity>() {
+        @Override
+        public AdditionHypothecationRequestEntity createFromParcel(Parcel in) {
+            return new AdditionHypothecationRequestEntity(in);
+        }
+
+        @Override
+        public AdditionHypothecationRequestEntity[] newArray(int size) {
+            return new AdditionHypothecationRequestEntity[size];
+        }
+    };
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
+
+
+
+
+    public AdditionHypothecationRequestEntity() {
+    }
 
     public String getAmount() {
         return amount;
@@ -109,5 +155,26 @@ public class AdditionHypothecationRequestEntity {
 
     public void setVehicle_finance_form(String vehicle_finance_form) {
         this.vehicle_finance_form = vehicle_finance_form;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(amount);
+        dest.writeString(cityid);
+        dest.writeString(payment_status);
+        dest.writeString(prodid);
+        dest.writeString(rto_id);
+        dest.writeString(transaction_id);
+        dest.writeString(userid);
+        dest.writeString(vehicleno);
+        dest.writeString(pincode);
+        dest.writeString(vehicle_finance_form);
+        dest.writeString(ProdName);
     }
 }

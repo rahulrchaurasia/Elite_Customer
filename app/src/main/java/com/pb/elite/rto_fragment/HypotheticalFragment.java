@@ -2,6 +2,7 @@ package com.pb.elite.rto_fragment;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,18 +31,25 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.AdditionHypothecationRequestEntity;
 import com.pb.elite.core.requestmodel.ExtrarequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.RCRequestEntity;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
@@ -61,8 +69,9 @@ import java.util.List;
 public class HypotheticalFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
 
-
+      // service :3
     // region Common Declration
+    private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
@@ -90,6 +99,8 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
     String CITY_ID;
 
+    ProductPriceEntity productPriceEntity;
+
     //endregion
 
 
@@ -104,7 +115,9 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_hypothetical, container, false);
+        mContext = view.getContext();
         initialize(view);
 
         setOnClickListener();
@@ -213,6 +226,74 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    //region common
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
+
+        } else {
+            lvLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void saveData() {
+
+        showDialog();
+        AdditionHypothecationRequestEntity requestEntity = new AdditionHypothecationRequestEntity();
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setVehicleno(etVehicle.getText().toString());
+
+        requestEntity.setPincode("");
+        requestEntity.setVehicle_finance_form(etFinance.getText().toString());
+
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REQUEST_TYPE,"1");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST,requestEntity);
+
+
+        getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE,bundle)) ;
+
+
+        getActivity().finish();
+
+
+
+    }
+
+    private boolean validate() {
+        if (!validateVehicle(etVehicle)) {
+
+            return false;
+        }
+
+        else if (!validateCity(etCity)) {
+
+            return false;
+        }
+        else if (!isEmpty(etFinance)) {
+            etFinance.requestFocus();
+            etFinance.setError("Enter Vehicle Finanace From");
+            return false;
+        }
+        return true;
+    }
+
+    //endregion
+
+
     @Override
     public void onClick(View view) {
 
@@ -220,8 +301,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
 
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, this);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -231,38 +311,13 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.btnBooked:
 
-//                if (validate() == false) {
-//                    return;
-//                }
+                if (validate() == false) {
+                    return;
+                }
+                else {
 
-                //region RTO Payment
-
-                // int rtoID = rtoMainEntity.getRto_id();
-//                int rtoID = 0;
-//                InsertOrderRequestEntity requestEntity = new InsertOrderRequestEntity();
-//
-//                ExtrarequestEntity extrarequest = new ExtrarequestEntity();
-//                extrarequest.setVehicleNo(etVehicle.getText().toString());
-//
-//                requestEntity.setProdid("" + PRODUCT_ID);
-//                requestEntity.setProdName("" + PRODUCT_NAME);
-//                requestEntity.setUserid("" + loginEntity.getUser_id());
-//                requestEntity.setTransaction_id("");
-//                requestEntity.setSubscription("");
-//                requestEntity.setVehicleno("");
-//                requestEntity.setPucexpirydate("");
-//                requestEntity.setRto_id("" + rtoID);
-//                requestEntity.setCityid("" + Integer.valueOf(CITY_ID));
-//                requestEntity.setAmount("" + AMOUNT);
-//                requestEntity.setPayment_status("0");
-//                requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
-//
-
-                //endregion
-
-//                ((ProductMainActivity) getActivity()).sendPaymentRequest(requestEntity);
-
-
+                    saveData();
+                }
                 break;
 
             case R.id.etCity:
@@ -283,12 +338,28 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(etVehicle.getText().toString());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
-
     }
 
 
@@ -296,24 +367,20 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
     public void OnSuccess(APIResponse response, String message) {
         cancelDialog();
 
-        if (response instanceof RtoProductDisplayResponse) {
+        if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
+        }else if (response instanceof RtoProductDisplayResponse) {
             if (response.getStatus_code() == 0) {
 
                 if (((RtoProductDisplayResponse) response).getData().size() > 0) {
 
 
                     PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
                 }
             }
         }

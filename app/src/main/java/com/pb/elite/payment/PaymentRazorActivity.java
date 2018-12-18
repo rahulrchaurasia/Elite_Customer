@@ -21,8 +21,11 @@ import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.rto_service.RTOController;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.AdditionHypothecationRequestEntity;
+import com.pb.elite.core.requestmodel.AssistanceObtainingRequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.pb.elite.core.requestmodel.RCRequestEntity;
+import com.pb.elite.core.requestmodel.TransferOwnershipRequestEntity;
 import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.database.DataBaseController;
@@ -49,6 +52,8 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     String REQUEST_TYPE = "";
     // Service 1
     RCRequestEntity rcRequestEntity;
+    AssistanceObtainingRequestEntity assistanceRequestEntity;
+    AdditionHypothecationRequestEntity additionHypothecationRequestEntity;
 
 
     @Override
@@ -76,17 +81,29 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             if(REQUEST_TYPE.equals("1"))
             {
                 // Service 1
-                PRODUCT_NAME = orderRequestEntity.getProdName();
-                AMOUNT_PAYMENT = (Long.valueOf(orderRequestEntity.getAmount()));
+                rcRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = rcRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(rcRequestEntity.getAmount()));
                 txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
                 txtprdName.setText(PRODUCT_NAME);
-                rcRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+
             }else if(REQUEST_TYPE.equals("2"))
             {
                 // Service 2
+                assistanceRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = assistanceRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(assistanceRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
             }else if(REQUEST_TYPE.equals("3"))
             {
                 // Service 3
+                additionHypothecationRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = additionHypothecationRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(additionHypothecationRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
             }else if(REQUEST_TYPE.equals("4"))
             {
                 // Service 4
@@ -162,10 +179,24 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
                 // Service 1
                 rcRequestEntity.setPayment_status("1");
                 rcRequestEntity.setTransaction_id(razorpayPaymentID);
-
                 showDialog();
                 new RTOController(this).saveRCService1(rcRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("2"))
+            {
+                // Service 1
+                assistanceRequestEntity.setPayment_status("1");
+                assistanceRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveAssistanceObtaining(assistanceRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("3"))
+            {
+                // Service 1
+                additionHypothecationRequestEntity.setPayment_status("1");
+                additionHypothecationRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveAdditionHypothecation(additionHypothecationRequestEntity,this);
             }
+
 
 
 

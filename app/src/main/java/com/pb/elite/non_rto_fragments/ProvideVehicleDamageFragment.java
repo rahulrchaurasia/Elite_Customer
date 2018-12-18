@@ -423,13 +423,10 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 break;
 
             case R.id.etInsCompanyName:
-
-
-                if (PRODUCT_CODE.equalsIgnoreCase("09")) {
-                    if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
+                if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
                         getBottomSheetDialog();
                     }
-                }
+
 
                 break;
 

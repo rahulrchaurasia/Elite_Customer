@@ -33,11 +33,7 @@ public class RCRequestEntity implements Parcelable {
     private String pincode;
     private String make;
     private String model;
-
-
-    public RCRequestEntity() {
-    }
-
+    private String ProdName;
 
     protected RCRequestEntity(Parcel in) {
         amount = in.readString();
@@ -51,7 +47,28 @@ public class RCRequestEntity implements Parcelable {
         pincode = in.readString();
         make = in.readString();
         model = in.readString();
+        ProdName = in.readString();
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(amount);
+        dest.writeString(cityid);
+        dest.writeString(payment_status);
+        dest.writeString(prodid);
+        dest.writeString(rto_id);
+        dest.writeString(transaction_id);
+        dest.writeString(userid);
+        dest.writeString(vehicleno);
+        dest.writeString(pincode);
+        dest.writeString(make);
+        dest.writeString(model);
+        dest.writeString(ProdName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<RCRequestEntity> CREATOR = new Creator<RCRequestEntity>() {
@@ -65,6 +82,20 @@ public class RCRequestEntity implements Parcelable {
             return new RCRequestEntity[size];
         }
     };
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
+
+
+
+
+    public RCRequestEntity() {
+    }
 
 
 
@@ -160,24 +191,5 @@ public class RCRequestEntity implements Parcelable {
         this.model = model;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(amount);
-        dest.writeString(cityid);
-        dest.writeString(payment_status);
-        dest.writeString(prodid);
-        dest.writeString(rto_id);
-        dest.writeString(transaction_id);
-        dest.writeString(userid);
-        dest.writeString(vehicleno);
-        dest.writeString(pincode);
-        dest.writeString(make);
-        dest.writeString(model);
-
-    }
 }

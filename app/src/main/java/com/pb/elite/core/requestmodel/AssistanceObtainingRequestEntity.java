@@ -1,6 +1,9 @@
 package com.pb.elite.core.requestmodel;
 
-public class AssistanceObtainingRequestEntity {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AssistanceObtainingRequestEntity  implements Parcelable{
 
 
     /**
@@ -23,15 +26,85 @@ public class AssistanceObtainingRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
+
+    private String ProdName;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String pincode;
+
     private String dl_type;
     private String dl_no;
     private String dl_correct_name;
     private String dl_dob;
     private String dl_address;
+
+
+
+    public AssistanceObtainingRequestEntity() {
+    }
+
+    protected AssistanceObtainingRequestEntity(Parcel in) {
+        amount = in.readString();
+        cityid = in.readString();
+        payment_status = in.readString();
+        prodid = in.readString();
+        ProdName = in.readString();
+        rto_id = in.readString();
+        transaction_id = in.readString();
+        userid = in.readString();
+        pincode = in.readString();
+        dl_type = in.readString();
+        dl_no = in.readString();
+        dl_correct_name = in.readString();
+        dl_dob = in.readString();
+        dl_address = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(amount);
+        dest.writeString(cityid);
+        dest.writeString(payment_status);
+        dest.writeString(prodid);
+        dest.writeString(ProdName);
+        dest.writeString(rto_id);
+        dest.writeString(transaction_id);
+        dest.writeString(userid);
+        dest.writeString(pincode);
+        dest.writeString(dl_type);
+        dest.writeString(dl_no);
+        dest.writeString(dl_correct_name);
+        dest.writeString(dl_dob);
+        dest.writeString(dl_address);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<AssistanceObtainingRequestEntity> CREATOR = new Creator<AssistanceObtainingRequestEntity>() {
+        @Override
+        public AssistanceObtainingRequestEntity createFromParcel(Parcel in) {
+            return new AssistanceObtainingRequestEntity(in);
+        }
+
+        @Override
+        public AssistanceObtainingRequestEntity[] newArray(int size) {
+            return new AssistanceObtainingRequestEntity[size];
+        }
+    };
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
 
     public String getAmount() {
         return amount;
@@ -136,4 +209,6 @@ public class AssistanceObtainingRequestEntity {
     public void setDl_address(String dl_address) {
         this.dl_address = dl_address;
     }
+
+
 }

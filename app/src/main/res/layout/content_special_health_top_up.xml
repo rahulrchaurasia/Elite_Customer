@@ -23,7 +23,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Sum Assured">
+        android:hint="Sum Insured">
 
         <EditText
             android:id="@+id/etSumAssured"
