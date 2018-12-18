@@ -185,7 +185,7 @@
                 style="@style/Style.edittext"
                 android:ems="10"
 
-                android:maxLength="5"
+                android:maxLength="9"
                 android:digits="0123456789."
                 android:inputType="numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
