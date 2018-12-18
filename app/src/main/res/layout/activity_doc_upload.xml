@@ -58,7 +58,9 @@
     android:layout_margin="5dp"
     android:textColor="@color/black"
     android:visibility="visible"
-    android:text="Note: Document is verify by admin."/>
+    android:text="Please Upload all required document"/>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvProduct"

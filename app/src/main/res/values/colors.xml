@@ -21,6 +21,8 @@
     <!--9E9E9E-->
 
     <color name="textTitle">#616161</color>
+    <color name="hdr_bg">#222f3e</color>
+
     <color name="textSubTitle">#BDBDBD</color>
     <color name="colorNormal">#9E9E9E</color>
 

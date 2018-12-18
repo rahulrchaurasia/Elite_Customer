@@ -550,6 +550,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+    //region common
     private void getTatData() {
         if (productPriceEntity != null) {
             lvLogo.setVisibility(View.VISIBLE);
@@ -560,7 +561,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             lvLogo.setVisibility(View.GONE);
         }
     }
-
 
     private void saveData() {
 
@@ -597,6 +597,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+    //endregion
+
 
 
 
@@ -617,7 +619,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
 
             case R.id.rlDoc:
-                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);    //u
                 break;
 
 

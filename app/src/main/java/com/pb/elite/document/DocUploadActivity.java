@@ -315,9 +315,10 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
                 if(checkAllFileUploaded())
                 {
-                    txtDocVerify.setVisibility(View.VISIBLE);
+
+                    txtDocVerify.setText("All documents have uploaded but final approval verify by admin.");
                 }else{
-                    txtDocVerify.setVisibility(View.GONE);
+                    txtDocVerify.setText("Please Upload all required document");
                 }
 
                 mAdapter = new DocumentAdapter(DocUploadActivity.this, lstDoc);
