@@ -1,8 +1,10 @@
 package com.pb.elite.rto_fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +23,26 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.RCRequestEntity;
+import com.pb.elite.core.requestmodel.VehicleRegCertificateRequestEntity;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,10 +52,12 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
     // Service : 8
 
     // region Common Declaration
+    private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etCity  ;
+    EditText etCity;
+    List<String> RtoList, CityList;  //ProductList,
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -52,9 +65,10 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
     RTOServiceEntity serviceEntity;
 
     ScrollView scrollView;
-    LinearLayout lyVehicle ,lvLogo, lyTAT;
+    LinearLayout lyVehicle ,lvLogo, lyTAT,llDocumentUpload,lyRTO;
     RelativeLayout rlDoc ,rlEditVehicle;
     ImageView ivLogo, ivClientLogo;
+    LinearLayout lyMakeModel;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
 
@@ -68,9 +82,10 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
 
     String CITY_ID;
 
+    ProductPriceEntity productPriceEntity;
+    EditText etPincode ,etChasing ,etVehicle;
     //endregion
 
-    EditText etPincode ,etChasing ,etVehicle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -185,6 +200,78 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
         lyVehicle.setBackgroundColor(getResources().getColor(R.color.white));
 
     }
+    private boolean validate() {
+
+
+        if (!isEmpty(etVehicle)) {
+            etVehicle.requestFocus();
+            etVehicle.setError("Enter Vehicle Number");
+            return false;
+        } else if (!isEmpty(etChasing)) {
+            etChasing.requestFocus();
+            etChasing.setError("Enter Chaissi Number");
+            return false;
+        }
+        if ((etCity.getText().toString().trim().length() == 0)) {
+            etCity.requestFocus();
+            etCity.setError("Selct City");
+            return false;
+        }
+
+        if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
+        return true;
+    }
+
+
+
+    //region common
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
+
+        } else {
+            lvLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void saveData() {
+
+        showDialog();
+        VehicleRegCertificateRequestEntity requestEntity = new VehicleRegCertificateRequestEntity();
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setVehicleno(etVehicle.getText().toString());
+
+        requestEntity.setPincode(etPincode.getText().toString());
+        requestEntity.setChaising_number(etChasing.getText().toString());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REQUEST_TYPE,"1");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST, (Parcelable) requestEntity);
+
+
+        getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE,bundle)) ;
+
+
+        getActivity().finish();
+
+
+
+    }
+
+    //endregion
 
     @Override
     public void onClick(View view) {
@@ -204,12 +291,23 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
                 break;
             case R.id.btnBooked:
 
+                if (validate() == false) {
+                    return;
+                }
+                else {
+
+                    saveData();
+                }
 
                 break;
 
             case R.id.etCity:
-
-                startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
+                if (!isEmpty(etVehicle)) {
+                    etVehicle.requestFocus();
+                    etVehicle.setError("Enter Vehicle Number");
+                    return;
+                }
+                    startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
 
@@ -224,13 +322,32 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(etVehicle.getText().toString());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
 
     }
+
 
 
     @Override
@@ -256,6 +373,13 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
 
                     Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
                 }
+            }
+        }else if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
             }
         }
     }
