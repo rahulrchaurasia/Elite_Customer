@@ -196,8 +196,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         showDialog();
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), RenewRcFragment.this);
 
-
-
     }
     private void initialize(View view) {
 
@@ -602,15 +600,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
 
 
-
-
-    @Override
-    public void OnFailure(Throwable t) {
-        //  btnBooked.setEnabled(true);
-        cancelDialog();
-        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onClick(View view) {
 
@@ -713,4 +702,10 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+    @Override
+    public void OnFailure(Throwable t) {
+        //  btnBooked.setEnabled(true);
+        cancelDialog();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 }
