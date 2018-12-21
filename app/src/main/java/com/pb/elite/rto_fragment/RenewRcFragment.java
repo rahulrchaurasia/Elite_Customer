@@ -84,7 +84,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
 
     // Code : 1.0
-    // Validation Pending
+
+    //region Declaration
     private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
@@ -132,6 +133,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     String CITY_ID;
 
     ProductPriceEntity productPriceEntity;
+
+    //endregion
 
 
     @Override
@@ -197,6 +200,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), RenewRcFragment.this);
 
     }
+
+    //region  Method
+
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
@@ -247,7 +253,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
 
     }
-
 
     private void setOnClickListener() {
 
@@ -402,9 +407,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
 
         //endregion
-
-
-
 
 
     }
@@ -564,6 +566,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         showDialog();
         RCRequestEntity requestEntity = new RCRequestEntity();
+        requestEntity.setProdName(PRODUCT_NAME);
         requestEntity.setAmount(txtCharges.getText().toString());
         requestEntity.setCityid(String.valueOf(CITY_ID));
         requestEntity.setPayment_status("1");
@@ -597,8 +600,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     //endregion
 
+    //endregion
 
-
+    //region  Event
 
     @Override
     public void onClick(View view) {
@@ -708,4 +712,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         cancelDialog();
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
+
+    //endregion
 }

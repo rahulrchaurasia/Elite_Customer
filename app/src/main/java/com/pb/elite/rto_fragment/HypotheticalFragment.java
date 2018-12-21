@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -75,7 +76,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etVehicle , etCity , etFinance;
+    EditText etVehicle , etCity , etFinance ,etPincode;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -104,19 +105,19 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
     //endregion
 
 
-
-
-    public HypotheticalFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_hypothetical, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         mContext = view.getContext();
         initialize(view);
 
@@ -158,9 +159,10 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), HypotheticalFragment.this);
 
 
-        return view;
+
     }
 
+    // region Method
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
@@ -170,6 +172,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         etCity = (EditText) view.findViewById(R.id.etCity);
         etVehicle = (EditText) view.findViewById(R.id.etVehicle);
         etFinance = (EditText) view.findViewById(R.id.etFinance);
+        etPincode = (EditText) view.findViewById(R.id.etPincode);
 
         txtCharges = (TextView) view.findViewById(R.id.txtCharges);
         txtPrdName = (TextView) view.findViewById(R.id.txtPrdName);
@@ -222,11 +225,11 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         etVehicle.setEnabled(true);
 
         etVehicle.setText("");
-        lyVehicle.setBackgroundColor(getResources().getColor(R.color.white));
+        lyVehicle.setBackgroundColor(getResources().getColor(R.color.bg_dashboard));
 
     }
 
-    //region common
+
     private void getTatData() {
         if (productPriceEntity != null) {
             lvLogo.setVisibility(View.VISIBLE);
@@ -242,6 +245,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
         showDialog();
         AdditionHypothecationRequestEntity requestEntity = new AdditionHypothecationRequestEntity();
+        requestEntity.setProdName(PRODUCT_NAME);
         requestEntity.setAmount(txtCharges.getText().toString());
         requestEntity.setCityid(String.valueOf(CITY_ID));
         requestEntity.setPayment_status("1");
@@ -252,14 +256,11 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
         requestEntity.setVehicleno(etVehicle.getText().toString());
 
-        requestEntity.setPincode("");
+        requestEntity.setPincode(etPincode.getText().toString());
         requestEntity.setVehicle_finance_form(etFinance.getText().toString());
 
-
-
-
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.REQUEST_TYPE,"1");
+        bundle.putString(Constants.REQUEST_TYPE,"3");
         bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST,requestEntity);
 
 
@@ -278,27 +279,41 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
             return false;
         }
-
-        else if (!validateCity(etCity)) {
-
-            return false;
-        }
         else if (!isEmpty(etFinance)) {
             etFinance.requestFocus();
             etFinance.setError("Enter Vehicle Finanace From");
             return false;
         }
+        else if (!validateCity(etCity)) {
+
+            return false;
+        }
+        else if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
+
         return true;
+    }
+
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
     }
 
     //endregion
 
+    //region Event
 
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
-
 
             case R.id.rlDoc:
                 ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
@@ -321,7 +336,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
@@ -394,4 +409,6 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         cancelDialog();
         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
     }
+
+    //endregion
 }

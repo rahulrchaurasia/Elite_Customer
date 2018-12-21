@@ -73,7 +73,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etRTO, etRTO_OTH, etCity, etLic;
+    EditText etRTO, etRTO_OTH, etCity,etPincode, etLic;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -220,10 +220,12 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
+    // region Method
+
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if (cityMainEntity.getRTOList().size() == 0) {
+        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
             getCustomToast("No RTO Available");
             return;
         }
@@ -275,33 +277,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     //endregion
 
-
-    public void setCityData(String strCityName, CityMainEntity rtoPrdEntity) {
-        etCity.setText("" + strCityName);
-        etRTO.setText("");
-        cityMainEntity = rtoPrdEntity;
-
-//        if (cityMainEntity != null) {
-//            if (cityMainEntity.getCity_id() == 2653) {
-//
-//                etRTO_OTH.setVisibility(View.VISIBLE);
-//                etRTO.setVisibility(View.GONE);
-//                lvLogo.setVisibility(View.VISIBLE);
-//                setRtoTAT(cityMainEntity);
-//
-//
-//            } else {
-//                etRTO.setVisibility(View.VISIBLE);
-//                etRTO_OTH.setVisibility(View.GONE);
-//                lvLogo.setVisibility(View.VISIBLE);
-//                setRtoTAT(cityMainEntity);
-//
-//
-//            }
-//        }
-    }
-
-
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
@@ -312,7 +287,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         etRTO = (EditText) view.findViewById(R.id.etRTO);
         etRTO_OTH = (EditText) view.findViewById(R.id.etRTO_OTH);
         etCity = (EditText) view.findViewById(R.id.etCity);
-
+        etPincode = view.findViewById(R.id.etPincode);
 
         etLic = (EditText) view.findViewById(R.id.etLic);
 
@@ -360,7 +335,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-
     private void setOnClickListener() {
 
         etDOB.setOnClickListener(datePickerDialog);
@@ -394,31 +368,18 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-
-    private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
-//        if (rtoProd.getPrice() != null) {
-//            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
-//            AMOUNT = rtoProd.getPrice().trim();
-//        }
-//
-//        if (rtoProd.getTAT() != null) {
-//            lyTAT.setVisibility(View.VISIBLE);
-//            txtTAT.setText("" + rtoProd.getTAT());
-//        } else {
-//            lyTAT.setVisibility(View.GONE);
-//        }
-
-        Glide.with(getActivity())
-                .load(rtoProd.getProduct_logo())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(ivLogo);
-
-
-    }
-
     private boolean validate() {
 
+        if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
+            etLic.requestFocus();
+            etLic.setError("Enter Driving License");
+            return false;
+        }
+
+        if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
         if ((etCity.getText().toString().trim().length() == 0)) {
             etCity.requestFocus();
             etCity.setError("Selct City");
@@ -427,48 +388,48 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         if ((etRTO.getText().toString().trim().length() == 0)) {
             etRTO.requestFocus();
-            etRTO.setError("Selct City");
+            etRTO.setError("Selct RTO");
+            return false;
+        }
+        if (!validatePinCode(etPincode)) {
+
             return false;
         }
 
-        if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
-            etLic.requestFocus();
-            etLic.setError("Enter Driving License");
-            return false;
-        }
 
         if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
             if ((chkAddress.isChecked() == false) && (chkDOB.isChecked() == false) && (chkName.isChecked() == false)) {
                 getCustomToast("Please Select Atlease One Field");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
 
                 return false;
             }
 
             if (chkName.isChecked() && (etName.getText().toString().trim().length() == 0)) {
                 getCustomToast("Please Enter Correction In Name");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
+
                 return false;
             }
             if (chkDOB.isChecked() && (etDOB.getText().toString().trim().length() == 0)) {
                 getCustomToast("Please Enter Correction In DOB");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
+
                 return false;
             }
             if (chkAddress.isChecked() && (etAddress.getText().toString().trim().length() == 0)) {
                 getCustomToast("Please Enter Correction In Address");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
                 return false;
             }
 
-            ivTick.setVisibility(View.GONE);
 
         }
 
         return true;
     }
 
-    //region common
+
     private void getTatData() {
         if (productPriceEntity != null) {
             lvLogo.setVisibility(View.VISIBLE);
@@ -484,7 +445,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         showDialog();
         AssistanceObtainingRequestEntity requestEntity = new AssistanceObtainingRequestEntity();
-
+        requestEntity.setProdName(PRODUCT_NAME);
         requestEntity.setDl_address("");
         requestEntity.setDl_correct_name("");
         requestEntity.setDl_dob("");
@@ -515,7 +476,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.REQUEST_TYPE, "1");
+        bundle.putString(Constants.REQUEST_TYPE, "2");
         bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST, requestEntity);
 
 
@@ -528,9 +489,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-    //endregion
-
-
     private void setScrollatBottom() {
         scrollView.postDelayed(new Runnable() {
             @Override
@@ -540,10 +498,15 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }, 1000);
     }
 
+    //endregion
+
+
+  //region Event
+
     @Override
     public void onClick(View view) {
 
-
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
 
@@ -562,7 +525,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                     llCorrection.setVisibility(View.GONE);
                     ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
                 }
-                //  setScrollatBottom();
+
                 break;
 
             case R.id.btnBooked:
@@ -577,15 +540,17 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                 break;
             case R.id.etCity:
 
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
 
                 break;
 
             case R.id.etRTO:
-                // setScrollatBottom();
+
                 if (!etCity.getText().toString().equalsIgnoreCase("")) {
 
+                     etRTO.setError(null);
                     getBottomSheetDialog();
                 } else {
                     getCustomToast("Select City");
@@ -659,7 +624,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         if (requestCode == Constants.SEARCH_CITY_CODE) {
             if (data != null) {
 
-                CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
                 CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
@@ -698,8 +663,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
                     PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                    //     listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
-
 
                 }
             }
@@ -719,4 +682,5 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    //endregion
 }

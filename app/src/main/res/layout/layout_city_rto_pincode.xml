@@ -7,29 +7,7 @@
     android:layout_marginRight="10dp"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="My Current Pincode">
-
-            <EditText
-                android:id="@+id/etPincode"
-                style="@style/Style.edittext"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="10dp"
-                android:inputType="number"
-                android:maxLength="6" />
-
-        </android.support.design.widget.TextInputLayout>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,10 +80,6 @@
 
 
 
-
-
-
-
         <EditText
             android:id="@+id/etRTO_OTH"
             style="@style/EditTextStyle"
@@ -113,6 +87,30 @@
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
             android:visibility="gone" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="My Current Pincode">
+
+            <EditText
+                android:id="@+id/etPincode"
+                style="@style/Style.edittext"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:maxLength="6" />
+
+        </android.support.design.widget.TextInputLayout>
 
 
     </LinearLayout>

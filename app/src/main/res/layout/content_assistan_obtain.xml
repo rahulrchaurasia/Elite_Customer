@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_content"
+
     android:orientation="vertical">
 
 
@@ -166,6 +166,7 @@
         android:id="@+id/llCorrection"
         style="@style/LinearLayoutStyle"
         android:animateLayoutChanges="true"
+        android:layout_margin="4dp"
         android:background="@drawable/custom_white"
 
         android:visibility="visible">
@@ -189,7 +190,7 @@
             <CheckBox
                 android:id="@+id/chkName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -279,7 +280,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/layout_city_rto" />
+    <include layout="@layout/layout_city_rto_pincode" />
 
 
 

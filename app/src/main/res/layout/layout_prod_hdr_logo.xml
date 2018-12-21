@@ -48,7 +48,7 @@
         android:id="@+id/txtPrdName"
         style="@style/TextViewStyle.Large"
         android:layout_height="wrap_content"
-        android:background="@color/hdr_bg"
+        android:background="@color/tab_color"
         android:gravity="left"
         android:padding="10dp"
         android:layout_marginLeft="8dp"

@@ -405,6 +405,9 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
                 break;
 
+            case R.id.rlDoc:
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
+                break;
 
 
             case R.id.rlEditVehicle:
@@ -424,6 +427,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
             case R.id.etInsCompanyName:
                 if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
+                        etInsCompanyName.setError(null);
                         getBottomSheetDialog();
                     }
 

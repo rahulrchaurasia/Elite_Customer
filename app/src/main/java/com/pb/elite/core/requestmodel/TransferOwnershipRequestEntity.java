@@ -1,10 +1,13 @@
 package com.pb.elite.core.requestmodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Nilesh Birhade on 18-12-2018.
  */
 
-public class TransferOwnershipRequestEntity {
+public class TransferOwnershipRequestEntity implements Parcelable {
 
 
     /**
@@ -24,12 +27,26 @@ public class TransferOwnershipRequestEntity {
     private String cityid;
     private String payment_status;
     private String prodid;
+
     private String rto_id;
     private String transaction_id;
     private String userid;
     private String vehicleno;
+
     private String pincode;
     private String new_owner;
+    private String ProdName;
+
+    public TransferOwnershipRequestEntity() {
+    }
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
 
     public String getAmount() {
         return amount;
@@ -110,4 +127,50 @@ public class TransferOwnershipRequestEntity {
     public void setNew_owner(String new_owner) {
         this.new_owner = new_owner;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.amount);
+        dest.writeString(this.cityid);
+        dest.writeString(this.payment_status);
+        dest.writeString(this.prodid);
+        dest.writeString(this.rto_id);
+        dest.writeString(this.transaction_id);
+        dest.writeString(this.userid);
+        dest.writeString(this.vehicleno);
+        dest.writeString(this.pincode);
+        dest.writeString(this.new_owner);
+        dest.writeString(this.ProdName);
+    }
+
+    protected TransferOwnershipRequestEntity(Parcel in) {
+        this.amount = in.readString();
+        this.cityid = in.readString();
+        this.payment_status = in.readString();
+        this.prodid = in.readString();
+        this.rto_id = in.readString();
+        this.transaction_id = in.readString();
+        this.userid = in.readString();
+        this.vehicleno = in.readString();
+        this.pincode = in.readString();
+        this.new_owner = in.readString();
+        this.ProdName = in.readString();
+    }
+
+    public static final Parcelable.Creator<TransferOwnershipRequestEntity> CREATOR = new Parcelable.Creator<TransferOwnershipRequestEntity>() {
+        @Override
+        public TransferOwnershipRequestEntity createFromParcel(Parcel source) {
+            return new TransferOwnershipRequestEntity(source);
+        }
+
+        @Override
+        public TransferOwnershipRequestEntity[] newArray(int size) {
+            return new TransferOwnershipRequestEntity[size];
+        }
+    };
 }

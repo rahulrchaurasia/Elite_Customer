@@ -22,10 +22,14 @@ import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.rto_service.RTOController;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.AdditionHypothecationRequestEntity;
+import com.pb.elite.core.requestmodel.AddressEndorsementRCRequestEntity;
 import com.pb.elite.core.requestmodel.AssistanceObtainingRequestEntity;
+import com.pb.elite.core.requestmodel.DriverDLVerificationRequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.PaperToSmartCardRequestEntity;
 import com.pb.elite.core.requestmodel.RCRequestEntity;
 import com.pb.elite.core.requestmodel.TransferOwnershipRequestEntity;
+import com.pb.elite.core.requestmodel.VehicleRegCertificateRequestEntity;
 import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.database.DataBaseController;
@@ -54,7 +58,12 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     RCRequestEntity rcRequestEntity;
     AssistanceObtainingRequestEntity assistanceRequestEntity;
     AdditionHypothecationRequestEntity additionHypothecationRequestEntity;
+    TransferOwnershipRequestEntity transferOwnershipRequestEntity;
 
+    DriverDLVerificationRequestEntity driverDLRequestEntity;
+    AddressEndorsementRCRequestEntity addressEndRequestEntity;
+    PaperToSmartCardRequestEntity paperRequestEntity;
+    VehicleRegCertificateRequestEntity vehicleRegRequestEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +90,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             if(REQUEST_TYPE.equals("1"))
             {
                 // Service 1
-                rcRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                rcRequestEntity  =  extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
                 PRODUCT_NAME = rcRequestEntity.getProdName();
                 AMOUNT_PAYMENT = (Long.valueOf(rcRequestEntity.getAmount()));
                 txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
@@ -90,7 +99,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             }else if(REQUEST_TYPE.equals("2"))
             {
                 // Service 2
-                assistanceRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                assistanceRequestEntity  =  extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
                 PRODUCT_NAME = assistanceRequestEntity.getProdName();
                 AMOUNT_PAYMENT = (Long.valueOf(assistanceRequestEntity.getAmount()));
                 txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
@@ -98,7 +107,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             }else if(REQUEST_TYPE.equals("3"))
             {
                 // Service 3
-                additionHypothecationRequestEntity  =  getIntent().getExtras().getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                additionHypothecationRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
                 PRODUCT_NAME = additionHypothecationRequestEntity.getProdName();
                 AMOUNT_PAYMENT = (Long.valueOf(additionHypothecationRequestEntity.getAmount()));
                 txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
@@ -107,18 +116,48 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             }else if(REQUEST_TYPE.equals("4"))
             {
                 // Service 4
+                transferOwnershipRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = transferOwnershipRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(transferOwnershipRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
             }else if(REQUEST_TYPE.equals("5"))
             {
                 // Service 5
+                driverDLRequestEntity   = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = driverDLRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(driverDLRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
             }else if(REQUEST_TYPE.equals("6"))
             {
                 // Service 6
+                addressEndRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = addressEndRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(addressEndRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
             }else if(REQUEST_TYPE.equals("7"))
             {
                 // Service 7
+                paperRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = paperRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(paperRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
             }else if(REQUEST_TYPE.equals("8"))
             {
                 // Service 8
+                vehicleRegRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = vehicleRegRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(vehicleRegRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
             }
 
         }
@@ -183,20 +222,58 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
                 new RTOController(this).saveRCService1(rcRequestEntity,this);
             }else  if(REQUEST_TYPE.equals("2"))
             {
-                // Service 1
+                // Service 2
                 assistanceRequestEntity.setPayment_status("1");
                 assistanceRequestEntity.setTransaction_id(razorpayPaymentID);
                 showDialog();
                 new RTOController(this).saveAssistanceObtaining(assistanceRequestEntity,this);
             }else  if(REQUEST_TYPE.equals("3"))
             {
-                // Service 1
+                // Service 3
                 additionHypothecationRequestEntity.setPayment_status("1");
                 additionHypothecationRequestEntity.setTransaction_id(razorpayPaymentID);
                 showDialog();
                 new RTOController(this).saveAdditionHypothecation(additionHypothecationRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("4"))
+            {
+                // Service 4
+                transferOwnershipRequestEntity.setPayment_status("1");
+                transferOwnershipRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveTransferOwnership(transferOwnershipRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("5"))
+            {
+                // Service 5
+                driverDLRequestEntity.setPayment_status("1");
+                driverDLRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveDriverDLVerification(driverDLRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("6"))
+            {
+                // Service 6
+                addressEndRequestEntity.setPayment_status("1");
+                addressEndRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveAddressEndorsementRC(addressEndRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("7"))
+            {
+                // Service 7
+                paperRequestEntity.setPayment_status("1");
+                paperRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).savePaperSmartCard(paperRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("8"))
+            {
+                // Service 7
+                vehicleRegRequestEntity.setPayment_status("1");
+                vehicleRegRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveVehicleRegCertificate(vehicleRegRequestEntity,this);
             }
 
+
+
+            //vehicleRegRequestEntity
 
 
 

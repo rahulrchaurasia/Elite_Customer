@@ -2,37 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="My Pincode">
-
-            <EditText
-                android:id="@+id/etPincode"
-                style="@style/Style.edittext"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="10dp"
-                android:inputType="number"
-                android:maxLength="6" />
-
-        </android.support.design.widget.TextInputLayout>
-
-
-    </LinearLayout>
-
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rlCorrect"
@@ -126,7 +96,7 @@
             <EditText
                 android:id="@+id/etDOB"
                 style="@style/Style.edittext"
-                android:drawableLeft="@drawable/vector_date"
+                android:drawableRight="@drawable/vector_date"
                 android:focusableInTouchMode="true"
                 android:padding="@dimen/input_label_vertical_spacing"
                 android:focusable="false"
@@ -152,7 +122,7 @@
     </LinearLayout>
 
     <include
-        layout="@layout/layout_city_rto"
+        layout="@layout/layout_city_rto_pincode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

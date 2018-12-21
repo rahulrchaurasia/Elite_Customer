@@ -98,37 +98,11 @@
 
         </LinearLayout>
 
-        <LinearLayout
+
+        <include
+            layout="@layout/layout_city_pincode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle.MediumDark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="My Current City"
-                android:textColor="@color/black" />
-
-
-            <EditText
-                android:id="@+id/etCity"
-                style="@style/EditTextStyle"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_drop_down"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:minLines="1"
-                android:singleLine="true"
-                android:text="" />
-
-
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 
 
 

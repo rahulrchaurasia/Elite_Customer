@@ -1,10 +1,15 @@
 package com.pb.elite.core.requestmodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Nilesh Birhade on 18-12-2018.
  */
 
-public class AddressEndorsementRCRequestEntity {
+public class AddressEndorsementRCRequestEntity implements Parcelable {
+
+
 
 
     /**
@@ -19,7 +24,7 @@ public class AddressEndorsementRCRequestEntity {
      * pincode : 400070
      * current_address : mumbai
      */
-
+    private String ProdName;
     private String amount;
     private String cityid;
     private String payment_status;
@@ -30,6 +35,17 @@ public class AddressEndorsementRCRequestEntity {
     private String userid;
     private String pincode;
     private String current_address;
+
+    public AddressEndorsementRCRequestEntity() {
+    }
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
 
     public String getAmount() {
         return amount;
@@ -110,4 +126,50 @@ public class AddressEndorsementRCRequestEntity {
     public void setCurrent_address(String current_address) {
         this.current_address = current_address;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.ProdName);
+        dest.writeString(this.amount);
+        dest.writeString(this.cityid);
+        dest.writeString(this.payment_status);
+        dest.writeString(this.prodid);
+        dest.writeString(this.rto_id);
+        dest.writeString(this.transaction_id);
+        dest.writeString(this.vehicleno);
+        dest.writeString(this.userid);
+        dest.writeString(this.pincode);
+        dest.writeString(this.current_address);
+    }
+
+    protected AddressEndorsementRCRequestEntity(Parcel in) {
+        this.ProdName = in.readString();
+        this.amount = in.readString();
+        this.cityid = in.readString();
+        this.payment_status = in.readString();
+        this.prodid = in.readString();
+        this.rto_id = in.readString();
+        this.transaction_id = in.readString();
+        this.vehicleno = in.readString();
+        this.userid = in.readString();
+        this.pincode = in.readString();
+        this.current_address = in.readString();
+    }
+
+    public static final Parcelable.Creator<AddressEndorsementRCRequestEntity> CREATOR = new Parcelable.Creator<AddressEndorsementRCRequestEntity>() {
+        @Override
+        public AddressEndorsementRCRequestEntity createFromParcel(Parcel source) {
+            return new AddressEndorsementRCRequestEntity(source);
+        }
+
+        @Override
+        public AddressEndorsementRCRequestEntity[] newArray(int size) {
+            return new AddressEndorsementRCRequestEntity[size];
+        }
+    };
 }
