@@ -50,15 +50,7 @@
     </android.support.v7.widget.CardView>
 
 
-<TextView
-    android:id="@+id/txtDocVerify"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/TextViewStyle.Large"
-    android:layout_margin="5dp"
-    android:textColor="@color/black"
-    android:visibility="visible"
-    android:text="Please Upload all required document"/>
+
 
 
 
@@ -71,6 +63,14 @@
 
     </android.support.v7.widget.RecyclerView>
 
-
+    <TextView
+        android:id="@+id/txtDocVerify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextViewStyle.Large"
+        android:layout_margin="5dp"
+        android:textColor="@color/black"
+        android:visibility="visible"
+        android:text="Please Upload all required document"/>
 
 </LinearLayout>

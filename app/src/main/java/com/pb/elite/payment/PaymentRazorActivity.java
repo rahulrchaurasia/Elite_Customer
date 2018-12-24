@@ -329,8 +329,8 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((OrderResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((OrderResponse) response).getData().get(0).getDisplaymessage());
+                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
                 showPaymentAlert(btnSubmit, response.getMessage().toString(),DisplayMessage, OrderID);
 
             }

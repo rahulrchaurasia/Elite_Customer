@@ -103,5 +103,24 @@
 
     </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@color/bg_dashboard"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
+
+        <RatingBar
+
+            android:rating="3"
+            android:stepSize="1"
+            android:numStars="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
