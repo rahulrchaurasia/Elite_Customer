@@ -269,7 +269,14 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             lvLogo.setVisibility(View.GONE);
         }
     }
-
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
 
 
     private void saveData() {
@@ -338,7 +345,7 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

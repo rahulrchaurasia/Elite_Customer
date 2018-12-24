@@ -338,6 +338,15 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
             lvLogo.setVisibility(View.GONE);
         }
     }
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
 
     private void saveData() {
 
@@ -441,6 +450,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                     etVehicle.setError("Enter Vehicle Number");
                     return;
                 }
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

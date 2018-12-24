@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,7 +84,7 @@ import java.util.List;
 public class RenewRcFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
 
-    // Code : 1.0
+    // Service : 1.0
 
     //region Declaration
     private Context mContext;
@@ -98,8 +99,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     List<String> RtoList, CityList;  //ProductList,
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-    String CITY_ID_NON_RTO = "";
-    Button btnBooked;
+      Button btnBooked;
+    ScrollView scrollView;
 
     RTOServiceEntity serviceEntity;
 
@@ -206,7 +207,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
-
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
         textCity = (TextView) view.findViewById(R.id.textCity);
         txtModel = (TextView) view.findViewById(R.id.txtModel);
@@ -441,6 +442,16 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
+
 
 
     private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
@@ -633,7 +644,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
                 break;
 
             case R.id.etCity:
+
                   if( validateCity()) {
+                      setScrollatBottom();
                       startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
                   }
 

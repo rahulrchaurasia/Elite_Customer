@@ -233,6 +233,15 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
         }
         return true;
     }
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
 
     private void getTatData() {
         if (productPriceEntity != null) {
@@ -311,7 +320,7 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

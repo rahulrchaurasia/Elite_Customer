@@ -199,6 +199,16 @@ public class AddressEndorsementFragment  extends BaseFragment implements View.On
 
     }
 
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
+
     private void setVehicleEdiatable() {
         etVehicle.setEnabled(true);
 
@@ -303,7 +313,7 @@ public class AddressEndorsementFragment  extends BaseFragment implements View.On
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

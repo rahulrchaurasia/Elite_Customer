@@ -111,33 +111,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
     //endregion
 
 
-    //region datepicker
-
-    protected View.OnClickListener datePickerDialog = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            if (view.getId() == R.id.etDOB) {
-                DateTimePicker.showAgePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
-                        if (view1.isShown()) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(year, monthOfYear, dayOfMonth);
-                            String currentDay = simpleDateFormat.format(calendar.getTime());
-                            etLicOwnerDob.setText(currentDay);
-                        }
-                    }
-                });
-
-            }
-
-        }
-    };
-
-    //endregion
-
-    //region bottomSheetDialog
+      //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
         if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
@@ -236,7 +210,6 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -407,6 +380,18 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
+            case R.id.etLicOwnerDob :
+                DateTimePicker.showAgePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
+                        if (view1.isShown()) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            String currentDay = simpleDateFormat.format(calendar.getTime());
+                            etLicOwnerDob.setText(currentDay);
+                        }
+                    }
+                });
             case R.id.rlDoc:
                 ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;

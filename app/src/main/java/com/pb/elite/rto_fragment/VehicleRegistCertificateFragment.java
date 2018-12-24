@@ -93,13 +93,6 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
 
 
 
-        // endregion
-
-
-        showDialog();
-        new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), VehicleRegistCertificateFragment.this);
-
-
         return view;
     }
 
@@ -137,6 +130,9 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
+            showDialog();
+            new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), VehicleRegistCertificateFragment.this);
+
 
         }
     }

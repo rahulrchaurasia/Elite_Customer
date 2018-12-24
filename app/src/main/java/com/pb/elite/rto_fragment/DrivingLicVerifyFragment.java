@@ -156,6 +156,17 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         View view = inflater.inflate(R.layout.fragment_driving_lic_verify, container, false);
 
 
+
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mContext = view.getContext();
+
         initialize(view);
 
         setOnClickListener();
@@ -195,13 +206,6 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), DrivingLicVerifyFragment.this);
 
 
-        return view;
-    }
-
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     //region bottomSheetDialog

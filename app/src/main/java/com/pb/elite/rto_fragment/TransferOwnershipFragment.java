@@ -253,6 +253,15 @@ public class TransferOwnershipFragment extends BaseFragment implements View.OnCl
 
     }
 
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
     private boolean validate() {
         if (!validateVehicle(etVehicle)) {
 
@@ -304,7 +313,7 @@ public class TransferOwnershipFragment extends BaseFragment implements View.OnCl
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

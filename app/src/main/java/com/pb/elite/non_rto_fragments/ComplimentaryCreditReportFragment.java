@@ -237,6 +237,14 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
             lvLogo.setVisibility(View.GONE);
         }
     }
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
 
 
     private void saveData() {
@@ -304,7 +312,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
