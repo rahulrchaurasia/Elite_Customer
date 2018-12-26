@@ -269,6 +269,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         btnBooked.setOnClickListener(this);
 
         etCity.setOnClickListener(this);
+        etLicOwnerDob.setOnClickListener(this);
 
 
 

@@ -112,7 +112,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
         }
 
-        holder.lyUpload.setOnClickListener(new View.OnClickListener() {
+        holder.txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

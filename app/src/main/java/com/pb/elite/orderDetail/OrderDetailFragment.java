@@ -112,16 +112,9 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.ORDER_CODE) {
-            if (data != null) {
 
-//                String CITY_NAME = data.getStringExtra(Constants.SEARCH_CITY_NAME);
-//                CITY_ID_NON_RTO = data.getStringExtra(Constants.SEARCH_CITY_ID);
-//                acCity.setText(CITY_NAME);
-
-                Toast.makeText(getActivity(),"Dafwf",Toast.LENGTH_LONG).show();
-            }
-
-
+            showDialog();
+            new ProductController(getContext()).getOrderData(loginEntity.getUser_id(), this);
         }
     }
 

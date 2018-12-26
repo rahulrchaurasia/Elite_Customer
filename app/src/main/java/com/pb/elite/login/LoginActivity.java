@@ -48,6 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             "android.permission.RECEIVE_SMS",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.CALL_PHONE",
 
     };
 
@@ -151,20 +152,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         int sendSms = ContextCompat.checkSelfPermission(getApplicationContext(), perms[1]);
         int readSms = ContextCompat.checkSelfPermission(getApplicationContext(), perms[2]);
         int receiveSms = ContextCompat.checkSelfPermission(getApplicationContext(), perms[3]);
-        int WRITE_EXTERNAL = ContextCompat.checkSelfPermission(getApplicationContext(), perms[4]);
-        int READ_EXTERNAL = ContextCompat.checkSelfPermission(getApplicationContext(), perms[5]);
+        int write_external = ContextCompat.checkSelfPermission(getApplicationContext(), perms[4]);
+        int read_external = ContextCompat.checkSelfPermission(getApplicationContext(), perms[5]);
+        int callPhone = ContextCompat.checkSelfPermission(getApplicationContext(), perms[6]);
 
-//        int callPhone = ContextCompat.checkSelfPermission(getApplicationContext(), perms[6]);
-//        int recordAudio = ContextCompat.checkSelfPermission(getApplicationContext(), perms[7]);
-//        int fineLocation = ContextCompat.checkSelfPermission(getApplicationContext(), perms[8]);
-
+//
         return camera == PackageManager.PERMISSION_GRANTED
 
                 && sendSms == PackageManager.PERMISSION_GRANTED
                 && readSms == PackageManager.PERMISSION_GRANTED
                 && receiveSms == PackageManager.PERMISSION_GRANTED
-                && WRITE_EXTERNAL == PackageManager.PERMISSION_GRANTED
-                && READ_EXTERNAL == PackageManager.PERMISSION_GRANTED;
+                && write_external == PackageManager.PERMISSION_GRANTED
+                && read_external == PackageManager.PERMISSION_GRANTED
+                && callPhone == PackageManager.PERMISSION_GRANTED;
 
     }
 
@@ -214,13 +214,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     boolean receiveSms = grantResults[3] == PackageManager.PERMISSION_GRANTED;
                     boolean writeExternal = grantResults[4] == PackageManager.PERMISSION_GRANTED;
                     boolean readExternal = grantResults[5] == PackageManager.PERMISSION_GRANTED;
-
-//                    boolean fineLocation = grantResults[6] == PackageManager.PERMISSION_GRANTED;
-//                    boolean callPhone = grantResults[7] == PackageManager.PERMISSION_GRANTED;
-//                    boolean recordAudio = grantResults[8] == PackageManager.PERMISSION_GRANTED;
+                    boolean callPhone = grantResults[6] == PackageManager.PERMISSION_GRANTED;
 
 
-                    if (camera && sendSms && readSms && receiveSms && writeExternal && readExternal) {
+
+                    if (camera && sendSms && readSms && receiveSms && writeExternal && readExternal && callPhone) {
                         // you can do all necessary steps
                         // new Dialer().getObject().getLeadData(String.valueOf(Utility.EmpCode), this, this);
                         // Toast.makeText(this, "All permission granted", Toast.LENGTH_SHORT).show();

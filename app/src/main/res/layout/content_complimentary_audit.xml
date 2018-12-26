@@ -17,9 +17,10 @@
             <EditText
                 android:id="@+id/etNameOfApplicant"
                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-
+                android:padding="@dimen/activity_horizontal_margin"
                 android:maxLines="1"
                 android:inputType="textCapWords"
+                android:lines="1"
                 style="@style/Style.edittext" />
 
 
@@ -35,7 +36,7 @@
             <EditText
                 android:id="@+id/etDOB"
                 style="@style/Style.edittext"
-                android:digits="0123456789"
+                android:padding="@dimen/activity_horizontal_margin"
                 android:focusable="false"  />
         </android.support.design.widget.TextInputLayout>
 
@@ -141,10 +142,12 @@
                 style="@style/Style.edittext"
                 android:digits="0123456789"
                 android:ems="10"
-
+                android:padding="@dimen/activity_horizontal_margin"
                 android:inputType="number"
                 android:maxLength="9" />
         </android.support.design.widget.TextInputLayout>
+
+
 
 
     </LinearLayout>
@@ -168,7 +171,7 @@
                 style="@style/Style.edittext"
                 android:digits="0123456789"
                 android:ems="10"
-
+                android:padding="@dimen/activity_horizontal_margin"
                 android:inputType="number"
                 android:maxLength="9" />
         </android.support.design.widget.TextInputLayout>
@@ -184,7 +187,7 @@
                 android:id="@+id/etRequiredLoanAmount"
                 style="@style/Style.edittext"
                 android:ems="10"
-
+                android:padding="@dimen/activity_horizontal_margin"
                 android:maxLength="9"
                 android:digits="0123456789."
                 android:inputType="numberDecimal"/>
