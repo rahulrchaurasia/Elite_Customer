@@ -1,9 +1,12 @@
 package com.pb.elite.rto_fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -24,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,11 +39,13 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.MakeEntity;
 import com.pb.elite.core.model.ModelEntity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
@@ -48,10 +54,15 @@ import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.ExtrarequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.RCRequestEntity;
+import com.pb.elite.core.requestmodel.SpecialBenefitsRequestEntity;
 import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.register.MakeAdapter;
@@ -73,9 +84,10 @@ import java.util.List;
 public class RenewRcFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
 
-    // Code : 1.0
-    // Validation Pending
+    // Service : 1.0
 
+    //region Declaration
+    private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
@@ -87,8 +99,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     List<String> RtoList, CityList;  //ProductList,
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-    String CITY_ID_NON_RTO = "";
-    Button btnBooked;
+      Button btnBooked;
+    ScrollView scrollView;
 
     RTOServiceEntity serviceEntity;
 
@@ -121,7 +133,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     String CITY_ID;
 
+    ProductPriceEntity productPriceEntity;
 
+    //endregion
 
 
     @Override
@@ -130,6 +144,18 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_renew_rc, container, false);
+
+        return view;
+
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+
+        mContext = view.getContext();
+
         initialize(view);
 
         setOnClickListener();
@@ -163,6 +189,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
             txtPrdName.setText("" + PRODUCT_NAME);
             Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+            super.onViewCreated(view, savedInstanceState);
         }
 
 
@@ -173,14 +200,14 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         showDialog();
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), RenewRcFragment.this);
 
-        return view;
-
     }
+
+    //region  Method
 
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
-
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
         textCity = (TextView) view.findViewById(R.id.textCity);
         txtModel = (TextView) view.findViewById(R.id.txtModel);
@@ -227,7 +254,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
 
     }
-
 
     private void setOnClickListener() {
 
@@ -384,9 +410,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         //endregion
 
 
-
-
-
     }
 
     private void bindData() {
@@ -419,6 +442,16 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
+
 
 
     private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
@@ -445,7 +478,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     }
 
     private boolean validate() {
-
+        if (!validateVehicle(etVehicle)) {
+            return false;
+        }
 
         if ((acMake.getText().toString().trim().length() == 0)) {
             acMake.requestFocus();
@@ -453,35 +488,61 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             return false;
         }
         if (IsMakeValid == false) {
-            //getCustomToast("Please Enter Make");
             acMake.requestFocus();
             acMake.setError("Enter Make");
             return false;
         }
 
         if ((acModel.getText().toString().trim().length() == 0)) {
-           // getCustomToast("Please Enter Model");
             acModel.requestFocus();
             acModel.setError("Enter Model");
             return false;
         }
 
         if (IsModelValid == false) {
-//            getCustomToast("Please Enter Model");
             acModel.requestFocus();
             acModel.setError("Enter Model");
             return false;
         }
         if ((etCity.getText().toString().trim().length() == 0)) {
-            //getCustomToast("Please Selct City");
             etCity.requestFocus();
             etCity.setError("Selct City");
             return false;
         }
 
-        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
-            etPincode.requestFocus();
-            etPincode.setError("Enter Pincode");
+        if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validateCity() {
+        if (!validateVehicle(etVehicle)) {
+            return false;
+        }
+
+        if ((acMake.getText().toString().trim().length() == 0)) {
+            acMake.requestFocus();
+            acMake.setError("Enter Make");
+            return false;
+        }
+        if (IsMakeValid == false) {
+            acMake.requestFocus();
+            acMake.setError("Enter Make");
+            return false;
+        }
+
+        if ((acModel.getText().toString().trim().length() == 0)) {
+            acModel.requestFocus();
+            acModel.setError("Enter Model");
+            return false;
+        }
+
+        if (IsModelValid == false) {
+            acModel.requestFocus();
+            acModel.setError("Enter Model");
             return false;
         }
 
@@ -500,63 +561,59 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+    //region common
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
 
-
-
-    @Override
-    public void OnSuccess(APIResponse response, String message) {
-
-        cancelDialog();
-//        if (response instanceof OrderResponse) {
-//            if (response.getStatus_code() == 0) {
-//
-//                OrderID = (((OrderResponse) response).getData().get(0).getId());
-//
-//                showPaymentAlert(btnBooked, response.getMessage().toString(), OrderID);
-//
-//            }
-//
-//        } else
-
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
-                }
-            }
+        } else {
+            lvLogo.setVisibility(View.GONE);
         }
-//        else if (response instanceof CityResponse) {
-//
-//
-//            if (response.getStatus_code() == 0) {
-//
-//                //   bindAutoCity();
-//            }
-//        }
+    }
+
+    private void saveData() {
+
+        showDialog();
+        RCRequestEntity requestEntity = new RCRequestEntity();
+        requestEntity.setProdName(PRODUCT_NAME);
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setVehicleno(etVehicle.getText().toString());
+
+        requestEntity.setPincode(etPincode.getText().toString());
+        requestEntity.setMake(acMake.getText().toString());
+        requestEntity.setModel(acModel.getText().toString());
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REQUEST_TYPE,"1");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST,requestEntity);
+
+
+        getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE,bundle)) ;
+
+
+        getActivity().finish();
+
+
 
     }
 
+    //endregion
 
-    @Override
-    public void OnFailure(Throwable t) {
-        //  btnBooked.setEnabled(true);
-        cancelDialog();
-        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-    }
+    //endregion
+
+    //region  Event
 
     @Override
     public void onClick(View view) {
@@ -564,10 +621,11 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         switch (view.getId()) {
 
 
+
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, RenewRcFragment.this);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);    //u
                 break;
+
 
             case R.id.rlEditMakeModel:
 
@@ -578,42 +636,19 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
                 if (validate() == false) {
                     return;
                 }
+                else {
 
-                //region RTO Payment
-
-               // int rtoID = rtoMainEntity.getRto_id();
-                int rtoID = 0;
-                InsertOrderRequestEntity requestEntity = new InsertOrderRequestEntity();
-
-                ExtrarequestEntity extrarequest = new ExtrarequestEntity();
-                extrarequest.setMakeNo(acMake.getText().toString());
-                extrarequest.setModelNo(acModel.getText().toString());
-                extrarequest.setVehicleNo(etVehicle.getText().toString());
-
-                requestEntity.setProdid("" + PRODUCT_ID);
-                requestEntity.setProdName("" + PRODUCT_NAME);
-                requestEntity.setUserid("" + loginEntity.getUser_id());
-                requestEntity.setTransaction_id("");
-                requestEntity.setSubscription("");
-                requestEntity.setVehicleno("");
-                requestEntity.setPucexpirydate("");
-                requestEntity.setRto_id("" + rtoID);
-                requestEntity.setCityid("" + Integer.valueOf(CITY_ID));
-                requestEntity.setAmount("" + AMOUNT);
-                requestEntity.setPayment_status("0");
-                requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
-
-
-                //endregion
-
-                ((ProductMainActivity) getActivity()).sendPaymentRequest(requestEntity);
-
+                    saveData();
+                }
 
                 break;
 
             case R.id.etCity:
 
-                    startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
+                  if( validateCity()) {
+                      setScrollatBottom();
+                      startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
+                  }
 
                 break;
 
@@ -630,11 +665,66 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(etVehicle.getText().toString());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake(acMake.getText().toString());
+                entity.setModel(acMake.getText().toString());
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
 
     }
+
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+
+        cancelDialog();
+
+        if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
+        }
+
+
+       else if (response instanceof RtoProductDisplayResponse) {
+            if (response.getStatus_code() == 0) {
+
+                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
+
+
+                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+        //  btnBooked.setEnabled(true);
+        cancelDialog();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    //endregion
 }

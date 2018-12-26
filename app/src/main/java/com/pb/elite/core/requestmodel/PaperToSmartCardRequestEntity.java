@@ -1,10 +1,14 @@
 package com.pb.elite.core.requestmodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Nilesh Birhade on 18-12-2018.
  */
 
-public class PaperToSmartCardRequestEntity {
+public class PaperToSmartCardRequestEntity implements Parcelable {
+
 
 
     /**
@@ -21,7 +25,7 @@ public class PaperToSmartCardRequestEntity {
      * DL_Correct_name : test
      * DL_DOB : 13/09/1994
      */
-
+    private String ProdName;
     private String amount;
     private String cityid;
     private String payment_status;
@@ -30,10 +34,19 @@ public class PaperToSmartCardRequestEntity {
     private String transaction_id;
     private String vehicleno;
     private String userid;
+
     private String pincode;
     private String DL_No;
     private String DL_Correct_name;
     private String DL_DOB;
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
 
     public String getAmount() {
         return amount;
@@ -130,4 +143,57 @@ public class PaperToSmartCardRequestEntity {
     public void setDL_DOB(String DL_DOB) {
         this.DL_DOB = DL_DOB;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.ProdName);
+        dest.writeString(this.amount);
+        dest.writeString(this.cityid);
+        dest.writeString(this.payment_status);
+        dest.writeString(this.prodid);
+        dest.writeString(this.rto_id);
+        dest.writeString(this.transaction_id);
+        dest.writeString(this.vehicleno);
+        dest.writeString(this.userid);
+        dest.writeString(this.pincode);
+        dest.writeString(this.DL_No);
+        dest.writeString(this.DL_Correct_name);
+        dest.writeString(this.DL_DOB);
+    }
+
+    public PaperToSmartCardRequestEntity() {
+    }
+
+    protected PaperToSmartCardRequestEntity(Parcel in) {
+        this.ProdName = in.readString();
+        this.amount = in.readString();
+        this.cityid = in.readString();
+        this.payment_status = in.readString();
+        this.prodid = in.readString();
+        this.rto_id = in.readString();
+        this.transaction_id = in.readString();
+        this.vehicleno = in.readString();
+        this.userid = in.readString();
+        this.pincode = in.readString();
+        this.DL_No = in.readString();
+        this.DL_Correct_name = in.readString();
+        this.DL_DOB = in.readString();
+    }
+
+    public static final Parcelable.Creator<PaperToSmartCardRequestEntity> CREATOR = new Parcelable.Creator<PaperToSmartCardRequestEntity>() {
+        @Override
+        public PaperToSmartCardRequestEntity createFromParcel(Parcel source) {
+            return new PaperToSmartCardRequestEntity(source);
+        }
+
+        @Override
+        public PaperToSmartCardRequestEntity[] newArray(int size) {
+            return new PaperToSmartCardRequestEntity[size];
+        }
+    };
 }

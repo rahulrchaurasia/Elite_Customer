@@ -2,12 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:background="@color/bg_content"
-    android:orientation="vertical">
 
-    <include layout="@layout/layout_city_rto" />
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -92,7 +88,7 @@
                 android:orientation="vertical">
 
                 <RadioButton
-                    android:id="@+id/rbIndividual"
+                    android:id="@+id/rbfour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -100,7 +96,7 @@
                     android:text="@string/four_Wheeler" />
 
                 <RadioButton
-                    android:id="@+id/rbFloater"
+                    android:id="@+id/rbtwo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -170,6 +166,7 @@
         android:id="@+id/llCorrection"
         style="@style/LinearLayoutStyle"
         android:animateLayoutChanges="true"
+        android:layout_margin="4dp"
         android:background="@drawable/custom_white"
 
         android:visibility="visible">
@@ -193,7 +190,7 @@
             <CheckBox
                 android:id="@+id/chkName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -282,6 +279,10 @@
 
 
     </LinearLayout>
+
+    <include layout="@layout/layout_city_rto_pincode" />
+
+
 
 
 </LinearLayout>

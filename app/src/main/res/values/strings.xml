@@ -61,6 +61,7 @@
     <string name="supp_Calling">Do you want to call Elite Support Team</string>
     <string name="call_number">9702943935</string>
     <string name="email">rahulrchaurasia@gmail.com</string>
+    <string name="doc_popup">Thank you for uploading all the documents.\nWe will verify the documents and call you back within 24 working hours if required.</string>
 
 
     <string name="signup">Not a Member? <b><u>Sign up now!</u></b></string>

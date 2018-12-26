@@ -2,7 +2,10 @@ package com.pb.elite.rto_fragment;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -30,25 +33,34 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
+import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
 import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.AssistanceObtainingRequestEntity;
+import com.pb.elite.core.requestmodel.DriverDLVerificationRequestEntity;
 import com.pb.elite.core.requestmodel.ExtrarequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.response.CityResponse;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.rto_fragment.adapter.CityMainAdapter;
 import com.pb.elite.rto_fragment.adapter.IRTOCity;
 import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
+import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.DateTimePicker;
@@ -65,10 +77,11 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     // Service : 5
 
     // region  Declaration
+    private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etRTO, etRTO_OTH, etCity;
+    EditText etRTO,  etCity,etPincode ;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -92,23 +105,22 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
     String AMOUNT = "0";
     int OrderID = 0;
-
-
-
+    String CITY_ID;
+    // region Botom sheetDeclaration
 
     BottomSheetDialog mBottomSheetDialog;
-    List<RtoProductDisplayMainEntity> listCityMain;
-    List<RtoProductEntity> rtoProductDisplayList;
 
 
-    RtoProductDisplayMainEntity rtoProductDisplayMainEntity;
-    RtoProductEntity rtoMainEntity;
+    CityMainEntity cityMainEntity;
+    RtoCityMain rtoMainEntity;
 
-
-    CityMainAdapter cityMainAdapter;
     RtoMainAdapter rtoMainAdapter;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+    //endregion
+
+
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    ProductPriceEntity productPriceEntity;
     //endregion
 
     //region datepicker
@@ -136,12 +148,24 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     };
 
     //endregion
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_driving_lic_verify, container, false);
 
+
+
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mContext = view.getContext();
 
         initialize(view);
 
@@ -182,12 +206,15 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), DrivingLicVerifyFragment.this);
 
 
-        return view;
     }
 
-
     //region bottomSheetDialog
-    public void getBottomSheetDialog(String type) {
+    public void getBottomSheetDialog() {
+
+        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
+            getCustomToast("No RTO Available");
+            return;
+        }
 
         mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
@@ -195,16 +222,16 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
         mBottomSheetDialog.setContentView(sheetView);
         TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
-        RecyclerView rvCity = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvCity);
         RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
         ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
 
-
-        rvCity.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvCity.setHasFixedSize(true);
-
         rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvRTO.setHasFixedSize(true);
+        rvRTO.setNestedScrollingEnabled(false);
+        rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, cityMainEntity.getRTOList(), this);
+        rvRTO.setAdapter(rtoMainAdapter);
+        rvRTO.setVisibility(View.VISIBLE);
+
 
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,71 +244,24 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
             }
         });
 
-        if (type.equalsIgnoreCase("CITY")) {
-            txtHdr.setText("Select City");
 
-            cityMainAdapter = new CityMainAdapter(DrivingLicVerifyFragment.this, listCityMain, this);
-            rvCity.setAdapter(cityMainAdapter);
+        txtHdr.setText("Select RTO");
 
-
-            rvCity.setVisibility(View.VISIBLE);
-            rvRTO.setVisibility(View.GONE);
-
-        } else {
-
-            txtHdr.setText("Select RTO");
-
-           // rtoProductDisplayList = rtoProductDisplayMainEntity.getRtolist();
-         //   rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, rtoProductDisplayList, this);
-            rvRTO.setAdapter(rtoMainAdapter);
-            rvCity.setVisibility(View.GONE);
-            rvRTO.setVisibility(View.VISIBLE);
-
-        }
-
-
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(true);
         mBottomSheetDialog.show();
 
 
     }
 
-
-
-    //endregion
-
-    public void setCityData(String strCityName, RtoProductDisplayMainEntity rtoPrdEntity) {
-        etCity.setText("" + strCityName);
-        etRTO.setText("");
-        rtoProductDisplayMainEntity = rtoPrdEntity;
-
-        if (rtoProductDisplayMainEntity != null) {
-//            if (rtoProductDisplayMainEntity.getCity_id() == 2653) {
-//
-//                etRTO_OTH.setVisibility(View.VISIBLE);
-//                etRTO.setVisibility(View.GONE);
-//                lvLogo.setVisibility(View.VISIBLE);
-//                setRtoTAT(rtoProductDisplayMainEntity);
-//
-//
-//            }
-//            else {
-//                etRTO.setVisibility(View.VISIBLE);
-//                etRTO_OTH.setVisibility(View.GONE);
-//                lvLogo.setVisibility(View.VISIBLE);
-//                setRtoTAT(rtoProductDisplayMainEntity);
-//
-//
-//            }
-        }
-    }
-
-    public void setRTOData(String strRTOName, RtoProductEntity rtoEntity) {
+    public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
         etRTO.setText("" + strRTOName);
 
         rtoMainEntity = rtoEntity;
 
     }
 
+    //endregion
 
     private void initialize(View view) {
 
@@ -291,10 +271,8 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
 
         etRTO = (EditText) view.findViewById(R.id.etRTO);
-        etRTO_OTH = (EditText) view.findViewById(R.id.etRTO_OTH);
         etCity = (EditText) view.findViewById(R.id.etCity);
-
-
+        etPincode =  (EditText) view.findViewById(R.id.etPincode);
 
 
         txtCharges = (TextView) view.findViewById(R.id.txtCharges);
@@ -360,115 +338,87 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
     }
 
-//    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
-//        for (int i = 0; i < list.size(); i++) {
-//            for (int j = i + 1; j < list.size(); j++) {
-//
-//                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
-//                    list.remove(j);
-//                    j--;
-//                }
-//            }
-//        }
-//        return list;
-//    }
-
-
-    private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
-//        if (rtoProd.getPrice() != null) {
-//            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
-//            AMOUNT = rtoProd.getPrice().trim();
-//        }
-//
-//        if (rtoProd.getTAT() != null) {
-//            lyTAT.setVisibility(View.VISIBLE);
-//            txtTAT.setText("" + rtoProd.getTAT());
-//        } else {
-//            lyTAT.setVisibility(View.GONE);
-//        }
-
-        Glide.with(getActivity())
-                .load(rtoProd.getProduct_logo())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(ivLogo);
-
-
-    }
-
     private boolean validate() {
 
-        if ((etCity.getText().toString().trim().length() == 0)) {
-            getCustomToast("Please Selct City");
+        if (!isEmpty(etName)) {
+            etName.requestFocus();
+            etName.setError("Enter Name");
+            llCorrection.setVisibility(View.VISIBLE);
+
+            return false;
+        }else if (!isEmpty(etDOB)) {
+            etDOB.requestFocus();
+            etDOB.setError("Enter DOB");
+            llCorrection.setVisibility(View.VISIBLE);
+            return false;
+        }else if (!isEmpty(etLic)) {
+            etLic.requestFocus();
+            etLic.setError("Enter Driving License");
+            llCorrection.setVisibility(View.VISIBLE);
             return false;
         }
+        else if (!validateCity(etCity)) {
 
-        if ((etRTO.getText().toString().trim().length() == 0)) {
-            getCustomToast("Please Selct RTO");
+            return false;
+        } else if (!validateRTO(etRTO)) {
+
             return false;
         }
+        else if (!validatePinCode(etPincode)) {
 
+            return false;
+        }
 
 
 
         return true;
     }
 
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
 
-
-
-    @Override
-    public void OnSuccess(APIResponse response, String message) {
-        cancelDialog();
-//        if (response instanceof OrderResponse) {
-//            if (response.getStatus_code() == 0) {
-//
-//                OrderID = (((OrderResponse) response).getData().get(0).getId());
-//
-//                showPaymentAlert(btnBooked, response.getMessage().toString(), OrderID);
-//
-//            }
-//
-//        } else
-
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                  //  listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
-
-
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else if (response instanceof CityResponse) {
-
-
-            if (response.getStatus_code() == 0) {
-
-                //   bindAutoCity();
-            }
+        } else {
+            lvLogo.setVisibility(View.GONE);
         }
     }
 
-    @Override
-    public void OnFailure(Throwable t) {
-        cancelDialog();
-        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    private void saveData() {
+
+        showDialog();
+        DriverDLVerificationRequestEntity requestEntity = new DriverDLVerificationRequestEntity();
+        requestEntity.setProdName(PRODUCT_NAME);
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setPincode(etPincode.getText().toString());
+
+        requestEntity.setDL_Correct_name(etName.getText().toString());
+        requestEntity.setDL_No(etLic.getText().toString());
+        requestEntity.setDL_DOB(etDOB.getText().toString());
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REQUEST_TYPE, "5");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST, requestEntity);
+
+        getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE, bundle));
+
+
+        getActivity().finish();
+
+
     }
+
+
 
     private void setScrollatBottom() {
         scrollView.postDelayed(new Runnable() {
@@ -482,13 +432,11 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     @Override
     public void onClick(View view) {
 
-
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
-
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, DrivingLicVerifyFragment.this);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -502,59 +450,30 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
                     llCorrection.setVisibility(View.GONE);
                     ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
                 }
-                setScrollatBottom();
+
                 break;
 
             case R.id.btnBooked:
 
                 if (validate() == false) {
                     return;
+                }else{
+                    saveData();
                 }
-
-                //region RTO Payment
-              //  int cityID = rtoProductDisplayMainEntity.getCity_id();
-                int rtoID = rtoMainEntity.getRto_id();
-                InsertOrderRequestEntity requestEntity = new InsertOrderRequestEntity();
-
-                ExtrarequestEntity extrarequest = new ExtrarequestEntity();
-                extrarequest.setMakeNo("NULL");
-                extrarequest.setModelNo("NULL");
-                extrarequest.setVehicleNo("NULL");
-                extrarequest.setDrivingLic(etLic.getText().toString());
-
-                requestEntity.setProdid("" + PRODUCT_ID);
-                requestEntity.setProdName("" + PRODUCT_NAME);
-                requestEntity.setUserid("" + loginEntity.getUser_id());
-                requestEntity.setTransaction_id("");
-                requestEntity.setSubscription("");
-                requestEntity.setVehicleno("");
-                requestEntity.setPucexpirydate("");
-                requestEntity.setRto_id("" + rtoID);
-               // requestEntity.setCityid("" + cityID);
-                requestEntity.setAmount("" + AMOUNT);
-                requestEntity.setPayment_status("0");
-                requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
-
-
-                //endregion
-
-                ((ProductMainActivity) getActivity()).sendPaymentRequest(requestEntity);
 
                 break;
             case R.id.etCity:
                 setScrollatBottom();
-                if (listCityMain != null) {
-
-                    getBottomSheetDialog("CITY");
-                }
+                startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
 
             case R.id.etRTO:
-                setScrollatBottom();
+
                 if (!etCity.getText().toString().equalsIgnoreCase("")) {
 
-                    getBottomSheetDialog("RTO");
+                    etRTO.setError(null);
+                    getBottomSheetDialog();
                 } else {
                     getCustomToast("Select City");
                 }
@@ -569,20 +488,84 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
         if (mBottomSheetDialog != null) {
 
-//            if (mBottomSheetDialog.isShowing()) {
-//
-//                if (entity != null) {
-//
-//                    rtoMainEntity = entity;
-//
-//                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
-//                    mBottomSheetDialog.dismiss();
-//                }
-//
-//            }
+            if (mBottomSheetDialog.isShowing()) {
+                if (entity != null) {
+
+                    rtoMainEntity = entity;
+
+                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
+                    mBottomSheetDialog.dismiss();
+                }
+
+            }
 
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.SEARCH_CITY_CODE) {
+            if (data != null) {
+
+                cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
+                etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(userConstatntEntity.getVehicleno());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
+
+            }
+        }
+
+    }
+
+
+
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+        cancelDialog();
+
+        if (response instanceof RtoProductDisplayResponse) {
+            if (response.getStatus_code() == 0) {
+
+                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
+
+
+                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
+
+                }
+            }
+        }  else if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
+        }
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+        cancelDialog();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
 
 
 

@@ -2,20 +2,17 @@ package com.pb.elite.rto_fragment;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,8 +20,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,26 +33,25 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
-import com.pb.elite.core.model.CorrectiontEnity;
-import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.RtoProductDisplayMainEntity;
-import com.pb.elite.core.model.RtoProductEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.AssistanceObtainingRequestEntity;
 import com.pb.elite.core.requestmodel.ExtrarequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
-import com.pb.elite.core.response.CityResponse;
-import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
+import com.pb.elite.core.requestmodel.RCRequestEntity;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.product.ProductActivity;
-import com.pb.elite.product.ProductDocAdapter;
+import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.product.ProductMainActivity;
-import com.pb.elite.rto_fragment.adapter.CityMainAdapter;
 import com.pb.elite.rto_fragment.adapter.IRTOCity;
 import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.pb.elite.search.SearchCityActivity;
@@ -64,9 +60,7 @@ import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.DateTimePicker;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,10 +69,11 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
     // region Declaration
+    private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etRTO, etRTO_OTH, etCity, etLic;
+    EditText etRTO, etRTO_OTH, etCity,etPincode, etLic;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -94,6 +89,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
     EditText etName, etDOB, etAddress;
     CheckBox chkName, chkDOB, chkAddress;
+    RadioButton rbfour ,rbtwo;
 
     TextView ivTick;
 
@@ -106,9 +102,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     String AMOUNT = "0";
     int OrderID = 0;
 
-    int CITY_ID;
+    String CITY_ID;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
+    ProductPriceEntity productPriceEntity;
     // region Botom sheetDeclaration
 
     BottomSheetDialog mBottomSheetDialog;
@@ -154,8 +150,17 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         View view = inflater.inflate(R.layout.fragment_assistan_obtain, container, false);
+
+
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        mContext = view.getContext();
         initialize(view);
 
         rlCorrect.setVisibility(View.GONE);
@@ -191,7 +196,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                     lyLic.setVisibility(View.VISIBLE);
                     lyVehicleType.setVisibility(View.VISIBLE);
 
-                }else if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
+                } else if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
                     lyLic.setVisibility(View.VISIBLE);
                     rlCorrect.setVisibility(View.VISIBLE);
 
@@ -213,16 +218,16 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), AssistanObtainFragment.this);
 
 
-        return view;
     }
 
+    // region Method
 
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if(cityMainEntity.getRTOList().size() == 0)
-        {
+        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
             getCustomToast("No RTO Available");
+            return;
         }
 
         mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
@@ -261,7 +266,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         mBottomSheetDialog.show();
 
 
-
     }
 
     public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
@@ -273,46 +277,17 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     //endregion
 
-
-    public void setCityData(String strCityName, CityMainEntity rtoPrdEntity) {
-        etCity.setText("" + strCityName);
-        etRTO.setText("");
-        cityMainEntity = rtoPrdEntity;
-
-//        if (cityMainEntity != null) {
-//            if (cityMainEntity.getCity_id() == 2653) {
-//
-//                etRTO_OTH.setVisibility(View.VISIBLE);
-//                etRTO.setVisibility(View.GONE);
-//                lvLogo.setVisibility(View.VISIBLE);
-//                setRtoTAT(cityMainEntity);
-//
-//
-//            } else {
-//                etRTO.setVisibility(View.VISIBLE);
-//                etRTO_OTH.setVisibility(View.GONE);
-//                lvLogo.setVisibility(View.VISIBLE);
-//                setRtoTAT(cityMainEntity);
-//
-//
-//            }
-//        }
-    }
-
-
-
-
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
 
-         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
 
         etRTO = (EditText) view.findViewById(R.id.etRTO);
         etRTO_OTH = (EditText) view.findViewById(R.id.etRTO_OTH);
         etCity = (EditText) view.findViewById(R.id.etCity);
-
+        etPincode = view.findViewById(R.id.etPincode);
 
         etLic = (EditText) view.findViewById(R.id.etLic);
 
@@ -329,6 +304,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         chkName = (CheckBox) view.findViewById(R.id.chkName);
         chkDOB = (CheckBox) view.findViewById(R.id.chkDOB);
         chkAddress = (CheckBox) view.findViewById(R.id.chkAddress);
+
+        rbfour =  view.findViewById(R.id.rbfour);
+        rbtwo  =  view.findViewById(R.id.rbtwo);
 
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
@@ -356,7 +334,6 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
 
     }
-
 
     private void setOnClickListener() {
 
@@ -391,84 +368,61 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
     }
 
-//    public List<RtoProductDisplayMainEntity> removeDuplicateCity(List<RtoProductDisplayMainEntity> list) {
-//        for (int i = 0; i < list.size(); i++) {
-//            for (int j = i + 1; j < list.size(); j++) {
-//
-//                if ((list.get(i).getCity_id() == (list.get(j).getCity_id()))) {
-//                    list.remove(j);
-//                    j--;
-//                }
-//            }
-//        }
-//        return list;
-//    }
-
-
-    private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
-//        if (rtoProd.getPrice() != null) {
-//            txtCharges.setText("" + "\u20B9" + " " + rtoProd.getPrice());
-//            AMOUNT = rtoProd.getPrice().trim();
-//        }
-//
-//        if (rtoProd.getTAT() != null) {
-//            lyTAT.setVisibility(View.VISIBLE);
-//            txtTAT.setText("" + rtoProd.getTAT());
-//        } else {
-//            lyTAT.setVisibility(View.GONE);
-//        }
-
-        Glide.with(getActivity())
-                .load(rtoProd.getProduct_logo())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(ivLogo);
-
-
-    }
-
     private boolean validate() {
 
+        if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
+            etLic.requestFocus();
+            etLic.setError("Enter Driving License");
+            return false;
+        }
+
+        if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
         if ((etCity.getText().toString().trim().length() == 0)) {
-            getCustomToast("Please Selct City");
+            etCity.requestFocus();
+            etCity.setError("Selct City");
             return false;
         }
 
         if ((etRTO.getText().toString().trim().length() == 0)) {
-            getCustomToast("Please Selct RTO");
+            etRTO.requestFocus();
+            etRTO.setError("Selct RTO");
+            return false;
+        }
+        if (!validatePinCode(etPincode)) {
+
             return false;
         }
 
-        if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
-            getCustomToast("Please Enter Driving License");
-            return false;
-        }
 
         if (PRODUCT_CODE.equalsIgnoreCase("2.4")) {
             if ((chkAddress.isChecked() == false) && (chkDOB.isChecked() == false) && (chkName.isChecked() == false)) {
                 getCustomToast("Please Select Atlease One Field");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
 
                 return false;
             }
 
             if (chkName.isChecked() && (etName.getText().toString().trim().length() == 0)) {
                 getCustomToast("Please Enter Correction In Name");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
+
                 return false;
             }
             if (chkDOB.isChecked() && (etDOB.getText().toString().trim().length() == 0)) {
                 getCustomToast("Please Enter Correction In DOB");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
+
                 return false;
             }
             if (chkAddress.isChecked() && (etAddress.getText().toString().trim().length() == 0)) {
                 getCustomToast("Please Enter Correction In Address");
-                ivTick.setVisibility(View.VISIBLE);
+                llCorrection.setVisibility(View.VISIBLE);
                 return false;
             }
 
-            ivTick.setVisibility(View.GONE);
 
         }
 
@@ -476,60 +430,63 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     }
 
 
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
 
-
-
-    @Override
-    public void OnSuccess(APIResponse response, String message) {
-        cancelDialog();
-//        if (response instanceof OrderResponse) {
-//            if (response.getStatus_code() == 0) {
-//
-//                OrderID = (((OrderResponse) response).getData().get(0).getId());
-//
-//                showPaymentAlert(btnBooked, response.getMessage().toString(), OrderID);
-//
-//            }
-//
-//        } else
-
-        if (response instanceof RtoProductDisplayResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
-
-
-                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
-                    //     listCityMain = removeDuplicateCity(((RtoProductDisplayResponse) response).getData());
-
-
-                }
-            }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else if (response instanceof CityResponse) {
-
-
-            if (response.getStatus_code() == 0) {
-
-                //   bindAutoCity();
-            }
+        } else {
+            lvLogo.setVisibility(View.GONE);
         }
     }
 
-    @Override
-    public void OnFailure(Throwable t) {
-        cancelDialog();
-        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    private void saveData() {
+
+        showDialog();
+        AssistanceObtainingRequestEntity requestEntity = new AssistanceObtainingRequestEntity();
+        requestEntity.setProdName(PRODUCT_NAME);
+        requestEntity.setDl_address("");
+        requestEntity.setDl_correct_name("");
+        requestEntity.setDl_dob("");
+        requestEntity.setDl_type("");
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setDl_no(etLic.getText().toString());
+        if (PRODUCT_CODE.equalsIgnoreCase("2.1") || PRODUCT_CODE.equalsIgnoreCase("2.1") || PRODUCT_CODE.equalsIgnoreCase("2.3"))
+        {
+            if(rbfour.isChecked()) {
+                requestEntity.setDl_type(rbfour.getText().toString());
+            }else{
+                requestEntity.setDl_type(rbtwo.getText().toString());
+            }
+        }
+        if(PRODUCT_CODE.equalsIgnoreCase("2.4"))
+        {
+            requestEntity.setDl_address(etAddress.getText().toString());
+            requestEntity.setDl_correct_name(etName.getText().toString());
+            requestEntity.setDl_dob(etDOB.getText().toString());
+        }
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REQUEST_TYPE, "2");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST, requestEntity);
+
+
+        getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE, bundle));
+
+
+        getActivity().finish();
+
+
     }
 
     private void setScrollatBottom() {
@@ -541,16 +498,20 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         }, 1000);
     }
 
+    //endregion
+
+
+  //region Event
+
     @Override
     public void onClick(View view) {
 
-
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
 
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, AssistanObtainFragment.this);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
 
@@ -564,56 +525,32 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
                     llCorrection.setVisibility(View.GONE);
                     ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
                 }
-                //  setScrollatBottom();
+
                 break;
 
             case R.id.btnBooked:
 
                 if (validate() == false) {
                     return;
+                }else{
+                    saveData();
                 }
 
-                //region RTO Payment
-
-                int rtoID = rtoMainEntity.getId();
-                InsertOrderRequestEntity requestEntity = new InsertOrderRequestEntity();
-
-                ExtrarequestEntity extrarequest = new ExtrarequestEntity();
-                extrarequest.setMakeNo("NULL");
-                extrarequest.setModelNo("NULL");
-                extrarequest.setVehicleNo("NULL");
-                extrarequest.setDrivingLic(etLic.getText().toString());
-
-                requestEntity.setProdid("" + PRODUCT_ID);
-                requestEntity.setProdName("" + PRODUCT_NAME);
-                requestEntity.setUserid("" + loginEntity.getUser_id());
-                requestEntity.setTransaction_id("");
-                requestEntity.setSubscription("");
-                requestEntity.setVehicleno("");
-                requestEntity.setPucexpirydate("");
-                requestEntity.setRto_id("" + rtoID);
-                requestEntity.setCityid("" + CITY_ID);
-                requestEntity.setAmount("" + AMOUNT);
-                requestEntity.setPayment_status("0");
-                requestEntity.setExtrarequest(new Gson().toJson(extrarequest));
-
-
-                //endregion
-
-                ((ProductMainActivity) getActivity()).sendPaymentRequest(requestEntity);
 
                 break;
             case R.id.etCity:
 
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
 
                 break;
 
             case R.id.etRTO:
-                // setScrollatBottom();
+
                 if (!etCity.getText().toString().equalsIgnoreCase("")) {
 
+                     etRTO.setError(null);
                     getBottomSheetDialog();
                 } else {
                     getCustomToast("Select City");
@@ -688,11 +625,62 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             if (data != null) {
 
                 cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = cityMainEntity.getCity_id();
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(userConstatntEntity.getVehicleno());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
 
     }
+
+
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+        cancelDialog();
+//
+
+        if (response instanceof RtoProductDisplayResponse) {
+            if (response.getStatus_code() == 0) {
+
+                if (((RtoProductDisplayResponse) response).getData().size() > 0) {
+
+
+                    PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
+
+                }
+            }
+        } else if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
+        }
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+        cancelDialog();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    //endregion
 }

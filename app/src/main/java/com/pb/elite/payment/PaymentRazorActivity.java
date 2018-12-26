@@ -19,12 +19,23 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
+import com.pb.elite.core.controller.rto_service.RTOController;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.AdditionHypothecationRequestEntity;
+import com.pb.elite.core.requestmodel.AddressEndorsementRCRequestEntity;
+import com.pb.elite.core.requestmodel.AssistanceObtainingRequestEntity;
+import com.pb.elite.core.requestmodel.DriverDLVerificationRequestEntity;
 import com.pb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.pb.elite.core.requestmodel.PaperToSmartCardRequestEntity;
+import com.pb.elite.core.requestmodel.RCRequestEntity;
+import com.pb.elite.core.requestmodel.TransferOwnershipRequestEntity;
+import com.pb.elite.core.requestmodel.VehicleRegCertificateRequestEntity;
 import com.pb.elite.core.response.OrderResponse;
+import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.utility.Constants;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -41,6 +52,18 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     TextView txtprdName, txtAmount,txtName;
     Button btnSubmit;
     InsertOrderRequestEntity orderRequestEntity;
+
+    String REQUEST_TYPE = "";
+    // Service 1
+    RCRequestEntity rcRequestEntity;
+    AssistanceObtainingRequestEntity assistanceRequestEntity;
+    AdditionHypothecationRequestEntity additionHypothecationRequestEntity;
+    TransferOwnershipRequestEntity transferOwnershipRequestEntity;
+
+    DriverDLVerificationRequestEntity driverDLRequestEntity;
+    AddressEndorsementRCRequestEntity addressEndRequestEntity;
+    PaperToSmartCardRequestEntity paperRequestEntity;
+    VehicleRegCertificateRequestEntity vehicleRegRequestEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,33 +83,86 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
 
        txtName.setText(""+loginEntity.getName());
 
-        if (getIntent().hasExtra("PRODUCT_NAME_PAYMENT")) {
+        Bundle extras = getIntent().getBundleExtra(Constants.PAYMENT_REQUEST_BUNDLE);
+        if (extras != null) {
+             REQUEST_TYPE = extras.getString(Constants.REQUEST_TYPE, "");
 
-            orderRequestEntity = getIntent().getExtras().getParcelable("PRODUCT_NAME_PAYMENT");
+            if(REQUEST_TYPE.equals("1"))
+            {
+                // Service 1
+                rcRequestEntity  =  extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = rcRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(rcRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
 
-            PRODUCT_NAME = orderRequestEntity.getProdName();
-            AMOUNT_PAYMENT = (Long.valueOf(orderRequestEntity.getAmount()));
-            txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
-            txtprdName.setText(PRODUCT_NAME);
+            }else if(REQUEST_TYPE.equals("2"))
+            {
+                // Service 2
+                assistanceRequestEntity  =  extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = assistanceRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(assistanceRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+            }else if(REQUEST_TYPE.equals("3"))
+            {
+                // Service 3
+                additionHypothecationRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = additionHypothecationRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(additionHypothecationRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
 
+            }else if(REQUEST_TYPE.equals("4"))
+            {
+                // Service 4
+                transferOwnershipRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = transferOwnershipRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(transferOwnershipRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
+            }else if(REQUEST_TYPE.equals("5"))
+            {
+                // Service 5
+                driverDLRequestEntity   = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = driverDLRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(driverDLRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
+            }else if(REQUEST_TYPE.equals("6"))
+            {
+                // Service 6
+                addressEndRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = addressEndRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(addressEndRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
+            }else if(REQUEST_TYPE.equals("7"))
+            {
+                // Service 7
+                paperRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = paperRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(paperRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
+            }else if(REQUEST_TYPE.equals("8"))
+            {
+                // Service 8
+                vehicleRegRequestEntity  = extras.getParcelable(Constants.PRODUCT_PAYMENT_REQUEST);
+                PRODUCT_NAME = vehicleRegRequestEntity.getProdName();
+                AMOUNT_PAYMENT = (Long.valueOf(vehicleRegRequestEntity.getAmount()));
+                txtAmount.setText("Charges - " + "\u20B9" + " " + AMOUNT_PAYMENT);
+                txtprdName.setText(PRODUCT_NAME);
+
+            }
 
         }
-//        Bundle extras = getIntent().getExtras();
-//        if (extras != null) {
-//
-//            PRODUCT_NAME = extras.getString("PRODUCT_NAME_PAYMENT");
-//            PRODUCT_ID = extras.getInt("PRODUCT_NAME_PAYMENT",0);
-//            RTO_ID = extras.getString("RTO_ID", "0");
-//            AMOUNT_PAYMENT = (Long.valueOf(extras.getString("AMOUNT_PAYMENT", "0"))) ;
-//            txtAmount.setText("" + "\u20B9" + " " + AMOUNT_PAYMENT);
-//            txtprdName.setText(PRODUCT_NAME);
-//        }
 
 
-        /*
-         To ensure faster loading of the Checkout form,
-          call this method as early as possible in your checkout flow.
-         */
         Checkout.preload(getApplicationContext());
 
 
@@ -137,10 +213,68 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void onPaymentSuccess(String razorpayPaymentID) {
         try {
 
-            orderRequestEntity.setPayment_status("1");
-            orderRequestEntity.setTransaction_id(razorpayPaymentID);
-            showDialog();
-            new ProductController(PaymentRazorActivity.this).inserOrderData(orderRequestEntity, this);
+            if(REQUEST_TYPE.equals("1"))
+            {
+                // Service 1
+                rcRequestEntity.setPayment_status("1");
+                rcRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveRCService1(rcRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("2"))
+            {
+                // Service 2
+                assistanceRequestEntity.setPayment_status("1");
+                assistanceRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveAssistanceObtaining(assistanceRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("3"))
+            {
+                // Service 3
+                additionHypothecationRequestEntity.setPayment_status("1");
+                additionHypothecationRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveAdditionHypothecation(additionHypothecationRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("4"))
+            {
+                // Service 4
+                transferOwnershipRequestEntity.setPayment_status("1");
+                transferOwnershipRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveTransferOwnership(transferOwnershipRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("5"))
+            {
+                // Service 5
+                driverDLRequestEntity.setPayment_status("1");
+                driverDLRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveDriverDLVerification(driverDLRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("6"))
+            {
+                // Service 6
+                addressEndRequestEntity.setPayment_status("1");
+                addressEndRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveAddressEndorsementRC(addressEndRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("7"))
+            {
+                // Service 7
+                paperRequestEntity.setPayment_status("1");
+                paperRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).savePaperSmartCard(paperRequestEntity,this);
+            }else  if(REQUEST_TYPE.equals("8"))
+            {
+                // Service 7
+                vehicleRegRequestEntity.setPayment_status("1");
+                vehicleRegRequestEntity.setTransaction_id(razorpayPaymentID);
+                showDialog();
+                new RTOController(this).saveVehicleRegCertificate(vehicleRegRequestEntity,this);
+            }
+
+
+
+            //vehicleRegRequestEntity
+
 
 
         } catch (Exception e) {
@@ -154,10 +288,6 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void onPaymentError(int code, String response) {
         try {
             Toast.makeText(this, "Payment failed: " + code + " " + response, Toast.LENGTH_SHORT).show();
-//            orderRequestEntity.setPayment_status("0");
-//            orderRequestEntity.setTransaction_id("");
-//            showDialog();
-//            new ProductController(PaymentRazorActivity.this).inserOrderData(orderRequestEntity, this);
 
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
@@ -196,11 +326,11 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
-        if (response instanceof OrderResponse) {
+        if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((OrderResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((OrderResponse) response).getData().get(0).getDisplaymessage());
+                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
                 showPaymentAlert(btnSubmit, response.getMessage().toString(),DisplayMessage, OrderID);
 
             }
@@ -214,49 +344,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         cancelDialog();
     }
 
-    //  @Override
-//    public void onPositiveButtonClick(View view) {
-//
-//        if (view.getId() == R.id.btn_pay) {
-//
-//            if(OrderID > 0) {
-//                startActivity(new Intent(PaymentRazorActivity.this, DocUploadActivity.class)
-//                             .putExtra("ORDER_ID",OrderID));
-//                this.finish();
-//            }
-//        }
-//    }
 
-
-    public void showPaymentAlert1(final View view, String strBody, String DisplayMessage, final int OrderID) {
-        try {
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-            builder.setTitle("Elite");
-
-            builder.setMessage(strBody);
-            String positiveText = "Ok";
-            builder.setPositiveButton(positiveText,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-
-                            startActivity(new Intent(PaymentRazorActivity.this, DocUploadActivity.class)
-                                    .putExtra("ORDER_ID", OrderID));
-
-                            PaymentRazorActivity.this.finish();
-
-
-                        }
-                    });
-            final android.support.v7.app.AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        } catch (Exception ex) {
-            Toast.makeText(this, "Please try again..", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
     public void showPaymentAlert(final View view, String strhdr, String DisplayMessage, final int OrderID) {

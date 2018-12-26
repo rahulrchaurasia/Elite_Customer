@@ -351,7 +351,14 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
-
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
 
     private void saveData() {
 
@@ -455,6 +462,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
                 break;
 
             case R.id.etCity:
+                setScrollatBottom();
 
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 

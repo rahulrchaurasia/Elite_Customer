@@ -1,6 +1,7 @@
 package com.pb.elite.document;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.pb.elite.BaseActivity;
+import com.pb.elite.HomeActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
@@ -40,8 +42,11 @@ import com.pb.elite.core.response.DocumentResponse;
 import com.pb.elite.core.response.DocumentViewResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductActivity;
+import com.pb.elite.servicelist.Activity.ServiceActivity;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,13 +65,14 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     MultipartBody.Part part;
     File Docfile;
     File file;
-    Uri imageUri;
 
+    private Uri imageUri;
+    private Uri cropImageUri;
     int OrderID;
 
 
-    private String DOC1 = "DOC1", DOC2 = "DOC2", DOC3 = "DOC3", DOC4 = "DOC4";
-    int type;
+    private String DOC1 = "ELITE_DOC";
+
     ///////////
     DataBaseController dataBaseController;
     UserEntity loginEntity;
@@ -119,6 +125,17 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(DocUploadActivity.this);
         rvProduct.setLayoutManager(layoutManager);
 
+    }
+
+    /**
+     //TODO: Crop image activity to crop capture image.
+     * Start crop image activity for the given image.
+     */
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
     }
 
     private void setDocumentUpload(String urlPath) {
@@ -298,6 +315,68 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         return  true;
     }
 
+    private void setDocNote()
+    {
+        if(checkAllFileUploaded())
+        {
+            txtDocVerify.setVisibility(View.GONE);
+        }else{
+            txtDocVerify.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    public void ConfirmDocAlert(String Title, String strBody, final String strMobile) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+
+
+        Button btnSubmit;
+        TextView txtTile, txtBody,txtMob;
+        ImageView ivCross;
+
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        final View dialogView = inflater.inflate(R.layout.layout_calling_popup, null);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+        txtTile = (TextView) dialogView.findViewById(R.id.txtTile);
+        txtBody = (TextView) dialogView.findViewById(R.id.txtMessage);
+        txtMob = (TextView) dialogView.findViewById(R.id.txtOther);
+        ivCross  = (ImageView) dialogView.findViewById(R.id.ivCross);
+
+        btnSubmit  = (Button) dialogView.findViewById(R.id.btnSubmit);
+
+        btnSubmit.setText("HOME");
+        txtTile.setText(Title);
+        txtBody.setText(strBody);
+        txtMob.setText(strMobile);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+                startActivity(new Intent(DocUploadActivity.this, HomeActivity.class));
+                DocUploadActivity.this.finish();
+
+
+            }
+        });
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+    }
+
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
@@ -306,22 +385,31 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
             if (response.getStatus_code() == 0) {
 
                 setDocumentUpload(((DocumentResponse) response).getData().get(0).getPath());
+                if(lstDoc != null && lstDoc.size() >0){
+
+                    if(checkAllFileUploaded())
+                    {
+
+                        txtDocVerify.setVisibility(View.GONE);
+                        ConfirmDocAlert("Document Uploaded",getResources().getString(R.string.doc_popup),""  );
+
+                    }else{
+                        txtDocVerify.setVisibility(View.VISIBLE);
+
+                    }
+
+
+                }
 
             }
         } else if (response instanceof DocumentViewResponse) {
             if (response.getStatus_code() == 0) {
 
                 lstDoc = ((DocumentViewResponse) response).getData();
-
-                if(checkAllFileUploaded())
-                {
-                    txtDocVerify.setVisibility(View.VISIBLE);
-                }else{
-                    txtDocVerify.setVisibility(View.GONE);
-                }
-
                 mAdapter = new DocumentAdapter(DocUploadActivity.this, lstDoc);
                 rvProduct.setAdapter(mAdapter);
+
+                setDocNote();
 
             }
         }
@@ -338,48 +426,93 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
 
 
     @Override
+    @SuppressLint("NewApi")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bitmap mphoto = null;
-            try {
-                mphoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                mphoto = getResizedBitmap(mphoto, 800);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            showDialog();
-            file = saveImageToStorage(mphoto, DOC1);
-            part = Utility.getMultipartImage(file);
-            body = Utility.getBody(this, loginEntity.getUser_id(), documentViewEntity.getDoc_id(), OrderID);
-            new ProductController(this).uploadDocuments(part, body, this);
-
-
-        } else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
-            Uri selectedImageUri = data.getData();
-            Bitmap mphoto = null;
-            try {
-                mphoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                mphoto = getResizedBitmap(mphoto, 800);
-
-                showDialog();
-                file = saveImageToStorage(mphoto, DOC1);
-                part = Utility.getMultipartImage(file);
-                body = Utility.getBody(this, loginEntity.getUser_id(), documentViewEntity.getDoc_id(), OrderID);
-
-                new ProductController(this).uploadDocuments(part, body, this);
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
+            //extractTextFromImage();
+            startCropImageActivity(imageUri);
         }
+
+       else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            startCropImageActivity(selectedImageUri);
+        }
+
+        // Below  handle result of CropImageActivity
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+                try {
+                    cropImageUri = result.getUri();
+                    Bitmap mphoto = null;
+                    try {
+                        mphoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), cropImageUri);
+                        mphoto = getResizedBitmap(mphoto, 800);
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    showDialog();
+                    file = saveImageToStorage(mphoto, DOC1);
+                    part = Utility.getMultipartImage(file);
+                    body = Utility.getBody(this, loginEntity.getUser_id(), documentViewEntity.getDoc_id(), OrderID);
+                    new ProductController(this).uploadDocuments(part, body, this);
+
+                } catch (Exception e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        //region Comment
+//        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+//            Bitmap mphoto = null;
+//            try {
+//                mphoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                mphoto = getResizedBitmap(mphoto, 800);
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            showDialog();
+//            file = saveImageToStorage(mphoto, DOC1);
+//            part = Utility.getMultipartImage(file);
+//            body = Utility.getBody(this, loginEntity.getUser_id(), documentViewEntity.getDoc_id(), OrderID);
+//            new ProductController(this).uploadDocuments(part, body, this);
+//
+//
+//        } else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
+//            Uri selectedImageUri = data.getData();
+//            Bitmap mphoto = null;
+//            try {
+//                mphoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+//                mphoto = getResizedBitmap(mphoto, 800);
+//
+//                showDialog();
+//                file = saveImageToStorage(mphoto, DOC1);
+//                part = Utility.getMultipartImage(file);
+//                body = Utility.getBody(this, loginEntity.getUser_id(), documentViewEntity.getDoc_id(), OrderID);
+//
+//                new ProductController(this).uploadDocuments(part, body, this);
+//
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//        }
+        //endregion
 
     }
 

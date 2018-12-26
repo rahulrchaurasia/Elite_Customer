@@ -338,6 +338,15 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
             lvLogo.setVisibility(View.GONE);
         }
     }
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
 
     private void saveData() {
 
@@ -405,6 +414,9 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
 
                 break;
 
+            case R.id.rlDoc:
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
+                break;
 
 
             case R.id.rlEditVehicle:
@@ -423,13 +435,11 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                 break;
 
             case R.id.etInsCompanyName:
-
-
-                if (PRODUCT_CODE.equalsIgnoreCase("09")) {
-                    if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
+                if (insuranceCompanyEntityList != null && insuranceCompanyEntityList.size() > 0) {
+                        etInsCompanyName.setError(null);
                         getBottomSheetDialog();
                     }
-                }
+
 
                 break;
 
@@ -440,6 +450,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
                     etVehicle.setError("Enter Vehicle Number");
                     return;
                 }
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

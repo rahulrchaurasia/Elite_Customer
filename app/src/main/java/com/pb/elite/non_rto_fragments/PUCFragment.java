@@ -251,6 +251,15 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
             lvLogo.setVisibility(View.GONE);
         }
     }
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
 
     private void saveData()
     {
@@ -319,6 +328,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
                     etVehicle.setError("Enter Vehicle Number");
                     return;
                 }
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;

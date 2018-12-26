@@ -17,6 +17,10 @@ public  class UserConstatntEntity {
     private String vehicleno;
     private String homepopup;
 
+    private String contactno;
+    private String emailid;
+
+
     /**
      * vehicleno : KA04ML6747
      * homepopup : http://elite.rupeeboss.com/images/upload/168reli.png
@@ -70,5 +74,21 @@ public  class UserConstatntEntity {
 
     public void setHomepopup(String homepopup) {
         this.homepopup = homepopup;
+    }
+
+    public String getContactno() {
+        return contactno;
+    }
+
+    public void setContactno(String contactno) {
+        this.contactno = contactno;
+    }
+
+    public String getEmailid() {
+        return emailid;
+    }
+
+    public void setEmailid(String emailid) {
+        this.emailid = emailid;
     }
 }

@@ -2,9 +2,14 @@ package com.pb.elite.rto_fragment;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +28,25 @@ import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
+import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.RtoCityMain;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.requestmodel.AdditionHypothecationRequestEntity;
+import com.pb.elite.core.requestmodel.PaperToSmartCardRequestEntity;
+import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.pb.elite.core.response.ProductDocumentResponse;
+import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.payment.PaymentRazorActivity;
+import com.pb.elite.product.ProductMainActivity;
+import com.pb.elite.rto_fragment.adapter.IRTOCity;
+import com.pb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.pb.elite.search.SearchCityActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
@@ -42,12 +58,12 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SmartCardLicFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
+public class SmartCardLicFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber, IRTOCity {
 
     // Service : 7
 
     // region Common Declaration
-
+    private Context mContext;
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
@@ -75,35 +91,78 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
 
     String CITY_ID;
 
+    ProductPriceEntity productPriceEntity;
+
     //endregion
 
     EditText etRTO ,etPincode ,etLicNo ,etLicOwnerName ,etLicOwnerDob;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+    // region Botom sheetDeclaration
 
-    //region datepicker
+    BottomSheetDialog mBottomSheetDialog;
 
-    protected View.OnClickListener datePickerDialog = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
 
-            if (view.getId() == R.id.etDOB) {
-                DateTimePicker.showAgePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
-                        if (view1.isShown()) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(year, monthOfYear, dayOfMonth);
-                            String currentDay = simpleDateFormat.format(calendar.getTime());
-                            etLicOwnerDob.setText(currentDay);
-                        }
-                    }
-                });
+    CityMainEntity cityMainEntity;
+    RtoCityMain rtoMainEntity;
 
-            }
+    RtoMainAdapter rtoMainAdapter;
 
+    //endregion
+
+
+      //region bottomSheetDialog
+    public void getBottomSheetDialog() {
+
+        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
+            getCustomToast("No RTO Available");
+            return;
         }
-    };
+
+        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
+
+        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
+
+        mBottomSheetDialog.setContentView(sheetView);
+        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+
+        rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvRTO.setHasFixedSize(true);
+        rvRTO.setNestedScrollingEnabled(false);
+        rtoMainAdapter = new RtoMainAdapter(SmartCardLicFragment.this, cityMainEntity.getRTOList(), this);
+        rvRTO.setAdapter(rtoMainAdapter);
+        rvRTO.setVisibility(View.VISIBLE);
+
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mBottomSheetDialog.isShowing()) {
+
+                    mBottomSheetDialog.dismiss();
+                }
+            }
+        });
+
+
+        txtHdr.setText("Select RTO");
+
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(true);
+        mBottomSheetDialog.show();
+
+
+    }
+
+    public void setRTOData(String strRTOName, RtoCityMain rtoEntity) {
+        etRTO.setText("" + strRTOName);
+
+        rtoMainEntity = rtoEntity;
+
+    }
 
     //endregion
 
@@ -113,6 +172,15 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_smart_card_lic, container, false);
+
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        mContext = view.getContext();
         initialize(view);
 
         setOnClickListener();
@@ -142,7 +210,6 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -153,7 +220,6 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         new ProductController(getActivity()).getRTOProductList(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), SmartCardLicFragment.this);
 
 
-        return view;
     }
 
     private void initialize(View view) {
@@ -195,6 +261,10 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         etCity.setFocusable(false);
         etCity.setClickable(true);
 
+        etRTO.setFocusable(false);
+        etRTO.setClickable(true);
+
+
         rlDoc.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
 
@@ -214,30 +284,146 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    private boolean validate() {
+
+        if (!isEmpty(etLicNo)) {
+            etLicNo.requestFocus();
+            etLicNo.setError("Enter License Number");
+            return false;
+        }
+       else if (!isEmpty(etLicOwnerName)) {
+            etLicOwnerName.requestFocus();
+            etLicOwnerName.setError("Enter Owner Name");
+            return false;
+        }
+        else if (!isEmpty(etLicOwnerDob)) {
+            etLicOwnerDob.requestFocus();
+            etLicOwnerDob.setError("Enter DOB");
+            return false;
+        }
+        else if (!validatePinCode(etPincode)) {
+
+            return false;
+        }
+        else if (!validateCity(etCity)) {
+
+            return false;
+        }
+        else if (!validateCity(etRTO)) {
+
+            return false;
+        }
+
+
+        return true;
+    }
+
+    private void getTatData() {
+        if (productPriceEntity != null) {
+            lvLogo.setVisibility(View.VISIBLE);
+            txtCharges.setText(productPriceEntity.getPrice());
+            txtTAT.setText(productPriceEntity.getTAT());
+
+        } else {
+            lvLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void saveData() {
+
+        showDialog();
+        PaperToSmartCardRequestEntity requestEntity = new PaperToSmartCardRequestEntity();
+        requestEntity.setProdName(PRODUCT_NAME);
+        requestEntity.setAmount(txtCharges.getText().toString());
+        requestEntity.setCityid(String.valueOf(CITY_ID));
+        requestEntity.setPayment_status("1");
+        requestEntity.setProdid(String.valueOf(PRODUCT_ID));
+
+        requestEntity.setRto_id(productPriceEntity.getRto_id());
+        requestEntity.setTransaction_id("");
+        requestEntity.setUserid(String.valueOf(loginEntity.getUser_id()));
+        requestEntity.setPincode(etPincode.getText().toString());
+
+        requestEntity.setDL_Correct_name(etLicOwnerName.getText().toString());
+        requestEntity.setDL_DOB(etLicOwnerDob.getText().toString());
+        requestEntity.setDL_No(etLicNo.getText().toString());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REQUEST_TYPE,"7");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST,requestEntity);
+
+
+        getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE,bundle)) ;
+
+
+        getActivity().finish();
+
+
+
+    }
+
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
+
+
 
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
-
+            case R.id.etLicOwnerDob :
+                DateTimePicker.showAgePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth) {
+                        if (view1.isShown()) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            String currentDay = simpleDateFormat.format(calendar.getTime());
+                            etLicOwnerDob.setText(currentDay);
+                        }
+                    }
+                });
             case R.id.rlDoc:
-                showDialog();
-                new ProductController(getActivity()).getProducDoc(PRODUCT_ID, this);
+                ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;
 
-            case R.id.btnBooked:
 
+            case R.id.btnBooked:
+                if (validate() == false) {
+                    return;
+                }
+                else {
+
+                    saveData();
+                }
 
                 break;
 
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
 
+            case R.id.etRTO:
 
+                if (!etCity.getText().toString().equalsIgnoreCase("")) {
+
+                    etRTO.setError(null);
+                    getBottomSheetDialog();
+                } else {
+                    getCustomToast("Select City");
+                }
+                break;
         }
     }
 
@@ -248,19 +434,44 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID = data.getStringExtra(Constants.SEARCH_CITY_ID);
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
+                etCity.setError(null);
+
+                showDialog();
+
+                //region call Price Controller
+                ProductPriceRequestEntity entity = new ProductPriceRequestEntity();
+                entity.setVehicleno(userConstatntEntity.getVehicleno());
+                entity.setCityid(CITY_ID);
+                entity.setProduct_id(String.valueOf(PRODUCT_ID));
+                entity.setProductcode(PRODUCT_CODE);
+                entity.setUserid(String.valueOf(loginEntity.getUser_id()));
+                entity.setMake("");
+                entity.setModel("");
+
+                new MiscNonRTOController(mContext).getProductTAT(entity, this);
+
+                //endregion
 
             }
         }
-
     }
+
 
 
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
         cancelDialog();
+        if (response instanceof ProductPriceResponse) {
+            if (response.getStatus_code() == 0) {
+
+                productPriceEntity = ((ProductPriceResponse) response).getData().get(0);
+                getTatData();
+
+            }
+        }
         if (response instanceof RtoProductDisplayResponse) {
             if (response.getStatus_code() == 0) {
 
@@ -270,17 +481,6 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
                     PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
                 }
             }
-        } else if (response instanceof ProductDocumentResponse) {
-            if (response.getStatus_code() == 0) {
-
-                if (((ProductDocumentResponse) response).getData() != null) {
-
-                    reqDocPopUp(((ProductDocumentResponse) response).getData());
-                } else {
-
-                    Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
-                }
-            }
         }
     }
 
@@ -288,5 +488,23 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
     public void OnFailure(Throwable t) {
         cancelDialog();
         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getRTOCity(RtoCityMain entity) {
+        if (mBottomSheetDialog != null) {
+
+            if (mBottomSheetDialog.isShowing()) {
+                if (entity != null) {
+
+                    rtoMainEntity = entity;
+
+                    setRTOData("" + rtoMainEntity.getSeries_no() + "-" + rtoMainEntity.getRto_location(), rtoMainEntity);
+                    mBottomSheetDialog.dismiss();
+                }
+
+            }
+
+        }
     }
 }

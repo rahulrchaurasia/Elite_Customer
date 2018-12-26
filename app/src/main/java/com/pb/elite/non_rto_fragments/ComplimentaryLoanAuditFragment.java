@@ -114,6 +114,10 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
 
+        rgloantype = (RadioGroup) view.findViewById(R.id.rgloantype);
+        rbimgsl = (RadioButton) view.findViewById(R.id.rbimgsl);
+        rbimgse = (RadioButton) view.findViewById(R.id.rbimgse);
+        rbimgpro = (RadioButton) view.findViewById(R.id.rbimgpro);
 
         lvLogo =  view.findViewById(R.id.lvLogo);
         lyTAT =  view.findViewById(R.id.lyTAT);
@@ -215,7 +219,14 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
         }
         return true;
     }
-
+    private void setScrollatBottom() {
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 1000);
+    }
 
     private void getTatData() {
         if (productPriceEntity != null) {
@@ -246,14 +257,20 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
         requestEntity.setAnnual_income(etloaneligibility.getText().toString());
 
         if (rbimgsl.isChecked()) {
-            requestEntity.setSalaried("");
+            requestEntity.setSalaried("Salaried");
         } else if (rbimgse.isChecked()) {
-            requestEntity.setSalaried("");
+            requestEntity.setSalaried("Salaried");
         } else if (rbimgpro.isChecked()) {
-            requestEntity.setSalaried("");
+            requestEntity.setSalaried("Professional");
+        }
+        requestEntity.setEMI_Amount(etExistingEMI.getText().toString());
+        if(etExistingEMI.getText().toString().equals("")) {
+            requestEntity.setAny_EMI("N");
+        }else
+        {
+            requestEntity.setAny_EMI("Y");
         }
 
-        requestEntity.setAny_EMI("N");
         requestEntity.setAmount("" + etRequiredLoanAmount.getText().toString());
 
         new MiscNonRTOController(mContext).saveComplimentaryLoanAudit(requestEntity, this);
@@ -290,7 +307,7 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
 
                 break;
             case R.id.etCity:
-
+                setScrollatBottom();
                 startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
 
                 break;
