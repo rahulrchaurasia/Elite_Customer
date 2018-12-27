@@ -45,6 +45,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     List<OrderDetailEntity> lstOrderDetail;
     UserEntity loginEntity;
     DataBaseController dataBaseController;
+     AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,9 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
 
     private void setOnClickListener()
     {
+        etReqName.setFocusable(false);
+        etReqName.setClickable(true);
+
         etReqName.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
     }
@@ -84,17 +88,15 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     public void requestPopUp(String Title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
 
-
-
         TextView txtHdr;
         ImageView ivCross;
 
         LayoutInflater inflater = this.getLayoutInflater();
 
-        final View dialogView = inflater.inflate(R.layout.bottom_sheet_dialog, null);
+        final View dialogView = inflater.inflate(R.layout.feedback_dialog, null);
 
         builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
+        alertDialog = builder.create();
         // set the custom dialog components - text, image and button
         txtHdr =  dialogView.findViewById(R.id.txtHdr);
         RecyclerView rvRTO = dialogView.findViewById(R.id.rvRTO);
@@ -122,9 +124,13 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     }
     public void getOrderData(OrderDetailEntity temporderDetailEntity)
     {
-        orderDetailEntity = temporderDetailEntity;
-        txtReqID.setText(orderDetailEntity.getProduct_id());
-        etReqName.setText(orderDetailEntity.getProduct_name());
+        if(alertDialog != null)
+            if(alertDialog.isShowing()) {
+                alertDialog.dismiss();
+                orderDetailEntity = temporderDetailEntity;
+                txtReqID.setText(orderDetailEntity.getOrder_id());
+                etReqName.setText(orderDetailEntity.getProduct_name());
+            }
     }
 
     @Override
