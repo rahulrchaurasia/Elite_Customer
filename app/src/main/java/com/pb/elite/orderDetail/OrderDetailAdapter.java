@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.pb.elite.R;
@@ -36,6 +37,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         TextView txtPrdName, txtAmnt, txtOrderID, txtcustName, txtDate, txtStatus,  txtUpload;
         LinearLayout lyUpload,lyReceipt;
         ImageView ivReceipt;
+        RatingBar ratingBar;
 
         public OrderDetailItem(View itemView) {
             super(itemView);
@@ -55,6 +57,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             lyReceipt =   (LinearLayout) itemView.findViewById(R.id.lyReceipt);
 
             ivReceipt = itemView.findViewById(R.id.ivReceipt);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
         }
     }
 
@@ -78,6 +81,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
       //  holder.txtcustName.setText("" + orderDetailEntity.getCustomer_name());
         holder.txtDate.setText("" + orderDetailEntity.getPayment_date());
         holder.txtStatus.setText(""+ orderDetailEntity.getOrder_status());
+        holder.ratingBar.setRating(3.5f);
 
 
         if (orderDetailEntity.getStatus().equals("1")) {

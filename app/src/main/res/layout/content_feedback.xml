@@ -10,121 +10,159 @@
     tools:context="com.pb.elite.feedback.FeedbackActivity"
     tools:showIn="@layout/activity_feedback">
 
-
-
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_dashboard"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp">
-
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@color/bg_dashboard"
             android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle.Large"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Complain and Feedback"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:background="@color/bg_dashboard"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
 
-            <TextView
-                style="@style/TextViewStyle.MediumBold"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:background="@color/bg_dashboard"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle.Large"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Complain and Feedback"
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        style="@style/TextViewStyle.MediumBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Complain/Feedback"
+                        android:textColor="@color/red_light"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        style="@style/TextViewStyle.Large"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Share your experiance regarding  your request "
+
+                        android:textColor="@color/black" />
+
+
+                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyle.MediumRegular"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="Select Request ID:"/>
+
+                    <TextView
+                        android:id="@+id/txtReqID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextViewStyle.MediumRegular"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/black"
+                        android:text=""/>
+
+                    <EditText
+                        android:id="@+id/etReqName"
+                        style="@style/Style.edittext"
+                        android:inputType="textMultiLine"
+                        android:singleLine="true"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/ic_drop_down"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:maxLines="3"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextViewStyle.MediumRegular"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:text="Enter Your Feedback:"/>
+
+                    <EditText
+                        android:id="@+id/etBody"
+                        style="@style/Style.edittext"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLength="100"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:padding="@dimen/activity_horizontal_margin"
+                        android:maxLines="1"
+                        />
+
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        style="@style/ButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="Submit" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Complain/Feedback"
-                android:textColor="@color/red_light"
-                android:textSize="16dp" />
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@color/bg_dashboard"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
 
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Share your experiance regarding  your request "
+                <!--style = "?android:attr/ratingBarStyleSmall"-->
+                <RatingBar
+                    android:theme="@style/RatingBar"
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:stepSize="0.5"
+                    android:rating="0.0"
+                    android:max="5"
+                    android:layout_gravity="center"
+                    android:isIndicator="false"
+                    />
 
-                android:textColor="@color/black" />
+            </android.support.v7.widget.CardView>
 
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Enter Request ID">
-
-                <EditText
-                    android:id="@+id/etReqID"
-                    style="@style/Style.edittext"
-                    android:visibility="gone" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextViewStyle.MediumRegular"
-                android:layout_marginLeft="8dp"
-                android:text="Enter Your Feedback:"/>
-
-            <EditText
-                android:id="@+id/etBody"
-                style="@style/Style.edittext"
-                android:inputType="textMultiLine"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:maxLines="3"
-                />
-
-
-            <Button
-                android:id="@+id/btnSubmit"
-                style="@style/ButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-
-                android:text="Submit" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@color/bg_dashboard"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp">
+    </ScrollView>
 
-        <!--style = "?android:attr/ratingBarStyleSmall"-->
-        <RatingBar
-            android:theme="@style/RatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rating="0"
-            android:stepSize="1"
-            android:numStars="5"
-            android:layout_gravity="center"
-            android:isIndicator="false"
-          />
 
-    </android.support.v7.widget.CardView>
 
 </LinearLayout>
