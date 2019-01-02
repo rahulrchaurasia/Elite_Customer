@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,9 +161,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         setOnClickListener();
 
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
 
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
         CityList = new ArrayList<String>();
         RtoList = new ArrayList<String>();
@@ -206,7 +207,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     private void initialize(View view) {
 
-        prefManager = new PrefManager(getActivity());
+
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
         textCity = (TextView) view.findViewById(R.id.textCity);
@@ -251,6 +252,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         acModel.setThreshold(1);
         acModel.setSelection(0);
+
+        etVehicle.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
+
 
 
     }

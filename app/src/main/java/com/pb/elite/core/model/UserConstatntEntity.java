@@ -20,6 +20,8 @@ public  class UserConstatntEntity {
     private String contactno;
     private String emailid;
 
+    private String  dbversion;
+
 
     /**
      * vehicleno : KA04ML6747
@@ -90,5 +92,13 @@ public  class UserConstatntEntity {
 
     public void setEmailid(String emailid) {
         this.emailid = emailid;
+    }
+
+    public String getDbversion() {
+        return dbversion;
+    }
+
+    public void setDbversion(String dbversion) {
+        this.dbversion = dbversion;
     }
 }

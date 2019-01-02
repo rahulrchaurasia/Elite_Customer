@@ -68,13 +68,9 @@ public class ProductDocAdapter extends RecyclerView.Adapter<ProductDocAdapter.Pr
             @Override
             public void onClick(View view) {
 
-//                if(mContext instanceof RenewRcFragment) {
-//                    ((RenewRcFragment) mContext).downloadPdf(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name());
-//                }else{
-//                    ((AssistanObtainFragment) mContext).downloadPdf(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name());
-//                }
+                ((ProductMainActivity) mContext).new DownloadFromUrl(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name()).execute();
 
-                ((ProductMainActivity) mContext).downloadPdf(docProductEnity.getDocumenturl(), docProductEnity.getDocument_name());
+
             }
         });
 

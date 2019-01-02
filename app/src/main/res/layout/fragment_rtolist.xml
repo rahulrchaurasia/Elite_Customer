@@ -21,18 +21,38 @@
             android:layout_margin="5dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextViewStyle.Large"
                 android:textColor="@color/black"
-                android:text="RUDRAGOUDA PATIL"/>
+                android:text=""/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextViewStyle.Medium"
-                android:layout_marginTop="5dp"
-                android:text="KA04ML6747"/>
+                android:gravity="center"
+                android:orientation="horizontal">
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/car"
+                    android:tint="@color/colorPrimaryDark_inspect" />
+
+
+                <TextView
+                    android:id="@+id/txtVehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyle.Medium"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="5dp"
+
+                    android:text=""/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

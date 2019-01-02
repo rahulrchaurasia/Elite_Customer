@@ -43,11 +43,39 @@
 
             <TextView
                 android:id="@+id/txtMessage"
-                style="@style/TextViewStyle.Large"
+                style="@style/TextViewStyle.MediumLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="you have "
                 />
+
+           <LinearLayout
+               android:id="@+id/lyReceipt"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="5dp"
+               android:padding="5dp"
+               android:gravity="center_vertical"
+               android:orientation="horizontal">
+               <TextView
+                   style="@style/TextViewStyle.Medium"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="5dp"
+                   android:text="Receipt:" />
+
+               <ImageView
+                   android:id="@+id/ivReceipt"
+                   android:layout_width="25dp"
+                   android:layout_height="25dp"
+                   android:layout_marginLeft="8dp"
+                   android:layout_marginTop="5dp"
+                   android:scaleType="centerInside"
+
+                   android:src="@drawable/receipt" />
+
+
+           </LinearLayout>
 
 
             <Button

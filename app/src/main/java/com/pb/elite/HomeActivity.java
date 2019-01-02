@@ -61,9 +61,8 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
 
-    TextView textNotifyItemCount, txtEmail, txtName;
+    TextView textNotifyItemCount, txtVehicle, txtName;
 
-    DataBaseController dataBaseController;
     UserEntity loginEntity;
     UserConstatntEntity userConstatntEntity;
 
@@ -114,10 +113,8 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        dataBaseController = new DataBaseController(HomeActivity.this);
-        loginEntity = dataBaseController.getUserData();
-
         prefManager = new PrefManager(this);
+        loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
 
         init_headers();
@@ -146,24 +143,21 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
         View headerView = navigationView.getHeaderView(0);
         txtName = (TextView) headerView.findViewById(R.id.txtName);
-        txtEmail = (TextView) headerView.findViewById(R.id.txtEmail);
+        txtVehicle = (TextView) headerView.findViewById(R.id.txtVehicle);
 
         if (loginEntity != null) {
-
             txtName.setText("" + loginEntity.getName());
-
 
         } else {
             txtName.setText("");
-
 
         }
 
         if(userConstatntEntity!=null)
         {
-            txtEmail.setText("" +userConstatntEntity.getVehicleno() );
+            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
         }else{
-            txtEmail.setText("");
+            txtVehicle.setText("");
         }
     }
 
@@ -220,9 +214,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
                     case R.id.nav_logout:
 
-                        dataBaseController.logout();
                         prefManager.clearUserCache();
-                        clear();
                         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -421,11 +413,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
     }
 
 
-    private void clear() {
 
-        prefManager.setMobile("");
-        prefManager.setPassword("");
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

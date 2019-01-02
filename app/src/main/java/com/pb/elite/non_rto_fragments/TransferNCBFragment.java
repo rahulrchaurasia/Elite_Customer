@@ -535,17 +535,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         } else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
-
-            }
-        }else if (response instanceof ProvideClaimAssResponse) {
-            if (response.getStatus_code() == 0) {
-
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         }

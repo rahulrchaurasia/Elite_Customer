@@ -33,8 +33,8 @@ import com.pb.elite.core.response.DocumentResponse;
 import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.payment.PaymentRazorActivity;
-import com.pb.elite.product.ProductActivity;
+
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Utility;
 
 import java.io.File;
@@ -65,13 +65,14 @@ public class DocUploadFragment extends BaseFragment implements View.OnClickListe
     Uri imageUri;
 
     int OrderID;
+    PrefManager prefManager;
 
 
     private int PROFILE = 1, PHOTO = 2, PAN = 3, AADHAR = 4;
     private String DOC1 = "DOC1", DOC2 = "DOC2", DOC3 = "DOC3", DOC4 = "DOC4";
     int type;
 
-    DataBaseController dataBaseController;
+
     UserEntity loginEntity;
 
     @Override
@@ -81,8 +82,8 @@ public class DocUploadFragment extends BaseFragment implements View.OnClickListe
         //  return inflater.inflate(R.layout.fragment_doc_upload, container, false);
 
         View view = inflater.inflate(R.layout.fragment_doc_upload, container, false);
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
 
         initialize(view);
 

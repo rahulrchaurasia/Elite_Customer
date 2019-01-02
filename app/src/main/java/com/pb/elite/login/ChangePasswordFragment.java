@@ -23,6 +23,7 @@ import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.CommonResponse;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.splash.PrefManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +33,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     EditText etoldpswd  , etnewpswd, etconfirmpswd;
     Button btnSubmit;
 
-    DataBaseController dataBaseController;
+    PrefManager prefManager;
     UserEntity loginEntity;
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -46,8 +47,8 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_change_password, container, false);
         initialize_Widgets(view);
 
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
         return view;
     }
 

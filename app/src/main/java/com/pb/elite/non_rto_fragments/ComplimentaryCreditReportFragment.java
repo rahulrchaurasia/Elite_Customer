@@ -100,9 +100,9 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
 
         mContext = view.getContext();
         initialize(view);
-
         setOnClickListener();
 
+        prefManager = new PrefManager(getActivity());
         dataBaseController = new DataBaseController(getActivity());
         loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
@@ -141,7 +141,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
 
     private void initialize(View view) {
 
-        prefManager = new PrefManager(getActivity());
+
 
         scrollView = view.findViewById(R.id.scrollView);
         btnBooked = view.findViewById(R.id.btnBooked);
@@ -368,10 +368,7 @@ public class ComplimentaryCreditReportFragment extends BaseFragment implements V
         }
         else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
-
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         }

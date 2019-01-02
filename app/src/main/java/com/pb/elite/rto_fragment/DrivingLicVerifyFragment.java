@@ -172,7 +172,10 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         setOnClickListener();
 
         dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
+
+
         userConstatntEntity = prefManager.getUserConstatnt();
         OrderID = 0;
         bindData();

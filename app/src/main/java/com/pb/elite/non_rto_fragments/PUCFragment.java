@@ -2,12 +2,12 @@ package com.pb.elite.non_rto_fragments;
 
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,7 +27,6 @@ import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
-import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.ProductPriceEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
@@ -36,11 +34,8 @@ import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.MiscReminderPUCRequestEntity;
 import com.pb.elite.core.requestmodel.ProductPriceRequestEntity;
-import com.pb.elite.core.requestmodel.ProvideClaimAssRequestEntity;
-import com.pb.elite.core.response.ProductDocumentResponse;
 import com.pb.elite.core.response.ProductPriceResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
-import com.pb.elite.core.response.RtoProductDisplayResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.search.SearchCityActivity;
@@ -54,7 +49,7 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PUCFragment extends  BaseFragment implements View.OnClickListener, IResponseSubcriber {
+public class PUCFragment extends BaseFragment implements View.OnClickListener, IResponseSubcriber {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -66,7 +61,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etPincode,  etCity ,  etVehicle ;
+    EditText etPincode, etCity, etVehicle;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -74,8 +69,8 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     RTOServiceEntity serviceEntity;
 
     ScrollView scrollView;
-    LinearLayout lyVehicle ,lvLogo, lyTAT;
-    RelativeLayout rlDoc ,rlEditVehicle;
+    LinearLayout lyVehicle, lvLogo, lyTAT;
+    RelativeLayout rlDoc, rlEditVehicle;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -102,7 +97,6 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     }
 
 
-
     private void initialize(View view) {
 
         prefManager = new PrefManager(getActivity());
@@ -110,7 +104,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
         etCity = (EditText) view.findViewById(R.id.etCity);
-        etPincode =  (EditText) view.findViewById(R.id.etPincode);
+        etPincode = (EditText) view.findViewById(R.id.etPincode);
         etVehicle = (EditText) view.findViewById(R.id.etVehicle);
 
 
@@ -136,7 +130,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
         etDate = view.findViewById(R.id.etDate);
 
 
-
+        etVehicle.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
 
     }
 
@@ -152,7 +146,6 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
         etCity.setOnClickListener(this);
 
         etDate.setOnClickListener(this);
-
 
 
     }
@@ -251,6 +244,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
             lvLogo.setVisibility(View.GONE);
         }
     }
+
     private void setScrollatBottom() {
         scrollView.postDelayed(new Runnable() {
             @Override
@@ -261,8 +255,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     }
 
 
-    private void saveData()
-    {
+    private void saveData() {
 
         showDialog();
         MiscReminderPUCRequestEntity requestEntity = new MiscReminderPUCRequestEntity();
@@ -278,8 +271,9 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
         requestEntity.setPucexpirydate(etDate.getText().toString());
 
 
-        new MiscNonRTOController(mContext).saveMiscRemiderPUC(requestEntity,this);
+        new MiscNonRTOController(mContext).saveMiscRemiderPUC(requestEntity, this);
     }
+
     @Override
     public void onClick(View view) {
 
@@ -345,7 +339,7 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
             if (data != null) {
 
                 CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
-                CITY_ID =  String.valueOf(cityMainEntity.getCity_id());
+                CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
 
@@ -381,13 +375,9 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
                 getTatData();
 
             }
-        }
-        else if (response instanceof ProvideClaimAssResponse) {
+        } else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
-
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         }
@@ -398,6 +388,6 @@ public class PUCFragment extends  BaseFragment implements View.OnClickListener, 
     @Override
     public void OnFailure(Throwable t) {
         cancelDialog();
-        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

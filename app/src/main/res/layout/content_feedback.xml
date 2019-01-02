@@ -68,43 +68,51 @@
 
 
                     <LinearLayout
+                        android:id="@+id/lyReqID"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/TextViewStyle.MediumRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-
-                            android:text="Select Request ID: " />
-
-                        <TextView
-                            android:id="@+id/txtReqID"
-                            style="@style/TextViewStyle.MediumRegular"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
 
-                            android:text=""
-                            android:textColor="@color/black" />
+                            <TextView
+                                style="@style/TextViewStyle.MediumRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
 
+                                android:text="Select Request ID: " />
+
+                            <TextView
+                                android:id="@+id/txtReqestID"
+                                style="@style/TextViewStyle.MediumRegular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:text=""
+                                android:textColor="@color/black" />
+
+                        </LinearLayout>
+
+
+                        <EditText
+                            android:id="@+id/etReqName"
+                            style="@style/Style.edittext"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:clickable="true"
+                            android:drawableRight="@drawable/ic_drop_down"
+                            android:focusable="false"
+                            android:inputType="textMultiLine"
+                            android:maxLines="3"
+                            android:singleLine="true" />
                     </LinearLayout>
 
-
-                    <EditText
-                        android:id="@+id/etReqName"
-                        style="@style/Style.edittext"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:clickable="true"
-                        android:drawableRight="@drawable/ic_drop_down"
-                        android:focusable="false"
-                        android:inputType="textMultiLine"
-                        android:maxLines="3"
-                        android:singleLine="true" />
 
                     <TextView
                         style="@style/TextViewStyle.MediumRegular"
@@ -142,12 +150,14 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cvRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/bg_dashboard"
+                android:visibility="gone"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 

@@ -5,10 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,18 +25,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.core.model.DocProductEnity;
-import com.pb.elite.product.ProductActivity;
 import com.pb.elite.product.ProductDocAdapter;
-import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -215,7 +223,7 @@ public class BaseActivity extends AppCompatActivity {
         text.setText("" + strMessage);
 
         Toast toast = new Toast(getApplicationContext());
-       // toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        // toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setGravity(Gravity.BOTTOM, 0, 200);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
@@ -365,4 +373,112 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+
+//    public void DownloadFromUrl(String fileURL, String fileName) {
+//        File dir = Utility.createDirIfNotExists();
+//
+//        fileName = fileName + ".pdf";
+//        fileName = fileName.replaceAll("\\s+", "");
+//
+//        File outFile = new File(dir, fileName);
+//
+//        try {
+//            outFile.createNewFile();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
+//        DownloadFile(fileURL, outFile);
+//
+//    }
+
+    public void DownloadFile(String fileURL, File directory) {
+        try {
+
+            FileOutputStream f = new FileOutputStream(directory);
+            URL u = new URL(fileURL);
+            HttpURLConnection c = (HttpURLConnection) u.openConnection();
+            c.setRequestMethod("GET");
+            c.setDoOutput(true);
+            c.connect();
+
+            InputStream in = c.getInputStream();
+
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+                f.write(buffer, 0, len1);
+            }
+            f.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showPdf(File file) {
+        try {
+//            Uri selectedUri = FileProvider.getUriForFile(this,
+//                    this.getString(R.string.file_provider_authority),
+//                    new File(Environment.getExternalStorageDirectory() + "/MTC Report/" + FileName + ".pdf"));
+
+            Uri selectedUri = FileProvider.getUriForFile(this,
+                    this.getString(R.string.file_provider_authority), file);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(selectedUri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            this.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public class DownloadFromUrl extends AsyncTask<Void, Void, Void> {
+
+
+        File dir;
+        File outFile;
+        String fileURL;
+        String fileName;
+
+        public DownloadFromUrl(String imgURL, String tempfileName) {
+            showDialog();
+            fileURL = imgURL;
+            dir = Utility.createDirIfNotExists();
+            fileName = tempfileName + ".pdf";
+            fileName = fileName.replaceAll("\\s+", "");
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            outFile = new File(dir, fileName);
+
+            try {
+                outFile.createNewFile();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            DownloadFile(fileURL, outFile);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            cancelDialog();
+            showPdf(outFile);
+        }
+    }
 }
+
+

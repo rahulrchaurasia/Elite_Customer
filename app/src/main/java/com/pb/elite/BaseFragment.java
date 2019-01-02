@@ -5,7 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +22,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.core.model.DocProductEnity;
+import com.pb.elite.core.model.ProvideClaimAssEntity;
 import com.pb.elite.document.DocUploadActivity;
 import com.pb.elite.payment.PaymentRazorActivity;
 import com.pb.elite.product.ProductDocAdapter;
@@ -30,6 +35,10 @@ import com.pb.elite.utility.Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,6 +80,7 @@ public class BaseFragment extends Fragment {
     protected void showDialog(String msg) {
         dialog = ProgressDialog.show(getActivity(), "", msg, true);
     }
+
     public static boolean isValidePhoneNumber(EditText editText) {
         String phoneNumberPattern = "^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$";
         String phoneNumberEntered = editText.getText().toString().trim();
@@ -317,13 +327,14 @@ public class BaseFragment extends Fragment {
     }
 
 
-    public void showMiscPaymentAlert(final View view, String strhdr, String DisplayMessage, final int OrderID) {
+    public void showMiscPaymentAlert(final View view, String strhdr,  final ProvideClaimAssEntity provideClaimAssEntity) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
 
         Button btnClose;
         TextView txtHdr ,txtMessage;
+        LinearLayout lyReceipt;
 
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -333,12 +344,26 @@ public class BaseFragment extends Fragment {
         builder.setView(dialogView);
         final AlertDialog alertDialog = builder.create();
         // set the custom dialog components - text, image and button
-        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
-        txtMessage = (TextView) dialogView.findViewById(R.id.txtMessage);
-        txtHdr = (TextView) dialogView.findViewById(R.id.txtHdr);
+        lyReceipt =    dialogView.findViewById(R.id.lyReceipt);
+        btnClose =  dialogView.findViewById(R.id.btnClose);
+        txtMessage =  dialogView.findViewById(R.id.txtMessage);
+        txtHdr = dialogView.findViewById(R.id.txtHdr);
 
         txtHdr.setText(""+ strhdr);
-        txtMessage.setText("" + DisplayMessage);
+        txtMessage.setText("" + provideClaimAssEntity.getDisplaymessage());
+
+        lyReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(provideClaimAssEntity.getReceipt() != null)
+                {
+                    new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
+                }else{
+                     //05 temp Added
+                    new DownloadFromUrl("http://elite.rupeeboss.com//docrequired//form35.pdf", "EliteReceipt").execute();
+                }
+            }
+        });
 
 
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -346,7 +371,7 @@ public class BaseFragment extends Fragment {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 startActivity(new Intent(getActivity(), DocUploadActivity.class)
-                        .putExtra("ORDER_ID", OrderID));
+                        .putExtra("ORDER_ID", provideClaimAssEntity.getId()));
 
                 getActivity().finish();
 
@@ -361,6 +386,96 @@ public class BaseFragment extends Fragment {
         //  alertDialog.getWindow().setLayout(900, 600);
 
 
+    }
+
+
+    public void DownloadFile(String fileURL, File directory) {
+        try {
+
+            FileOutputStream f = new FileOutputStream(directory);
+            URL u = new URL(fileURL);
+            HttpURLConnection c = (HttpURLConnection) u.openConnection();
+            c.setRequestMethod("GET");
+            c.setDoOutput(true);
+            c.connect();
+
+            InputStream in = c.getInputStream();
+
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+                f.write(buffer, 0, len1);
+            }
+            f.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showPdf(File file) {
+        try {
+//            Uri selectedUri = FileProvider.getUriForFile(this,
+//                    this.getString(R.string.file_provider_authority),
+//                    new File(Environment.getExternalStorageDirectory() + "/MTC Report/" + FileName + ".pdf"));
+
+            Uri selectedUri = FileProvider.getUriForFile(getActivity(),
+                    this.getString(R.string.file_provider_authority), file);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(selectedUri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            this.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public class DownloadFromUrl extends AsyncTask<Void, Void, Void> {
+
+
+        File dir;
+        File outFile;
+        String fileURL;
+        String fileName;
+
+        public DownloadFromUrl(String imgURL, String tempfileName) {
+            showDialog();
+            fileURL = imgURL;
+            dir = Utility.createDirIfNotExists();
+            fileName = tempfileName + ".pdf";
+            fileName = fileName.replaceAll("\\s+", "");
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            outFile = new File(dir, fileName);
+
+            try {
+                outFile.createNewFile();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            DownloadFile(fileURL, outFile);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            cancelDialog();
+            showPdf(outFile);
+        }
     }
 
 

@@ -37,11 +37,12 @@ public interface IRegister {
     void verifyOTPTegistration(String email, String mobile, String ip, IResponseSubcriber iResponseSubcriber);
 
 
-    void getCarVehicleMaster();
+    void getCarVehicleMaster(IResponseSubcriber iResponseSubcriber);
 
     void getUserConstatnt( IResponseSubcriber iResponseSubcriber);
 
     void getCityMainMaster( IResponseSubcriber iResponseSubcriber);
 
+    void saveFeedBack(String reqId, String feedback, float rating, IResponseSubcriber iResponseSubcriber);
 
 }

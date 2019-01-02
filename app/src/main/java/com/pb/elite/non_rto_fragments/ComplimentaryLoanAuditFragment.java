@@ -362,9 +362,7 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
         else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         }

@@ -4,19 +4,19 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +31,6 @@ import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.CityMainResponse;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.product.ProductActivity;
 import com.pb.elite.splash.PrefManager;
 import com.pb.elite.splash.SplashScreenActivity;
 import com.pb.elite.utility.Constants;
@@ -78,7 +77,8 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
 
     private void initialize() {
         dataBaseController = new DataBaseController(SearchCityActivity.this);
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(this);
+        loginEntity = prefManager.getUserData();
 
         lyOtherCity = (LinearLayout) findViewById(R.id.lyOtherCity);
         rvCity = (RecyclerView) findViewById(R.id.rvCity);
@@ -112,6 +112,25 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
         }
 
+        EditText editText =  searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        editText.setFilters( new InputFilter[]{
+                new InputFilter.AllCaps(),
+                new InputFilter.LengthFilter(20),
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        if(source.equals(" ")){ // for backspace
+                            return source;
+                        }
+                        if(source.toString().matches("[a-zA-Z]+")){
+                            return source;
+                        }
+                        return "";
+                    }
+                }
+                });
+
         if (searchView != null  && CityList !=null && CityList.size() > 0) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
 
@@ -121,6 +140,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
 
 
                     if (newText.length() > 0) {
+                        mAdapter.CityList = CityList;
                         mAdapter.getFilter().filter(newText);
                     }
                     else {
@@ -135,6 +155,8 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
                 }
             };
             searchView.setOnQueryTextListener(queryTextListener);
+
+
         }
         return super.onCreateOptionsMenu(menu);
 

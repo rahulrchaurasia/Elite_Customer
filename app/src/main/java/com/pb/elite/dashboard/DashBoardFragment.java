@@ -25,12 +25,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.BaseFragment;
+import com.pb.elite.HomeActivity;
 import com.pb.elite.R;
+import com.pb.elite.core.APIResponse;
+import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.register.RegisterController;
+import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.response.UserConsttantResponse;
+import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
 import com.pb.elite.emailUs.EmailUsActivity;
 import com.pb.elite.feedback.FeedbackActivity;
 import com.pb.elite.orderDetail.OrderActivity;
 import com.pb.elite.servicelist.Activity.ServiceActivity;
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -42,7 +51,7 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DashBoardFragment extends BaseFragment implements View.OnClickListener ,BaseFragment.CustomPopUpListener {
+public class DashBoardFragment extends BaseFragment implements View.OnClickListener ,BaseFragment.CustomPopUpListener ,IResponseSubcriber {
 
 
     ViewPager viewPager;
@@ -51,6 +60,10 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     CustomPagerAdapter mBannerAdapter;
     CirclePageIndicator circlePageIndicator;
     LinearLayout lyCall, lyEmail;
+    TextView txtName, txtVehicle;
+    UserEntity loginEntity;
+    UserConstatntEntity userConstatntEntity;
+    PrefManager prefManager;
 
     String[] permissionsRequired = new String[]{Manifest.permission.CALL_PHONE};
 
@@ -60,11 +73,45 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dash_board, container, false);
 
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
+
         initialize(view);
         setBanner();
         setListnner();
         registerCustomPopUp(this);
+
+        if (userConstatntEntity == null) {
+
+            if(prefManager.getUserConstatnt() == null) {
+                new RegisterController(getActivity()).getUserConstatnt(DashBoardFragment.this);
+            }
+        }else{
+            setUserInfo();
+        }
+
+
+
         return view;
+    }
+
+    private void setUserInfo() {
+
+        if (loginEntity != null) {
+            txtName.setText("Hi " + loginEntity.getName());
+
+        } else {
+            txtName.setText("");
+
+        }
+
+        if(userConstatntEntity!=null)
+        {
+            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
+        }else{
+            txtVehicle.setText("");
+        }
     }
 
 
@@ -80,6 +127,8 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
         lyCall = (LinearLayout) view.findViewById(R.id.lyCall);
         lyEmail = (LinearLayout) view.findViewById(R.id.lyEmail);
+        txtName = view.findViewById(R.id.txtName);
+        txtVehicle = view.findViewById(R.id.txtVehicle);
 
     }
 
@@ -102,6 +151,25 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+
+        if (response instanceof UserConsttantResponse) {
+
+            if (response.getStatus_code() == 0) {
+
+                userConstatntEntity = ((UserConsttantResponse) response).getData().get(0);
+                if (userConstatntEntity != null) {
+                    setUserInfo();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+
+    }
 
 
     class RemindTask extends TimerTask {

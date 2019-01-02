@@ -103,7 +103,7 @@ public class ProductDisplayFragment extends BaseFragment implements IResponseSub
                         Type = "RTO";
                     }
 
-                    Intent intent = new Intent(getActivity(), ProductActivity.class);
+                    Intent intent = new Intent(getActivity(), ProductMainActivity.class);
                     intent.putExtra("PRODUCT_DATA", productEntity);
                     intent.putExtra("SERVICE_TYPE", Type);
                     startActivity(intent);

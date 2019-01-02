@@ -170,7 +170,9 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
         setOnClickListener();
 
         dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
+
         userConstatntEntity = prefManager.getUserConstatnt();
         OrderID = 0;
         bindData();

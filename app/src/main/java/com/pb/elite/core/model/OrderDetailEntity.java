@@ -1,6 +1,9 @@
 package com.pb.elite.core.model;
 
-public  class OrderDetailEntity {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public  class OrderDetailEntity implements Parcelable {
     /**
      * order_id : 167
      * customer_name : prd00
@@ -22,12 +25,16 @@ public  class OrderDetailEntity {
     private String amount;
     private String payment_status;
     private String status;
+
     private String order_status;
     private String payment_date;
     private String product_id;
     private int userdoccount;
     private int doccount;
     private int DocumentPending;
+    private String logo;
+    private String rating;
+    private String receipt;
 
     public int getOrder_id() {
         return order_id;
@@ -121,12 +128,89 @@ public  class OrderDetailEntity {
         return DocumentPending;
     }
 
-    public void setDocumentPending(int DocumentPending) {
-        this.DocumentPending = DocumentPending;
+    public void setDocumentPending(int documentPending) {
+        DocumentPending = documentPending;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(String receipt) {
+        this.receipt = receipt;
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.order_id);
+        dest.writeString(this.customer_name);
+        dest.writeString(this.product_name);
+        dest.writeString(this.amount);
+        dest.writeString(this.payment_status);
+        dest.writeString(this.status);
+        dest.writeString(this.order_status);
+        dest.writeString(this.payment_date);
+        dest.writeString(this.product_id);
+        dest.writeInt(this.userdoccount);
+        dest.writeInt(this.doccount);
+        dest.writeInt(this.DocumentPending);
+        dest.writeString(this.logo);
+        dest.writeString(this.rating);
+        dest.writeString(this.receipt);
+    }
 
+    public OrderDetailEntity() {
+    }
 
+    protected OrderDetailEntity(Parcel in) {
+        this.order_id = in.readInt();
+        this.customer_name = in.readString();
+        this.product_name = in.readString();
+        this.amount = in.readString();
+        this.payment_status = in.readString();
+        this.status = in.readString();
+        this.order_status = in.readString();
+        this.payment_date = in.readString();
+        this.product_id = in.readString();
+        this.userdoccount = in.readInt();
+        this.doccount = in.readInt();
+        this.DocumentPending = in.readInt();
+        this.logo = in.readString();
+        this.rating = in.readString();
+        this.receipt = in.readString();
+    }
+
+    public static final Parcelable.Creator<OrderDetailEntity> CREATOR = new Parcelable.Creator<OrderDetailEntity>() {
+        @Override
+        public OrderDetailEntity createFromParcel(Parcel source) {
+            return new OrderDetailEntity(source);
+        }
+
+        @Override
+        public OrderDetailEntity[] newArray(int size) {
+            return new OrderDetailEntity[size];
+        }
+    };
 }

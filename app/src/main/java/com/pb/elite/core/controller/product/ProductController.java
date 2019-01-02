@@ -66,7 +66,7 @@ public class ProductController implements IProduct {
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -103,7 +103,7 @@ public class ProductController implements IProduct {
 
                 } else {
                     //failure
-                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                    iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                 }
             }
 
@@ -137,10 +137,10 @@ public class ProductController implements IProduct {
                 if (response.body() != null) {
 
                     if(response.body().getStatus_code() == 0) {
-                        iResponseSubcriber.OnSuccess(response.body(), response.message());
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -183,13 +183,13 @@ public class ProductController implements IProduct {
                         //callback of data
 
                       //  new AsyncRTOMaster(mContext, response.body().getData().getRtolist(),response.body().getData().getCities()).execute();
-                        new DataBaseController(mContext).removeCity_RTO();
+
                         new SyncRTOMaster(mContext, response.body().getData().getRtolist(),response.body().getData().getCities()).getRTOData();
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -228,7 +228,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -268,7 +268,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -309,7 +309,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -355,7 +355,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -403,7 +403,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -535,7 +535,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -581,7 +581,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {
@@ -621,7 +621,7 @@ public class ProductController implements IProduct {
                     }
                     else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
                     }
 
                 } else {

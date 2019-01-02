@@ -29,7 +29,7 @@
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/txtEmail"
+        android:id="@+id/txtVehicle"
         style="@style/TextViewStyle.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -22,6 +22,7 @@ import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 
 public class ProfileActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
@@ -31,6 +32,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     FloatingActionButton fab;
     PincodeEntity pincodeEntity;
     UserEntity loginEntity;
+    PrefManager prefManager;
     DataBaseController dataBaseController;
     UpdateUserRequestEntity updateUserRequestEntity;
 
@@ -42,7 +44,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dataBaseController = new DataBaseController(this);
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(this);
+        loginEntity = prefManager.getUserData();
         updateUserRequestEntity = new UpdateUserRequestEntity();
 
         init_widets();

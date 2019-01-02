@@ -36,7 +36,7 @@ import java.util.List;
 
 public class NotificationActivity extends BaseActivity implements IResponseSubcriber {
 
-    DataBaseController dataBaseController;
+
     UserEntity loginEntity;
     PrefManager prefManager;
 
@@ -54,8 +54,7 @@ public class NotificationActivity extends BaseActivity implements IResponseSubcr
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         prefManager = new PrefManager(this);
-        dataBaseController = new DataBaseController(NotificationActivity.this);
-        loginEntity = dataBaseController.getUserData();
+        loginEntity = prefManager.getUserData();
         prefManager.setNotificationCounter(0);
         initialize();
 
@@ -66,7 +65,7 @@ public class NotificationActivity extends BaseActivity implements IResponseSubcr
 
     private void initialize() {
 
-        prefManager = new PrefManager(NotificationActivity.this);
+
         NotificationLst = new ArrayList<NotificationEntity>();
 
         prefManager.setNotificationCounter(0);

@@ -14,7 +14,7 @@
         android:layout_above="@+id/btnBooked"
         android:layout_alignParentTop="true"
         android:overScrollMode="ifContentScrolls"
-        android:paddingBottom="10dp"
+
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical">
 
@@ -89,7 +89,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/input_label_horizontal_spacing"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:text="Book Now" />
 
 </RelativeLayout>

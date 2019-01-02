@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pb.elite.R;
 import com.pb.elite.core.model.OrderDetailEntity;
 
@@ -34,30 +36,29 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     }
 
     public class OrderDetailItem extends RecyclerView.ViewHolder {
-        TextView txtPrdName, txtAmnt, txtOrderID, txtcustName, txtDate, txtStatus,  txtUpload;
-        LinearLayout lyUpload,lyReceipt;
-        ImageView ivReceipt;
+        TextView txtPrdName, txtAmnt, txtOrderID, txtDate, txtStatus;
+        Button btnUpload;
+        LinearLayout lyUpload,lyReceipt,lyFeedback;
+        ImageView ivReceipt,ivFeedBack,ivReqLogo;
         RatingBar ratingBar;
 
         public OrderDetailItem(View itemView) {
             super(itemView);
-            txtPrdName = (TextView) itemView.findViewById(R.id.txtPrdName);
-            txtAmnt = (TextView) itemView.findViewById(R.id.txtAmnt);
+            txtPrdName =  itemView.findViewById(R.id.txtPrdName);
+            txtAmnt =  itemView.findViewById(R.id.txtAmnt);
+            txtOrderID = itemView.findViewById(R.id.txtOrderID);
+            txtDate =  itemView.findViewById(R.id.txtDate);
+            txtStatus = itemView.findViewById(R.id.txtStatus);
+            btnUpload =  itemView.findViewById(R.id.btnUpload);
 
-            txtOrderID = (TextView) itemView.findViewById(R.id.txtOrderID);
-         //   txtcustName = (TextView) itemView.findViewById(R.id.txtcustName);
-
-            txtDate = (TextView) itemView.findViewById(R.id.txtDate);
-            txtStatus = (TextView) itemView.findViewById(R.id.txtStatus);
-
-            txtUpload = (TextView) itemView.findViewById(R.id.txtUpload);
-
-            lyUpload = (LinearLayout) itemView.findViewById(R.id.lyUpload);
-
-            lyReceipt =   (LinearLayout) itemView.findViewById(R.id.lyReceipt);
-
+            lyUpload =  itemView.findViewById(R.id.lyUpload);
+            lyReceipt =    itemView.findViewById(R.id.lyReceipt);
             ivReceipt = itemView.findViewById(R.id.ivReceipt);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            ivFeedBack  = itemView.findViewById(R.id.ivFeedBack);
+            lyFeedback =  itemView.findViewById(R.id.lyFeedback);
+            ivReqLogo =  itemView.findViewById(R.id.ivReqLogo);
+
         }
     }
 
@@ -78,10 +79,27 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.txtPrdName.setText("" + orderDetailEntity.getProduct_name());
         holder.txtAmnt.setText("" + "\u20B9" + " " + orderDetailEntity.getAmount());
         holder.txtOrderID.setText("" + orderDetailEntity.getOrder_id());
-      //  holder.txtcustName.setText("" + orderDetailEntity.getCustomer_name());
+
         holder.txtDate.setText("" + orderDetailEntity.getPayment_date());
         holder.txtStatus.setText(""+ orderDetailEntity.getOrder_status());
-        holder.ratingBar.setRating(3.5f);
+
+        if(orderDetailEntity.getLogo() !=null && orderDetailEntity.getLogo() !=""){
+            Glide.with(mContext).load(orderDetailEntity.getLogo()).into(holder.ivReqLogo);
+        }else{
+            Glide.with(mContext).load(R.drawable.elite_placeholder).into(holder.ivReqLogo);
+
+        }
+
+
+        if(orderDetailEntity.getRating().trim().length()>0) {
+            holder.ratingBar.setRating(Float.valueOf(orderDetailEntity.getRating()));
+            holder.ratingBar.setVisibility(View.VISIBLE);
+        }else{
+            holder.ratingBar.setVisibility(View.GONE);
+            holder.ratingBar.setRating(0.0f);
+        }
+
+
 
 
         if (orderDetailEntity.getStatus().equals("1")) {
@@ -96,27 +114,19 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
 
 
-        //txtUpload
-
          if(orderDetailEntity.getDocumentPending() == 0 )
 
         {
-
-//            holder.txtUpload.setText("Document Complete");
-            holder.txtUpload.setText("Document");
-
-            holder.txtUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonGreenBackground));
-            holder.txtUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_visibility, 0, 0, 0);
+            holder.btnUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonGreenBackground));
+            holder.btnUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_visibility, 0, 0, 0);
 
         } else {
-//            holder.txtUpload.setText("Document Pending  ");
-             holder.txtUpload.setText("Document");
-            holder.txtUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonRedBackground));
-             holder.txtUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_upload, 0, 0, 0);
+            holder.btnUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonRedBackground));
+             holder.btnUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_upload, 0, 0, 0);
 
         }
 
-        holder.txtUpload.setOnClickListener(new View.OnClickListener() {
+        holder.btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -128,6 +138,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             public void onClick(View v) {
 
                 ((OrderDetailFragment) mContext).redirectToreceipt(orderDetailEntity);
+            }
+        });
+
+        holder.lyFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((OrderDetailFragment) mContext).redirectToFeedBack(orderDetailEntity);
             }
         });
 

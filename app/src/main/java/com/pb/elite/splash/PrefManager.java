@@ -257,7 +257,10 @@ public class PrefManager {
 
     public void clearUserCache() {
 
+        editor.remove(PASSWORD);
+        editor.remove(MOBILE);
         editor.remove(USER_CONSTATNT);
+        editor.remove(USER_DATA);
 
         editor.commit();
     }

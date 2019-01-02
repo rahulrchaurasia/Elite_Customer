@@ -9,10 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.servicelist.adapter.NonRTOServiceAdapter;
 import com.pb.elite.servicelist.adapter.ServicePagerAdapter;
@@ -32,6 +36,13 @@ public class NonRTOListFragment extends BaseFragment {
     PrefManager prefManager;
     NonRTOServiceAdapter mAdapter;
 
+    DataBaseController dataBaseController;
+    UserEntity loginEntity;
+    UserConstatntEntity userConstatntEntity;
+
+    TextView txtName, txtVehicle;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +50,13 @@ public class NonRTOListFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_non_rtolist, container, false);
 
+        dataBaseController = new DataBaseController(getActivity());
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
+
         initialize(view);
+        setUserInfo();
         if (getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST) != null) {
             mNonRTOList = getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST);
             bindData();
@@ -48,6 +65,9 @@ public class NonRTOListFragment extends BaseFragment {
     }
 
     private void initialize(View view) {
+
+        txtName = view.findViewById(R.id.txtName);
+        txtVehicle = view.findViewById(R.id.txtVehicle);
 
         prefManager = new PrefManager(getActivity());
         rvProduct = (RecyclerView) view.findViewById(R.id.rvProduct);
@@ -58,6 +78,23 @@ public class NonRTOListFragment extends BaseFragment {
 
     }
 
+    private void setUserInfo() {
+
+        if (loginEntity != null) {
+            txtName.setText("" + loginEntity.getName());
+
+        } else {
+            txtName.setText("");
+
+        }
+
+        if(userConstatntEntity!=null)
+        {
+            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
+        }else{
+            txtVehicle.setText("");
+        }
+    }
     private void bindData() {
         mAdapter = new NonRTOServiceAdapter(NonRTOListFragment.this, mNonRTOList);
         rvProduct.setAdapter(mAdapter);

@@ -195,12 +195,7 @@ public class DataBaseController {
 //            return 0;
 //    }
 
-    public void removeCity_RTO() {
-        realm.beginTransaction();
-        realm.delete(CityEntity.class);
-        realm.delete(RTOEntity.class);
-        realm.commitTransaction();
-    }
+
 
 //    public ArrayList<String> getCityList() {
 //        List<CityEntity> cityEntityList = realm.where(CityEntity.class).findAll();
@@ -367,8 +362,8 @@ public class DataBaseController {
     public void logout() {
         realm.beginTransaction();
         realm.delete(UserEntity.class);
-        realm.delete(CityEntity.class);
-        realm.delete(RTOEntity.class);
+//        realm.delete(CityEntity.class);
+//        realm.delete(RTOEntity.class);
         realm.commitTransaction();
 
     }

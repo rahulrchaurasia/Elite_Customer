@@ -49,7 +49,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
     }
 
     private void fetchCar() {
-        new RegisterController(this).getCarVehicleMaster();
+        new RegisterController(this).getCarVehicleMaster(null);
     }
 
     private void fetchUserConstatnt() {
@@ -74,7 +74,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
             fetchCar();
         }
 
-        if (dataBaseController.getUserData() != null) {
+        if (prefManager.getUserData() != null) {
             fetchUserConstatnt();
         }
 
@@ -130,7 +130,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
                     public void run() {
 
                         //  new RegisterController(SplashScreenActivity.this).getDbVersion(SplashScreenActivity.this);  //step1
-                        UserEntity loginEntity = dataBaseController.getUserData();
+                        UserEntity loginEntity = prefManager.getUserData();
                         if (loginEntity != null) {
                             startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
 

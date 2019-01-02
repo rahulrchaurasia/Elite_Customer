@@ -42,13 +42,12 @@ public class Utility {
     }
 
     public static File createDirIfNotExists() {
-        boolean ret = true;
 
         File file = new File(Environment.getExternalStorageDirectory(), "/Elite-Cust");
         if (!file.exists()) {
             if (!file.mkdirs()) {
                 Log.e("TravellerLog :: ", "Problem creating Image folder");
-                ret = false;
+
             }
         }
         return file;

@@ -144,17 +144,7 @@
             android:name=".DemActivity"
             android:label="@string/title_activity_dem"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".payment.PaymentRazorActivity"
-            android:label="@string/title_activity_payment_razor"
-            android:parentActivityName=".product.ProductActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pb.elite.product.ProductActivity" />
-        </activity>
+
         <activity
             android:name=".product.ProductDisplayActivity"
             android:label="@string/title_activity_product_display"
@@ -196,7 +186,7 @@
         <activity
             android:name=".search.SearchCityActivity"
             android:label="Search City"
-            android:parentActivityName=".product.ProductActivity"
+            android:parentActivityName=".product.ProductMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -206,7 +196,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pb.elite.product.ProductActivity" />
+                android:value="com.pb.elite.product.ProductMainActivity" />
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.pb.elite" />
@@ -279,6 +269,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pb.elite.HomeActivity" />
+        </activity>
+
+        <activity
+            android:name=".payment.PaymentRazorActivity"
+            android:label="@string/title_activity_payment_razor"
+            android:parentActivityName=".product.ProductMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pb.elite.payment.PaymentRazorActivity" />
         </activity>
         <activity
             android:name=".product.ProductMainActivity"

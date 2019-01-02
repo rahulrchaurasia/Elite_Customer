@@ -20,11 +20,14 @@ import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.model.LoginEntity;
 import com.pb.elite.core.model.OrderDetailEntity;
 import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.core.response.FeedbackResponse;
 import com.pb.elite.core.response.OrderDetailResponse;
-import com.pb.elite.core.response.OrderResponse;
+
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
-import com.pb.elite.product.ProductActivity;
+import com.pb.elite.feedback.FeedbackActivity;
+
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.webview.CommonWebViewActivity;
 
@@ -42,7 +45,7 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
 
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-
+    PrefManager prefManager;
 
     public OrderDetailFragment() {
         // Required empty public constructor
@@ -56,7 +59,9 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
         View view = inflater.inflate(R.layout.fragment_order_detail, container, false);
         initilize(view);
         dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(getActivity());
+
+        loginEntity = prefManager.getUserData();
 
         showDialog();
         new ProductController(getContext()).getOrderData(loginEntity.getUser_id(), this);
@@ -117,6 +122,12 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
             showDialog();
             new ProductController(getContext()).getOrderData(loginEntity.getUser_id(), this);
         }
+    }
+
+    public void redirectToFeedBack(OrderDetailEntity orderDetailEntity) {
+
+        startActivity(new Intent(getActivity(), FeedbackActivity.class)
+                .putExtra(Constants.FEEDBACK_DATA, orderDetailEntity));
     }
 
     public void redirectToreceipt(OrderDetailEntity orderDetailEntity) {

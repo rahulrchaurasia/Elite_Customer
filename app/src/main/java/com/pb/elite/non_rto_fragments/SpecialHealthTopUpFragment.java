@@ -33,6 +33,7 @@ import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.pb.elite.core.model.CityMainEntity;
 import com.pb.elite.core.model.ProductPriceEntity;
+import com.pb.elite.core.model.ProvideClaimAssEntity;
 import com.pb.elite.core.model.RTOServiceEntity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
@@ -242,11 +243,12 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
             etDOB.requestFocus();
             etDOB.setError("Enter Accident DOB");
             return false;
-        } else if (spNoOfFamily.getSelectedItemPosition() == 0) {
-            getCustomToast("Please Select No. Of Family Member");
-            return false;
-        }
-        else if (!isEmpty(etCity)) {
+        } else if(rbFloater.isChecked()) {
+         if (spNoOfFamily.getSelectedItemPosition() == 0) {
+                getCustomToast("Please Select No. Of Family Member");
+                return false;
+            }
+        } else if (!isEmpty(etCity)) {
             etCity.requestFocus();
             etCity.setError("Enter City");
             return false;
@@ -405,9 +407,9 @@ public class SpecialHealthTopUpFragment extends BaseFragment implements View.OnC
         } else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
+              /*  OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
+                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());*/
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         }

@@ -92,7 +92,7 @@ public class ProductDisplayActivity extends BaseActivity implements IResponseSub
                         Type = "RTO";
                     }
 
-                    Intent intent = new Intent(ProductDisplayActivity.this, ProductActivity.class);
+                    Intent intent = new Intent(ProductDisplayActivity.this, ProductMainActivity.class);
                     intent.putExtra("PRODUCT_DATA", productEntity);
                     intent.putExtra("SERVICE_TYPE", Type);
                     startActivity(intent);

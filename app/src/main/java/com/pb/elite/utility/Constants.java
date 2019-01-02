@@ -29,7 +29,9 @@ public class Constants {
 
     public static String PAYMENT_REQUEST_BUNDLE = "ELITE_REQUEST_BUNDLE";
     public static String PRODUCT_PAYMENT_REQUEST = "ELITE_PRODUCT_PAYMENT_REQUEST";
-    public static String REQUEST_TYPE = "ELITE_REQUEST_TYPE ";
+    public static String REQUEST_TYPE = "ELITE_REQUEST_TYPE";
+
+    public static String FEEDBACK_DATA = "ELITE_FEEDBACK_DATA";
 
     public static int SEARCH_CITY_CODE = 5;
     public static int ORDER_CODE = 2;

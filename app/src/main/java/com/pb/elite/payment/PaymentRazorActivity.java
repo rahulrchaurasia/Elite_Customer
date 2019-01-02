@@ -11,15 +11,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.BaseActivity;
+import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.product.ProductController;
 import com.pb.elite.core.controller.rto_service.RTOController;
+import com.pb.elite.core.model.ProvideClaimAssEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.requestmodel.AdditionHypothecationRequestEntity;
 import com.pb.elite.core.requestmodel.AddressEndorsementRCRequestEntity;
@@ -30,11 +33,10 @@ import com.pb.elite.core.requestmodel.PaperToSmartCardRequestEntity;
 import com.pb.elite.core.requestmodel.RCRequestEntity;
 import com.pb.elite.core.requestmodel.TransferOwnershipRequestEntity;
 import com.pb.elite.core.requestmodel.VehicleRegCertificateRequestEntity;
-import com.pb.elite.core.response.OrderResponse;
 import com.pb.elite.core.response.ProvideClaimAssResponse;
 import com.pb.elite.database.DataBaseController;
 import com.pb.elite.document.DocUploadActivity;
-import com.pb.elite.product.ProductActivity;
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
@@ -49,6 +51,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
     String PRODUCT_NAME = "";
     DataBaseController dataBaseController;
     UserEntity loginEntity;
+    PrefManager prefManager;
     TextView txtprdName, txtAmount,txtName;
     Button btnSubmit;
     InsertOrderRequestEntity orderRequestEntity;
@@ -75,7 +78,8 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         dataBaseController = new DataBaseController(PaymentRazorActivity.this);
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(PaymentRazorActivity.this);
+        loginEntity = prefManager.getUserData();
 
         OrderID = 0;
 
@@ -329,9 +333,7 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showPaymentAlert(btnSubmit, response.getMessage().toString(),DisplayMessage, OrderID);
+                showPaymentAlert(btnSubmit, response.getMessage().toString(),((ProvideClaimAssResponse) response).getData().get(0));
 
             }
 
@@ -347,14 +349,13 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
 
 
 
-    public void showPaymentAlert(final View view, String strhdr, String DisplayMessage, final int OrderID) {
+    public void showPaymentAlert(final View view, String strhdr, final ProvideClaimAssEntity provideClaimAssEntity) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PaymentRazorActivity.this, R.style.CustomDialog);
 
-
         Button btnClose;
         TextView txtHdr ,txtMessage;
-
+        LinearLayout lyReceipt;
 
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.layout_success_message, null);
@@ -363,20 +364,33 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
         builder.setView(dialogView);
         final AlertDialog alertDialog = builder.create();
         // set the custom dialog components - text, image and button
-        btnClose = (Button) dialogView.findViewById(R.id.btnClose);
-        txtMessage = (TextView) dialogView.findViewById(R.id.txtMessage);
-        txtHdr = (TextView) dialogView.findViewById(R.id.txtHdr);
+        btnClose =  dialogView.findViewById(R.id.btnClose);
+        txtMessage =  dialogView.findViewById(R.id.txtMessage);
+        txtHdr =  dialogView.findViewById(R.id.txtHdr);
 
+        lyReceipt =    dialogView.findViewById(R.id.lyReceipt);
         txtHdr.setText(""+ strhdr);
-        txtMessage.setText("" + DisplayMessage);
+        txtMessage.setText("" + provideClaimAssEntity.getDisplaymessage());
 
+        lyReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(provideClaimAssEntity.getReceipt() != null)
+                {
+                    new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
+                }else{
+                    //05 temp Added
+                    new DownloadFromUrl("http://elite.rupeeboss.com//docrequired//form35.pdf", "EliteReceipt").execute();
+                }
+            }
+        });
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
                 startActivity(new Intent(PaymentRazorActivity.this, DocUploadActivity.class)
-                        .putExtra("ORDER_ID", OrderID));
+                        .putExtra("ORDER_ID", provideClaimAssEntity.getId()));
 
                 PaymentRazorActivity.this.finish();
 

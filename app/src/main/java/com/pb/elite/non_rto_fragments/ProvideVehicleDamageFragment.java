@@ -11,6 +11,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,7 +207,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
         etTime = view.findViewById(R.id.etTime);
         etPlaceOfAccident = view.findViewById(R.id.etPlaceOfAccident);
         etInsCompanyName = view.findViewById(R.id.etInsCompanyName);
-
+        etVehicle.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
 
     }
 
@@ -508,9 +509,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
             cancelDialog();
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         } else if (response instanceof MotorInsuranceListResponse) {

@@ -23,6 +23,7 @@ import com.pb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.pb.elite.core.response.PincodeResponse;
 import com.pb.elite.core.response.UpdateUserResponse;
 import com.pb.elite.database.DataBaseController;
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 
 /**
@@ -38,6 +39,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     UserEntity loginEntity;
     DataBaseController dataBaseController;
     UpdateUserRequestEntity updateUserRequestEntity;
+    PrefManager prefManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +49,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         View view = inflater.inflate(R.layout.content_profile, container, false);
         dataBaseController = new DataBaseController(getActivity());
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
         updateUserRequestEntity = new UpdateUserRequestEntity();
 
         init_widets(view);

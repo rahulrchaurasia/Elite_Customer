@@ -14,6 +14,7 @@ import com.pb.elite.core.response.CarMasterResponse;
 import com.pb.elite.core.response.CityMainResponse;
 import com.pb.elite.core.response.CommonResponse;
 import com.pb.elite.core.response.DBVersionRespone;
+import com.pb.elite.core.response.FeedbackResponse;
 import com.pb.elite.core.response.GetOtpResponse;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
@@ -44,13 +45,14 @@ public class RegisterController implements IRegister {
     RegisterRequestBuilder.RegisterQuotesNetworkService registerQuotesNetworkService;
     Context mContext;
     UserEntity loginEntity;
-    DataBaseController dataBaseController;
+    PrefManager prefManager;
+
 
     public RegisterController(Context context) {
         registerQuotesNetworkService = new RegisterRequestBuilder().getService();
         mContext = context;
-        dataBaseController = new DataBaseController(mContext);
-        loginEntity = dataBaseController.getUserData();
+        prefManager = new PrefManager(mContext);
+        loginEntity = prefManager.getUserData();
     }
 
     @Override
@@ -570,27 +572,6 @@ public class RegisterController implements IRegister {
 
 
     @Override
-    public void getCarVehicleMaster() {
-
-        String url = "http://202.131.96.100:7541/LeadGenration.svc/VehicleMaster?VehicleTypeID=2";
-
-        registerQuotesNetworkService.getCarMaster(url).enqueue(new Callback<VehicleMasterResponse>() {
-            @Override
-            public void onResponse(Call<VehicleMasterResponse> call, Response<VehicleMasterResponse> response) {
-                if (response.isSuccessful()) {
-                    new PrefManager(mContext).storeVehicle(response.body().getVehicleMasterResult());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VehicleMasterResponse> call, Throwable t) {
-
-
-            }
-        });
-    }
-
-    @Override
     public void getUserConstatnt(final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
@@ -652,13 +633,107 @@ public class RegisterController implements IRegister {
 
                 } else {
                     //failure
+                    if (iResponseSubcriber != null) {
+                        iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CityMainResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void getCarVehicleMaster(final IResponseSubcriber iResponseSubcriber) {
+
+        registerQuotesNetworkService.getVehicleData().enqueue(new Callback<VehicleMasterResponse>() {
+            @Override
+            public void onResponse(Call<VehicleMasterResponse> call, Response<VehicleMasterResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        new PrefManager(mContext).storeVehicle(response.body().getData().getVehicleMasterResult());
+
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
+                    if (iResponseSubcriber != null) {
+                        iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleMasterResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+
+
+    }
+
+
+    @Override
+    public void saveFeedBack(String reqId, String feedback, float rating, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("request_id", String.valueOf(reqId));
+        body.put("feedback_comment", String.valueOf(feedback));
+        body.put("rating", String.valueOf(rating));
+
+        registerQuotesNetworkService.saveFeedBack(body).enqueue(new Callback<FeedbackResponse>() {
+            @Override
+            public void onResponse(Call<FeedbackResponse> call, Response<FeedbackResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
                     if (iResponseSubcriber != null)
                         iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
                 }
             }
 
             @Override
-            public void onFailure(Call<CityMainResponse> call, Throwable t) {
+            public void onFailure(Call<FeedbackResponse> call, Throwable t) {
                 if (iResponseSubcriber != null) {
                     if (t instanceof ConnectException) {
                         iResponseSubcriber.OnFailure(t);

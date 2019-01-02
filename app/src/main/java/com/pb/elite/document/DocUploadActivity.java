@@ -41,8 +41,8 @@ import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.DocumentResponse;
 import com.pb.elite.core.response.DocumentViewResponse;
 import com.pb.elite.database.DataBaseController;
-import com.pb.elite.product.ProductActivity;
-import com.pb.elite.servicelist.Activity.ServiceActivity;
+
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 import com.pb.elite.utility.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -80,7 +80,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     TextView txtDocVerify;
     RecyclerView rvProduct;
     DocumentAdapter mAdapter;
-
+    PrefManager prefManager;
     List<DocumentViewEntity> lstDoc;
     DocumentViewEntity documentViewEntity;
     String[] perms = {
@@ -108,9 +108,8 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
             }
         }
 
-        dataBaseController = new DataBaseController(this);
-        loginEntity = dataBaseController.getUserData();
-
+        prefManager = new PrefManager(this);
+        loginEntity = prefManager.getUserData();
         initialize();
 
     }

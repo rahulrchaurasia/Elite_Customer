@@ -9,10 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.pb.elite.BaseFragment;
 import com.pb.elite.R;
 import com.pb.elite.core.model.RTOServiceEntity;
+import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.core.model.UserEntity;
+import com.pb.elite.database.DataBaseController;
 import com.pb.elite.product.ProductMainActivity;
 import com.pb.elite.servicelist.adapter.RTOServiceAdapter;
 import com.pb.elite.servicelist.adapter.ServicePagerAdapter;
@@ -31,8 +35,14 @@ public class RTOListFragment extends BaseFragment {
 
     List<RTOServiceEntity> mRTOList;
     RecyclerView rvProduct;
-    PrefManager prefManager;
     RTOServiceAdapter mAdapter;
+    TextView txtName, txtVehicle;
+
+    DataBaseController dataBaseController;
+    UserEntity loginEntity;
+    UserConstatntEntity userConstatntEntity;
+    PrefManager prefManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,8 +52,13 @@ public class RTOListFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_rtolist, container, false);
 
+        dataBaseController = new DataBaseController(getActivity());
+        prefManager = new PrefManager(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
 
         initialize(view);
+        setUserInfo();
         mRTOList = new ArrayList<>();
 
         if (getArguments().getParcelableArrayList(ServicePagerAdapter.RTO_LIST) != null) {
@@ -54,14 +69,33 @@ public class RTOListFragment extends BaseFragment {
     }
 
     private void initialize(View view) {
+        txtName = view.findViewById(R.id.txtName);
+        txtVehicle = view.findViewById(R.id.txtVehicle);
 
-        prefManager = new PrefManager(getActivity());
         rvProduct = (RecyclerView) view.findViewById(R.id.rvProduct);
         rvProduct.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvProduct.setLayoutManager(layoutManager);
 
+    }
+
+    private void setUserInfo() {
+
+        if (loginEntity != null) {
+            txtName.setText("" + loginEntity.getName());
+
+        } else {
+            txtName.setText("");
+
+        }
+
+        if(userConstatntEntity!=null)
+        {
+            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
+        }else{
+            txtVehicle.setText("");
+        }
     }
 
     private void bindData() {

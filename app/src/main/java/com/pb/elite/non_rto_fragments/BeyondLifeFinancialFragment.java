@@ -97,14 +97,14 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         mContext = view.getContext();
+        prefManager = new PrefManager(getActivity());
+        dataBaseController = new DataBaseController(getActivity());
+        loginEntity = prefManager.getUserData();
+        userConstatntEntity = prefManager.getUserConstatnt();
 
         initialize(view);
 
         setOnClickListener();
-
-        dataBaseController = new DataBaseController(getActivity());
-        loginEntity = prefManager.getUserData();
-        userConstatntEntity = prefManager.getUserConstatnt();
 
         OrderID = 0;
         bindData();
@@ -137,7 +137,7 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
 
     private void initialize(View view) {
 
-        prefManager = new PrefManager(getActivity());
+
 
         scrollView = view.findViewById(R.id.scrollView);
         btnBooked =  view.findViewById(R.id.btnBooked);
@@ -378,9 +378,7 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
         else if (response instanceof ProvideClaimAssResponse) {
             if (response.getStatus_code() == 0) {
 
-                OrderID = (((ProvideClaimAssResponse) response).getData().get(0).getId());
-                String DisplayMessage = (((ProvideClaimAssResponse) response).getData().get(0).getDisplaymessage());
-                showMiscPaymentAlert(btnBooked, response.getMessage().toString(),DisplayMessage, OrderID);
+                showMiscPaymentAlert(btnBooked, response.getMessage().toString(), ((ProvideClaimAssResponse) response).getData().get(0));
 
             }
         }

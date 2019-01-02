@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +123,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
         initialize(view);
 
         setOnClickListener();
-
+        prefManager = new PrefManager(getActivity());
         dataBaseController = new DataBaseController(getActivity());
         loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
@@ -165,7 +166,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
     // region Method
     private void initialize(View view) {
 
-        prefManager = new PrefManager(getActivity());
+
 
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
@@ -192,6 +193,8 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
 
         ivLogo = (ImageView) view.findViewById(R.id.ivLogo);
         ivClientLogo = (ImageView) view.findViewById(R.id.ivClientLogo);
+
+        etVehicle.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
 
 
     }

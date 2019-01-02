@@ -21,6 +21,16 @@ public class ProvideClaimAssEntity {
     private String amount;
     private String displaymessage;
 
+    public String getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(String receipt) {
+        this.receipt = receipt;
+    }
+
+    private String receipt;
+
     public int getId() {
         return id;
     }

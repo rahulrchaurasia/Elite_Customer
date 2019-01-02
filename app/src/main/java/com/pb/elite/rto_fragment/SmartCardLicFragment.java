@@ -182,9 +182,8 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
 
         mContext = view.getContext();
         initialize(view);
-
         setOnClickListener();
-
+        prefManager = new PrefManager(getActivity());
         dataBaseController = new DataBaseController(getActivity());
         loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
@@ -224,7 +223,6 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
 
     private void initialize(View view) {
 
-        prefManager = new PrefManager(getActivity());
 
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
@@ -393,6 +391,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
                         }
                     }
                 });
+                break;
             case R.id.rlDoc:
                 ((ProductMainActivity) getActivity()).getProducDoc(PRODUCT_ID);
                 break;

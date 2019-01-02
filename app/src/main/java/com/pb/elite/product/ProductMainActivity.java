@@ -1,17 +1,20 @@
 package com.pb.elite.product;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -48,6 +51,7 @@ import com.pb.elite.rto_fragment.TransferOwnershipFragment;
 import com.pb.elite.rto_fragment.VehicleRegistCertificateFragment;
 import com.pb.elite.utility.Constants;
 
+import java.io.File;
 import java.util.List;
 
 public class ProductMainActivity extends BaseActivity implements IResponseSubcriber {
@@ -229,6 +233,8 @@ public class ProductMainActivity extends BaseActivity implements IResponseSubcri
 
 
 
+
+
     //region load fragment
 
     private void loadFragments(Fragment fragment) {
@@ -265,6 +271,24 @@ public class ProductMainActivity extends BaseActivity implements IResponseSubcri
     public void OnFailure(Throwable t) {
         cancelDialog();
         Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // finish();
+        supportFinishAfterTransition();
+        super.onBackPressed();
     }
 
     //endregion

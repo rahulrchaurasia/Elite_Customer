@@ -9,6 +9,7 @@ import com.pb.elite.core.response.CarMasterResponse;
 import com.pb.elite.core.response.CityMainResponse;
 import com.pb.elite.core.response.CommonResponse;
 import com.pb.elite.core.response.DBVersionRespone;
+import com.pb.elite.core.response.FeedbackResponse;
 import com.pb.elite.core.response.GetOtpResponse;
 import com.pb.elite.core.response.LoginResponse;
 import com.pb.elite.core.response.PincodeResponse;
@@ -40,7 +41,7 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         Call<DBVersionRespone> getDBVersion();
 
         @POST("/api/otp-insert")
-        Call<GetOtpResponse> getOtp(@Body HashMap<String, String> body);
+        Call<GetOtpResponse> getOtp(@Body HashMap<String, String> body);     //Not User
 
         @POST("/api/add-user")
         Call<AddUserResponse> addUser(@Body AddUserRequestEntity body);
@@ -65,7 +66,7 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
 
         Call<PolicyResponse> getPolicyData(@Body HashMap<String, String> body);
 
-        @POST("/api/check-agent-registration")
+        @POST("/api/check-user-registration")
         Call<VerifyUserRegisterResponse> verifyUserRegistration(@Body HashMap<String, String> body);
 
         @POST("/api/user-otp-verify")
@@ -80,9 +81,18 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
 
         @GET("/api/get-city-rto")
         Call<CityMainResponse> getCityMainMaster();  //used
+
         //vehicle request
         @GET
         Call<VehicleMasterResponse> getCarMaster(@Url String url);
+
+        @POST("/api/save-feedback-form")
+        Call<FeedbackResponse> saveFeedBack(@Body HashMap<String, String> body);
+
+        @POST("/api/get-vehicle-data")
+        Call<VehicleMasterResponse> getVehicleData();
+
+
 
     }
 }
