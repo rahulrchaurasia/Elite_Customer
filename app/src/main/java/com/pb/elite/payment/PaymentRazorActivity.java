@@ -3,6 +3,7 @@ package com.pb.elite.payment;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -377,10 +378,9 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             public void onClick(View v) {
                 if(provideClaimAssEntity.getReceipt() != null)
                 {
-                    new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
-                }else{
-                    //05 temp Added
-                    new DownloadFromUrl("http://elite.rupeeboss.com//docrequired//form35.pdf", "EliteReceipt").execute();
+                  // new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(provideClaimAssEntity.getReceipt()));
+                    startActivity(intent);
                 }
             }
         });

@@ -118,7 +118,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="8dp">
 
                         <ImageView
                             android:layout_width="64dp"
@@ -173,7 +173,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="8dp">
 
                         <ImageView
                             android:layout_width="64dp"
@@ -229,7 +229,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cvfeedback"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
 
                     android:layout_weight="40">
@@ -238,6 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:padding="8dp"
                         android:orientation="vertical">
 
                         <ImageView

@@ -80,11 +80,12 @@
                 android:id="@+id/etName"
                 style="@style/Style.edittext"
                 android:drawableLeft="@drawable/ic_name"
+                android:inputType="textCapWords"
                 android:lines="1"
                 android:maxLines="1"
                 android:focusableInTouchMode="true"
                 android:padding="@dimen/input_label_vertical_spacing"
-                android:maxLength="30" />
+                android:maxLength="40" />
         </android.support.design.widget.TextInputLayout>
 
 

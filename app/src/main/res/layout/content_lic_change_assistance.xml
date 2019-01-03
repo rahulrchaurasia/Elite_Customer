@@ -16,7 +16,7 @@
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
-            android:inputType="text"
+            android:inputType="textCapWords"
             android:maxLength="80"
             android:padding="@dimen/activity_horizontal_margin" />
 
@@ -32,8 +32,8 @@
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
-            android:inputType="text"
-            android:maxLength="80"
+            android:inputType="textCapWords"
+            android:maxLength="50"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>
@@ -48,8 +48,8 @@
             style="@style/Style.edittext"
             android:layout_width="match_parent"
             android:focusableInTouchMode="true"
-            android:inputType="text"
-            android:maxLength="80"
+            android:inputType="textCapWords"
+            android:maxLength="50"
             android:padding="@dimen/activity_horizontal_margin" />
 
     </android.support.design.widget.TextInputLayout>

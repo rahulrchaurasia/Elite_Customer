@@ -56,7 +56,7 @@ public class NonRTOListFragment extends BaseFragment {
         userConstatntEntity = prefManager.getUserConstatnt();
 
         initialize(view);
-        setUserInfo();
+       //  setUserInfo();
         if (getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST) != null) {
             mNonRTOList = getArguments().getParcelableArrayList(ServicePagerAdapter.NONRTO_LIST);
             bindData();

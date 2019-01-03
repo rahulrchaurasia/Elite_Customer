@@ -357,10 +357,9 @@ public class BaseFragment extends Fragment {
             public void onClick(View v) {
                 if(provideClaimAssEntity.getReceipt() != null)
                 {
-                    new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
-                }else{
-                     //05 temp Added
-                    new DownloadFromUrl("http://elite.rupeeboss.com//docrequired//form35.pdf", "EliteReceipt").execute();
+                   // new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(provideClaimAssEntity.getReceipt()));
+                    startActivity(intent);
                 }
             }
         });

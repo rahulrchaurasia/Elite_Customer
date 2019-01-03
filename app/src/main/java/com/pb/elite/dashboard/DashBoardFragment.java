@@ -3,21 +3,28 @@ package com.pb.elite.dashboard;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,21 +32,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pb.elite.BaseFragment;
-import com.pb.elite.HomeActivity;
 import com.pb.elite.R;
 import com.pb.elite.core.APIResponse;
 import com.pb.elite.core.IResponseSubcriber;
 import com.pb.elite.core.controller.register.RegisterController;
+import com.pb.elite.core.model.DocProductEnity;
 import com.pb.elite.core.model.UserConstatntEntity;
 import com.pb.elite.core.model.UserEntity;
 import com.pb.elite.core.response.UserConsttantResponse;
-import com.pb.elite.database.DataBaseController;
-import com.pb.elite.document.DocUploadActivity;
 import com.pb.elite.emailUs.EmailUsActivity;
 import com.pb.elite.feedback.FeedbackActivity;
 import com.pb.elite.orderDetail.OrderActivity;
+import com.pb.elite.product.ProductDocAdapter;
 import com.pb.elite.servicelist.Activity.ServiceActivity;
 import com.pb.elite.splash.PrefManager;
+import com.pb.elite.term.TermsConditionFragment;
 import com.pb.elite.utility.Constants;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -51,7 +58,7 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DashBoardFragment extends BaseFragment implements View.OnClickListener ,BaseFragment.CustomPopUpListener ,IResponseSubcriber {
+public class DashBoardFragment extends BaseFragment implements View.OnClickListener, BaseFragment.CustomPopUpListener, IResponseSubcriber {
 
 
     ViewPager viewPager;
@@ -64,6 +71,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     UserEntity loginEntity;
     UserConstatntEntity userConstatntEntity;
     PrefManager prefManager;
+
 
     String[] permissionsRequired = new String[]{Manifest.permission.CALL_PHONE};
 
@@ -83,14 +91,12 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         registerCustomPopUp(this);
 
         if (userConstatntEntity == null) {
-
-            if(prefManager.getUserConstatnt() == null) {
+            if (prefManager.getUserConstatnt() == null) {
                 new RegisterController(getActivity()).getUserConstatnt(DashBoardFragment.this);
             }
-        }else{
+        } else {
             setUserInfo();
         }
-
 
 
         return view;
@@ -106,10 +112,10 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
         }
 
-        if(userConstatntEntity!=null)
-        {
-            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
-        }else{
+        if (userConstatntEntity != null) {
+            txtVehicle.setText("" + userConstatntEntity.getVehicleno());
+
+        } else {
             txtVehicle.setText("");
         }
     }
@@ -215,7 +221,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
 
         Button btnSubmit;
-        TextView txtTile, txtBody,txtMob;
+        TextView txtTile, txtBody, txtMob;
         ImageView ivCross;
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -228,9 +234,9 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         txtTile = (TextView) dialogView.findViewById(R.id.txtTile);
         txtBody = (TextView) dialogView.findViewById(R.id.txtMessage);
         txtMob = (TextView) dialogView.findViewById(R.id.txtOther);
-        ivCross  = (ImageView) dialogView.findViewById(R.id.ivCross);
+        ivCross = (ImageView) dialogView.findViewById(R.id.ivCross);
 
-        btnSubmit  = (Button) dialogView.findViewById(R.id.btnSubmit);
+        btnSubmit = (Button) dialogView.findViewById(R.id.btnSubmit);
 
         txtTile.setText(Title);
         txtBody.setText(strBody);
@@ -259,6 +265,9 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         alertDialog.show();
 
     }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -298,7 +307,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
                     }
                 } else {
 
-                    ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " " , getResources().getString(R.string.call_number));
+                    ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
                 }
 
                 break;
@@ -311,11 +320,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         }
 
 
-
-
-}
-
-
+    }
 
 
     @Override
@@ -332,7 +337,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
                     if (call_phone) {
 
-                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " " , "9702943935");
+                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
 
 
                     }

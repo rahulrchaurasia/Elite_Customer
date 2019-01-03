@@ -285,7 +285,7 @@ public class BeyondLifeFinancialFragment extends BaseFragment implements View.On
         Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
-            case R.id.etDate:
+            case R.id.etDOB:
 
                 DateTimePicker.showPrevPickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override

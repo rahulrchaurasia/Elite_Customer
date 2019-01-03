@@ -2,6 +2,7 @@ package com.pb.elite.orderDetail;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -132,13 +133,20 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
 
     public void redirectToreceipt(OrderDetailEntity orderDetailEntity) {
         //todo: need to change the id
-        String id = "172";
-       // String url = "http://www.rupeeboss.com/receipt";
-      //  String url ="https://www.rupeeboss.com/receipt/index1.html";
-        String url = "file:///android_asset/index1.html";
-        startActivity(new Intent(getActivity(), CommonWebViewActivity.class)
-                .putExtra("URL", url)
-                .putExtra("NAME", "RECEIPT_" + id)
-                .putExtra("TITLE", "RECEIPT"));
+        //region Comment : Code For Webview Which have Html inbuild file in asset
+//        String id = "172";
+//       // String url = "http://www.rupeeboss.com/receipt";
+//      //  String url ="https://www.rupeeboss.com/receipt/index1.html";
+//        String url = "file:///android_asset/index1.html";
+//        startActivity(new Intent(getActivity(), CommonWebViewActivity.class)
+//                .putExtra("URL", url)
+//                .putExtra("NAME", "RECEIPT_" + id)
+//                .putExtra("TITLE", "RECEIPT"));
+        //endregion
+
+       // new DownloadFromUrl(orderDetailEntity.getReceipt()+".pdf", "EliteReceipt").execute();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(orderDetailEntity.getReceipt()));
+        startActivity(intent);
     }
 }

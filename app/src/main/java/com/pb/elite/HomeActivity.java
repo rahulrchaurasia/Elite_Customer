@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -17,11 +19,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +73,8 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
     UserEntity loginEntity;
     UserConstatntEntity userConstatntEntity;
+    WebView webView;
+    public static boolean isActive = false;
 
     private static final String TAG_HOME = "Home";
     private static final String TAG_PROFILE = "Profile";
@@ -118,10 +128,12 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         userConstatntEntity = prefManager.getUserConstatnt();
 
         init_headers();
+
         if (userConstatntEntity == null) {
 
             if(prefManager.getUserConstatnt() == null) {
                 new RegisterController(this).getUserConstatnt(HomeActivity.this);
+
             }
         }
 
@@ -156,6 +168,12 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         if(userConstatntEntity!=null)
         {
             txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
+
+            if(userConstatntEntity.getHomepopup()!="")
+            {
+                marketingPopUp(userConstatntEntity.getHomepopup());
+            }
+
         }else{
             txtVehicle.setText("");
         }
@@ -369,6 +387,125 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         // refresh toolbar menu
         invalidateOptionsMenu();
     }
+
+    //region WebView For Market PopUp
+
+    public void marketingPopUp(String URL) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+
+
+        ImageView ivClose;
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.layout_market_popup, null);
+
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        // set the custom dialog components - text, image and button
+
+        ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
+        webView = (WebView) dialogView.findViewById(R.id.webView);
+
+        if (isNetworkConnected()) {
+            // url = " http://elite.rupeeboss.com/elite-receipt/363";
+            settingWebview(URL);
+
+        } else
+            Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+
+
+
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+            }
+        });
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.show();
+        //  alertDialog.getWindow().setLayout(900, 600);
+
+
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    private void settingWebview( String url) {
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+
+        settings.setBuiltInZoomControls(true);
+        settings.setUseWideViewPort(false);
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportMultipleWindows(false);
+
+        settings.setLoadsImagesAutomatically(true);
+        settings.setLightTouchEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setJavaScriptEnabled(true);
+
+
+      /*  MyWebViewClient webViewClient = new MyWebViewClient(this);
+        webView.setWebViewClient(webViewClient);*/
+        webView.setWebViewClient(new WebViewClient() {
+
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                // TODO show you progress image
+                if (isActive)
+                    showDialog();
+                // new ProgressAsync().execute();
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // TODO hide your progress image
+                cancelDialog();
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                /*if (url.endsWith(".pdf")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(url), "application/pdf");
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        //user does not have a pdf viewer installed
+                        String googleDocs = "https://docs.google.com/viewer?url=";
+                        webView.loadUrl(googleDocs + url);
+                    }
+                }*/
+                return false;
+            }
+        });
+        webView.getSettings().setBuiltInZoomControls(true);
+
+        Log.d("URL", url);
+
+        if (url.endsWith(".pdf")) {
+
+            webView.loadUrl("https://docs.google.com/viewer?url=" + url);
+            //webView.loadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + url);
+        } else {
+            webView.loadUrl(url);
+        }
+        //webView.loadUrl(url);
+    }
+
+    //endregion
 
 
     @Override

@@ -10,6 +10,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,6 +252,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         etLicOwnerName = (EditText) view.findViewById(R.id.etLicOwnerName);
         etLicOwnerDob = (EditText) view.findViewById(R.id.etLicOwnerDob);
 
+        etLicNo.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(30)});
 
     }
 

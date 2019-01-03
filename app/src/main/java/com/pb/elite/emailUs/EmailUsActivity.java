@@ -6,11 +6,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +18,19 @@ import android.widget.TextView;
 
 import com.pb.elite.BaseActivity;
 import com.pb.elite.R;
+import com.pb.elite.core.APIResponse;
+import com.pb.elite.core.IResponseSubcriber;
+import com.pb.elite.core.controller.register.RegisterController;
+import com.pb.elite.core.model.UserConstatntEntity;
+import com.pb.elite.splash.PrefManager;
 import com.pb.elite.utility.Constants;
 
-public class EmailUsActivity extends BaseActivity implements View.OnClickListener {
+public class EmailUsActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
 
     LinearLayout lyCalling, lyEmail;
     String[] permissionsRequired = new String[]{Manifest.permission.CALL_PHONE};
+    UserConstatntEntity userConstatntEntity;
+    PrefManager prefManager;
 
 
     @Override
@@ -37,9 +41,17 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        prefManager = new PrefManager(this);
+        userConstatntEntity = prefManager.getUserConstatnt();
         initialize();
         setListner();
+
+        if (userConstatntEntity == null) {
+
+            if (prefManager.getUserConstatnt() == null) {
+                new RegisterController(this).getUserConstatnt(this);
+            }
+        }
     }
 
     private void initialize() {
@@ -76,7 +88,9 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
                     }
                 } else {
 
-                    ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", getResources().getString(R.string.call_number));
+                    if (userConstatntEntity != null) {
+                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
+                    }
                 }
 
                 break;
@@ -84,8 +98,8 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
 
             case R.id.lyEmail:
 
-                if (getResources().getString(R.string.email) != "") {
-                    composeEmail(getResources().getString(R.string.email), "Elite Support Team");
+                if (userConstatntEntity != null) {
+                    composeEmail(userConstatntEntity.getEmailid(), "Elite Support Team");
                 }
                 break;
 
@@ -169,7 +183,7 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
 
                     if (call_phone) {
 
-                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " " , "9702943935");
+                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
                     }
 
                 }
@@ -178,5 +192,15 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
 
 
         }
+    }
+
+    @Override
+    public void OnSuccess(APIResponse response, String message) {
+
+    }
+
+    @Override
+    public void OnFailure(Throwable t) {
+
     }
 }

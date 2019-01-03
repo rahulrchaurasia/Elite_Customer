@@ -58,7 +58,7 @@ public class RTOListFragment extends BaseFragment {
         userConstatntEntity = prefManager.getUserConstatnt();
 
         initialize(view);
-        setUserInfo();
+       // setUserInfo();
         mRTOList = new ArrayList<>();
 
         if (getArguments().getParcelableArrayList(ServicePagerAdapter.RTO_LIST) != null) {

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -306,7 +307,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
         ivLic = (ImageView) view.findViewById(R.id.ivLic);
         ivTick = (ImageView) view.findViewById(R.id.ivTick);
 
-
+        etLic.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(30)});
 
 
     }

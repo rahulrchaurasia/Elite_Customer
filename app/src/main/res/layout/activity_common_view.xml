@@ -31,7 +31,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:background="@color/offer_info_white"
         android:tint="@color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         app:srcCompat="@drawable/receipt" />
 
 </android.support.design.widget.CoordinatorLayout>

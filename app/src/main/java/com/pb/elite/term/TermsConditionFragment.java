@@ -52,6 +52,7 @@ public class TermsConditionFragment extends BaseFragment {
         initialize(view);
         if (isNetworkConnected()) {
             url = "http://elite.rupeeboss.com/elitetnc.html";
+           // url = " http://elite.rupeeboss.com/elite-receipt/363";
             settingWebview();
 
         } else

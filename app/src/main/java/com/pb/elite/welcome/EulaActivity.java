@@ -93,6 +93,6 @@ public class EulaActivity extends BaseActivity implements View.OnClickListener, 
        /* Log.d("URL", url);
         //webView.loadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + url);
         webView.loadUrl(url);*/
-        webView.loadUrl("file:///android_asset/eula.html");
+        webView.loadUrl("http://elite.rupeeboss.com/elitetnc.html");
     }
 }
