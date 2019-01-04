@@ -40,8 +40,6 @@ public class NonRTOListFragment extends BaseFragment {
     UserEntity loginEntity;
     UserConstatntEntity userConstatntEntity;
 
-    TextView txtName, txtVehicle;
-
 
 
     @Override
@@ -66,8 +64,6 @@ public class NonRTOListFragment extends BaseFragment {
 
     private void initialize(View view) {
 
-        txtName = view.findViewById(R.id.txtName);
-        txtVehicle = view.findViewById(R.id.txtVehicle);
 
         prefManager = new PrefManager(getActivity());
         rvProduct = (RecyclerView) view.findViewById(R.id.rvProduct);
@@ -76,25 +72,10 @@ public class NonRTOListFragment extends BaseFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvProduct.setLayoutManager(layoutManager);
 
+
     }
 
-    private void setUserInfo() {
 
-        if (loginEntity != null) {
-            txtName.setText("" + loginEntity.getName());
-
-        } else {
-            txtName.setText("");
-
-        }
-
-        if(userConstatntEntity!=null)
-        {
-            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
-        }else{
-            txtVehicle.setText("");
-        }
-    }
     private void bindData() {
         mAdapter = new NonRTOServiceAdapter(NonRTOListFragment.this, mNonRTOList);
         rvProduct.setAdapter(mAdapter);

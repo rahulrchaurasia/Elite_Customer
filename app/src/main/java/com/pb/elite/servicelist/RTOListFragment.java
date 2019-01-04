@@ -36,8 +36,6 @@ public class RTOListFragment extends BaseFragment {
     List<RTOServiceEntity> mRTOList;
     RecyclerView rvProduct;
     RTOServiceAdapter mAdapter;
-    TextView txtName, txtVehicle;
-
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     UserConstatntEntity userConstatntEntity;
@@ -69,8 +67,6 @@ public class RTOListFragment extends BaseFragment {
     }
 
     private void initialize(View view) {
-        txtName = view.findViewById(R.id.txtName);
-        txtVehicle = view.findViewById(R.id.txtVehicle);
 
         rvProduct = (RecyclerView) view.findViewById(R.id.rvProduct);
         rvProduct.setHasFixedSize(true);
@@ -78,25 +74,10 @@ public class RTOListFragment extends BaseFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvProduct.setLayoutManager(layoutManager);
 
+
     }
 
-    private void setUserInfo() {
 
-        if (loginEntity != null) {
-            txtName.setText("" + loginEntity.getName());
-
-        } else {
-            txtName.setText("");
-
-        }
-
-        if(userConstatntEntity!=null)
-        {
-            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
-        }else{
-            txtVehicle.setText("");
-        }
-    }
 
     private void bindData() {
         mAdapter = new RTOServiceAdapter(RTOListFragment.this, mRTOList);

@@ -154,6 +154,24 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
             Timer timer = new Timer();
             timer.schedule(new RemindTask(banners.size(), viewPager), 0, 1500);
 
+//            circlePageIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//
+//                @Override
+//                public void onPageSelected(int position) {
+//
+//                    getCustomToast("Position" +position);
+//                }
+//                @Override
+//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                }
+//
+//                @Override
+//                public void onPageScrollStateChanged(int state) {
+//
+//                }
+//            });
+
         }
     }
 

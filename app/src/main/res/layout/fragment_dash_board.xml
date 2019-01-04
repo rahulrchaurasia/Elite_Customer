@@ -1,24 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/bg_dashboard"
     android:orientation="vertical"
     tools:context="com.pb.elite.dashboard.DashBoardFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/lySupport"
-        android:layout_alignParentTop="true">
+         android:layout_alignParentTop="true"
+        android:weightSum="100"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="30"
             android:orientation="vertical">
 
             <FrameLayout
@@ -28,7 +29,7 @@
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="145dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true" />
 
 
@@ -40,258 +41,342 @@
                     android:layout_weight="8"
                     android:padding="8dip" />
             </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/txtName"
+                style="@style/TextViewStyle.MediumBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Hi Rudragouda Patil"
+                android:textColor="@color/black" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:weightSum="2">
+                android:layout_weight="1"
+                android:gravity="right">
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="5dp"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/car"
+                    android:tint="@color/colorPrimaryDark_inspect" />
+
 
                 <TextView
-                    android:id="@+id/txtName"
+                    android:id="@+id/txtVehicle"
                     style="@style/TextViewStyle.MediumBold"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="Hi Rudragouda Patil"
-                    android:textColor="@color/black" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right">
-
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_gravity="top"
-                        android:paddingBottom="5dp"
-                        android:src="@drawable/car"
-                        android:tint="@color/colorPrimaryDark_inspect" />
-
-
-                    <TextView
-                        android:id="@+id/txtVehicle"
-                        style="@style/TextViewStyle.MediumBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:text="" />
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/bg" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvService"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circularbg_purple"
-                            android:src="@drawable/service1" />
-
-                        <TextView
-                            style="@style/TextViewStyle.Large"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="SERVICE"
-                            android:textColor="@color/black" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.8dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/lightGrey">
-
-
-                        </View>
-
-                        <TextView
-                            style="@style/TextViewStyle.Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="RTO And Misc Service" />
-
-
-                    </LinearLayout>
-
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvRequest"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circularbg_green"
-                            android:src="@drawable/request1" />
-
-                        <TextView
-                            style="@style/TextViewStyle.Large"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="REQUEST"
-                            android:textColor="@color/black" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.8dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/lightGrey">
-
-
-                        </View>
-
-                        <TextView
-                            style="@style/TextViewStyle.Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="Request Status" />
-
-
-                    </LinearLayout>
-
-
-                </android.support.v7.widget.CardView>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvfeedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-
-                    android:layout_weight="40">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circularbg_yellow"
-                            android:src="@drawable/feedback1" />
-
-                        <TextView
-                            style="@style/TextViewStyle.Large"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="FeedBack"
-                            android:textColor="@color/black" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.8dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/lightGrey">
-
-
-                        </View>
-
-                        <TextView
-                            style="@style/TextViewStyle.Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="Complain and Feedback" />
-
-
-                    </LinearLayout>
-
-
-                </android.support.v7.widget.CardView>
+                    android:gravity="right"
+                    android:text="" />
 
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/bg" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+
+            android:fillViewport="true"
+            android:scrollbars="vertical"
+            android:layout_height="0dp"
+            android:layout_weight="70"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cvService"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:background="@drawable/circularbg_purple"
+                                android:src="@drawable/service1" />
+
+                            <TextView
+                                style="@style/TextViewStyle.Large"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="SERVICE"
+                                android:textColor="@color/black" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.8dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/lightGrey">
+
+
+                            </View>
+
+                            <TextView
+                                style="@style/TextViewStyle.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="Apply RTO &amp; MISCELLANEOUS Service" />
+
+
+                        </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cvRequest"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:background="@drawable/circularbg_green"
+                                android:src="@drawable/request1" />
+
+                            <TextView
+                                style="@style/TextViewStyle.Large"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="REQUEST"
+                                android:textColor="@color/black" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.8dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/lightGrey">
+
+
+                            </View>
+
+                            <TextView
+                                style="@style/TextViewStyle.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="Know Status Of Your\nService Request" />
+
+
+                        </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cvRating"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:background="@drawable/circularbg_pink"
+                                android:src="@drawable/white_star" />
+
+                            <TextView
+                                style="@style/TextViewStyle.Large"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="RATING"
+                                android:textColor="@color/black" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.8dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/lightGrey">
+
+
+                            </View>
+
+                            <TextView
+                                style="@style/TextViewStyle.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="How Happy\nYou Are!" />
+
+
+                        </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cvfeedback"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:background="@drawable/circularbg_yellow"
+                                android:src="@drawable/feedback1" />
+
+                            <TextView
+                                style="@style/TextViewStyle.Large"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="FEEDBACK"
+                                android:textColor="@color/black" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.8dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/lightGrey">
+
+
+                            </View>
+
+                            <TextView
+                                style="@style/TextViewStyle.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="Share Your Feedback\nOR Any Concern" />
+
+
+                        </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/lySupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_alignParentBottom="true"
 
         android:orientation="vertical">

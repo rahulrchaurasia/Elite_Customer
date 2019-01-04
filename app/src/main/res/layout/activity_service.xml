@@ -1,108 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context="com.pb.elite.servicelist.Activity.ServiceActivity">
+
+    <!--android:theme="@style/AppTheme.AppBarOverlay"-->
+
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
 
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:fitsSystemWindows="true">
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            android:elevation="0dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:tabGravity="fill"
 
-            app:tabIndicatorColor="@color/off_white"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/off_white" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:layout_scrollFlags="scroll"
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cvParent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+                />
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
 
-            <LinearLayout
+            <!--app:layout_collapseMode="pin"-->
+
+            <android.support.design.widget.TabLayout
+
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                android:elevation="0dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:tabGravity="fill"
 
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/txtName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/TextViewStyle.Large"
-                    android:textColor="@color/black"
-                    android:text=""/>
+                app:tabIndicatorColor="@color/off_white"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="fixed"
+                app:tabTextColor="@color/off_white"
+
+               />
+
+            <android.support.v7.widget.CardView
+
+                android:id="@+id/cvParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <android.support.v7.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/car"
-                        android:tint="@color/colorPrimaryDark_inspect" />
-
-
+                    android:padding="5dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
                     <TextView
-                        android:id="@+id/txtVehicle"
+                        android:id="@+id/txtName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/TextViewStyle.Medium"
+                        style="@style/TextViewStyle.Large"
                         android:textColor="@color/black"
-                        android:layout_marginLeft="5dp"
-
                         android:text=""/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <android.support.v7.widget.AppCompatImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/car"
+                            android:tint="@color/colorPrimaryDark_inspect" />
+
+
+                        <TextView
+                            android:id="@+id/txtVehicle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/TextViewStyle.Medium"
+                            android:textColor="@color/black"
+                            android:layout_marginLeft="5dp"
+
+                            android:text=""/>
+
+                    </LinearLayout>
+
+
 
                 </LinearLayout>
 
+            </android.support.v7.widget.CardView>
 
 
-            </LinearLayout>
+        <!--<android.support.design.widget.CollapsingToolbarLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="120dp"-->
+            <!--app:contentScrim="?attr/colorPrimary"-->
+            <!--app:titleEnabled="false"-->
+            <!--app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
+            <!--app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title">-->
+         <!---->
+            <!--&lt;!&ndash;// Data &ndash;&gt;-->
 
-        </android.support.v7.widget.CardView>
+
+        <!--</android.support.design.widget.CollapsingToolbarLayout>-->
 
 
 
     </android.support.design.widget.AppBarLayout>
 
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
