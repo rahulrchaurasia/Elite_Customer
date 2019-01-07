@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:831112507157:android:aa34810c6bd32948",
+        "mobilesdk_app_id": "1:831112507157:android:499992a51702c587",
         "android_client_info": {
-          "package_name": "com.pb.elite"
+          "package_name": "com.rb.elite"
         }
       },
       "oauth_client": [

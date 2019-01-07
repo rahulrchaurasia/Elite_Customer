@@ -7,7 +7,7 @@
     android:background="@color/bg_dashboard"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.emailUs.EmailUsActivity"
+    tools:context="com.rb.elite.emailUs.EmailUsActivity"
     tools:showIn="@layout/activity_email_us">
 
     <LinearLayout

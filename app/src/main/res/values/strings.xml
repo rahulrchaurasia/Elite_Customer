@@ -75,7 +75,7 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>
     <string name="copyright_content">Powered by Rupeeboss</string>
-    <string name="file_provider_authority" translatable="false">com.pb.elite.fileprovider</string>
+    <string name="file_provider_authority" translatable="false">com.rb.elite.fileprovider</string>
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>

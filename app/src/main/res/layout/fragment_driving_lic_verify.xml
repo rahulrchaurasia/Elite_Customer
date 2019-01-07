@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:layout_marginBottom="5dp"
-    tools:context="com.pb.elite.rto_fragment.DrivingLicVerifyFragment">
+    tools:context="com.rb.elite.rto_fragment.DrivingLicVerifyFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:layout_marginBottom="5dp"
-    tools:context="com.pb.elite.rto_fragment.AddressEndorsementFragment">
+    tools:context="com.rb.elite.rto_fragment.AddressEndorsementFragment">
 
     <ScrollView
         android:id="@+id/scrollView"

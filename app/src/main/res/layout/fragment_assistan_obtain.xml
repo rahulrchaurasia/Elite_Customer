@@ -6,7 +6,7 @@
     android:animateLayoutChanges="true"
     android:layout_marginBottom="5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.rto_fragment.AssistanObtainFragment">
+    tools:context="com.rb.elite.rto_fragment.AssistanObtainFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView

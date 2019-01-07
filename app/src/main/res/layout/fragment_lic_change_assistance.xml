@@ -8,7 +8,7 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.non_rto_fragments.LICChangeAssistanceFragment">
+    tools:context="com.rb.elite.non_rto_fragments.LICChangeAssistanceFragment">
 
 
     <ScrollView

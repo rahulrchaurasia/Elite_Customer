@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.pb.elite.term.TermsConditionActivity">
+    tools:context="com.rb.elite.term.TermsConditionActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
 
 
     <fragment
-        android:name="com.pb.elite.term.TermsConditionFragment"
+        android:name="com.rb.elite.term.TermsConditionFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_content"/>

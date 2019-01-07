@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     android:layout_marginBottom="5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.non_rto_fragments.BeyondLifeFinancialFragment">
+    tools:context="com.rb.elite.non_rto_fragments.BeyondLifeFinancialFragment">
 
 
 

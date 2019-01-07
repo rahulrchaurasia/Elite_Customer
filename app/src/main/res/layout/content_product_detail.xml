@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.profile.ProfileActivity">
+    tools:context="com.rb.elite.profile.ProfileActivity">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cvParent"

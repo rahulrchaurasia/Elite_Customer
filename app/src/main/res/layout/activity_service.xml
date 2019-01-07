@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.pb.elite.servicelist.Activity.ServiceActivity">
+    tools:context="com.rb.elite.servicelist.Activity.ServiceActivity">
 
     <!--android:theme="@style/AppTheme.AppBarOverlay"-->
 

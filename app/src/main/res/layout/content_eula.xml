@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pb.elite.welcome.EulaActivity"
+    tools:context="com.rb.elite.welcome.EulaActivity"
     android:orientation="vertical"
     android:background="@color/white"
     tools:showIn="@layout/activity_eula">
