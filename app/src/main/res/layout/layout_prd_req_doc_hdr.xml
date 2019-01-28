@@ -29,7 +29,7 @@
 
                 android:gravity="left"
 
-                android:text="Required Service Documents: "
+                android:text="List Of Document Required: "
                 android:textColor="@color/black" />
 
             <TextView

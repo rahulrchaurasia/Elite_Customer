@@ -126,7 +126,7 @@ public class HypotheticalFragment extends BaseFragment implements View.OnClickLi
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
         }
 
 

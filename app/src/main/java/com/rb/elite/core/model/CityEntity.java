@@ -1,15 +1,14 @@
 package com.rb.elite.core.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
-public class CityEntity  extends RealmObject {
+
+public class CityEntity  {
             /**
              * srno : 1
              * cityname : Mumbai
              * city_id : 1276
              */
-            @PrimaryKey
+
             private int srno;
             private String cityname;
             private int city_id;

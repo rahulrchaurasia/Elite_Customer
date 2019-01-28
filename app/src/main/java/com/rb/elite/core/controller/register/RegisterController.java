@@ -3,10 +3,11 @@ package com.rb.elite.core.controller.register;
 import android.content.Context;
 
 import com.rb.elite.core.IResponseSubcriber;
-import com.rb.elite.core.controller.product.AsyncCarMaster;
+
 import com.rb.elite.core.model.UserEntity;
 import com.rb.elite.core.requestbuilder.RegisterRequestBuilder;
 import com.rb.elite.core.requestmodel.AddUserRequestEntity;
+import com.rb.elite.core.requestmodel.RateRequestEntity;
 import com.rb.elite.core.requestmodel.RegisterRequest;
 import com.rb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.rb.elite.core.response.AddUserResponse;
@@ -14,11 +15,14 @@ import com.rb.elite.core.response.CarMasterResponse;
 import com.rb.elite.core.response.CityMainResponse;
 import com.rb.elite.core.response.CommonResponse;
 import com.rb.elite.core.response.DBVersionRespone;
+import com.rb.elite.core.response.DisplayFeedbackResponse;
+import com.rb.elite.core.response.DisplayRateResponse;
 import com.rb.elite.core.response.FeedbackResponse;
 import com.rb.elite.core.response.GetOtpResponse;
 import com.rb.elite.core.response.LoginResponse;
 import com.rb.elite.core.response.PincodeResponse;
 import com.rb.elite.core.response.PolicyResponse;
+import com.rb.elite.core.response.RateResponse;
 import com.rb.elite.core.response.UpdateUserResponse;
 import com.rb.elite.core.response.UserConsttantResponse;
 import com.rb.elite.core.response.UserRegistrationResponse;
@@ -130,51 +134,6 @@ public class RegisterController implements IRegister {
         });
     }
 
-    @Override
-    public void getCarMaster(final IResponseSubcriber iResponseSubcriber) {
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("ProductId", "1");
-
-        registerQuotesNetworkService.getCarMaster(hashMap).enqueue(new Callback<CarMasterResponse>() {
-            @Override
-            public void onResponse(Call<CarMasterResponse> call, Response<CarMasterResponse> response) {
-                if (response.body() != null) {
-                    if (response.body().getStatus_code() == 0) {
-                        if (response.body().getMasterData() != null || response.body().getMasterData().size() != 0)
-                            new AsyncCarMaster(mContext, response.body().getMasterData()).execute();
-                        if (iResponseSubcriber != null)
-                            iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-
-                    } else {
-                        if (iResponseSubcriber != null)
-                            iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
-                    }
-                } else {
-                    if (iResponseSubcriber != null)
-                        iResponseSubcriber.OnFailure(new RuntimeException("Failed to fetch information."));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CarMasterResponse> call, Throwable t) {
-                if (iResponseSubcriber != null) {
-                    if (t instanceof ConnectException) {
-                        iResponseSubcriber.OnFailure(t);
-                    } else if (t instanceof SocketTimeoutException) {
-                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                    } else if (t instanceof UnknownHostException) {
-                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                    } else if (t instanceof NumberFormatException) {
-                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
-                    } else {
-                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
-                    }
-                }
-            }
-        });
-
-    }
 
     @Override
     public void getCityState(String pincode, final IResponseSubcriber iResponseSubcriber) {
@@ -271,7 +230,6 @@ public class RegisterController implements IRegister {
 
                     //callback of data
                     if (response.body().getStatus_code() == 0) {
-                        new AsyncLoginMaster(mContext, response.body().getData().get(0)).execute();
                         new PrefManager(mContext).storeUserData(response.body().getData().get(0).getUserdetails().get(0));
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
@@ -311,7 +269,6 @@ public class RegisterController implements IRegister {
         body.put("mobile", mobile);
         body.put("current_password", curr_password);
         body.put("new_password", new_password);
-        body.put("confirm_password", new_password);
         body.put("confirm_password", new_password);
         body.put("type", "1");
 
@@ -734,6 +691,135 @@ public class RegisterController implements IRegister {
 
             @Override
             public void onFailure(Call<FeedbackResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void displayFeedBack(int user_id, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("user_id", String.valueOf(user_id));
+
+
+        registerQuotesNetworkService.displayFeedBack(body).enqueue(new Callback<DisplayFeedbackResponse>() {
+            @Override
+            public void onResponse(Call<DisplayFeedbackResponse> call, Response<DisplayFeedbackResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DisplayFeedbackResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void saveRate(RateRequestEntity rateRequestEntity,final IResponseSubcriber iResponseSubcriber) {
+
+        registerQuotesNetworkService.saveRate(rateRequestEntity).enqueue(new Callback<RateResponse>() {
+            @Override
+            public void onResponse(Call<RateResponse> call, Response<RateResponse> response) {
+                if (response.body() != null) {
+
+                    //callback of data
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RateResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void displayRate(int userid, String request_id, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("request_id", String.valueOf(request_id));
+        body.put("userid", String.valueOf(userid));
+
+        registerQuotesNetworkService.dispalyRate(body).enqueue(new Callback<DisplayRateResponse>() {
+            @Override
+            public void onResponse(Call<DisplayRateResponse> call, Response<DisplayRateResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DisplayRateResponse> call, Throwable t) {
                 if (iResponseSubcriber != null) {
                     if (t instanceof ConnectException) {
                         iResponseSubcriber.OnFailure(t);

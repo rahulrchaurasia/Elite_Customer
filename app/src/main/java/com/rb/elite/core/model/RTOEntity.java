@@ -1,9 +1,8 @@
 package com.rb.elite.core.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
-public class RTOEntity extends RealmObject {
+
+public class RTOEntity  {
     /**
      * rto_location : Mumbai (Central)- Location- Tardeo
      * series_no : MH-01
@@ -24,7 +23,7 @@ public class RTOEntity extends RealmObject {
      * Category : RTO
      * catg_id : 1
      */
-    @PrimaryKey
+
     private int srno;
     private int rto_id;
     private String rto_location;

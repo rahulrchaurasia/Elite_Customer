@@ -150,7 +150,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
         if (url.equals("")) {
             return;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(DocUploadActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DocUploadActivity.this ,R.style.CustomDialog);
 
         // TouchImageView ivDocFile;
         ImageView ivDocFile;
@@ -422,11 +422,13 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     @SuppressLint("NewApi")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Below For Cropping The Camera Image
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             //extractTextFromImage();
             startCropImageActivity(imageUri);
         }
-
+        // Below For Cropping The Gallery Image
        else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             startCropImageActivity(selectedImageUri);
@@ -604,10 +606,7 @@ public class DocUploadActivity extends BaseActivity implements IResponseSubcribe
     public void onPositiveButtonClick(Dialog dialog, View view) {
 
         dialog.cancel();
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivityForResult(intent, Constants.REQUEST_PERMISSION_SETTING);
+        openAppSetting();
     }
 
     @Override

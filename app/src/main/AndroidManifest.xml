@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -13,12 +13,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
 
     <application
-        android:name="com.rb.elite.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/elite_launcher"
         android:label="@string/app_name"
@@ -42,27 +42,27 @@
         </provider>
 
         <service
-            android:name="com.rb.elite.utility.MyFirebaseMessagingService"
+            android:name=".utility.MyFirebaseMessagingService"
             android:exported="true"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.rb.elite.utility.FirebaseIDService">
+        <service android:name=".utility.FirebaseIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name="com.rb.elite.broadcast.SMSBroadCastReceiver">
+        <receiver android:name=".broadcast.SMSBroadCastReceiver">
             <intent-filter android:priority="6785">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name="com.rb.elite.splash.SplashScreenActivity"
+            android:name=".splash.SplashScreenActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,31 +71,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.rb.elite.login.LoginActivity"
+            android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+
         <activity
-            android:name=".product.ProductActivity"
-            android:label="@string/title_activity_product"
-            android:parentActivityName="com.rb.elite.servicelist.Activity.ServiceActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.rb.elite.HomeActivity" />
-        </activity>
-        <activity
-            android:name="com.rb.elite.HomeActivity"
+            android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.rb.elite.register.SignUpActivity"
+            android:name=".register.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName="com.rb.elite.login.LoginActivity"
+            android:parentActivityName=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -104,9 +94,9 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.profile.ProfileActivity"
+            android:name=".profile.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -115,9 +105,9 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.payment.PaymentActivity"
+            android:name=".payment.PaymentActivity"
             android:label="@string/title_activity_payment"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -131,9 +121,9 @@
             android:value="http://elite.rupeeboss.com/access_token.php" />
 
         <activity
-            android:name="com.rb.elite.login.ForgotPasswordActivity"
+            android:name=".login.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
-            android:parentActivityName="com.rb.elite.login.LoginActivity"
+            android:parentActivityName=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
@@ -141,19 +131,14 @@
                 android:value="com.rb.elite.login.LoginActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.DemActivity"
+            android:name=".DemActivity"
             android:label="@string/title_activity_dem"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name="com.rb.elite.product.ProductDisplayActivity"
-            android:label="@string/title_activity_product_display"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.rb.elite.servicelist.SubProductActivity"
+            android:name=".servicelist.SubProductActivity"
             android:label="@string/title_activity_sub_product"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -162,31 +147,31 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.document.DocUploadActivity"
+            android:name=".document.DocUploadActivity"
             android:label="@string/title_activity_doc_upload"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.rb.elite.aboutUs.AboutUsActivity"
+            android:name=".aboutUs.AboutUsActivity"
             android:label="@string/title_activity_about_us"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.rb.elite.term.TermsConditionActivity"
+            android:name=".term.TermsConditionActivity"
             android:label="@string/title_activity_terms_condition"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name="com.rb.elite.welcome.WelcomeActivity" />
+        <activity android:name=".welcome.WelcomeActivity" />
         <activity
-            android:name="com.rb.elite.welcome.EulaActivity"
+            android:name=".welcome.EulaActivity"
             android:label="@string/title_activity_eula"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.rb.elite.search.SearchCityActivity"
+            android:name=".search.SearchCityActivity"
             android:label="Search City"
-            android:parentActivityName="com.rb.elite.product.ProductMainActivity"
+            android:parentActivityName=".product.ProductMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -205,9 +190,9 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.rb.elite.servicelist.Activity.ServiceActivity"
+            android:name=".servicelist.Activity.ServiceActivity"
             android:label="@string/title_activity_service"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -216,9 +201,9 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.orderDetail.OrderActivity"
+            android:name=".orderDetail.OrderActivity"
             android:label="@string/title_activity_order"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -227,9 +212,9 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.feedback.FeedbackActivity"
+            android:name=".feedback.FeedbackActivity"
             android:label="@string/title_activity_feedback"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -238,9 +223,9 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.register.ClientDeclareActivity"
+            android:name=".register.ClientDeclareActivity"
             android:label="@string/title_activity_client_declare"
-            android:parentActivityName="com.rb.elite.register.SignUpActivity"
+            android:parentActivityName=".register.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -249,9 +234,9 @@
                 android:value="com.rb.elite.register.SignUpActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.emailUs.EmailUsActivity"
+            android:name=".emailUs.EmailUsActivity"
             android:label="@string/title_activity_email_us"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -260,9 +245,9 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.webview.CommonWebViewActivity"
+            android:name=".webview.CommonWebViewActivity"
             android:label="@string/title_activity_email_us"
-            android:parentActivityName="com.rb.elite.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -270,11 +255,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
-
         <activity
-            android:name="com.rb.elite.payment.PaymentRazorActivity"
+            android:name=".payment.PaymentRazorActivity"
             android:label="@string/title_activity_payment_razor"
-            android:parentActivityName="com.rb.elite.product.ProductMainActivity"
+            android:parentActivityName=".product.ProductMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -283,9 +267,9 @@
                 android:value="com.rb.elite.payment.PaymentRazorActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.product.ProductMainActivity"
+            android:name=".product.ProductMainActivity"
             android:label="@string/title_activity_product"
-            android:parentActivityName="com.rb.elite.servicelist.Activity.ServiceActivity"
+            android:parentActivityName=".servicelist.Activity.ServiceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -294,19 +278,30 @@
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
         <activity
-            android:name="com.rb.elite.notification.NotificationActivity"
+            android:name=".notification.NotificationActivity"
             android:label="@string/title_activity_notification"
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rb.elite.HomeActivity" />
         </activity>
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-
+        <activity
+            android:name=".rating.RateActivity"
+            android:label="@string/title_activity_rate"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rb.elite.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,8 +1,7 @@
 package com.rb.elite.core.model;
 
-import io.realm.RealmObject;
 
-public  class UserEntity extends RealmObject {
+public  class UserEntity  {
             /**
              * user_id : 7
              * email : govind.dharne4@rupeeboss.com

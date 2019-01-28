@@ -27,8 +27,6 @@ public interface IProduct {
 
     void getProductMaster(IResponseSubcriber iResponseSubcriber);
 
-    void getCityMaster(IResponseSubcriber iResponseSubcriber);
-
     void getRtoAndNonRtoList(IResponseSubcriber iResponseSubcriber);
 
     void getRTOProductList(int prdid,String prdCode, int UserId, IResponseSubcriber iResponseSubcriber);

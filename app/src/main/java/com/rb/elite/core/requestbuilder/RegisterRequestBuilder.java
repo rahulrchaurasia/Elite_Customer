@@ -2,6 +2,7 @@ package com.rb.elite.core.requestbuilder;
 
 import com.rb.elite.core.RetroRequestBuilder;
 import com.rb.elite.core.requestmodel.AddUserRequestEntity;
+import com.rb.elite.core.requestmodel.RateRequestEntity;
 import com.rb.elite.core.requestmodel.RegisterRequest;
 import com.rb.elite.core.requestmodel.UpdateUserRequestEntity;
 import com.rb.elite.core.response.AddUserResponse;
@@ -9,11 +10,14 @@ import com.rb.elite.core.response.CarMasterResponse;
 import com.rb.elite.core.response.CityMainResponse;
 import com.rb.elite.core.response.CommonResponse;
 import com.rb.elite.core.response.DBVersionRespone;
+import com.rb.elite.core.response.DisplayFeedbackResponse;
+import com.rb.elite.core.response.DisplayRateResponse;
 import com.rb.elite.core.response.FeedbackResponse;
 import com.rb.elite.core.response.GetOtpResponse;
 import com.rb.elite.core.response.LoginResponse;
 import com.rb.elite.core.response.PincodeResponse;
 import com.rb.elite.core.response.PolicyResponse;
+import com.rb.elite.core.response.RateResponse;
 import com.rb.elite.core.response.UpdateUserResponse;
 import com.rb.elite.core.response.UserConsttantResponse;
 import com.rb.elite.core.response.UserRegistrationResponse;
@@ -83,14 +87,26 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         Call<CityMainResponse> getCityMainMaster();  //used
 
         //vehicle request
+
+        @POST("/api/get-vehicle-data")
+        Call<VehicleMasterResponse> getVehicleData();
+
+
         @GET
         Call<VehicleMasterResponse> getCarMaster(@Url String url);
 
         @POST("/api/save-feedback-form")
         Call<FeedbackResponse> saveFeedBack(@Body HashMap<String, String> body);
 
-        @POST("/api/get-vehicle-data")
-        Call<VehicleMasterResponse> getVehicleData();
+        @POST("/api/display-feedback-form")
+        Call<DisplayFeedbackResponse> displayFeedBack(@Body HashMap<String, String> body);
+
+        @POST("/api/save-rate")
+        Call<RateResponse> saveRate(@Body RateRequestEntity rateRequestEntity);
+
+        @POST("/api/display-rate")
+        Call<DisplayRateResponse> dispalyRate(@Body HashMap<String, String> body);
+
 
 
 

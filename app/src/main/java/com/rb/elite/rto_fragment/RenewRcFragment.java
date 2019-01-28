@@ -169,7 +169,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
             super.onViewCreated(view, savedInstanceState);
         }
 

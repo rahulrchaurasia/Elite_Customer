@@ -20,6 +20,7 @@ public  class OrderDetailEntity implements Parcelable {
      */
 
     private int order_id;
+    private  String display_order_id;
     private String customer_name;
     private String product_name;
     private String amount;
@@ -35,6 +36,14 @@ public  class OrderDetailEntity implements Parcelable {
     private String logo;
     private String rating;
     private String receipt;
+
+    public String getDisplay_order_id() {
+        return display_order_id;
+    }
+
+    public void setDisplay_order_id(String display_order_id) {
+        this.display_order_id = display_order_id;
+    }
 
     public int getOrder_id() {
         return order_id;
@@ -165,6 +174,7 @@ public  class OrderDetailEntity implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.order_id);
+        dest.writeString(this.display_order_id);
         dest.writeString(this.customer_name);
         dest.writeString(this.product_name);
         dest.writeString(this.amount);
@@ -186,6 +196,7 @@ public  class OrderDetailEntity implements Parcelable {
 
     protected OrderDetailEntity(Parcel in) {
         this.order_id = in.readInt();
+        this.display_order_id = in.readString();
         this.customer_name = in.readString();
         this.product_name = in.readString();
         this.amount = in.readString();

@@ -174,6 +174,7 @@
         <item name="fontPath">fonts/oxygenregular.ttf</item>
         <item name="android:textColor">@color/header_dark_text</item>
     </style>
+
     <style name="TextViewStyle.MediumLarge" parent="TextViewStyle">
         <item name="android:textSize">15sp</item>
         <item name="fontPath">fonts/oxygenlight.ttf</item>
@@ -342,6 +343,7 @@
         <item name="colorControlActivated">@color/pink</item>
 
     </style>
+
     <style name="bottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
         <item name="android:windowIsTranslucent">true</item>

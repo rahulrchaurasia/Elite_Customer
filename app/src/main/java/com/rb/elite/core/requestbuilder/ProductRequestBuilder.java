@@ -87,9 +87,6 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
 
 
         @POST("/api/get-complete-orders")
-        Call<OrderDetailResponse> geCompleteOrder(@Body HashMap<String, String> body);
-
-        @POST("/api/get-orders")
         Call<CompleteOrderResponse> getCompletetOrder(@Body HashMap<String, String> body);
 
 

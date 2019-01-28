@@ -1,8 +1,8 @@
 package com.rb.elite.core.model;
 
-import io.realm.RealmObject;
 
-public  class AllCityEntity  extends RealmObject  {
+
+public  class AllCityEntity   {
             /**
              * city_id : 1
              * cityname : Ranga Reddy

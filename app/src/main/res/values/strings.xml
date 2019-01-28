@@ -57,8 +57,9 @@
 
 
     </array>
-
-    <string name="supp_Calling">Do you want to call Elite Support Team</string>
+    <string name="rate_Negative">Oops! please share with us what went wrong.</string>
+    <string name="rate_Positive">Thanks! we are glad you are happy with our services.</string>
+    <string name="supp_Calling">Do you want to call Elite Support Team?</string>
     <string name="call_number">9702943935</string>
     <string name="email">rahulrchaurasia@gmail.com</string>
     <string name="doc_popup">Thank you for uploading all the documents.\nWe will verify the documents and call you back within 24 working hours if required.</string>
@@ -67,7 +68,7 @@
     <string name="signup">Not a Member? <b><u>Sign up now!</u></b></string>
     <string name="click_here"> <b><u>Click Here!!</u></b></string>
     <string name="register_here"> <b><u>Register Here!</u></b></string>
-    <string name="forgotPwd"><u><i>Forgot Password? .</i></u></string>
+    <string name="forgotPwd"><u><i>Forgot Password? .</i></u></string>b
 
     <string name="download"> <b><u>Download</u></b></string>
 
@@ -119,5 +120,6 @@
     <string name="title_activity_product_main">ProductMainActivity</string>
     <string name="title_activity_notification">Notification</string>
     <string name="title_activity_transfer_ownership">TransferOwnership</string>
+    <string name="title_activity_rate">Rating</string>
 
 </resources>

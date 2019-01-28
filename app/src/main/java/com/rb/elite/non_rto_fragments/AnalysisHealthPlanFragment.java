@@ -88,8 +88,6 @@ public class AnalysisHealthPlanFragment extends BaseFragment implements View.OnC
     String PRODUCT_CODE = "";
     int PRODUCT_ID = 0;
 
-
-    String AMOUNT = "0";
     int OrderID = 0;
 
     String CITY_ID;

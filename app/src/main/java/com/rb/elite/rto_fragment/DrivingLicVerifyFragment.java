@@ -183,7 +183,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -199,7 +199,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
+        if (cityMainEntity != null ||  cityMainEntity.getRTOList().size() == 0) {
             getCustomToast("No RTO Available");
             return;
         }

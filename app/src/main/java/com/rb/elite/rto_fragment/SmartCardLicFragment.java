@@ -66,6 +66,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
+
     EditText etCity  ;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
@@ -113,8 +114,8 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
       //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
-            getCustomToast("No RTO Available");
+        if (cityMainEntity != null ||  cityMainEntity.getRTOList().size() == 0) {
+            getCustomToast("No Data Available");
             return;
         }
 
@@ -268,7 +269,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
 
         etCity.setOnClickListener(this);
         etLicOwnerDob.setOnClickListener(this);
-
+        etRTO.setOnClickListener(this);
 
 
     }
@@ -388,6 +389,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
                             calendar.set(year, monthOfYear, dayOfMonth);
                             String currentDay = simpleDateFormat.format(calendar.getTime());
                             etLicOwnerDob.setText(currentDay);
+                            etLicOwnerDob.setError(null);
                         }
                     }
                 });
@@ -433,7 +435,7 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
         if (requestCode == Constants.SEARCH_CITY_CODE) {
             if (data != null) {
 
-                CityMainEntity cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
                 CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);

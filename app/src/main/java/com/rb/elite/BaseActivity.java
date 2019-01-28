@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.rb.elite.core.model.DocProductEnity;
 import com.rb.elite.product.ProductDocAdapter;
+import com.rb.elite.utility.Constants;
 import com.rb.elite.utility.Utility;
 
 import java.io.File;
@@ -51,6 +53,8 @@ public class BaseActivity extends AppCompatActivity {
     ProgressDialog dialog;
     PopUpListener popUpListener;
     CustomPopUpListener customPopUpListener;
+
+    AlertDialog alertDocDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -321,6 +325,11 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void reqDocPopUp(List<DocProductEnity> lstDoc) {
+
+        if (alertDocDialog != null && alertDocDialog.isShowing()) {
+
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
 
         RecyclerView rvProductDoc;
@@ -333,7 +342,7 @@ public class BaseActivity extends AppCompatActivity {
 
 
         builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
+        alertDocDialog  = builder.create();
         // set the custom dialog components - text, image and button
         btnClose = (Button) dialogView.findViewById(R.id.btnClose);
         ivClose = (ImageView) dialogView.findViewById(R.id.ivClose);
@@ -348,7 +357,7 @@ public class BaseActivity extends AppCompatActivity {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog.dismiss();
+                alertDocDialog.dismiss();
 
             }
         });
@@ -356,14 +365,14 @@ public class BaseActivity extends AppCompatActivity {
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog.dismiss();
+                alertDocDialog.dismiss();
 
             }
         });
 
-        alertDialog.setCancelable(false);
+        alertDocDialog.setCancelable(false);
 
-        alertDialog.show();
+        alertDocDialog.show();
         //  alertDialog.getWindow().setLayout(900, 600);
 
 
@@ -474,6 +483,16 @@ public class BaseActivity extends AppCompatActivity {
             cancelDialog();
             showPdf(outFile);
         }
+    }
+
+
+    public void openAppSetting()
+    {
+
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, Constants.REQUEST_PERMISSION_SETTING);
     }
 }
 

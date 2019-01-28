@@ -203,7 +203,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-            Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -221,7 +221,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if (cityMainEntity != null &&  cityMainEntity.getRTOList().size() == 0) {
+        if (cityMainEntity != null || cityMainEntity.getRTOList().size() == 0) {
             getCustomToast("No RTO Available");
             return;
         }

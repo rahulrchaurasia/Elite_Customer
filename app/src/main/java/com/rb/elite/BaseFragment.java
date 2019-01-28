@@ -351,17 +351,17 @@ public class BaseFragment extends Fragment {
         txtHdr.setText(""+ strhdr);
         txtMessage.setText("" + provideClaimAssEntity.getDisplaymessage());
 
-        lyReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(provideClaimAssEntity.getReceipt() != null)
-                {
-                   // new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
-                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(provideClaimAssEntity.getReceipt()));
-                    startActivity(intent);
-                }
-            }
-        });
+//        lyReceipt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(provideClaimAssEntity.getReceipt() != null)
+//                {
+//                   // new DownloadFromUrl(provideClaimAssEntity.getReceipt(), "EliteReceipt").execute();
+//                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(provideClaimAssEntity.getReceipt()));
+//                    startActivity(intent);
+//                }
+//            }
+//        });
 
 
         btnClose.setOnClickListener(new View.OnClickListener() {

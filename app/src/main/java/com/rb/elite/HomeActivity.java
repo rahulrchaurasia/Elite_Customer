@@ -328,7 +328,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
             case 5:
                 fragment = new TermsConditionFragment();
-                getSupportActionBar().setTitle("Terms And Condition");
+                getSupportActionBar().setTitle("Terms and Conditions");
                 return fragment;
 
             default:

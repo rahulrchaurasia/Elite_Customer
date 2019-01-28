@@ -24,7 +24,7 @@
             android:background="@color/off_white"
             android:padding="10dp">
 
-            <ImageView
+           <ImageView
                 android:id="@+id/ivArrow"
                 android:layout_width="18dp"
                 android:layout_height="18dp"

@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rb.elite.BaseFragment;
 import com.rb.elite.R;
@@ -32,6 +33,7 @@ import com.rb.elite.core.response.UserConsttantResponse;
 import com.rb.elite.emailUs.EmailUsActivity;
 import com.rb.elite.feedback.FeedbackActivity;
 import com.rb.elite.orderDetail.OrderActivity;
+import com.rb.elite.rating.RateActivity;
 import com.rb.elite.servicelist.Activity.ServiceActivity;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
@@ -50,7 +52,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
     ViewPager viewPager;
     List<Integer> banners;
-    CardView cvService, cvRequest, cvfeedback;
+    CardView cvService, cvRequest, cvfeedback,cvRating;
     CustomPagerAdapter mBannerAdapter;
     CirclePageIndicator circlePageIndicator;
     LinearLayout lyCall, lyEmail;
@@ -117,6 +119,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         cvService = (CardView) view.findViewById(R.id.cvService);
         cvRequest = (CardView) view.findViewById(R.id.cvRequest);
         cvfeedback = (CardView) view.findViewById(R.id.cvfeedback);
+        cvRating  = (CardView) view.findViewById(R.id.cvRating);
 
         lyCall = (LinearLayout) view.findViewById(R.id.lyCall);
         lyEmail = (LinearLayout) view.findViewById(R.id.lyEmail);
@@ -179,7 +182,8 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void OnFailure(Throwable t) {
-
+        cancelDialog();
+        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -216,6 +220,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         cvService.setOnClickListener(this);
         cvRequest.setOnClickListener(this);
         cvfeedback.setOnClickListener(this);
+        cvRating.setOnClickListener(this);
 
         lyCall.setOnClickListener(this);
         lyEmail.setOnClickListener(this);
@@ -295,6 +300,12 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
                 startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
+
+            case R.id.cvRating:
+
+                startActivity(new Intent(getActivity(), RateActivity.class));
+                break;
+
 
             case R.id.lyCall:
 

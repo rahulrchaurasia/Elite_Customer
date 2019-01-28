@@ -3,10 +3,9 @@ package com.rb.elite.core.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
-public class CarMasterEntity  extends RealmObject implements Parcelable {
+
+public class CarMasterEntity   implements Parcelable {
 
 
     /**
@@ -33,7 +32,7 @@ public class CarMasterEntity  extends RealmObject implements Parcelable {
      * Model_Name1 :
      * Make_ID1 :
      */
-    @PrimaryKey
+
     private String Variant_ID;
     private int V_Id;
     private int CreatedOn;

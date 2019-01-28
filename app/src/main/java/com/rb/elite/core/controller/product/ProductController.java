@@ -5,19 +5,18 @@ import android.content.Context;
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.requestbuilder.ProductRequestBuilder;
 import com.rb.elite.core.requestmodel.InsertOrderRequestEntity;
-import com.rb.elite.core.response.CityResponse;
+import com.rb.elite.core.requestmodel.UpdateOrderRequestEntity;
+import com.rb.elite.core.response.ClientCommonResponse;
 import com.rb.elite.core.response.CompleteOrderResponse;
 import com.rb.elite.core.response.DocumentResponse;
 import com.rb.elite.core.response.DocumentViewResponse;
 import com.rb.elite.core.response.NonRtoProductDisplayResponse;
 import com.rb.elite.core.response.NotificationResponse;
 import com.rb.elite.core.response.OrderDetailResponse;
-import com.rb.elite.core.requestmodel.UpdateOrderRequestEntity;
 import com.rb.elite.core.response.OrderResponse;
 import com.rb.elite.core.response.ProductDocumentResponse;
 import com.rb.elite.core.response.ProductResponse;
 import com.rb.elite.core.response.RtoLocationReponse;
-import com.rb.elite.core.response.ClientCommonResponse;
 import com.rb.elite.core.response.RtoProductDisplayResponse;
 import com.rb.elite.core.response.ServiceListResponse;
 import com.rb.elite.splash.PrefManager;
@@ -53,19 +52,16 @@ public class ProductController implements IProduct {
     @Override
     public void inserOrderData(InsertOrderRequestEntity requestEntity, final IResponseSubcriber iResponseSubcriber) {
 
-
-
-
         productNetworkService.insertOrder(requestEntity).enqueue(new Callback<OrderResponse>() {
             @Override
             public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -102,7 +98,7 @@ public class ProductController implements IProduct {
 
                 } else {
                     //failure
-                    iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                    iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                 }
             }
 
@@ -135,7 +131,7 @@ public class ProductController implements IProduct {
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 if (response.body() != null) {
 
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
                         //failure
@@ -179,7 +175,7 @@ public class ProductController implements IProduct {
             public void onResponse(Call<CompleteOrderResponse> call, Response<CompleteOrderResponse> response) {
                 if (response.body() != null) {
 
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
                         //failure
@@ -220,17 +216,16 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<RtoLocationReponse> call, Response<RtoLocationReponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
-                      //  new AsyncRTOMaster(mContext, response.body().getData().getRtolist(),response.body().getData().getCities()).execute();
+                        //  new AsyncRTOMaster(mContext, response.body().getData().getRtolist(),response.body().getData().getCities()).execute();
 
-                        new SyncRTOMaster(mContext, response.body().getData().getRtolist(),response.body().getData().getCities()).getRTOData();
+                        //  new SyncRTOMaster(mContext, response.body().getData().getRtolist(),response.body().getData().getCities()).getRTOData();
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -263,13 +258,12 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -295,45 +289,6 @@ public class ProductController implements IProduct {
         });
     }
 
-    @Override
-    public void getCityMaster(final IResponseSubcriber iResponseSubcriber) {
-        productNetworkService.getCityMaster().enqueue(new Callback<CityResponse>() {
-            @Override
-            public void onResponse(Call<CityResponse> call, Response<CityResponse> response) {
-                if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
-                        //callback of data
-
-                        new AsyncCityMaster(mContext,response.body().getData().getAllCities()).execute();
-                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
-                        //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
-                    }
-
-                } else {
-                    //failure
-                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CityResponse> call, Throwable t) {
-                if (t instanceof ConnectException) {
-                    iResponseSubcriber.OnFailure(t);
-                } else if (t instanceof SocketTimeoutException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof UnknownHostException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
-                } else if (t instanceof NumberFormatException) {
-                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
-                } else {
-                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
-                }
-            }
-        });
-    }
 
     @Override
     public void getRtoAndNonRtoList(final IResponseSubcriber iResponseSubcriber) {
@@ -342,15 +297,14 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -377,7 +331,7 @@ public class ProductController implements IProduct {
     }
 
     @Override
-    public void getRTOProductList(int prdid, String prdCode,int userID, final IResponseSubcriber iResponseSubcriber) {
+    public void getRTOProductList(int prdid, String prdCode, int userID, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
@@ -389,14 +343,13 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<RtoProductDisplayResponse> call, Response<RtoProductDisplayResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -423,7 +376,7 @@ public class ProductController implements IProduct {
     }
 
     @Override
-    public void RTOProductListOnChangeVehicle(int prdid, String prdCode, int UserId,String make,String model, final IResponseSubcriber iResponseSubcriber) {
+    public void RTOProductListOnChangeVehicle(int prdid, String prdCode, int UserId, String make, String model, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
@@ -437,14 +390,13 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<RtoProductDisplayResponse> call, Response<RtoProductDisplayResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -481,12 +433,11 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<NonRtoProductDisplayResponse> call, Response<NonRtoProductDisplayResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
                         iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
@@ -525,12 +476,11 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<ProductDocumentResponse> call, Response<ProductDocumentResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
                         iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
@@ -559,7 +509,7 @@ public class ProductController implements IProduct {
     }
 
     @Override
-    public void getDocumentView(String order_id , final IResponseSubcriber iResponseSubcriber) {
+    public void getDocumentView(String order_id, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
@@ -569,14 +519,13 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<DocumentViewResponse> call, Response<DocumentViewResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -615,14 +564,13 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<NotificationResponse> call, Response<NotificationResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
 
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -656,13 +604,12 @@ public class ProductController implements IProduct {
             @Override
             public void onResponse(Call<DocumentResponse> call, Response<DocumentResponse> response) {
                 if (response.body() != null) {
-                    if(response.body().getStatus_code() == 0) {
+                    if (response.body().getStatus_code() == 0) {
                         //callback of data
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
-                    }
-                    else {
+                    } else {
                         //failure
-                        iResponseSubcriber.OnFailure(new RuntimeException( response.body().getMessage()));
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
                     }
 
                 } else {
@@ -687,8 +634,6 @@ public class ProductController implements IProduct {
             }
         });
     }
-
-
 
 
     //insertOrder

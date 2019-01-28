@@ -84,14 +84,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
-        cancelDialog();
-        if (response instanceof CityResponse) {  //step3
-            if (response.getStatus_code() == 0) {
 
-
-            }
-
-        }
     }
 
     @Override

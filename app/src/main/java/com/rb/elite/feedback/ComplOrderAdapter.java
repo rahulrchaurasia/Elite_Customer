@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rb.elite.R;
-import com.rb.elite.core.model.OrderDetailEntity;
+import com.rb.elite.core.model.CompleteOrderEntity;
 
 import java.util.List;
 
@@ -17,15 +17,17 @@ import java.util.List;
  * Created by IN-RB on 05-02-2018.
  */
 
-public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.OrderDetailItem> {
+public class ComplOrderAdapter extends RecyclerView.Adapter<ComplOrderAdapter.OrderDetailItem> {
 
 
     Activity mContext;
-    List<OrderDetailEntity> lstOrderDetail;
+    List<CompleteOrderEntity> lstOrderDetail;
+    ICompOrderData iCompOrderData;
 
-    public FeedbackAdapter(Activity mContext, List<OrderDetailEntity> lstOrderDetail) {
+    public ComplOrderAdapter(Activity mContext, List<CompleteOrderEntity> lstOrderDetail , ICompOrderData icompOrderData) {
         this.mContext = mContext;
         this.lstOrderDetail = lstOrderDetail;
+        this.iCompOrderData= icompOrderData;
     }
 
     public class OrderDetailItem extends RecyclerView.ViewHolder {
@@ -48,23 +50,24 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.OrderD
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_feedback_item, parent, false);
 
-        return new FeedbackAdapter.OrderDetailItem(itemView);
+        return new ComplOrderAdapter.OrderDetailItem(itemView);
     }
 
     @Override
     public void onBindViewHolder(OrderDetailItem holder, int position) {
 
 
-        final OrderDetailEntity orderDetailEntity = lstOrderDetail.get(position);
+        final CompleteOrderEntity orderDetailEntity = lstOrderDetail.get(position);
 
-        holder.txtReqID.setText("" + orderDetailEntity.getOrder_id());
+        holder.txtReqID.setText("" + orderDetailEntity.getDisplay_order_id());
         holder.txtBody.setText("" + orderDetailEntity.getProduct_name());
 
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ((FeedbackActivity) mContext).getOrderData(orderDetailEntity);
+              //  ((FeedbackActivity) mContext).getOrderData(orderDetailEntity);
+                iCompOrderData.getOrderData(orderDetailEntity);
             }
         });
 

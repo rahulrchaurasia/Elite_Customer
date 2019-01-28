@@ -2,6 +2,7 @@ package com.rb.elite.core.controller.register;
 
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.requestmodel.AddUserRequestEntity;
+import com.rb.elite.core.requestmodel.RateRequestEntity;
 import com.rb.elite.core.requestmodel.RegisterRequest;
 import com.rb.elite.core.requestmodel.UpdateUserRequestEntity;
 
@@ -16,9 +17,6 @@ public interface IRegister {
     void getOtp(String email, String mobile, String ip, IResponseSubcriber iResponseSubcriber);
 
     void addUser(AddUserRequestEntity addUserRequestEntity, IResponseSubcriber iResponseSubcriber);
-
-
-    public void getCarMaster(IResponseSubcriber iResponseSubcriber);
 
     void getCityState(String pincode, IResponseSubcriber iResponseSubcriber);
 
@@ -44,5 +42,11 @@ public interface IRegister {
     void getCityMainMaster( IResponseSubcriber iResponseSubcriber);
 
     void saveFeedBack(String reqId,String userId, String feedback,  IResponseSubcriber iResponseSubcriber);
+
+    void displayFeedBack( int user_id,  IResponseSubcriber iResponseSubcriber);
+
+    void saveRate(RateRequestEntity rateRequestEntity, IResponseSubcriber iResponseSubcriber);
+
+    void displayRate( int userid,String request_id,  IResponseSubcriber iResponseSubcriber);
 
 }

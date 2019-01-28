@@ -1,60 +1,74 @@
 package com.rb.elite.feedback;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rb.elite.BaseActivity;
-import com.rb.elite.HomeActivity;
 import com.rb.elite.R;
 import com.rb.elite.core.APIResponse;
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.controller.product.ProductController;
 import com.rb.elite.core.controller.register.RegisterController;
+import com.rb.elite.core.model.CompleteOrderEntity;
+import com.rb.elite.core.model.FeedBackDisplayEntity;
+import com.rb.elite.core.model.InsuranceCompanyEntity;
 import com.rb.elite.core.model.OrderDetailEntity;
+import com.rb.elite.core.model.RtoCityMain;
 import com.rb.elite.core.model.UserEntity;
+import com.rb.elite.core.response.CompleteOrderResponse;
+import com.rb.elite.core.response.DisplayFeedbackResponse;
 import com.rb.elite.core.response.FeedbackResponse;
-import com.rb.elite.core.response.OrderDetailResponse;
-import com.rb.elite.database.DataBaseController;
+import com.rb.elite.rto_fragment.DrivingLicVerifyFragment;
+import com.rb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedbackActivity extends BaseActivity implements View.OnClickListener ,IResponseSubcriber {
+public class FeedbackActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber, ICompOrderData {
 
     // etBody   btnSubmit
-    EditText etBody,etReqName;
-    TextView txtReqestID;
+    EditText etBody, etReqName;
+    TextView txtReqestID, textRequestID, txtServiceName, txtHdr;
     Button btnSubmit;
-    RatingBar ratingBar;
-    OrderDetailEntity orderDetailEntity;
-    FeedbackAdapter feedbackAdapter;
-    List<OrderDetailEntity> lstOrderDetail;
-    UserEntity loginEntity;
-    DataBaseController dataBaseController;
-    LinearLayout lyReqID;
-    CardView cvRating;
-     AlertDialog alertDialog;
-    int OrderId;
-    float rating;
 
+    RecyclerView rvRTO;
+    ImageView ivCross;
+    OrderDetailEntity orderDetailEntity;
+    CompleteOrderEntity completeOrderEntity;
+    ComplOrderAdapter feedbackAdapter;
+    List<CompleteOrderEntity> lstCompOrderDetail;
+    UserEntity loginEntity;
+    LinearLayout lyReqID;
+
+    AlertDialog alertDialog;
+    int OrderId;
     PrefManager prefManager;
+
+    // region Botom sheetDeclaration
+    BottomSheetDialog mBottomSheetDialog;
+    List<FeedBackDisplayEntity> feedBackDisplayEntityList;
+    FeedBackHistoryAdapter feedBackHistoryAdapter;
+
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,27 +81,35 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
 
         prefManager = new PrefManager(this);
         loginEntity = prefManager.getUserData();
-        lstOrderDetail = new ArrayList<OrderDetailEntity>();
+        lstCompOrderDetail = new ArrayList<CompleteOrderEntity>();
 
         initialize();
+
         setOnClickListener();
 
         if (getIntent().hasExtra(Constants.FEEDBACK_DATA)) {
-           if( getIntent().getExtras().getParcelable(Constants.FEEDBACK_DATA) !=null)
-           {
-               lyReqID.setVisibility(View.GONE);
-               cvRating.setVisibility(View.GONE);
+            if (getIntent().getExtras().getParcelable(Constants.FEEDBACK_DATA) != null) {
+                lyReqID.setVisibility(View.GONE);
+                // cvRating.setVisibility(View.GONE);
+                txtServiceName.setVisibility(View.VISIBLE);
+                orderDetailEntity = getIntent().getExtras().getParcelable(Constants.FEEDBACK_DATA);
+                textRequestID.setText("Request ID: ");
+                txtReqestID.setText("" + orderDetailEntity.getDisplay_order_id());
+                txtServiceName.setText("" + orderDetailEntity.getProduct_name());
+                OrderId = orderDetailEntity.getOrder_id();
+                showDialog();
+                new RegisterController(this).displayFeedBack(loginEntity.getUser_id(), this);
 
-           }else{
-               lyReqID.setVisibility(View.VISIBLE);
-               cvRating.setVisibility(View.VISIBLE);
-               orderDetailEntity =  getIntent().getExtras().getParcelable(Constants.FEEDBACK_DATA);
-               txtReqestID.setText(""+orderDetailEntity.getOrder_id());
-               etReqName.setText(orderDetailEntity.getProduct_name());
+            }
+        } else {
+            txtServiceName.setVisibility(View.GONE);
+            lyReqID.setVisibility(View.VISIBLE);
+            // cvRating.setVisibility(View.VISIBLE);
+            textRequestID.setText("Select Request ID: ");
 
-               showDialog();
-               new ProductController(this).getOrderData(loginEntity.getUser_id(), this);
-           }
+
+            showDialog();
+            new ProductController(this).getCompleteOrderData(loginEntity.getUser_id(), this);
         }
 
 
@@ -96,25 +118,75 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initialize() {
-        cvRating = findViewById(R.id.cvRating);
-        lyReqID =  findViewById(R.id.lyReqID);
+
+        lyReqID = findViewById(R.id.lyReqID);
         btnSubmit = findViewById(R.id.btnSubmit);
         txtReqestID = findViewById(R.id.txtReqestID);
+        textRequestID = findViewById(R.id.textRequestID);
         etBody = findViewById(R.id.etBody);
         etReqName = findViewById(R.id.etReqName);
-        ratingBar = findViewById(R.id.ratingBar);
-        btnSubmit.setOnClickListener(this);
 
-        ratingBar.setRating(0.0f);
+        txtServiceName = findViewById(R.id.txtServiceName);
+
+
     }
 
-    private void setOnClickListener()
-    {
+
+
+    public void getBottomSheetDialog() {
+
+        if (feedBackDisplayEntityList == null || feedBackDisplayEntityList.size() == 0) {
+            getCustomToast("No Data Available");
+            return;
+        }
+
+        mBottomSheetDialog = new BottomSheetDialog(this, R.style.bottomSheetDialog);
+
+        View sheetView = this.getLayoutInflater().inflate(R.layout.bottom_sheet_feedback, null);
+
+        mBottomSheetDialog.setContentView(sheetView);
+        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+
+        rvRTO.setLayoutManager(new LinearLayoutManager(this));
+        rvRTO.setHasFixedSize(true);
+        feedBackHistoryAdapter = new FeedBackHistoryAdapter(this, feedBackDisplayEntityList);
+        rvRTO.setAdapter(feedBackHistoryAdapter);
+
+        rvRTO.setVisibility(View.VISIBLE);
+
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mBottomSheetDialog.isShowing()) {
+
+                    mBottomSheetDialog.dismiss();
+                }
+            }
+        });
+
+
+
+
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(true);
+        mBottomSheetDialog.show();
+
+
+    }
+
+
+
+    private void setOnClickListener() {
         etReqName.setFocusable(false);
         etReqName.setClickable(true);
 
         etReqName.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+
     }
 
     public void requestPopUp(String Title) {
@@ -130,14 +202,14 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         builder.setView(dialogView);
         alertDialog = builder.create();
         // set the custom dialog components - text, image and button
-        txtHdr =  dialogView.findViewById(R.id.txtHdr);
+        txtHdr = dialogView.findViewById(R.id.txtHdr);
         RecyclerView rvRTO = dialogView.findViewById(R.id.rvRTO);
-        ivCross  = (ImageView) dialogView.findViewById(R.id.ivCross);
+        ivCross = (ImageView) dialogView.findViewById(R.id.ivCross);
 
         rvRTO.setLayoutManager(new LinearLayoutManager(this));
         rvRTO.setHasFixedSize(true);
         rvRTO.setNestedScrollingEnabled(false);
-        feedbackAdapter = new FeedbackAdapter(this, lstOrderDetail);
+        feedbackAdapter = new ComplOrderAdapter(FeedbackActivity.this, lstCompOrderDetail, this);
         rvRTO.setAdapter(feedbackAdapter);
         rvRTO.setVisibility(View.VISIBLE);
         txtHdr.setText(Title);
@@ -154,31 +226,20 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         alertDialog.show();
 
     }
-    public void getOrderData(OrderDetailEntity temporderDetailEntity)
-    {
-        if(alertDialog != null)
-            if(alertDialog.isShowing()) {
-                alertDialog.dismiss();
-                orderDetailEntity = temporderDetailEntity;
-                txtReqestID.setText(""+orderDetailEntity.getOrder_id());
-                etReqName.setText(orderDetailEntity.getProduct_name());
-            }
-    }
+
+
+
+
 
     private boolean validate() {
 
-        if (!isEmpty(etReqName) && lyReqID.getVisibility()== View.VISIBLE) {
+        if (!isEmpty(etReqName) && lyReqID.getVisibility() == View.VISIBLE) {
             etReqName.requestFocus();
             etReqName.setError("Select Request Id");
             return false;
-        }
-       else if (!isEmpty(etBody)) {
+        } else if (!isEmpty(etBody)) {
             etBody.requestFocus();
             etBody.setError("Enter Feedback");
-            return false;
-        }else if(ratingBar.getRating() ==0 && cvRating.getVisibility()== View.VISIBLE)
-        {
-           getCustomToast("Please Rate");
             return false;
         }
 
@@ -198,25 +259,21 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 } else {
 
                     showDialog();
-                    if(lyReqID.getVisibility() == View.VISIBLE ) {
-                        OrderId = orderDetailEntity.getOrder_id();
-                        rating = ratingBar.getRating();
-                    }else{
-                        OrderId = 0;
-                        rating = 0;
-                    }
-                    new RegisterController(this).saveFeedBack("" + OrderId,String.valueOf(loginEntity.getUser_id()), etBody.getText().toString().trim(),this);
+
+                    new RegisterController(this).saveFeedBack("" + OrderId, String.valueOf(loginEntity.getUser_id()), etBody.getText().toString().trim(), this);
                 }
 
                 break;
 
             case R.id.etReqName:
-                if(lstOrderDetail.size() > 0) {
+                if (lstCompOrderDetail.size() > 0) {
                     etReqName.setError(null);
                     requestPopUp("Select Request");
                 }
 
                 break;
+
+
 
         }
 
@@ -226,19 +283,25 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void OnSuccess(APIResponse response, String message) {
         cancelDialog();
-        if (response instanceof OrderDetailResponse) {
+        if (response instanceof CompleteOrderResponse) {
             if (response.getStatus_code() == 0) {
 
-                lstOrderDetail = ((OrderDetailResponse) response).getData();
+                lstCompOrderDetail = ((CompleteOrderResponse) response).getData();
+                new RegisterController(this).displayFeedBack(loginEntity.getUser_id(), this);
 
             }
-        }else if (response instanceof FeedbackResponse) {
+        } else if (response instanceof FeedbackResponse) {
             if (response.getStatus_code() == 0) {
 
+                new RegisterController(this).displayFeedBack(loginEntity.getUser_id(), this);
                 getCustomToast(((FeedbackResponse) response).getMessage());
 
-                startActivity(new Intent(FeedbackActivity.this, HomeActivity.class));
-                this.finish();
+
+            }
+        } else if (response instanceof DisplayFeedbackResponse) {
+            if (response.getStatus_code() == 0) {
+
+                feedBackDisplayEntityList = ((DisplayFeedbackResponse) response).getData();
 
             }
         }
@@ -251,11 +314,22 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view_feedback_menu, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+
+            case R.id.action_view:
+                getBottomSheetDialog();
                 return true;
         }
 
@@ -267,5 +341,20 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         // finish();
         supportFinishAfterTransition();
         super.onBackPressed();
+    }
+
+    @Override
+    public void getOrderData(CompleteOrderEntity tempcompleteOrderEntity) {
+
+        if (alertDialog != null)
+            if (alertDialog.isShowing()) {
+                alertDialog.dismiss();
+                completeOrderEntity = tempcompleteOrderEntity;
+                txtReqestID.setText("" + completeOrderEntity.getDisplay_order_id());
+                etReqName.setText(completeOrderEntity.getProduct_name());
+
+                OrderId = completeOrderEntity.getOrder_id();
+
+            }
     }
 }

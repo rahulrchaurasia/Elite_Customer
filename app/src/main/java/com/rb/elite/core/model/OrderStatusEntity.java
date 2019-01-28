@@ -1,8 +1,7 @@
 package com.rb.elite.core.model;
 
-import io.realm.RealmObject;
 
-public  class OrderStatusEntity extends RealmObject {
+public  class OrderStatusEntity  {
             /**
              * id : 1
              * order_status : Pending

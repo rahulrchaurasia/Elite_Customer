@@ -15,7 +15,7 @@
         style="@style/CardStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,10 +62,11 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:drawableLeft="@drawable/ic_edit"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="2dp"
                     android:focusableInTouchMode="true"
                     android:hint="Reliance Policy No./Vehicle No."
                     android:maxLength="30"
+                    android:inputType="text"
                     android:textStyle="italic" />
 
 
@@ -97,7 +98,7 @@
         style="@style/CardStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:id="@+id/lyOther"
@@ -105,8 +106,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="left"
-            android:padding="8dp"
-            android:layout_margin="5dp">
+            android:padding="10dp"
+           >
 
             <TextView
                 style="@style/TextViewStyle.Large"

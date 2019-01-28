@@ -76,7 +76,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
         holder.txtPrdName.setText("" + orderDetailEntity.getProduct_name());
         holder.txtAmnt.setText("" + "\u20B9" + " " + orderDetailEntity.getAmount());
-        holder.txtOrderID.setText("" + orderDetailEntity.getOrder_id());
+        holder.txtOrderID.setText("" + orderDetailEntity.getDisplay_order_id());
 
         holder.txtDate.setText("" + orderDetailEntity.getPayment_date());
         holder.txtStatus.setText(""+ orderDetailEntity.getOrder_status());

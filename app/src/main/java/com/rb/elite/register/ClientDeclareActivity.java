@@ -3,6 +3,8 @@ package com.rb.elite.register;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +52,22 @@ public class ClientDeclareActivity extends BaseActivity implements IResponseSubc
     {
         lyOther.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
-
+        etpolicyVeh_no.setFilters( new InputFilter[]{
+                new InputFilter.AllCaps(),
+                new InputFilter.LengthFilter(30),
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        if(source.equals(" ")){ // for backspace
+                            return source;
+                        }
+                        if(source.toString().matches("^[a-zA-Z0-9]+$")){
+                            return source;
+                        }
+                        return "";
+                    }
+                }
+        });
         etpolicyVeh_no.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
