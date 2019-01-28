@@ -199,45 +199,46 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if (cityMainEntity != null ||  cityMainEntity.getRTOList().size() == 0) {
-            getCustomToast("No RTO Available");
-            return;
-        }
+        if (cityMainEntity != null && cityMainEntity.getRTOList().size() > 0) {
 
-        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
+            mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
-        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
+            View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
 
-        mBottomSheetDialog.setContentView(sheetView);
-        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
-        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
-        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+            mBottomSheetDialog.setContentView(sheetView);
+            TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+            RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+            ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
 
-        rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvRTO.setHasFixedSize(true);
-        rvRTO.setNestedScrollingEnabled(false);
-        rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, cityMainEntity.getRTOList(), this);
-        rvRTO.setAdapter(rtoMainAdapter);
-        rvRTO.setVisibility(View.VISIBLE);
+            rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvRTO.setHasFixedSize(true);
+            rvRTO.setNestedScrollingEnabled(false);
+            rtoMainAdapter = new RtoMainAdapter(DrivingLicVerifyFragment.this, cityMainEntity.getRTOList(), this);
+            rvRTO.setAdapter(rtoMainAdapter);
+            rvRTO.setVisibility(View.VISIBLE);
 
 
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if (mBottomSheetDialog.isShowing()) {
+                    if (mBottomSheetDialog.isShowing()) {
 
-                    mBottomSheetDialog.dismiss();
+                        mBottomSheetDialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
 
 
-        txtHdr.setText("Select RTO");
+            txtHdr.setText("Select RTO");
 
-        mBottomSheetDialog.setCancelable(false);
-        mBottomSheetDialog.setCanceledOnTouchOutside(true);
-        mBottomSheetDialog.show();
+            mBottomSheetDialog.setCancelable(false);
+            mBottomSheetDialog.setCanceledOnTouchOutside(true);
+            mBottomSheetDialog.show();
+        }else{
+            getCustomToast("No RTO Available");
+
+        }
 
 
     }

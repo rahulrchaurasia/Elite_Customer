@@ -59,12 +59,12 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     // Service 13
 
     private Context mContext;
-    AutoCompleteTextView acMake ;
+    AutoCompleteTextView acMake;
     // region Common Declaration
     PrefManager prefManager;
     UserConstatntEntity userConstatntEntity;
 
-    EditText etVehicle,  etMake, etInsCompanyName, etPincode, etCity,  etRTO;
+    EditText etVehicle, etMake, etInsCompanyName, etPincode, etCity, etRTO;
     DataBaseController dataBaseController;
     UserEntity loginEntity;
     Button btnBooked;
@@ -73,8 +73,9 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     RTOServiceEntity serviceEntity;
 
     ScrollView scrollView;
-    LinearLayout lyVehicle, lvLogo, lyTAT ;
-    RelativeLayout rlDoc ,rlEditVehicle;;
+    LinearLayout lyVehicle, lvLogo, lyTAT;
+    RelativeLayout rlDoc, rlEditVehicle;
+    ;
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -118,47 +119,48 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if(cityMainEntity.getRTOList().size() == 0)
-        {
-            getCustomToast("No RTO Available");
-        }
-        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
-
-        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
-
-        mBottomSheetDialog.setContentView(sheetView);
-        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
-        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
-        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
-
-        rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvRTO.setHasFixedSize(true);
-        rvRTO.setNestedScrollingEnabled(false);
-        rtoMainAdapter = new RtoMainAdapter(TransferNCBFragment.this, cityMainEntity.getRTOList(), this);
-        rvRTO.setAdapter(rtoMainAdapter);
-        rvRTO.setVisibility(View.VISIBLE);
+        if (cityMainEntity != null && cityMainEntity.getRTOList().size() > 0) {
 
 
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
-                if (mBottomSheetDialog.isShowing()) {
+            View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
 
-                    mBottomSheetDialog.dismiss();
+            mBottomSheetDialog.setContentView(sheetView);
+            TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+            RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+            ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+
+            rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvRTO.setHasFixedSize(true);
+            rvRTO.setNestedScrollingEnabled(false);
+            rtoMainAdapter = new RtoMainAdapter(TransferNCBFragment.this, cityMainEntity.getRTOList(), this);
+            rvRTO.setAdapter(rtoMainAdapter);
+            rvRTO.setVisibility(View.VISIBLE);
+
+
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mBottomSheetDialog.isShowing()) {
+
+                        mBottomSheetDialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
 
 
-        txtHdr.setText("Select RTO");
+            txtHdr.setText("Select RTO");
 
-        mBottomSheetDialog.setCancelable(false);
-        mBottomSheetDialog.setCanceledOnTouchOutside(true);
-        mBottomSheetDialog.show();
+            mBottomSheetDialog.setCancelable(false);
+            mBottomSheetDialog.setCanceledOnTouchOutside(true);
+            mBottomSheetDialog.show();
 
+        } else {
+            getCustomToast("No RTO Available");
 
-
+        }
     }
 
 
@@ -176,36 +178,35 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
         prefManager = new PrefManager(getActivity());
 
-        scrollView =  view.findViewById(R.id.scrollView);
-        btnBooked =  view.findViewById(R.id.btnBooked);
-        etCity =  view.findViewById(R.id.etCity);
-        etPincode =  view.findViewById(R.id.etPincode);
-        etVehicle =  view.findViewById(R.id.etVehicle);
-        etRTO   =  view.findViewById(R.id.etRTO);
-        etMake   =  view.findViewById(R.id.etMake);
+        scrollView = view.findViewById(R.id.scrollView);
+        btnBooked = view.findViewById(R.id.btnBooked);
+        etCity = view.findViewById(R.id.etCity);
+        etPincode = view.findViewById(R.id.etPincode);
+        etVehicle = view.findViewById(R.id.etVehicle);
+        etRTO = view.findViewById(R.id.etRTO);
+        etMake = view.findViewById(R.id.etMake);
         etInsCompanyName = view.findViewById(R.id.etInsCompanyName);
 
-        txtCharges =  view.findViewById(R.id.txtCharges);
-        txtPrdName =  view.findViewById(R.id.txtPrdName);
-        txtDoc =  view.findViewById(R.id.txtDoc);
-        txtClientName =  view.findViewById(R.id.txtClientName);
-        txtTAT =  view.findViewById(R.id.txtTAT);
+        txtCharges = view.findViewById(R.id.txtCharges);
+        txtPrdName = view.findViewById(R.id.txtPrdName);
+        txtDoc = view.findViewById(R.id.txtDoc);
+        txtClientName = view.findViewById(R.id.txtClientName);
+        txtTAT = view.findViewById(R.id.txtTAT);
 
         rlDoc = view.findViewById(R.id.rlDoc);
-        rlEditVehicle =  view.findViewById(R.id.rlEditVehicle);
+        rlEditVehicle = view.findViewById(R.id.rlEditVehicle);
 
-        lyVehicle =  view.findViewById(R.id.lyVehicle);
-        lvLogo =  view.findViewById(R.id.lvLogo);
+        lyVehicle = view.findViewById(R.id.lyVehicle);
+        lvLogo = view.findViewById(R.id.lvLogo);
 
 
         lyTAT = view.findViewById(R.id.lyTAT);
 
 
-        ivLogo =  view.findViewById(R.id.ivLogo);
+        ivLogo = view.findViewById(R.id.ivLogo);
         ivClientLogo = view.findViewById(R.id.ivClientLogo);
 
         acMake = view.findViewById(R.id.acMake);
-
 
 
     }
@@ -223,12 +224,9 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         btnBooked.setOnClickListener(this);
 
 
-
-
     }
 
-    private void setMakeListner()
-    {
+    private void setMakeListner() {
         acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -256,7 +254,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
                 String str = acMake.getText().toString();
                 ListAdapter listAdapter = acMake.getAdapter();
-                if( acMake.getAdapter()!= null ) {
+                if (acMake.getAdapter() != null) {
                     for (int i = 0; i < listAdapter.getCount(); i++) {
                         String temp = listAdapter.getItem(i).toString().toUpperCase();
                         if (str.compareTo(temp) == 0) {
@@ -288,7 +286,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
         txtClientName.setText(userConstatntEntity.getCompanyname());
         etVehicle.setText(userConstatntEntity.getVehicleno());
-        acMake.setText(""+userConstatntEntity.getMake());
+        acMake.setText("" + userConstatntEntity.getMake());
         IsMakeValid = true;
     }
 
@@ -297,19 +295,16 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         if (!validateVehicle(etVehicle)) {
 
             return false;
-        }else if (!validateMake(acMake,IsMakeValid)) {
+        } else if (!validateMake(acMake, IsMakeValid)) {
 
             return false;
-        }
-        else if (!validateInsCompName(etInsCompanyName)) {
+        } else if (!validateInsCompName(etInsCompanyName)) {
 
             return false;
-        }
-        else if (!validateCity(etCity)) {
+        } else if (!validateCity(etCity)) {
 
             return false;
-        }
-        else if (!validatePinCode(etPincode)) {
+        } else if (!validatePinCode(etPincode)) {
 
             return false;
         }
@@ -348,7 +343,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
         showDialog();
 
-        TransferBenefitsNCBRequestEntity requestEntity  = new TransferBenefitsNCBRequestEntity();
+        TransferBenefitsNCBRequestEntity requestEntity = new TransferBenefitsNCBRequestEntity();
 
         requestEntity.setAmount(txtCharges.getText().toString());
         requestEntity.setCityid(String.valueOf(CITY_ID));
@@ -365,7 +360,6 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
         requestEntity.setMake(etMake.getText().toString());
         requestEntity.setInsure_company_name(etInsCompanyName.getText().toString());
-
 
 
         new MiscNonRTOController(mContext).saveTransferNCBBenefits(requestEntity, this);
@@ -419,7 +413,6 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     }
 
 
-
     @Override
     public void onClick(View view) {
 
@@ -465,7 +458,6 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
                 break;
 
 
-
         }
 
     }
@@ -477,7 +469,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
         if (requestCode == Constants.SEARCH_CITY_CODE) {
             if (data != null) {
 
-                 cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
+                cityMainEntity = data.getParcelableExtra(Constants.SEARCH_CITY_DATA);
                 CITY_ID = String.valueOf(cityMainEntity.getCity_id());
                 etCity.setText(cityMainEntity.getCityname());
                 etCity.setError(null);
