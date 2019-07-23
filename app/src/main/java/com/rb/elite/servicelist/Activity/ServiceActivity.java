@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rb.elite.BaseActivity;
 import com.rb.elite.R;
@@ -20,6 +21,7 @@ import com.rb.elite.servicelist.NonRTOListFragment;
 import com.rb.elite.servicelist.RTOListFragment;
 import com.rb.elite.servicelist.adapter.ServicePagerAdapter;
 import com.rb.elite.splash.PrefManager;
+import com.rb.elite.utility.Constants;
 
 public class ServiceActivity extends BaseActivity  implements IResponseSubcriber {
 
@@ -28,12 +30,13 @@ public class ServiceActivity extends BaseActivity  implements IResponseSubcriber
 
     private TabLayout tabLayout;
     TextView txtName, txtVehicle;
-    private ViewPager viewPager;
+    public ViewPager viewPager;
     ServiceMainEntity mMasterData;
 
     UserEntity loginEntity;
     UserConstatntEntity userConstatntEntity;
     PrefManager prefManager;
+    int SERVICE_CURRENT_POSTION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,11 @@ public class ServiceActivity extends BaseActivity  implements IResponseSubcriber
         prefManager = new PrefManager(this);
         loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
+
+        if(getIntent().hasExtra(Constants.SERVICE_POSTION))
+        {
+            SERVICE_CURRENT_POSTION = getIntent().getIntExtra(Constants.SERVICE_POSTION,0);
+        }
         initialize();
         setUserInfo();
         showDialog();
@@ -58,7 +66,7 @@ public class ServiceActivity extends BaseActivity  implements IResponseSubcriber
     private void initialize() {
         mMasterData = new ServiceMainEntity();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        //setupViewPager(viewPager);
+
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         txtName = findViewById(R.id.txtName);
@@ -92,9 +100,18 @@ public class ServiceActivity extends BaseActivity  implements IResponseSubcriber
         adapter.addFrag(new RTOListFragment(), RTO);
         adapter.addFrag(new NonRTOListFragment(), NonRTO);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(SERVICE_CURRENT_POSTION);
+
 
         tabLayout.setupWithViewPager(viewPager);
+
+
+
     }
+
+
+
+
 
     @Override
     public void OnSuccess(APIResponse response, String message) {

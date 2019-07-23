@@ -36,7 +36,11 @@ public  class OrderDetailEntity implements Parcelable {
     private String logo;
     private String rating;
     private String receipt;
+    private String chat_count;
 
+
+    public OrderDetailEntity() {
+    }
     public String getDisplay_order_id() {
         return display_order_id;
     }
@@ -165,6 +169,13 @@ public  class OrderDetailEntity implements Parcelable {
         this.receipt = receipt;
     }
 
+    public String getChat_count() {
+        return chat_count;
+    }
+
+    public void setChat_count(String chat_count) {
+        this.chat_count = chat_count;
+    }
 
     @Override
     public int describeContents() {
@@ -189,10 +200,10 @@ public  class OrderDetailEntity implements Parcelable {
         dest.writeString(this.logo);
         dest.writeString(this.rating);
         dest.writeString(this.receipt);
+        dest.writeString(this.chat_count);
     }
 
-    public OrderDetailEntity() {
-    }
+
 
     protected OrderDetailEntity(Parcel in) {
         this.order_id = in.readInt();
@@ -211,6 +222,7 @@ public  class OrderDetailEntity implements Parcelable {
         this.logo = in.readString();
         this.rating = in.readString();
         this.receipt = in.readString();
+        this.chat_count = in.readString();
     }
 
     public static final Parcelable.Creator<OrderDetailEntity> CREATOR = new Parcelable.Creator<OrderDetailEntity>() {

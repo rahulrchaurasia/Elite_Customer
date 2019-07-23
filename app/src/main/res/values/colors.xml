@@ -15,6 +15,10 @@
     <color name="colorAccentRed">#ed1c24</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
+    <color name="sv_backround">#D9000000</color>
+
+    <!--//#20C0C0C0-->
+    <!--// for transparent color above one-->
     <color name="divider1">#BDBDBD</color>
 
     <color name="colorAccent">#71c4d2</color>
@@ -34,7 +38,8 @@
     <color name="bg_edit">#ebebeb</color>
 
 
-
+    <color name="teallight">#19A79B</color>
+    <color name="tealdark0">#116d65</color>
 
     <color name="header_text_color">#6c747c</color>
     <color name="secondary_text_color">#9ba0a6</color>
@@ -62,6 +67,8 @@
     <color name="back_button_color">#5a5a5a</color>
     <color name="buttonRedBackground">#ee5e35</color>
     <color name="buttonGreenBackground">#20d2bb</color>
+    <color name="buttonOrangeBackground">#f67b58</color>
+
     <color name="red_descent">#de6d75</color>
     <color name="red_light">#ff7777</color>
     <color name="red_custom">#ff5a5f</color>

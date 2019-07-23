@@ -1,6 +1,7 @@
 package com.rb.elite.rto_fragment;
 
 
+import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -433,11 +434,17 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
 
                 if (llCorrection.getVisibility() == View.GONE) {
                     llCorrection.setVisibility(View.VISIBLE);
-                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.up_arrow));
+                  //  ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.up_arrow));
+                    ObjectAnimator anim = ObjectAnimator.ofFloat(ivArrow, "rotation",180, 0);
+                    anim.setDuration(400);
+                    anim.start();
 
                 } else {
                     llCorrection.setVisibility(View.GONE);
-                    ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
+                  //  ivArrow.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
+                    ObjectAnimator anim = ObjectAnimator.ofFloat(ivArrow, "rotation",0,  180);
+                    anim.setDuration(400);
+                    anim.start();
                 }
 
                 break;

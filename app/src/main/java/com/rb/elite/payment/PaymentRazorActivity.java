@@ -194,7 +194,8 @@ public class PaymentRazorActivity extends BaseActivity implements PaymentResultL
             //You can omit the image option to fetch the image from dashboard
             //  options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
             options.put("currency", "INR");
-            options.put("amount", "100");
+            options.put("amount", AMOUNT_PAYMENT * 100);
+//            options.put("amount", "100");
 
             JSONObject preFill = new JSONObject();
             preFill.put("email", loginEntity.getEmail());

@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.rb.elite.core.model.CityMainEntity;
 import com.rb.elite.core.model.MakeEntity;
 import com.rb.elite.core.model.ModelEntity;
+import com.rb.elite.core.model.NotifyEntity;
 import com.rb.elite.core.model.UserConstatntEntity;
 import com.rb.elite.core.model.UserEntity;
 import com.rb.elite.core.model.VariantEntity;
@@ -40,6 +41,7 @@ public class PrefManager {
     private static final String VEHICLE_MASTER = "vehicle_data";
     private static final String USER_CONSTATNT = "user_constatnt";
     private static final String CITY_CONSTATNT = "cityr_constatnt";
+    private static final String PUSH_NOTIFY_DATA = "push_notify_data";
 
     private static final String IS_DEVICE_TOKEN = "devicetoken";
     public static String DEVICE_ID = "deviceID";
@@ -96,6 +98,30 @@ public class PrefManager {
         else return null;
     }
 
+
+    //region master NotificationData
+
+    public boolean storePushData(NotifyEntity entity) {
+        editor.putString(PUSH_NOTIFY_DATA, new Gson().toJson(entity));
+        return editor.commit();
+    }
+
+    public NotifyEntity getPushNotifyData() {
+        String pushDtata = pref.getString(PUSH_NOTIFY_DATA, "");
+
+        if (pushDtata.length() > 0) {
+            NotifyEntity notifyEntity = new Gson().fromJson(pushDtata, NotifyEntity.class);
+            return notifyEntity;
+        } else {
+            return null;
+        }
+    }
+    public void clearNotification() {
+        pref.edit().remove(PUSH_NOTIFY_DATA).commit();
+
+    }
+
+    //endregion
 
     //endregion
 

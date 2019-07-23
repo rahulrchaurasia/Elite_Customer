@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\GitProjects\Elite_Customer\Elite.iml" filepath="D:\GitProjects\Elite_Customer\Elite.iml" />
-      <module fileurl="file://D:\Rajeev\AndroidProjects\Elite-Customer\Elite.iml" filepath="D:\Rajeev\AndroidProjects\Elite-Customer\Elite.iml" />
-      <module fileurl="file://D:\Rajeev\AndroidProjects\EliteCustomer\Elite.iml" filepath="D:\Rajeev\AndroidProjects\EliteCustomer\Elite.iml" />
-      <module fileurl="file://C:\Umesh\elite-customer\Elite.iml" filepath="C:\Umesh\elite-customer\Elite.iml" />
-      <module fileurl="file://C:\Umesh\elite-customer\Elite_Customer\Elite.iml" filepath="C:\Umesh\elite-customer\Elite_Customer\Elite.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\Elite-Customer.iml" filepath="D:\Project_Company\Elite\Elite-Customer.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\.idea\Elite-Customer.iml" filepath="D:\Project_Company\Elite\.idea\Elite-Customer.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\EliteCustomer.iml" filepath="D:\Project_Company\Elite\EliteCustomer.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\.idea\EliteCustomer.iml" filepath="D:\Project_Company\Elite\.idea\EliteCustomer.iml" />
-      <module fileurl="file://D:\GitProjects\Elite_Customer\EliteCustomer.iml" filepath="D:\GitProjects\Elite_Customer\EliteCustomer.iml" />
       <module fileurl="file://$PROJECT_DIR$/Elite_Customer.iml" filepath="$PROJECT_DIR$/Elite_Customer.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\.idea\Elite_Customer.iml" filepath="D:\Project_Company\Elite\.idea\Elite_Customer.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\Elite_Customer.iml" filepath="D:\Project_Company\Elite\Elite_Customer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\Project_Company\Elite\elite-customer.iml" filepath="D:\Project_Company\Elite\elite-customer.iml" />
     </modules>
   </component>
 </project>

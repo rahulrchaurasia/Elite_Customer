@@ -22,6 +22,27 @@ public  class UserConstatntEntity {
 
     private String  dbversion;
 
+    private String VersionCode;
+    private String IsForceUpdate ;
+
+    public String getVersionCode() {
+        return VersionCode;
+    }
+
+    public void setVersionCode(String versionCode) {
+        VersionCode = versionCode;
+    }
+
+    public String getIsForceUpdate() {
+        return IsForceUpdate;
+    }
+
+    public void setIsForceUpdate(String isForceUpdate) {
+        IsForceUpdate = isForceUpdate;
+    }
+
+
+
 
     /**
      * vehicleno : KA04ML6747

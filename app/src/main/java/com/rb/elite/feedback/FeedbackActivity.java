@@ -135,45 +135,45 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
 
     public void getBottomSheetDialog() {
 
-        if (feedBackDisplayEntityList == null || feedBackDisplayEntityList.size() == 0) {
-            getCustomToast("No Data Available");
-            return;
-        }
 
-        mBottomSheetDialog = new BottomSheetDialog(this, R.style.bottomSheetDialog);
-
-        View sheetView = this.getLayoutInflater().inflate(R.layout.bottom_sheet_feedback, null);
-
-        mBottomSheetDialog.setContentView(sheetView);
-        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
-        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
-        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
-
-        rvRTO.setLayoutManager(new LinearLayoutManager(this));
-        rvRTO.setHasFixedSize(true);
-        feedBackHistoryAdapter = new FeedBackHistoryAdapter(this, feedBackDisplayEntityList);
-        rvRTO.setAdapter(feedBackHistoryAdapter);
-
-        rvRTO.setVisibility(View.VISIBLE);
+        if (feedBackDisplayEntityList != null && feedBackDisplayEntityList.size() > 0) {
 
 
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            mBottomSheetDialog = new BottomSheetDialog(this, R.style.bottomSheetDialog);
 
-                if (mBottomSheetDialog.isShowing()) {
+            View sheetView = this.getLayoutInflater().inflate(R.layout.bottom_sheet_feedback, null);
 
-                    mBottomSheetDialog.dismiss();
+            mBottomSheetDialog.setContentView(sheetView);
+            TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+            RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+            ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+
+            rvRTO.setLayoutManager(new LinearLayoutManager(this));
+            rvRTO.setHasFixedSize(true);
+            feedBackHistoryAdapter = new FeedBackHistoryAdapter(this, feedBackDisplayEntityList);
+            rvRTO.setAdapter(feedBackHistoryAdapter);
+
+            rvRTO.setVisibility(View.VISIBLE);
+
+
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mBottomSheetDialog.isShowing()) {
+
+                        mBottomSheetDialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
 
 
-
-
-        mBottomSheetDialog.setCancelable(false);
-        mBottomSheetDialog.setCanceledOnTouchOutside(true);
-        mBottomSheetDialog.show();
+            mBottomSheetDialog.setCancelable(false);
+            mBottomSheetDialog.setCanceledOnTouchOutside(true);
+            mBottomSheetDialog.show();
+        }else{
+            getCustomToast("No Data Available");
+        }
 
 
     }
@@ -190,6 +190,10 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void requestPopUp(String Title) {
+        if (alertDialog != null && alertDialog.isShowing()) {
+
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
 
         TextView txtHdr;
@@ -293,6 +297,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         } else if (response instanceof FeedbackResponse) {
             if (response.getStatus_code() == 0) {
 
+                etBody.setText("");
                 new RegisterController(this).displayFeedBack(loginEntity.getUser_id(), this);
                 getCustomToast(((FeedbackResponse) response).getMessage());
 

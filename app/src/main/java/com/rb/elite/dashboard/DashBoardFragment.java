@@ -1,14 +1,13 @@
 package com.rb.elite.dashboard;
 
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.rb.elite.BaseFragment;
 import com.rb.elite.R;
 import com.rb.elite.core.APIResponse;
@@ -52,7 +54,8 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
     ViewPager viewPager;
     List<Integer> banners;
-    CardView cvService, cvRequest, cvfeedback,cvRating;
+    CardView cvService, cvRequest, cvfeedback, cvRating;
+    ImageView imgService;
     CustomPagerAdapter mBannerAdapter;
     CirclePageIndicator circlePageIndicator;
     LinearLayout lyCall, lyEmail;
@@ -61,8 +64,14 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     UserConstatntEntity userConstatntEntity;
     PrefManager prefManager;
 
-
-    String[] permissionsRequired = new String[]{Manifest.permission.CALL_PHONE};
+    PackageInfo pinfo;
+    String versionNAme;
+    ShowcaseView.Builder showcaseView;
+    ShowcaseView.Builder showcaseView1;
+    final int SHOWCASEVIEW_ID = 55;
+    final int SHOWCASEVIEW_ID1 = 56;
+    final int SHOWCASEVIEW_ID2 = 57;
+    private int showcase_counter = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,13 +88,30 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         setListnner();
         registerCustomPopUp(this);
 
-        if (userConstatntEntity == null) {
-            if (prefManager.getUserConstatnt() == null) {
-                new RegisterController(getActivity()).getUserConstatnt(DashBoardFragment.this);
-            }
-        } else {
+        try {
+            pinfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            versionNAme = pinfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (userConstatntEntity != null) {
             setUserInfo();
         }
+        //  showcaseView();
+//
+        showcaseView = new ShowcaseView.Builder(getActivity())
+               // .hideOnTouchOutside()
+                .withMaterialShowcase()
+                .setTarget(new ViewTarget(view.findViewById(R.id.imgService)))
+                .setContentTitle("Services")
+                .setContentText("Service Related to RTO and Miscelaneous is Served here.")
+               // .singleShot(SHOWCASEVIEW_ID)
+                .setStyle(R.style.ShowcaseViewStyle);
+
+
+
+        showcaseView.build();
 
 
         return view;
@@ -119,7 +145,8 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         cvService = (CardView) view.findViewById(R.id.cvService);
         cvRequest = (CardView) view.findViewById(R.id.cvRequest);
         cvfeedback = (CardView) view.findViewById(R.id.cvfeedback);
-        cvRating  = (CardView) view.findViewById(R.id.cvRating);
+        cvRating = (CardView) view.findViewById(R.id.cvRating);
+        imgService = (ImageView) view.findViewById(R.id.imgService);
 
         lyCall = (LinearLayout) view.findViewById(R.id.lyCall);
         lyEmail = (LinearLayout) view.findViewById(R.id.lyEmail);
@@ -134,7 +161,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         banners.add(R.drawable.banner1);
         banners.add(R.drawable.banner2);
         banners.add(R.drawable.banner3);
-        mBannerAdapter = new CustomPagerAdapter(getContext(), banners);
+        mBannerAdapter = new CustomPagerAdapter(getContext(), DashBoardFragment.this, banners);
 
 
         if (viewPager != null && circlePageIndicator != null) {
@@ -144,24 +171,34 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
             Timer timer = new Timer();
             timer.schedule(new RemindTask(banners.size(), viewPager), 0, 1500);
 
-//            circlePageIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//
-//                @Override
-//                public void onPageSelected(int position) {
-//
-//                    getCustomToast("Position" +position);
-//                }
-//                @Override
-//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//                }
-//
-//                @Override
-//                public void onPageScrollStateChanged(int state) {
-//
-//                }
-//            });
 
+        }
+    }
+
+    public void redirectToDashBoard(int pos) {
+        // Toast.makeText(getActivity(), "Selected Position" + pos, Toast.LENGTH_SHORT).show();
+
+        switch (pos) {
+
+
+            case 1:
+
+                startActivity(new Intent(getActivity(), ServiceActivity.class).putExtra(Constants.SERVICE_POSTION, 0));
+                break;
+
+            case 2:
+
+                startActivity(new Intent(getActivity(), ServiceActivity.class).putExtra(Constants.SERVICE_POSTION, 1));
+                break;
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (loginEntity != null) {
+            new RegisterController(getActivity()).getUserConstatnt(DashBoardFragment.this);
         }
     }
 
@@ -174,6 +211,16 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
                 userConstatntEntity = ((UserConsttantResponse) response).getData().get(0);
                 if (userConstatntEntity != null) {
+                    int serverVersionCode = Integer.parseInt((userConstatntEntity.getVersionCode()));
+                    if (pinfo != null && pinfo.versionCode < serverVersionCode) {
+
+                        int forceUpdate = Integer.parseInt(userConstatntEntity.getIsForceUpdate());
+                        if (forceUpdate == 1) {
+                            // forced update app
+                            showPlaystoreDialog("New version available on play store!!!! Please update.");
+                        }
+                    }
+
                     setUserInfo();
                 }
             }
@@ -217,6 +264,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
     private void setListnner() {
 
+
         cvService.setOnClickListener(this);
         cvRequest.setOnClickListener(this);
         cvfeedback.setOnClickListener(this);
@@ -257,7 +305,7 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
             public void onClick(View v) {
                 alertDialog.dismiss();
 
-                Intent intentCalling = new Intent(Intent.ACTION_CALL);
+                Intent intentCalling = new Intent(Intent.ACTION_DIAL);
                 intentCalling.setData(Uri.parse("tel:" + strMobile));
                 startActivity(intentCalling);
 
@@ -277,15 +325,14 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-
-
     @Override
     public void onClick(View view) {
 
 
         switch (view.getId()) {
-
-
+            case R.id.imgService:
+                Toast.makeText(getActivity(), "ShowcaseService", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.cvService:
 
                 startActivity(new Intent(getActivity(), ServiceActivity.class));
@@ -309,23 +356,10 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
             case R.id.lyCall:
 
-                if (ActivityCompat.checkSelfPermission(this.getActivity(), permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED) {
-
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(), permissionsRequired[0])) {
-                        //Show Information about why you need the permission
-                        ActivityCompat.requestPermissions(this.getActivity(), permissionsRequired, Constants.PERMISSION_CALLBACK_CONSTANT);
-
-                    } else {
-
-                        // openPopUp(lyCall, "Need  Permission", "This app needs all permissions.", "GRANT", true);
-                        openPopUp(lyCall, "Need Call Permission", "Required call permissions.", "GRANT", "DENNY", false, true);
-
-                    }
-                } else {
-
+                if (userConstatntEntity != null) {
                     ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
-                }
 
+                }
                 break;
 
             case R.id.lyEmail:
@@ -336,35 +370,39 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         }
 
 
+//        switch (showcase_counter) {
+//            case 0:
+//
+//                showcaseView = new ShowcaseView.Builder(getActivity())
+//                        .setTarget(Target.NONE)
+//                        .setContentTitle("Request")
+//                        .setContentText("You can track your Request and Upload the Related Document here")
+//                        .setStyle(R.style.ShowcaseViewStyle)
+//                       // .singleShot(SHOWCASEVIEW_ID1)
+//                        .hideOnTouchOutside();
+//                showcaseView.build();
+//                showcase_counter++;
+//                break;
+//
+//            case 1:
+//                showcaseView.setTarget(Target.NONE);
+//                showcaseView.setOnClickListener(this);
+//                showcaseView.setContentTitle("Title");
+//                showcaseView.setContentText("some text");
+//              //  showcaseView.singleShot(SHOWCASEVIEW_ID2);
+//                showcaseView.hideOnTouchOutside();
+//                showcase_counter++;
+//                break;
+//
+//
+//            case 2:
+//                showcaseView.hideOnTouchOutside();
+//                break;
+//        }
+
+
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-
-
-            case Constants.PERMISSION_CALLBACK_CONSTANT:
-                if (grantResults.length > 0) {
-
-                    //boolean writeExternal = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean call_phone = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-
-                    if (call_phone) {
-
-                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
-
-
-                    }
-
-                }
-
-                break;
-
-
-        }
-    }
 
     //endregion
 
@@ -383,4 +421,55 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
         dialog.cancel();
     }
+
+    //region PlayStore
+
+    public void showPlaystoreDialog(String msg) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.update_dialog, null);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+
+        // dialog.setTitle("Title...");
+
+        // set the custom dialog components - text, image and button
+        TextView txtMsg = (TextView) dialogView.findViewById(R.id.txtMsg);
+        txtMsg.setText(msg);
+
+        LinearLayout lyUpdate = (LinearLayout) dialogView.findViewById(R.id.lyUpdate);
+        //TextView btnOk = (TextView) dialog.findViewById(R.id.tvOk);
+        // if button is clicked, close the custom dialog
+        lyUpdate.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            alertDialog.dismiss();
+                                            getActivity().finish();
+                                            openAppMarketPlace();
+                                        }
+                                    }
+        );
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+
+    }
+
+    private void openAppMarketPlace() {
+
+        final String appPackageName = getActivity().getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+
+    }
+
+    //endregion
+
+
 }

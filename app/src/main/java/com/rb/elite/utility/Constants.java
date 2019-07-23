@@ -32,11 +32,13 @@ public class Constants {
     public static String REQUEST_TYPE = "ELITE_REQUEST_TYPE";
 
     public static String FEEDBACK_DATA = "ELITE_FEEDBACK_DATA";
+    public static String CHAT_REQUEST_DATA = "ELITE_CHAT_REQUEST_DATA";
 
     public static int SEARCH_CITY_CODE = 5;
     public static int ORDER_CODE = 2;
     public static int UPLOAD_FILE = 4;
     public static int REQUEST_CODE = 22;
+    public static String SERVICE_POSTION = "ELITE_SERVICE_POSTION";
 
     public static String SEARCH_CITY_DATA = "ELITE_SEARCH_CITY_DATA";
     public static String SEARCH_CITY_ID = "ELITE_SEARCH_CITY_ID";

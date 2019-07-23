@@ -6,6 +6,7 @@ import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.requestbuilder.ProductRequestBuilder;
 import com.rb.elite.core.requestmodel.InsertOrderRequestEntity;
 import com.rb.elite.core.requestmodel.UpdateOrderRequestEntity;
+import com.rb.elite.core.response.ChatResponse;
 import com.rb.elite.core.response.ClientCommonResponse;
 import com.rb.elite.core.response.CompleteOrderResponse;
 import com.rb.elite.core.response.DocumentResponse;
@@ -18,7 +19,9 @@ import com.rb.elite.core.response.ProductDocumentResponse;
 import com.rb.elite.core.response.ProductResponse;
 import com.rb.elite.core.response.RtoLocationReponse;
 import com.rb.elite.core.response.RtoProductDisplayResponse;
+import com.rb.elite.core.response.SaveChatResponse;
 import com.rb.elite.core.response.ServiceListResponse;
+import com.rb.elite.core.response.UpdateChatResponse;
 import com.rb.elite.splash.PrefManager;
 
 import java.net.ConnectException;
@@ -620,6 +623,137 @@ public class ProductController implements IProduct {
 
             @Override
             public void onFailure(Call<DocumentResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getChatDetail(String req_id, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("req_id", req_id);
+
+        productNetworkService.getChatDetail(body).enqueue(new Callback<ChatResponse>() {
+            @Override
+            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+                if (response.body() != null) {
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateReadChat(String req_id, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("req_id", req_id);
+
+        productNetworkService.updateReadChat(body).enqueue(new Callback<UpdateChatResponse>() {
+            @Override
+            public void onResponse(Call<UpdateChatResponse> call, Response<UpdateChatResponse> response) {
+                if (response.body() != null) {
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateChatResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void saveChat(String req_id, String cust_id, String message, final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("req_id", req_id);
+        body.put("cust_id", cust_id);
+        body.put("message", message);
+
+        productNetworkService.saveChat(body).enqueue(new Callback<SaveChatResponse>() {
+            @Override
+            public void onResponse(Call<SaveChatResponse> call, Response<SaveChatResponse> response) {
+                if (response.body() != null) {
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SaveChatResponse> call, Throwable t) {
                 if (t instanceof ConnectException) {
                     iResponseSubcriber.OnFailure(t);
                 } else if (t instanceof SocketTimeoutException) {

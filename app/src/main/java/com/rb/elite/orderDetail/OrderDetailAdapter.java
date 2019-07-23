@@ -34,10 +34,10 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     }
 
     public class OrderDetailItem extends RecyclerView.ViewHolder {
-        TextView txtPrdName, txtAmnt, txtOrderID, txtDate, txtStatus;
+        TextView txtPrdName, txtAmnt, txtOrderID, txtDate, txtStatus,chat_badge;
         Button btnUpload;
-        LinearLayout lyUpload,lyReceipt,lyFeedback;
-        ImageView ivReceipt,ivFeedBack,ivReqLogo;
+        LinearLayout lyUpload,lyReceipt,lyFeedback,lychat;
+        ImageView ivReceipt,ivFeedBack,ivReqLogo,ivchat;
         RatingBar ratingBar;
 
         public OrderDetailItem(View itemView) {
@@ -52,10 +52,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             lyUpload =  itemView.findViewById(R.id.lyUpload);
             lyReceipt =    itemView.findViewById(R.id.lyReceipt);
             ivReceipt = itemView.findViewById(R.id.ivReceipt);
+            lychat  = itemView.findViewById(R.id.lychat);
+
             ratingBar = itemView.findViewById(R.id.ratingBar);
             ivFeedBack  = itemView.findViewById(R.id.ivFeedBack);
             lyFeedback =  itemView.findViewById(R.id.lyFeedback);
             ivReqLogo =  itemView.findViewById(R.id.ivReqLogo);
+            chat_badge =  itemView.findViewById(R.id.chat_badge);
 
         }
     }
@@ -112,15 +115,24 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
 
 
-         if(orderDetailEntity.getDocumentPending() == 0 )
+//         if(orderDetailEntity.getDocumentPending() == 0 )
+//        {
+//            holder.btnUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonGreenBackground));
+//            holder.btnUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_visibility, 0, 0, 0);
+//
+//        } else {
+//            holder.btnUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonRedBackground));
+//             holder.btnUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_upload, 0, 0, 0);
+//
+//        }
 
-        {
-            holder.btnUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonGreenBackground));
-            holder.btnUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_visibility, 0, 0, 0);
 
-        } else {
-            holder.btnUpload.setBackgroundColor(mContext.getResources().getColor(R.color.buttonRedBackground));
-             holder.btnUpload.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_upload, 0, 0, 0);
+        if(orderDetailEntity.getChat_count().trim().length()>0 && !orderDetailEntity.getChat_count().equals("0")){
+            holder.chat_badge.setVisibility(View.VISIBLE);
+            holder.chat_badge.setText(""+ orderDetailEntity.getChat_count());
+
+        }else{
+          holder.chat_badge.setVisibility(View.GONE);
 
         }
 
@@ -146,7 +158,12 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             }
         });
 
-
+        holder.lychat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((OrderDetailFragment) mContext).redirectToChat(orderDetailEntity);
+            }
+        });
     }
 
 

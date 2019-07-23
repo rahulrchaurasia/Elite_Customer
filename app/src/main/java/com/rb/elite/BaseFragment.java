@@ -434,7 +434,7 @@ public class BaseFragment extends Fragment {
 
 
         File dir;
-        File outFile;
+            File outFile;
         String fileURL;
         String fileName;
 

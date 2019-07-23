@@ -43,4 +43,11 @@ public interface IProduct {
 
 
     void uploadDocuments(MultipartBody.Part document, HashMap<String, Integer> body, final IResponseSubcriber iResponseSubcriber);
+
+
+    void getChatDetail(String req_id, IResponseSubcriber iResponseSubcriber);
+
+    void updateReadChat(String req_id, IResponseSubcriber iResponseSubcriber);
+
+    void saveChat(String req_id,String cust_id,String message, IResponseSubcriber iResponseSubcriber);
 }

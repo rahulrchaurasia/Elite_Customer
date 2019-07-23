@@ -111,7 +111,7 @@ public class ClientDeclareActivity extends BaseActivity implements IResponseSubc
         if (response instanceof PolicyResponse) {
 
             if (response.getStatus_code() == 0) {
-                PolicyEntity policyEntity =  ((PolicyResponse) response).getData();
+                PolicyEntity policyEntity =  ((PolicyResponse) response).getData().get(0);
 
                 Intent intent = new Intent(ClientDeclareActivity.this, SignUpActivity.class);
                 intent.putExtra("POLICY_DATA",policyEntity);
@@ -125,5 +125,6 @@ public class ClientDeclareActivity extends BaseActivity implements IResponseSubc
     @Override
     public void OnFailure(Throwable t) {
         cancelDialog();
+        getCustomToast(t.getMessage());
     }
 }

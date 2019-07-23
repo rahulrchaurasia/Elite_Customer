@@ -160,7 +160,12 @@ public class RateActivity extends BaseActivity implements View.OnClickListener, 
             txtMessage.setTextColor(getResources().getColor(R.color.red_nav));
             txtMessage.setText(getResources().getString(R.string.rate_Negative));
             lyComment.setVisibility(View.VISIBLE);
-            return false;
+            if (!isEmpty(etBody)) {
+                etBody.requestFocus();
+                etBody.setError("Enter Comment");
+                return false;
+            }
+
         } else if (!isEmpty(etBody) && ratingBar.getRating() < 5) {
             etBody.requestFocus();
             etBody.setError("Enter Comment");

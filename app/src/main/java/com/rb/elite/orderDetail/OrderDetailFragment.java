@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.rb.elite.BaseFragment;
 import com.rb.elite.R;
+import com.rb.elite.chat.ChatActivity;
 import com.rb.elite.core.APIResponse;
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.controller.product.ProductController;
@@ -125,6 +126,12 @@ public class OrderDetailFragment extends BaseFragment implements IResponseSubcri
 
         startActivity(new Intent(getActivity(), FeedbackActivity.class)
                 .putExtra(Constants.FEEDBACK_DATA, orderDetailEntity));
+    }
+
+    public void redirectToChat(OrderDetailEntity orderDetailEntity) {
+
+        startActivity(new Intent(getActivity(), ChatActivity.class)
+                .putExtra(Constants.CHAT_REQUEST_DATA, orderDetailEntity));
     }
 
     public void redirectToreceipt(OrderDetailEntity orderDetailEntity) {

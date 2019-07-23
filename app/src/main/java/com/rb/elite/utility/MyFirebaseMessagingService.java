@@ -14,15 +14,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 import com.rb.elite.HomeActivity;
 import com.rb.elite.R;
+import com.rb.elite.core.model.ChatEntity;
 import com.rb.elite.core.model.NotifyEntity;
 import com.rb.elite.splash.PrefManager;
 
@@ -48,8 +48,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      **************************************************/
     private NotificationManager mManager;
     private static final String TAG = "MyFirebaseMsgService";
-    public static final String CHANNEL_ID = "com.datacomp.magicfinmart.NotifyID";
-    public static final String CHANNEL_NAME = "FINMART CHANNEL";
+    public static final String CHANNEL_ID = "com.rb.elite.NotifyID";
+    public static final String CHANNEL_NAME = "ELITE CHANNEL";
+  //  String GROUP_KEY_WORK_CHAT = "com.rb.elite.WORK_CHAT";
+
     Bitmap bitmap_image = null;
     String type;
     String WebURL, WebTitle, messageId;
@@ -65,6 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(RemoteMessage remoteMessage, Map<String, String> data) {
 
         notifyEntity = new NotifyEntity();
+        ChatEntity chat = new ChatEntity();
         prefManager = new PrefManager(getApplicationContext());
         int NOTIFICATION_ID = 0;
 
@@ -105,6 +108,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } else {
                 messageId = NotifyData.get("message_id");
             }
+
+            //region chat
+            if (NotifyData.get("chat") != null) {
+
+                String chatMap = NotifyData.get("chat");
+
+                chat = new Gson().fromJson(chatMap, ChatEntity.class);
+
+            }
+            //endregion
+
             // endregion
 
             notifyEntity.setNotifyFlag(type);
@@ -113,13 +127,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notifyEntity.setMessage_id(messageId);
             notifyEntity.setWeb_url(WebURL);
             notifyEntity.setWeb_title(WebTitle);
-
+            notifyEntity.setChatEntity(chat);
             String img_url = NotifyData.get("img_url");
+
             bitmap_image = getBitmapfromUrl(img_url);
             //  new createBitmapFromURL(NotifyData.get("img_url")).execute();
 
+
             intent = new Intent(this, HomeActivity.class);
             intent.putExtra(Utility.PUSH_NOTIFY, notifyEntity);
+
 
         }
 
@@ -141,7 +158,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.BigTextStyle BigTextstyle = new NotificationCompat.BigTextStyle()
                 .bigText(NotifyData.get("body"))
                 .setBigContentTitle(NotifyData.get("title"));
-               // .setSummaryText(NotifyData.get("body"));
+        // .setSummaryText(NotifyData.get("body"));
 
         NotificationCompat.Builder notificationBuilder = null;
 
@@ -175,20 +192,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setWhen(System.currentTimeMillis())
                 .setVisibility(NOTIFICATION_ID)
                 .setChannelId(CHANNEL_ID)
+                .setNumber(1)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+
                 .setContentIntent(pendingIntent);
+
+        //  .setGroup(GROUP_KEY_WORK_CHAT)
 
 
         getManager().notify(NOTIFICATION_ID, notificationBuilder.build());
 
-        setNotifyCounter();
+        if(chat.getReq_id()!= null)
+        {
+            setChatData(chat);
+        }else{
+            setNotifyCounter();
+        }
 
 
 
     }
 
 
+    private void setNotifyCounter( ) {
 
-    private void setNotifyCounter() {
+
         int notifyCounter = prefManager.getNotificationCounter();
         prefManager.setNotificationCounter(notifyCounter + 1);
 
@@ -197,6 +225,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     }
+    private void setChatData(ChatEntity chatEntity) {
+
+        Intent intent = new Intent(Utility.CHAT_BROADCAST_ACTION);
+        intent.putExtra(Utility.CHAT_DATA,chatEntity);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
+
+    }
+
 
     public void createChannels() {
         if (Build.VERSION.SDK_INT >= 26) {

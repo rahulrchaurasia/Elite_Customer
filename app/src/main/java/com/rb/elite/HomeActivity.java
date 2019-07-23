@@ -33,11 +33,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.rb.elite.aboutUs.AboutUsFragment;
+import com.rb.elite.chat.ChatActivity;
 import com.rb.elite.core.APIResponse;
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.controller.register.RegisterController;
+import com.rb.elite.core.model.NotifyEntity;
 import com.rb.elite.core.model.UserConstatntEntity;
 import com.rb.elite.core.model.UserEntity;
 import com.rb.elite.core.response.UserConsttantResponse;
@@ -46,10 +51,9 @@ import com.rb.elite.login.ChangePasswordFragment;
 import com.rb.elite.login.LoginActivity;
 import com.rb.elite.notification.NotificationActivity;
 import com.rb.elite.orderDetail.OrderDetailFragment;
-
-import com.rb.elite.servicelist.ProductHomeFragment;
 import com.rb.elite.profile.ProfileFragment;
 import com.rb.elite.splash.PrefManager;
+import com.rb.elite.splash.SplashScreenActivity;
 import com.rb.elite.term.TermsConditionFragment;
 import com.rb.elite.utility.Constants;
 import com.rb.elite.utility.Utility;
@@ -85,6 +89,9 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
     PrefManager prefManager;
 
+
+
+
     //region broadcast receiver
     public BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
 
@@ -115,7 +122,8 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mHandler = new Handler();
         drawer = (DrawerLayout) findViewById(R.id.drawer);
@@ -125,25 +133,33 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         loginEntity = prefManager.getUserData();
         userConstatntEntity = prefManager.getUserConstatnt();
 
+
+        getNotificationAction();
+
         init_headers();
 
-        if (userConstatntEntity == null) {
 
-            if(prefManager.getUserConstatnt() == null) {
-                new RegisterController(this).getUserConstatnt(HomeActivity.this);
+        if (loginEntity != null) {
+            if (userConstatntEntity == null) {
 
+                if (prefManager.getUserConstatnt() == null) {
+                    new RegisterController(this).getUserConstatnt(HomeActivity.this);
+
+                }
             }
-        }
+
+
+            setUpNavigationView();
+
+
+            if (savedInstanceState == null) {
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+                loadHomeFragment("Home");
+            }
 
 
 
-        setUpNavigationView();
-
-
-        if (savedInstanceState == null) {
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_HOME;
-            loadHomeFragment("Home");
         }
 
 
@@ -163,18 +179,71 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
         }
 
-        if(userConstatntEntity!=null)
-        {
-            txtVehicle.setText("" +userConstatntEntity.getVehicleno() );
+        if (userConstatntEntity != null) {
+            txtVehicle.setText("" + userConstatntEntity.getVehicleno());
 
-            if(userConstatntEntity.getHomepopup()!="")
-            {
+            if (userConstatntEntity.getHomepopup() != "") {
                 marketingPopUp(userConstatntEntity.getHomepopup());
             }
 
-        }else{
+        } else {
             txtVehicle.setText("");
         }
+    }
+
+    private void getNotificationAction() {
+
+        // region Activity Open Usnig Notification
+
+        if (getIntent().getExtras() != null) {
+
+
+            // region verifyUser : when user logout and when Apps in background : No action take place we have to store the data in preference and login to user
+            if (loginEntity == null) {
+                //username and password are present, do your stuff
+                NotifyEntity notifyEntity = getIntent().getParcelableExtra(Utility.PUSH_NOTIFY);
+                if (notifyEntity != null) {
+
+                    prefManager.storePushData(notifyEntity);  // store on shared Preference
+                    startActivity(new Intent(this, SplashScreenActivity.class));
+                    finish();
+                   // Toast.makeText(this, "First Event Called", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(new Intent(this, SplashScreenActivity.class));
+                    finish();
+                }
+            }
+            //endregion
+
+            // region For Notification come via Login for user credential
+            else if (getIntent().getStringExtra(Utility.PUSH_LOGIN_PAGE) != null) {
+                // verify  Page come via login and we have already putted data in shared Preference using above method
+                if (getIntent().getStringExtra(Utility.PUSH_LOGIN_PAGE).equals("555")) {
+
+                    NotifyEntity notifyEntity = prefManager.getPushNotifyData();
+                    prefManager.clearNotification();
+                    startActivity(new Intent(HomeActivity.this, ChatActivity.class).putExtra(Utility.PUSH_NOTIFY, notifyEntity));
+
+                   // Toast.makeText(this, "Second Event Called", Toast.LENGTH_LONG).show();
+                }
+
+            }
+            //endregion
+
+            // region user already logged in and app in forground
+            else if (getIntent().getParcelableExtra(Utility.PUSH_NOTIFY) != null) {
+
+                NotifyEntity notifyEntity = getIntent().getParcelableExtra(Utility.PUSH_NOTIFY);
+                startActivity(new Intent(HomeActivity.this, ChatActivity.class).putExtra(Utility.PUSH_NOTIFY, notifyEntity));
+               // Toast.makeText(this, "Third Event Called", Toast.LENGTH_LONG).show();
+
+
+            }
+            //endregion
+
+        }
+
+        //endregion
     }
 
     private void setUpNavigationView() {
@@ -204,7 +273,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
                     case R.id.nav_order:
 //                        navItemIndex = 2;
 //                        CURRENT_TAG = TAG_ORDER;
-                        startActivity(new Intent(HomeActivity.this,DemActivity.class));
+                        startActivity(new Intent(HomeActivity.this, DemActivity.class));
                         break;
 
 //                    case R.id.nav_doc:
@@ -332,8 +401,8 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
                 return fragment;
 
             default:
-                fragment = new ProductHomeFragment();
-                getSupportActionBar().setTitle("Elite Customer");
+                fragment = new DashBoardFragment();
+                getSupportActionBar().setTitle("Home");
                 return fragment;
         }
     }
@@ -413,8 +482,6 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
             Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
 
 
-
-
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -436,7 +503,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
         return cm.getActiveNetworkInfo() != null;
     }
 
-    private void settingWebview( String url) {
+    private void settingWebview(String url) {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
 
@@ -506,6 +573,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
     //endregion
 
 
+
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -546,8 +614,6 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
         // super.onBackPressed();
     }
-
-
 
 
     @Override
@@ -642,7 +708,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
 
                 userConstatntEntity = ((UserConsttantResponse) response).getData().get(0);
                 if (userConstatntEntity != null) {
-                  init_headers();
+                    init_headers();
                 }
             }
         }

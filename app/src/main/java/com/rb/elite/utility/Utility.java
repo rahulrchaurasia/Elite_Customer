@@ -18,8 +18,12 @@ import okhttp3.RequestBody;
 public class Utility {
 
 
-    public static String PUSH_BROADCAST_ACTION = "Finmart_Push_BroadCast_Action";
+    public static String PUSH_BROADCAST_ACTION = "Elite_Push_BroadCast_Action";
+    public static String CHAT_BROADCAST_ACTION = "Elite_Chat_Action";
+    public static String CHAT_DATA = "Elite_Chat_Data";
     public static String PUSH_NOTIFY = "notifyFlag";
+    public static String PUSH_SHARED_DATA = "push_shared_data";
+    public static String PUSH_DATA_FROM_LOGIN= "push_data_from_login";
     public static String PUSH_LOGIN_PAGE = "pushloginPage";
 
 

@@ -32,7 +32,6 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
 
     LinearLayout lyCalling, lyEmail;
     TextView txtCall ,txtEmail;
-    String[] permissionsRequired = new String[]{Manifest.permission.CALL_PHONE};
     UserConstatntEntity userConstatntEntity;
     PrefManager prefManager;
 
@@ -88,23 +87,8 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
 
             case R.id.lyCalling:
 
-                if (ActivityCompat.checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED) {
-
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0])) {
-                        //Show Information about why you need the permission
-                        ActivityCompat.requestPermissions(this, permissionsRequired, Constants.PERMISSION_CALLBACK_CONSTANT);
-
-                    } else {
-
-                        // openPopUp(lyCall, "Need  Permission", "This app needs all permissions.", "GRANT", true);
-                        openPopUp(lyCalling, "Need Call Permission", "Required call permissions.", "GRANT", "DENNY", false, true);
-
-                    }
-                } else {
-
-                    if (userConstatntEntity != null) {
-                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
-                    }
+                if (userConstatntEntity != null) {
+                    ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
                 }
 
                 break;
@@ -154,7 +138,7 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
             public void onClick(View v) {
                 alertDialog.dismiss();
 
-                Intent intentCalling = new Intent(Intent.ACTION_CALL);
+                Intent intentCalling = new Intent(Intent.ACTION_DIAL);
                 intentCalling.setData(Uri.parse("tel:" + strMobile));
                 if (ActivityCompat.checkSelfPermission(EmailUsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
@@ -183,30 +167,6 @@ public class EmailUsActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-
-            case Constants.PERMISSION_CALLBACK_CONSTANT:
-                if (grantResults.length > 0) {
-
-                    //boolean writeExternal = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean call_phone = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-
-                    if (call_phone) {
-
-                        ConfirmAlert("Calling", getResources().getString(R.string.supp_Calling) + " ", userConstatntEntity.getContactno());
-                    }
-
-                }
-
-                break;
-
-
-        }
-    }
 
     @Override
     public void OnSuccess(APIResponse response, String message) {

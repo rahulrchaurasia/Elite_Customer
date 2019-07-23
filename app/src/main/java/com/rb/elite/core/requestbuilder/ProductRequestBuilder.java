@@ -3,7 +3,9 @@ package com.rb.elite.core.requestbuilder;
 import com.rb.elite.core.RetroRequestBuilder;
 import com.rb.elite.core.requestmodel.UpdateOrderRequestEntity;
 import com.rb.elite.core.requestmodel.InsertOrderRequestEntity;
+import com.rb.elite.core.response.ChatResponse;
 import com.rb.elite.core.response.CityResponse;
+import com.rb.elite.core.response.CommonResponse;
 import com.rb.elite.core.response.CompleteOrderResponse;
 import com.rb.elite.core.response.DocumentResponse;
 import com.rb.elite.core.response.DocumentViewResponse;
@@ -16,7 +18,9 @@ import com.rb.elite.core.response.ProductResponse;
 import com.rb.elite.core.response.RtoLocationReponse;
 import com.rb.elite.core.response.ClientCommonResponse;
 import com.rb.elite.core.response.RtoProductDisplayResponse;
+import com.rb.elite.core.response.SaveChatResponse;
 import com.rb.elite.core.response.ServiceListResponse;
+import com.rb.elite.core.response.UpdateChatResponse;
 import com.rb.elite.core.response.VehicleMasterResponse;
 
 import java.util.HashMap;
@@ -91,5 +95,15 @@ public class ProductRequestBuilder extends RetroRequestBuilder {
 
 
 
+        //******************  Chat *******************************//
+
+        @POST("/api/get-all-chat-detail")
+        Call<ChatResponse> getChatDetail(@Body HashMap<String, String> body);
+
+        @POST("/api/update-read-customer-chat")
+        Call<UpdateChatResponse> updateReadChat(@Body HashMap<String, String> body);
+
+        @POST("/api/save-customer-chat")
+        Call<SaveChatResponse> saveChat(@Body HashMap<String, String> body);
     }
 }

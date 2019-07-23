@@ -114,45 +114,46 @@ public class SmartCardLicFragment extends BaseFragment implements View.OnClickLi
       //region bottomSheetDialog
     public void getBottomSheetDialog() {
 
-        if (cityMainEntity != null ||  cityMainEntity.getRTOList().size() == 0) {
-            getCustomToast("No Data Available");
-            return;
-        }
-
-        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
-
-        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
-
-        mBottomSheetDialog.setContentView(sheetView);
-        TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
-        RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
-        ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
-
-        rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvRTO.setHasFixedSize(true);
-        rvRTO.setNestedScrollingEnabled(false);
-        rtoMainAdapter = new RtoMainAdapter(SmartCardLicFragment.this, cityMainEntity.getRTOList(), this);
-        rvRTO.setAdapter(rtoMainAdapter);
-        rvRTO.setVisibility(View.VISIBLE);
+        if (cityMainEntity != null && cityMainEntity.getRTOList().size() > 0) {
 
 
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.bottomSheetDialog);
 
-                if (mBottomSheetDialog.isShowing()) {
+            View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
 
-                    mBottomSheetDialog.dismiss();
+            mBottomSheetDialog.setContentView(sheetView);
+            TextView txtHdr = mBottomSheetDialog.findViewById(R.id.txtHdr);
+            RecyclerView rvRTO = (RecyclerView) mBottomSheetDialog.findViewById(R.id.rvRTO);
+            ImageView ivCross = (ImageView) mBottomSheetDialog.findViewById(R.id.ivCross);
+
+            rvRTO.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvRTO.setHasFixedSize(true);
+            rvRTO.setNestedScrollingEnabled(false);
+            rtoMainAdapter = new RtoMainAdapter(SmartCardLicFragment.this, cityMainEntity.getRTOList(), this);
+            rvRTO.setAdapter(rtoMainAdapter);
+            rvRTO.setVisibility(View.VISIBLE);
+
+
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mBottomSheetDialog.isShowing()) {
+
+                        mBottomSheetDialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
 
 
-        txtHdr.setText("Select RTO");
+            txtHdr.setText("Select RTO");
 
-        mBottomSheetDialog.setCancelable(false);
-        mBottomSheetDialog.setCanceledOnTouchOutside(true);
-        mBottomSheetDialog.show();
+            mBottomSheetDialog.setCancelable(false);
+            mBottomSheetDialog.setCanceledOnTouchOutside(true);
+            mBottomSheetDialog.show();
+        }else{
+            getCustomToast("No RTO Available");
+        }
 
 
     }

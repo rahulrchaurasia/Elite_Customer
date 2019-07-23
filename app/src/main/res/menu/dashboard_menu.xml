@@ -4,15 +4,14 @@
 
 
 
+
     <item
         android:id="@+id/action_push_notification"
-        android:orderInCategory="20"
+        android:orderInCategory="10"
         android:title="Notificaton"
         android:visible="true"
         app:actionLayout="@layout/notification_action_item_layout"
         app:showAsAction="always" />
-
-
 
 
 </menu>

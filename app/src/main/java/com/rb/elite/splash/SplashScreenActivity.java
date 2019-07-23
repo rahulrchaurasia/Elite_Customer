@@ -1,7 +1,6 @@
 package com.rb.elite.splash;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -18,7 +17,6 @@ import com.rb.elite.core.APIResponse;
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.controller.register.RegisterController;
 import com.rb.elite.core.model.UserEntity;
-import com.rb.elite.core.response.CityResponse;
 import com.rb.elite.database.DataBaseController;
 import com.rb.elite.login.LoginActivity;
 import com.rb.elite.utility.Constants;
@@ -66,9 +64,11 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
     private void fetchMasters() {
 
-        if (prefManager.getCityData().size() == 0) {
-            new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
-        }
+//        if (prefManager.getCityData().size() == 0) {
+//
+//        }
+
+        new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
 
         if (prefManager.getMake() == null) {
             fetchCar();
@@ -104,13 +104,13 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
                         }
                     });
 
-            // Changing message text color
-            snackbar.setActionTextColor(Color.RED);
-
-            // Changing action button text color
-            View sbView = snackbar.getView();
-            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(Color.CYAN);
+//            // Changing message text color
+//            snackbar.setActionTextColor(Color.RED);
+//
+//            // Changing action button text color
+//            View sbView = snackbar.getView();
+//            TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+//            textView.setTextColor(Color.CYAN);
 
             snackbar.show();
         } else {

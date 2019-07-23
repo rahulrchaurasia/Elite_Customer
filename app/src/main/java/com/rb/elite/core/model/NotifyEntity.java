@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by IN-RB on 22-02-2018.
  */
 
-public class NotifyEntity implements Parcelable {
+public class NotifyEntity  implements Parcelable {
 
 
     /**
@@ -25,12 +25,13 @@ public class NotifyEntity implements Parcelable {
     private String web_url;
     private String web_title;
     private String message_id;
-
+    private ChatEntity chatEntity;
 
 
     public NotifyEntity() {
 
     }
+
     protected NotifyEntity(Parcel in) {
         title = in.readString();
         body = in.readString();
@@ -38,6 +39,7 @@ public class NotifyEntity implements Parcelable {
         web_url = in.readString();
         web_title = in.readString();
         message_id = in.readString();
+        chatEntity = in.readParcelable(ChatEntity.class.getClassLoader());
     }
 
     @Override
@@ -48,6 +50,7 @@ public class NotifyEntity implements Parcelable {
         dest.writeString(web_url);
         dest.writeString(web_title);
         dest.writeString(message_id);
+        dest.writeParcelable(chatEntity, flags);
     }
 
     @Override
@@ -113,6 +116,14 @@ public class NotifyEntity implements Parcelable {
 
     public void setMessage_id(String message_id) {
         this.message_id = message_id;
+    }
+
+    public ChatEntity getChatEntity() {
+        return chatEntity;
+    }
+
+    public void setChatEntity(ChatEntity chatEntity) {
+        this.chatEntity = chatEntity;
     }
 
 

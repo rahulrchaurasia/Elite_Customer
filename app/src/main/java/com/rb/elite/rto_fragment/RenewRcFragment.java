@@ -498,6 +498,18 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
             return false;
         }
+        if (PRODUCT_ID == 0) {
+
+            Toast.makeText(getActivity(),getResources().getString(R.string.error_Msg),Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+        if (productPriceEntity == null) {
+
+            Toast.makeText(getActivity(),getResources().getString(R.string.error_Msg),Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
 
         return true;
     }
