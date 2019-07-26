@@ -18,7 +18,9 @@ android {
 //                checkReleaseBuilds false
 //                abortOnError false
 //            }
-            minifyEnabled true
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

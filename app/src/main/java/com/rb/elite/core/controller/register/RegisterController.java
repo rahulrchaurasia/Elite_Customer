@@ -1,6 +1,7 @@
 package com.rb.elite.core.controller.register;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.rb.elite.core.IResponseSubcriber;
 
@@ -487,7 +488,7 @@ public class RegisterController implements IRegister {
     }
 
     @Override
-    public void getUserProfile( final IResponseSubcriber iResponseSubcriber) {
+    public void getUserProfile(final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
         body.put("user_id", String.valueOf(loginEntity.getUser_id()));
@@ -500,7 +501,7 @@ public class RegisterController implements IRegister {
                     if (response.isSuccessful()) {
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
 
-                    }else {
+                    } else {
                         //failure
                         iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
                     }
@@ -713,10 +714,16 @@ public class RegisterController implements IRegister {
                 if (response.body() != null) {
 
                     if (response.isSuccessful()) {
-                        new PrefManager(mContext).storeVehicle(response.body().getData().getVehicleMasterResult());
 
-                        if (iResponseSubcriber != null)
-                            iResponseSubcriber.OnSuccess(response.body(), "");
+                        if (response.body().getData().getVehicleMasterResult() != null) {
+                           // Toast.makeText(mContext, "data", Toast.LENGTH_SHORT).show();
+                            new PrefManager(mContext).storeVehicle(response.body().getData().getVehicleMasterResult());
+
+                            if (iResponseSubcriber != null)
+                                iResponseSubcriber.OnSuccess(response.body(), "");
+                        } else {
+                           // Toast.makeText(mContext, "null", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 } else {
@@ -751,7 +758,7 @@ public class RegisterController implements IRegister {
 
 
     @Override
-    public void saveFeedBack(String reqId,  String userID ,String feedback, final IResponseSubcriber iResponseSubcriber) {
+    public void saveFeedBack(String reqId, String userID, String feedback, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
 
@@ -841,7 +848,7 @@ public class RegisterController implements IRegister {
     }
 
     @Override
-    public void saveRate(RateRequestEntity rateRequestEntity,final IResponseSubcriber iResponseSubcriber) {
+    public void saveRate(RateRequestEntity rateRequestEntity, final IResponseSubcriber iResponseSubcriber) {
 
         registerQuotesNetworkService.saveRate(rateRequestEntity).enqueue(new Callback<RateResponse>() {
             @Override
@@ -926,9 +933,9 @@ public class RegisterController implements IRegister {
     }
 
     @Override
-    public void getVechileDetails(String RegistrationNumber,final IResponseSubcriber iResponseSubcriber) {
+    public void getVechileDetails(String RegistrationNumber, final IResponseSubcriber iResponseSubcriber) {
 
-      //  String url1 = "http://api.rupeeboss.com/BankAPIService.svc/GetCitywiseBankList?City_Id=" + cityid+"&Product_Id="+Productid;
+        //  String url1 = "http://api.rupeeboss.com/BankAPIService.svc/GetCitywiseBankList?City_Id=" + cityid+"&Product_Id="+Productid;
 
         String url = "http://api.magicfinmart.com/api/vehicle-info";
 
@@ -936,7 +943,7 @@ public class RegisterController implements IRegister {
 
         body.put("RegistrationNumber", RegistrationNumber);
 
-        registerQuotesNetworkService.getFastLaneData(url,body).enqueue(new Callback<FastLaneDataResponse>() {
+        registerQuotesNetworkService.getFastLaneData(url, body).enqueue(new Callback<FastLaneDataResponse>() {
             @Override
             public void onResponse(Call<FastLaneDataResponse> call, Response<FastLaneDataResponse> response) {
                 if (response.body() != null) {
