@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +26,6 @@ import com.rb.elite.core.controller.register.RegisterController;
 import com.rb.elite.core.model.UserConstatntEntity;
 import com.rb.elite.core.response.UserConsttantResponse;
 import com.rb.elite.splash.PrefManager;
-import com.rb.elite.utility.Constants;
 
 public class EmailUsActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber, BaseActivity.CustomPopUpListener {
 

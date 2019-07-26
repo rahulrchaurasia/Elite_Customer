@@ -2,7 +2,7 @@ package com.rb.elite.register;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.MotionEvent;

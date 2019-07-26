@@ -53,7 +53,7 @@
             android:orientation="horizontal">
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -68,14 +68,14 @@
                     android:focusableInTouchMode="true"
                     android:padding="@dimen/input_label_vertical_spacing" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
 
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="PUC Expiry Date">
@@ -88,7 +88,7 @@
             android:drawableRight="@drawable/vector_date"
              />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <include

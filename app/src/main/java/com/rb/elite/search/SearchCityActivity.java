@@ -4,11 +4,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.Menu;
@@ -107,7 +107,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
         }
 
-        EditText editText =  searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText editText =  searchView.findViewById(androidx.appcompat.R.id.search_src_text);
 
         editText.setFilters( new InputFilter[]{
                 new InputFilter.AllCaps(),

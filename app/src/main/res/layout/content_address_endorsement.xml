@@ -43,7 +43,7 @@
         android:background="@color/bg_edit"
         android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -58,7 +58,7 @@
                 android:focusableInTouchMode="true"
                 android:padding="@dimen/nav_header_vertical_spacing" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
@@ -69,7 +69,7 @@
         android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -86,7 +86,7 @@
                 android:lines="1"
                 android:padding="@dimen/activity_horizontal_margin" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>

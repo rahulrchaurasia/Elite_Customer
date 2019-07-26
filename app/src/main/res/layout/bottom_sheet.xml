@@ -71,13 +71,13 @@
         android:text="PROCEED PAYMENT"
         android:textColor="#fff" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProductDoc"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@+id/txtHdr"
         android:paddingBottom="3dp">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

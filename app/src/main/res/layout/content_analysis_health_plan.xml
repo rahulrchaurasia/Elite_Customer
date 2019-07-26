@@ -7,7 +7,7 @@
     android:paddingRight="5dp">
 
 
-<android.support.design.widget.TextInputLayout
+<com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Proposal Name">
@@ -21,10 +21,10 @@
             android:maxLength="50"
             android:padding="@dimen/activity_horizontal_margin" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Sum Insured">
@@ -38,10 +38,10 @@
             android:maxLength="10"
             android:padding="@dimen/activity_horizontal_margin" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date of Birth">
@@ -54,7 +54,7 @@
            android:drawableRight="@drawable/vector_date"
             android:padding="@dimen/activity_horizontal_margin" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 

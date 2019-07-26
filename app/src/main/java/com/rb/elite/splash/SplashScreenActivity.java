@@ -3,7 +3,7 @@ package com.rb.elite.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;

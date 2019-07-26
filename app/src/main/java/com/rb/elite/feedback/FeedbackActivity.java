@@ -1,14 +1,13 @@
 package com.rb.elite.feedback;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,15 +27,11 @@ import com.rb.elite.core.controller.product.ProductController;
 import com.rb.elite.core.controller.register.RegisterController;
 import com.rb.elite.core.model.CompleteOrderEntity;
 import com.rb.elite.core.model.FeedBackDisplayEntity;
-import com.rb.elite.core.model.InsuranceCompanyEntity;
 import com.rb.elite.core.model.OrderDetailEntity;
-import com.rb.elite.core.model.RtoCityMain;
 import com.rb.elite.core.model.UserEntity;
 import com.rb.elite.core.response.CompleteOrderResponse;
 import com.rb.elite.core.response.DisplayFeedbackResponse;
 import com.rb.elite.core.response.FeedbackResponse;
-import com.rb.elite.rto_fragment.DrivingLicVerifyFragment;
-import com.rb.elite.rto_fragment.adapter.RtoMainAdapter;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
 

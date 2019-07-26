@@ -7,10 +7,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.rb.elite.BaseFragment;
+import com.rb.elite.BuildConfig;
 import com.rb.elite.HomeActivity;
 import com.rb.elite.R;
 import com.rb.elite.core.APIResponse;
@@ -63,8 +64,6 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
     UserConstatntEntity userConstatntEntity;
     PrefManager prefManager;
 
-    PackageInfo pinfo;
-    String versionNAme;
     ShowcaseView showcaseView, showcaseViewSec;
 
     final int SHOWCASEVIEW_ID = 55;
@@ -85,13 +84,6 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         setBanner();
         setListnner();
         registerCustomPopUp(this);
-
-        try {
-            pinfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-            versionNAme = pinfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
         if (userConstatntEntity != null) {
             setUserInfo();
@@ -264,7 +256,10 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
                 userConstatntEntity = ((UserConsttantResponse) response).getData().get(0);
                 if (userConstatntEntity != null) {
                     int serverVersionCode = Integer.parseInt((userConstatntEntity.getVersionCode()));
-                    if (pinfo != null && pinfo.versionCode < serverVersionCode) {
+
+
+
+                    if (BuildConfig.VERSION_CODE < serverVersionCode) {
 
                         int forceUpdate = Integer.parseInt(userConstatntEntity.getIsForceUpdate());
                         if (forceUpdate == 1) {

@@ -16,7 +16,7 @@
         android:paddingBottom="10dp"
         android:layout_above="@+id/btnSubmit">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             style="@style/CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -66,7 +66,7 @@
                                     android:drawablePadding="10dp"
                                     android:maxLength="30" />
 
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
 
@@ -75,7 +75,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -89,7 +89,7 @@
                                     android:inputType="number"
                                     android:maxLength="10" />
 
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
                         </LinearLayout>
@@ -104,7 +104,7 @@
                                 android:layout_alignParentLeft="true"
                                 android:orientation="horizontal">
 
-                                <android.support.design.widget.TextInputLayout
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -116,7 +116,7 @@
                                         android:drawableLeft="@drawable/ic_vehicle"
                                         android:drawablePadding="10dp" />
 
-                                </android.support.design.widget.TextInputLayout>
+                                </com.google.android.material.textfield.TextInputLayout>
 
 
                             </LinearLayout>
@@ -137,7 +137,7 @@
                             android:visibility="gone"
                             android:orientation="horizontal">
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -149,7 +149,7 @@
                                     android:drawableLeft="@drawable/ic_policy"
                                     android:drawablePadding="10dp" />
 
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
                         </LinearLayout>
@@ -159,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/TextInputLayoutStyle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -177,9 +177,9 @@
                                     android:maxLines="1"
                                     android:lines="1"
                                     android:dropDownWidth="250dp" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/TextInputLayoutStyle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                                     android:maxLines="1"
                                     android:lines="1"
                                     android:dropDownWidth="250dp" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
                         </LinearLayout>
@@ -211,7 +211,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Email">
@@ -224,7 +224,7 @@
                                     android:inputType="textEmailAddress"
                                     android:maxLength="30" />
 
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
 
@@ -244,7 +244,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -258,7 +258,7 @@
                                 android:inputType="number"
                                 android:maxLength="6" />
 
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
 
                     </LinearLayout>
@@ -269,7 +269,7 @@
                         android:orientation="horizontal">
 
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -281,9 +281,9 @@
                                 android:clickable="false"
                                 android:focusable="false"
                                 android:inputType="none" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -295,7 +295,7 @@
                                 android:clickable="false"
                                 android:focusable="false"
                                 android:inputType="none" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -304,7 +304,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -315,7 +315,7 @@
                                 style="@style/Style.edittext"
 
                                 android:editable="false" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -324,7 +324,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -337,9 +337,9 @@
                                 android:inputType="textPassword"
                                 android:maxLength="10" />
 
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -349,7 +349,7 @@
                                 android:id="@+id/etconfirmPassword"
                                 style="@style/Style.edittext"
                                 android:inputType="textPassword" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -358,7 +358,7 @@
             </LinearLayout>
 
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
     <Button
