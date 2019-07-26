@@ -17,11 +17,13 @@ import com.rb.elite.core.response.CommonResponse;
 import com.rb.elite.core.response.DBVersionRespone;
 import com.rb.elite.core.response.DisplayFeedbackResponse;
 import com.rb.elite.core.response.DisplayRateResponse;
+import com.rb.elite.core.response.FastLaneDataResponse;
 import com.rb.elite.core.response.FeedbackResponse;
 import com.rb.elite.core.response.GetOtpResponse;
 import com.rb.elite.core.response.LoginResponse;
 import com.rb.elite.core.response.PincodeResponse;
 import com.rb.elite.core.response.PolicyResponse;
+import com.rb.elite.core.response.ProfileResponse;
 import com.rb.elite.core.response.RateResponse;
 import com.rb.elite.core.response.UpdateUserResponse;
 import com.rb.elite.core.response.UserConsttantResponse;
@@ -444,6 +446,92 @@ public class RegisterController implements IRegister {
     }
 
     @Override
+    public void saveUserProfile(RegisterRequest registerRequest, final IResponseSubcriber iResponseSubcriber) {
+
+        registerQuotesNetworkService.userProfile(registerRequest).enqueue(new Callback<UserRegistrationResponse>() {
+            @Override
+            public void onResponse(Call<UserRegistrationResponse> call, Response<UserRegistrationResponse> response) {
+                if (response.body() != null) {
+
+                    //callback of data
+                    if (response.body().getStatus_code() == 0) {
+                        //callback of data
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+                    } else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException(response.body().getMessage()));
+                    }
+
+
+                } else {
+                    //failure
+                    iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRegistrationResponse> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    iResponseSubcriber.OnFailure(t);
+                } else if (t instanceof SocketTimeoutException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof UnknownHostException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                } else if (t instanceof NumberFormatException) {
+                    iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                } else {
+                    iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUserProfile( final IResponseSubcriber iResponseSubcriber) {
+
+        HashMap<String, String> body = new HashMap<>();
+        body.put("user_id", String.valueOf(loginEntity.getUser_id()));
+
+        registerQuotesNetworkService.getProfile(body).enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
+
+                    }else {
+                        //failure
+                        iResponseSubcriber.OnFailure(new RuntimeException((response.body().getMessage())));
+                    }
+
+                } else {
+                    //failure
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void verifyOTPTegistration(String email, String mobile, String ip, final IResponseSubcriber iResponseSubcriber) {
 
         HashMap<String, String> body = new HashMap<>();
@@ -820,6 +908,53 @@ public class RegisterController implements IRegister {
 
             @Override
             public void onFailure(Call<DisplayRateResponse> call, Throwable t) {
+                if (iResponseSubcriber != null) {
+                    if (t instanceof ConnectException) {
+                        iResponseSubcriber.OnFailure(t);
+                    } else if (t instanceof SocketTimeoutException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof UnknownHostException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Check your internet connection"));
+                    } else if (t instanceof NumberFormatException) {
+                        iResponseSubcriber.OnFailure(new RuntimeException("Unexpected server response"));
+                    } else {
+                        iResponseSubcriber.OnFailure(new RuntimeException(t.getMessage()));
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getVechileDetails(String RegistrationNumber,final IResponseSubcriber iResponseSubcriber) {
+
+      //  String url1 = "http://api.rupeeboss.com/BankAPIService.svc/GetCitywiseBankList?City_Id=" + cityid+"&Product_Id="+Productid;
+
+        String url = "http://api.magicfinmart.com/api/vehicle-info";
+
+        HashMap<String, String> body = new HashMap<>();
+
+        body.put("RegistrationNumber", RegistrationNumber);
+
+        registerQuotesNetworkService.getFastLaneData(url,body).enqueue(new Callback<FastLaneDataResponse>() {
+            @Override
+            public void onResponse(Call<FastLaneDataResponse> call, Response<FastLaneDataResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.isSuccessful()) {
+                        if (iResponseSubcriber != null)
+                            iResponseSubcriber.OnSuccess(response.body(), "");
+                    }
+
+                } else {
+                    //failure
+                    if (iResponseSubcriber != null)
+                        iResponseSubcriber.OnFailure(new RuntimeException("Enable to reach server, Try again later"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FastLaneDataResponse> call, Throwable t) {
                 if (iResponseSubcriber != null) {
                     if (t instanceof ConnectException) {
                         iResponseSubcriber.OnFailure(t);

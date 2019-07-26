@@ -47,6 +47,13 @@ public class RegisterRequest {
     private String PolicyStatus;
     private String ResponseStatus;
 
+    private String lat;
+    private String lon;
+
+
+    private String user_id;
+
+
     public String getOtp() {
         return otp;
     }
@@ -199,7 +206,30 @@ public class RegisterRequest {
         this.ResponseStatus = ResponseStatus;
     }
 
+    public String getLat() {
+        return lat;
+    }
 
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
 
 }

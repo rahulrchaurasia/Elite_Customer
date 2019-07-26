@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -23,8 +22,8 @@ import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.rb.elite.BaseFragment;
+import com.rb.elite.HomeActivity;
 import com.rb.elite.R;
 import com.rb.elite.core.APIResponse;
 import com.rb.elite.core.IResponseSubcriber;
@@ -66,12 +65,11 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
     PackageInfo pinfo;
     String versionNAme;
-    ShowcaseView.Builder showcaseView;
-    ShowcaseView.Builder showcaseView1;
+    ShowcaseView showcaseView, showcaseViewSec;
+
     final int SHOWCASEVIEW_ID = 55;
     final int SHOWCASEVIEW_ID1 = 56;
-    final int SHOWCASEVIEW_ID2 = 57;
-    private int showcase_counter = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,23 +96,77 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
         if (userConstatntEntity != null) {
             setUserInfo();
         }
-        //  showcaseView();
-//
-        showcaseView = new ShowcaseView.Builder(getActivity())
-               // .hideOnTouchOutside()
-                .withMaterialShowcase()
-                .setTarget(new ViewTarget(view.findViewById(R.id.imgService)))
-                .setContentTitle("Services")
-                .setContentText("Service Related to RTO and Miscelaneous is Served here.")
-               // .singleShot(SHOWCASEVIEW_ID)
-                .setStyle(R.style.ShowcaseViewStyle);
 
+        if (prefManager.isFirstTimeShowCaseView()) {
+            getShowCaseView();
+        }
 
-
-        showcaseView.build();
-
+      //  showServiceCaseView();
 
         return view;
+    }
+
+
+
+
+
+    private void getShowCaseView() {
+        showcaseView = new ShowcaseView.Builder(getActivity())
+                //.withMaterialShowcase()
+                // .setTarget(new ViewTarget(view.findViewById(R.id.imgService)))
+                .withMaterialShowcase()
+                .setTarget(Target.NONE)
+                .setContentTitle("Services")
+                .setContentText("Place all service requests for RTO as well as Misc. Services")
+                .singleShot(SHOWCASEVIEW_ID)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showcaseView.hide();
+                        getShowCaseViewSecond();
+                    }
+                })
+                .setStyle(R.style.ShowcaseViewStyle).build();
+
+        showcaseView.show();
+
+    }
+
+    private void getShowCaseViewSecond() {
+        showcaseViewSec = new ShowcaseView.Builder(getActivity())
+                //.withMaterialShowcase()
+                // .setTarget(new ViewTarget(view.findViewById(R.id.imgService)))
+                .withMaterialShowcase()
+                .setTarget(Target.NONE)
+                .setContentTitle("Request")
+                .setContentText("See status updates for all services availed, in real time.")
+                .singleShot(SHOWCASEVIEW_ID1)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showcaseViewSec.hide();
+                        prefManager.setFirstTimeShowCaseView(false);
+                        openPopUp(imgService, "My Profile", getResources().getString(R.string.profile_msg), "OK", "Skip", true, false);
+                    }
+                })
+                .setStyle(R.style.ShowcaseViewStyleSec).build();
+
+        showcaseViewSec.show();
+
+    }
+
+
+    private ShowcaseView getShowcaseView(long singleID) {
+
+        ShowcaseView showcaseView = new ShowcaseView.Builder(getActivity())
+                .withMaterialShowcase()
+                .setTarget(Target.NONE)
+                .singleShot(singleID)
+                .build();
+
+        return showcaseView;
+
+
     }
 
     private void setUserInfo() {
@@ -219,9 +271,11 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
                             // forced update app
                             showPlaystoreDialog("New version available on play store!!!! Please update.");
                         }
+                    }else{
+                        setUserInfo();
                     }
 
-                    setUserInfo();
+
                 }
             }
         }
@@ -408,18 +462,28 @@ public class DashBoardFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onPositiveButtonClick(Dialog dialog, View view) {
-        dialog.cancel();
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-        intent.setData(uri);
-        startActivityForResult(intent, Constants.REQUEST_PERMISSION_SETTING);
+
+        if (view.getId() == R.id.imgService) {
+            dialog.cancel();
+
+            ((HomeActivity) getActivity()).setProfile();
+
+            /*MyProfileFragment fragment = new MyProfileFragment();
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                    android.R.anim.fade_out);
+            fragmentTransaction.replace(R.id.frame, fragment);
+            fragmentTransaction.commitAllowingStateLoss();*/
+        }
+
 
     }
 
     @Override
     public void onCancelButtonClick(Dialog dialog, View view) {
-
-        dialog.cancel();
+        if (view.getId() == R.id.imgService) {
+            dialog.cancel();
+        }
     }
 
     //region PlayStore

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/white"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.rb.elite.register.SignUpActivity"
-    tools:showIn="@layout/activity_sign_up">
+    android:layout_height="match_parent"
+    tools:context=".profile.MyProfileFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:id="@+id/svParent"
         android:layout_width="match_parent"
@@ -77,25 +73,63 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="Vehicle Number">
+                                android:hint="Mobile">
 
                                 <EditText
-                                    android:id="@+id/etVehicle"
+                                    android:id="@+id/etMobile"
                                     style="@style/Style.edittext"
-                                    android:drawableLeft="@drawable/ic_vehicle"
-                                    android:drawablePadding="10dp" />
+                                    android:drawableLeft="@drawable/ic_mobile"
+                                    android:drawablePadding="10dp"
+                                    android:inputType="number"
+                                    android:maxLength="10" />
 
                             </android.support.design.widget.TextInputLayout>
 
 
                         </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:orientation="horizontal">
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Vehicle Number">
+
+                                    <EditText
+                                        android:id="@+id/etVehicle"
+                                        style="@style/Style.edittext"
+                                        android:drawableLeft="@drawable/ic_vehicle"
+                                        android:drawablePadding="10dp" />
+
+                                </android.support.design.widget.TextInputLayout>
+
+
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btnGo"
+                                style="@style/ButtonGreen"
+                                android:text="GO"
+                                android:layout_alignParentRight="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -123,7 +157,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <android.support.design.widget.TextInputLayout
@@ -140,6 +173,9 @@
                                     android:layout_height="wrap_content"
                                     android:drawableLeft="@drawable/ic_policy"
                                     android:drawablePadding="10dp"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:lines="1"
                                     android:dropDownWidth="250dp" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -157,6 +193,9 @@
                                     android:layout_height="wrap_content"
                                     android:drawableLeft="@drawable/ic_policy"
                                     android:drawablePadding="10dp"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:lines="1"
                                     android:dropDownWidth="250dp" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -164,29 +203,7 @@
                         </LinearLayout>
 
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
 
-                            <android.support.design.widget.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:hint="Mobile">
-
-                                <EditText
-                                    android:id="@+id/etMobile"
-                                    style="@style/Style.edittext"
-                                    android:drawableLeft="@drawable/ic_mobile"
-                                    android:drawablePadding="10dp"
-                                    android:inputType="number"
-                                    android:maxLength="10" />
-
-                            </android.support.design.widget.TextInputLayout>
-
-
-                        </LinearLayout>
 
 
                         <LinearLayout
@@ -220,13 +237,11 @@
                     android:id="@+id/llCityInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <android.support.design.widget.TextInputLayout
@@ -251,7 +266,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:orientation="horizontal">
 
 
@@ -307,10 +321,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="Password">
@@ -325,13 +340,10 @@
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Confirm Password"
-                            app:passwordToggleContentDescription="Password"
-                            app:passwordToggleEnabled="true"
-                            app:passwordToggleTint="@color/primary_color">
+                            android:hint="Confirm Password">
 
                             <EditText
                                 android:id="@+id/etconfirmPassword"
@@ -355,12 +367,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/margin_16"
-        android:layout_marginRight="@dimen/margin_16"
         android:layout_margin="5dp"
         android:text="SUBMIT"
         android:visibility="visible" />
 
-
-
-</LinearLayout>
+</RelativeLayout>

@@ -30,6 +30,7 @@ public class PrefManager {
     private static final String PREF_NAME = "ELITE_CUSTOMER";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
+    private static final String IS_FIRST_TIME_SHOWCASEVIEW = "IsFirstTimeShowCaseView";
     private static final String IS_PRODUCT_MASTER_UPDATE = "isProductMasterUpdate";
     private static final String IS_RTO_MASTER_UPDATE = "isProductMasterUpdate";
     private static final String IS_DB_VERSION_UPDATED = "isDBVersiomrUpdate";
@@ -177,6 +178,18 @@ public class PrefManager {
 
 
     //endregion
+
+
+    //
+    public void setFirstTimeShowCaseView(boolean isFirstTime) {
+        editor.putBoolean(IS_FIRST_TIME_SHOWCASEVIEW, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isFirstTimeShowCaseView() {
+        return pref.getBoolean(IS_FIRST_TIME_SHOWCASEVIEW, true);
+    }
+
 
     public void setFirstTimeLaunch(boolean isFirstTime) {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);

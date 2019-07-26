@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lyParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/lyParent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
 
     <RelativeLayout
@@ -20,10 +20,10 @@
             android:id="@+id/chkPrd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusable="false"
+            android:layout_alignParentLeft="true"
             android:clickable="false"
 
-            android:layout_alignParentLeft="true" />
+            android:focusable="false" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -31,17 +31,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-          android:layout_marginLeft="3dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+
             android:layout_marginRight="3dp"
 
-           android:layout_centerVertical="true"
-
             android:layout_toRightOf="@+id/chkPrd"
-            android:layout_toLeftOf="@+id/txtPrice"
             android:text=""
             android:textStyle="bold"></TextView>
-
-
 
 
     </RelativeLayout>
@@ -49,16 +46,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:orientation="vertical">
+        android:paddingRight="5dp">
 
         <View
             android:layout_width="match_parent"
-            android:layout_below="@+id/txtTitle"
             android:layout_height="0.8dp"
+            android:layout_below="@+id/txtTitle"
             android:layout_marginTop="0dp"
-            android:background="@color/lightGrey"/>
+            android:background="@color/lightGrey" />
 
 
         <EditText
@@ -66,10 +63,10 @@
             style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:minLines="2"
+            android:ellipsize="end"
             android:hint="OLD  DATA"
-            android:ellipsize="end"/>
+            android:maxLines="2"
+            android:minLines="2" />
 
         <EditText
             android:id="@+id/etNew"
@@ -77,20 +74,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:maxLines="2"
-            android:minLines="2"
+            android:ellipsize="end"
             android:hint="NEW  DATA"
-            android:ellipsize="end"/>
+            android:maxLines="2"
+            android:minLines="2" />
 
     </LinearLayout>
-
 
 
     <View
         android:id="@+id/vLayout"
         android:layout_width="match_parent"
-        android:layout_below="@+id/txtTitle"
         android:layout_height="0.8dp"
+        android:layout_below="@+id/txtTitle"
         android:layout_marginTop="0dp"
         android:background="@color/lightGrey">
 

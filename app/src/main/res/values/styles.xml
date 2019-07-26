@@ -30,6 +30,14 @@
     <style name="ShowcaseViewStyle" parent="ShowcaseView.Light">
 
         <item name="sv_backgroundColor">@color/sv_backround</item>
+        <item name="sv_buttonText">Next</item>
+        <item name="sv_detailTextAppearance">@color/textSubTitle</item>
+        <item name="sv_titleTextAppearance">@style/ShowcaseTitleStyle</item>
+    </style>
+
+    <style name="ShowcaseViewStyleSec" parent="ShowcaseView.Light">
+
+        <item name="sv_backgroundColor">@color/sv_backround</item>
         <item name="sv_buttonText">Close</item>
         <item name="sv_detailTextAppearance">@color/textSubTitle</item>
         <item name="sv_titleTextAppearance">@style/ShowcaseTitleStyle</item>
