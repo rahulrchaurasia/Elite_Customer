@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.LocalBroadcastManager;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,13 +43,15 @@ import com.rb.elite.core.response.PincodeResponse;
 import com.rb.elite.core.response.UserRegistrationResponse;
 import com.rb.elite.core.response.VerifyUserRegisterResponse;
 import com.rb.elite.database.DataBaseController;
+import com.rb.elite.location.ILocationStateListener;
+import com.rb.elite.location.LocationTracker;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignUpActivity extends BaseActivity implements IResponseSubcriber, View.OnClickListener {
+public class SignUpActivity extends BaseActivity implements IResponseSubcriber, View.OnClickListener, ILocationStateListener {
 
     EditText etPolicyNo, etEmail, etPassword, etconfirmPassword;
     Button btnVerify, btnSubmit;
@@ -74,6 +78,12 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     boolean IsMakeValid = false;
     boolean IsModelValid = false;
 
+    //region Location
+
+    LocationTracker mLocationTracker;
+    Location mLocation;
+    //endregion
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +97,16 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
         init_widets();
         setListener();
+
+        //initialise location
+        mLocationTracker = new LocationTracker(this);
+        mLocationTracker.setLocationStateListener(this);
+
+        mLocationTracker.init();
+
+
+
+
         acMake.setThreshold(2);
         acMake.setSelection(0);
 
@@ -107,137 +127,144 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             bindDetails();
         }
 
-        acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                acMake.setError(null);
-                acMake.setSelection(0);
-                IsMakeValid = true;
-                makeEntity = makeAdapter.getItem(position);
-                if (makeEntity.getModel() != null) {
-                    modelAdapter = new ModelAdapter(SignUpActivity.this,
-                            R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
-                    acModel.setAdapter(modelAdapter);
-                    acModel.setEnabled(true);
-                    IsModelValid = true;
-                    acModel.setVisibility(View.VISIBLE);
 
 
-                } else {
-                    acModel.setText("");
-                    acModel.setEnabled(false);
-                    acModel.setVisibility(View.INVISIBLE);
-                    IsModelValid = false;
+//        //region Make Listener
+//        acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                acMake.setError(null);
+//                acMake.setSelection(0);
+//                IsMakeValid = true;
+//                makeEntity = makeAdapter.getItem(position);
+//                if (makeEntity.getModel() != null) {
+//                    modelAdapter = new ModelAdapter(SignUpActivity.this,
+//                            R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
+//                    acModel.setAdapter(modelAdapter);
+//                    acModel.setEnabled(true);
+//                    IsModelValid = true;
+//                    acModel.setVisibility(View.VISIBLE);
+//
+//
+//                } else {
+//                    acModel.setText("");
+//                    acModel.setEnabled(false);
+//                    acModel.setVisibility(View.INVISIBLE);
+//                    IsModelValid = false;
+//
+//
+//                }
+//            }
+//        });
+//
+//
+//        acMake.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                String str = acMake.getText().toString();
+//
+//                ListAdapter listAdapter = acMake.getAdapter();
+//                for (int i = 0; i < listAdapter.getCount(); i++) {
+//                    String temp = listAdapter.getItem(i).toString().toUpperCase();
+//                    if (str.compareTo(temp) == 0) {
+//                        acMake.setError(null);
+//                        acModel.setText("");
+//                        acModel.setEnabled(true);
+//                        IsMakeValid = true;
+//
+//
+//                        return;
+//                    }
+//                }
+//
+//                acMake.setError("Invalid Make");
+//                acMake.setFocusable(true);
+//
+//                acModel.setText("");
+//                acModel.setEnabled(false);
+//                IsMakeValid = false;
+//
+//
+//            }
+//        });
+//
+//
+//
+//        //region  Model Listener
+//
+//        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                IsModelValid = true;
+//                acModel.setError(null);
+//                modelEntity = modelAdapter.getItem(position);
+//                acMake.setSelection(0);
+//
+//            }
+//        });
+//        acModel.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                if (s.length() > 0) {
+//                    String str = acModel.getText().toString();
+//
+//                    ListAdapter listAdapter = acModel.getAdapter();
+//                    for (int i = 0; i < listAdapter.getCount(); i++) {
+//                        String temp = listAdapter.getItem(i).toString().toUpperCase();
+//                        if (str.compareTo(temp) == 0) {
+//                            acModel.setError(null);
+//                            IsModelValid = true;
+//                            return;
+//                        }
+//                    }
+//
+//                    acModel.setError("Invalid Model");
+//                    acModel.setFocusable(true);
+//                    IsModelValid = false;
+//
+//
+//                }
+//
+//            }
+//        });
+//
+//        //endregion
+// endregion
 
-
-                }
-            }
-        });
-
-
-        acMake.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                String str = acMake.getText().toString();
-
-                ListAdapter listAdapter = acMake.getAdapter();
-                for (int i = 0; i < listAdapter.getCount(); i++) {
-                    String temp = listAdapter.getItem(i).toString().toUpperCase();
-                    if (str.compareTo(temp) == 0) {
-                        acMake.setError(null);
-                        acModel.setText("");
-                        acModel.setEnabled(true);
-                        IsMakeValid = true;
-
-
-                        return;
-                    }
-                }
-
-                acMake.setError("Invalid Make");
-                acMake.setFocusable(true);
-
-                acModel.setText("");
-                acModel.setEnabled(false);
-                IsMakeValid = false;
-
-
-            }
-        });
-
-        //region  Model Listener
-
-        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IsModelValid = true;
-                acModel.setError(null);
-                modelEntity = modelAdapter.getItem(position);
-                acMake.setSelection(0);
-
-            }
-        });
-        acModel.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (s.length() > 0) {
-                    String str = acModel.getText().toString();
-
-                    ListAdapter listAdapter = acModel.getAdapter();
-                    for (int i = 0; i < listAdapter.getCount(); i++) {
-                        String temp = listAdapter.getItem(i).toString().toUpperCase();
-                        if (str.compareTo(temp) == 0) {
-                            acModel.setError(null);
-                            IsModelValid = true;
-                            return;
-                        }
-                    }
-
-                    acModel.setError("Invalid Model");
-                    acModel.setFocusable(true);
-                    IsModelValid = false;
-
-
-                }
-
-            }
-        });
-
-        //endregion
 
     }
 
 
     private void bindDetails() {
         etFullName.setText(policyEntity.getInsuredName());
-        etVehicle.setText(policyEntity.getVehicleNumber());
-        etPolicyNo.setText(policyEntity.getPolicyNumber());
-        acMake.setText(policyEntity.getMake());
-        acModel.setText(policyEntity.getModel());
-        IsMakeValid = true;
-        IsModelValid = true;
+       // etVehicle.setText(policyEntity.getVehicleNumber());
+        //etPolicyNo.setText(policyEntity.getPolicyNumber());
+//        acMake.setText(policyEntity.getMake());
+//        acModel.setText(policyEntity.getModel());
+//        IsMakeValid = true;
+//        IsModelValid = true;
 
 
     }
@@ -245,6 +272,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     @Override
     protected void onResume() {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("otp"));
+        mLocationTracker.onResume();
         super.onResume();
     }
 
@@ -289,8 +317,8 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
     private void setListener() {
         btnSubmit.setOnClickListener(this);
-        // btnVerify.setOnClickListener(this);
-        etPincode.addTextChangedListener(pincodeTextWatcher);
+
+       //  etPincode.addTextChangedListener(pincodeTextWatcher);
     }
 
     private void init_widets() {
@@ -329,42 +357,44 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             etFullName.setError("Enter Name");
             return false;
         }
-        if (!isEmpty(etVehicle)) {
-            etFullName.requestFocus();
-            etFullName.setError("Enter Vehicle Number");
-            return false;
-        }
-        if (!isEmpty(etPolicyNo)) {
-            etPolicyNo.requestFocus();
-            etMobile.setError("Enter Reliance Policy Number");
-            return false;
-        }
 
-        if (!isEmpty(acMake)) {
-            acMake.requestFocus();
-            acMake.setError("Enter Make");
-            return false;
-        }
-        if (IsMakeValid == false) {
-            acMake.requestFocus();
-            acMake.setError("Invalid Make");
-            return false;
+//        if (!isEmpty(etVehicle)) {
+//            etFullName.requestFocus();
+//            etFullName.setError("Enter Vehicle Number");
+//            return false;
+//        }
+//        if (!isEmpty(etPolicyNo)) {
+//            etPolicyNo.requestFocus();
+//            etMobile.setError("Enter Reliance Policy Number");
+//            return false;
+//        }
+//
+//        if (!isEmpty(acMake)) {
+//            acMake.requestFocus();
+//            acMake.setError("Enter Make");
+//            return false;
+//        }
+//        if (IsMakeValid == false) {
+//            acMake.requestFocus();
+//            acMake.setError("Invalid Make");
+//            return false;
+//
+//        }
 
-        }
+//        if (!isEmpty(acModel)) {
+//            acModel.requestFocus();
+//            acModel.setError("Enter Model");
+//
+//            return false;
+//        }
+//
+//        if (IsModelValid == false) {
+//            acModel.requestFocus();
+//            acModel.setError("Invalid Model");
+//
+//            return false;
+//        }
 
-        if (!isEmpty(acModel)) {
-            acModel.requestFocus();
-            acModel.setError("Enter Model");
-
-            return false;
-        }
-
-        if (IsModelValid == false) {
-            acModel.requestFocus();
-            acModel.setError("Invalid Model");
-
-            return false;
-        }
         if (!isEmpty(etMobile)) {
             etMobile.requestFocus();
             etMobile.setError("Enter Mobile");
@@ -385,11 +415,11 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
             etEmail.setError("Enter Valid Email");
             return false;
         }
-        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
-            etPincode.requestFocus();
-            etPincode.setError("Enter Pincode");
-            return false;
-        }
+//        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
+//            etPincode.requestFocus();
+//            etPincode.setError("Enter Pincode");
+//            return false;
+//        }
         if (!isEmpty(etPassword)) {
             etPassword.requestFocus();
             etPassword.setError("Enter Password");
@@ -483,17 +513,27 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         registerRequest.setName("" + etFullName.getText());
         registerRequest.setEmailid("" + etEmail.getText());
         registerRequest.setMobile("" + etMobile.getText());
-
-        registerRequest.setPincode("" + etPincode.getText());
-        registerRequest.setState("" + etState.getText());
-        registerRequest.setArea("" + etArea.getText());
-        registerRequest.setCity("" + etCity.getText());
-
-        registerRequest.setVehicle_no("" + etVehicle.getText());
-        registerRequest.setPolicy_no("" + etPolicyNo.getText());
         registerRequest.setPassword("" + etPassword.getText());
-        registerRequest.setMake("" + acMake.getText());
-        registerRequest.setModel("" + acModel.getText());
+
+        if(mLocation != null){
+            registerRequest.setLat("" +  mLocation.getLatitude());
+            registerRequest.setLon("" +  mLocation.getLongitude());
+        }else{
+            registerRequest.setLat("0" );
+            registerRequest.setLon("0");
+        }
+
+
+        registerRequest.setPincode("" );
+        registerRequest.setState("" );
+        registerRequest.setArea("" );
+        registerRequest.setCity("");
+
+        registerRequest.setVehicle_no("" );
+        registerRequest.setPolicy_no("" );
+
+        registerRequest.setMake("" );
+        registerRequest.setModel("");
 
         if (policyEntity != null) {
             registerRequest.setProductCode("" + policyEntity.getProductCode());
@@ -595,7 +635,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     }
 
 
-    //region textwatcher
+    //region text watcher
     TextWatcher pincodeTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -621,6 +661,29 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
         }
     };
     //endregion
+
+    //region Location
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        mLocation = mLocationTracker.mLocation;
+    }
+
+    @Override
+    public void onConnected() {
+        mLocation = mLocationTracker.mLocation;
+
+      //  Log.d("--location--", "onConnected: " + mLocation.getLatitude() +" " + mLocation.getLongitude());
+    }
+
+    @Override
+    public void onConnectionFailed() {
+        mLocation =null;
+    }
+    //endregion
+
+
 
 
 }

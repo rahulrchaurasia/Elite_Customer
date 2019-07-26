@@ -26,6 +26,23 @@
 
     <string name="two_four_Wheeler">Four Wheeler And Two Wheeler </string>
 
+    <string name="aboutUs_one">As an organization, we firmly believe that our customers are the driving force behind our success,
+        which is why we welcome you, our esteemed customer to be a part of an exclusive circle, the <b>Landmark Elite Program.</b>
+        Welcome to the world of Landmark</string>
+
+    <string name="aboutUs_two">Welcome to the world of <b>Landmark Elite Program -</b> an exclusive world of richer experiences curated
+        to enhance your service experience.
+    </string>
+
+    <string name="aboutUs_three">We are hopeful that with this initiative, everything you have come to appreciate about Landmark
+        Group, will be raised to new heights of increasingly remarkable experiences.
+    </string>
+
+    <string name="aboutUs_four">As an Elite customer, you would benet from a range of extended services that we believe reinforces
+        our commitment in making your experience with us a lot more rewarding.
+    </string>
+
+
     <array name="array_employee_type">
         <item>Salaried</item>
         <item>Self Employed</item>
@@ -57,6 +74,7 @@
 
 
     </array>
+    <string name="profile_msg">Please complete your Profile for getting full benefit of app. </string>
     <string name="error_Msg">Something went wrong on server side. Please Contact to Admin Person</string>
 
     <string name="rate_Negative">Oops! please share with us what went wrong.</string>
@@ -74,7 +92,7 @@
 
     <string name="download"> <b><u>Download</u></b></string>
 
-    <string name="title_activity_product">Product Details</string>
+    <string name="title_activity_product">Request Form</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>
     <string name="copyright_content">Powered by Rupeeboss</string>

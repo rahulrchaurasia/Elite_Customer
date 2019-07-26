@@ -72,7 +72,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     }
 
     @Override
-    public void onBindViewHolder(OrderDetailItem holder, int position) {
+    public void onBindViewHolder(OrderDetailItem holder, final int position) {
 
 
         final OrderDetailEntity orderDetailEntity = lstOrderDetail.get(position);
@@ -161,7 +161,11 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.lychat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderDetailEntity.setChat_count("0");
+                notifyItemChanged(position,orderDetailEntity);
                 ((OrderDetailFragment) mContext).redirectToChat(orderDetailEntity);
+
+
             }
         });
     }

@@ -12,11 +12,13 @@ import com.rb.elite.core.response.CommonResponse;
 import com.rb.elite.core.response.DBVersionRespone;
 import com.rb.elite.core.response.DisplayFeedbackResponse;
 import com.rb.elite.core.response.DisplayRateResponse;
+import com.rb.elite.core.response.FastLaneDataResponse;
 import com.rb.elite.core.response.FeedbackResponse;
 import com.rb.elite.core.response.GetOtpResponse;
 import com.rb.elite.core.response.LoginResponse;
 import com.rb.elite.core.response.PincodeResponse;
 import com.rb.elite.core.response.PolicyResponse;
+import com.rb.elite.core.response.ProfileResponse;
 import com.rb.elite.core.response.RateResponse;
 import com.rb.elite.core.response.UpdateUserResponse;
 import com.rb.elite.core.response.UserConsttantResponse;
@@ -29,6 +31,7 @@ import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
@@ -76,6 +79,13 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         @POST("/api/user-otp-verify")
         Call<UserRegistrationResponse> userRegistration(@Body RegisterRequest registerRequest);
 
+        @POST("/api/update-customer-profile")
+        Call<UserRegistrationResponse> userProfile(@Body RegisterRequest registerRequest);
+
+        @POST("/api/get-user-profile")
+        Call<ProfileResponse> getProfile(@Body HashMap<String, String> body);
+
+
         @POST("/api/vehicle-details")
         Call<CarMasterResponse> getCarMaster(@Body HashMap<String, String> body);
 
@@ -108,7 +118,9 @@ public class RegisterRequestBuilder extends RetroRequestBuilder {
         Call<DisplayRateResponse> dispalyRate(@Body HashMap<String, String> body);
 
 
-
+        @POST
+        @Headers("token:1234567890")
+        Call<FastLaneDataResponse> getFastLaneData(@Url String strUrl,@Body HashMap<String, String> body);
 
     }
 }

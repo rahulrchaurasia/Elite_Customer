@@ -36,15 +36,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     EditText etPassword, etMobile;
 
     PrefManager prefManager;
-    String strToken ;
+    String strToken;
     Button btnSignIn;
-    String deviceId ="";
+    String deviceId = "";
 
 
     String[] perms = {
             "android.permission.CAMERA",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.ACCESS_COARSE_LOCATION",
 
     };
 
@@ -124,16 +126,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     return;
                 }
 
-                strToken    =  prefManager.getToken();
-                if(prefManager.getToken() != null)
-                {
+                strToken = prefManager.getToken();
+                if (prefManager.getToken() != null) {
                     strToken = prefManager.getToken();
-                }else {
+                } else {
                     strToken = "";
                 }
 
                 showDialog("Please Wait...");
-                new RegisterController(LoginActivity.this).getLogin(etMobile.getText().toString(), etPassword.getText().toString(),strToken, deviceId, this);
+                new RegisterController(LoginActivity.this).getLogin(etMobile.getText().toString(), etPassword.getText().toString(), strToken, deviceId, this);
 
 
                 break;
@@ -149,12 +150,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         int write_external = ContextCompat.checkSelfPermission(getApplicationContext(), perms[1]);
         int read_external = ContextCompat.checkSelfPermission(getApplicationContext(), perms[2]);
 
-//
+        int fineLocation = ContextCompat.checkSelfPermission(getApplicationContext(), perms[3]);
+        int coarseLocation = ContextCompat.checkSelfPermission(getApplicationContext(), perms[4]);
+
+
         return camera == PackageManager.PERMISSION_GRANTED
 
 
                 && write_external == PackageManager.PERMISSION_GRANTED
-                && read_external == PackageManager.PERMISSION_GRANTED;
+                && read_external == PackageManager.PERMISSION_GRANTED
+                && fineLocation == PackageManager.PERMISSION_GRANTED
+                && coarseLocation == PackageManager.PERMISSION_GRANTED;
 
     }
 
@@ -171,11 +177,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 prefManager.setPassword(etPassword.getText().toString());
                 //  Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
 
-                if(prefManager.getPushNotifyData() != null){
+                if (prefManager.getPushNotifyData() != null) {
 
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra(Utility.PUSH_LOGIN_PAGE,"555"));
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra(Utility.PUSH_LOGIN_PAGE, "555"));
                     finish();
-                }else{
+                } else {
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
                 }
@@ -211,10 +217,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                     boolean writeExternal = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean readExternal = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean fineLocation = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    boolean coarseLocation = grantResults[4] == PackageManager.PERMISSION_GRANTED;
 
 
-
-                    if (camera && writeExternal && readExternal ) {
+                    if (camera && writeExternal && readExternal && fineLocation && coarseLocation) {
                         // you can do all necessary steps
                         // new Dialer().getObject().getLeadData(String.valueOf(Utility.EmpCode), this, this);
                         // Toast.makeText(this, "All permission granted", Toast.LENGTH_SHORT).show();

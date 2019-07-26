@@ -32,8 +32,11 @@ public interface IRegister {
 
     void saveUserRegistration(RegisterRequest registerRequest, IResponseSubcriber iResponseSubcriber);
 
-    void verifyOTPTegistration(String email, String mobile, String ip, IResponseSubcriber iResponseSubcriber);
+    void saveUserProfile(RegisterRequest registerRequest, IResponseSubcriber iResponseSubcriber);
 
+    void getUserProfile( IResponseSubcriber iResponseSubcriber);
+
+    void verifyOTPTegistration(String email, String mobile, String ip, IResponseSubcriber iResponseSubcriber);
 
     void getCarVehicleMaster(IResponseSubcriber iResponseSubcriber);
 
@@ -49,4 +52,6 @@ public interface IRegister {
 
     void displayRate( int userid,String request_id,  IResponseSubcriber iResponseSubcriber);
 
+  // fastlane
+    void getVechileDetails(String RegistrationNumber, IResponseSubcriber iResponseSubcriber);
 }

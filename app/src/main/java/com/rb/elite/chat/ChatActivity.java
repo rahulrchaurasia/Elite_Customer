@@ -109,7 +109,7 @@ public class ChatActivity extends BaseActivity implements IResponseSubcriber, Vi
 
     //endregion
 
-    ShowcaseView.Builder showcaseView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +127,7 @@ public class ChatActivity extends BaseActivity implements IResponseSubcriber, Vi
         initialize();
         setListener();
         bindChatList();
-        showcaseView();
+
 
         if (getIntent().hasExtra(Constants.CHAT_REQUEST_DATA)) {
             if (getIntent().getExtras().getParcelable(Constants.CHAT_REQUEST_DATA) != null) {
@@ -286,19 +286,5 @@ public class ChatActivity extends BaseActivity implements IResponseSubcriber, Vi
     }
 
 
-    public void showcaseView()
-    {
-        showcaseView =  new ShowcaseView.Builder(this)
 
-                .withMaterialShowcase()
-                .setTarget( new ViewTarget(R.id.imgbtnSend, ChatActivity.this))
-                .setContentTitle("ShowcaseView")
-                .setContentText("This is highlighting the Home button")
-                .setStyle(R.style.ShowcaseViewStyle);
-        // .singleShot()
-
-        showcaseView.build();
-
-
-    }
 }

@@ -157,7 +157,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
-                                android:text="SERVICE"
+                                android:text="SERVICES"
                                 android:textColor="@color/black" />
 
                             <View
@@ -176,7 +176,9 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
-                                android:text="Apply RTO &amp; MISCELLANEOUS Service" />
+                                android:text="Apply for All \nServices Here" />
+
+                            <!--Apply RTO &amp; MISCELLANEOUS Service-->
 
 
                         </LinearLayout>
@@ -212,7 +214,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
-                                android:text="REQUEST"
+                                android:text="REQUESTS"
                                 android:textColor="@color/black" />
 
                             <View
@@ -231,7 +233,9 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
-                                android:text="Know Status Of Your\nService Request" />
+                                android:text="Status Update of \nServices Availed" />
+
+                            <!--Know Status Of Your\nService Request-->
 
 
                         </LinearLayout>
@@ -297,7 +301,8 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
-                                android:text="How Happy\nYou Are!" />
+                                android:text="Your Experience Matters" />
+                            <!--How Happy\nYou Are!-->
 
 
                         </LinearLayout>
@@ -352,7 +357,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
-                                android:text="Share Your Feedback\nOR Any Concern" />
+                                android:text="Your Opinion Matters" />
 
 
                         </LinearLayout>

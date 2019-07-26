@@ -51,6 +51,7 @@ import com.rb.elite.login.ChangePasswordFragment;
 import com.rb.elite.login.LoginActivity;
 import com.rb.elite.notification.NotificationActivity;
 import com.rb.elite.orderDetail.OrderDetailFragment;
+import com.rb.elite.profile.MyProfileFragment;
 import com.rb.elite.profile.ProfileFragment;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.splash.SplashScreenActivity;
@@ -155,7 +156,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
             if (savedInstanceState == null) {
                 navItemIndex = 0;
                 CURRENT_TAG = TAG_HOME;
-                loadHomeFragment("Home");
+                loadHomeFragment(CURRENT_TAG);
             }
 
 
@@ -276,10 +277,7 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
                         startActivity(new Intent(HomeActivity.this, DemActivity.class));
                         break;
 
-//                    case R.id.nav_doc:
-//                        navItemIndex = 3;
-//                        CURRENT_TAG = TAG_DOC;
-//                        break;
+
 
                     case R.id.nav_change_pwd:
                         navItemIndex = 3;
@@ -360,6 +358,14 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
     }
 
 
+    public void setProfile(){
+        navItemIndex =1;
+        CURRENT_TAG =TAG_PROFILE;
+        navigationView.getMenu().getItem(navItemIndex).setChecked(true);
+        loadHomeFragment(CURRENT_TAG);
+    }
+
+
     private Fragment getHomeFragment() {
         Fragment fragment = null;
         switch (navItemIndex) {
@@ -370,8 +376,8 @@ public class HomeActivity extends BaseActivity implements IResponseSubcriber {
                 return fragment;
 
             case 1:
-                fragment = new ProfileFragment();
-                getSupportActionBar().setTitle("Profile");
+                fragment = new MyProfileFragment();
+                getSupportActionBar().setTitle("My Profile");
                 return fragment;
 
             case 2:
