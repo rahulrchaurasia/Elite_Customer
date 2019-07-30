@@ -42,7 +42,7 @@
                     android:layout_marginLeft="5dp"
                     android:gravity="left"
                     android:padding="3dp"
-                    android:text="* Driving License copy"
+                    android:text="* Driving Licence copy"
                     android:textColor="@color/back_button_color" />
 
 

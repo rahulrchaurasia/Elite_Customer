@@ -69,7 +69,7 @@
     <array name="CorrectionType">
         <item>Name</item>
         <item>DOB</item>
-        <item>Driving License</item>
+        <item>Driving Licence</item>
         <item>Addres</item>
 
 
@@ -129,7 +129,7 @@
     <string name="title_activity_doc_upload">Upload Document</string>
     <string name="title_activity_about_us">AboutUsActivity</string>
     <string name="title_activity_terms_condition">TermsConditionActivity</string>
-    <string name="title_activity_eula">License Agreement</string>
+    <string name="title_activity_eula">Licence Agreement</string>
     <string name="title_activity_search_city">SearchCityActivity</string>
     <string name="title_activity_service">Service</string>
     <string name="title_activity_order">Request</string>

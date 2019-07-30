@@ -24,7 +24,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent">
+                android:background="@color/description_text">
 
                 <TextView
                     android:id="@+id/tvTitle"
@@ -91,6 +91,7 @@
                 <TextView
                     android:id="@+id/tvCancel"
                     style="@style/ButtonStyle"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"

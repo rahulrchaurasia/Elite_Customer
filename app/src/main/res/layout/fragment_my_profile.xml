@@ -114,6 +114,7 @@
                                         android:id="@+id/etVehicle"
                                         style="@style/Style.edittext"
                                         android:drawableLeft="@drawable/ic_vehicle"
+                                        android:maxLength="20"
                                         android:drawablePadding="10dp" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -126,6 +127,7 @@
                                 style="@style/ButtonGreen"
                                 android:text="GO"
                                 android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                         </RelativeLayout>

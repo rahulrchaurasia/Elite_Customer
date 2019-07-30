@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -26,6 +24,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rb.elite.BaseFragment;
@@ -34,19 +35,22 @@ import com.rb.elite.core.APIResponse;
 import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.controller.misc_non_rto.MiscNonRTOController;
 import com.rb.elite.core.controller.product.ProductController;
+import com.rb.elite.core.controller.register.RegisterController;
 import com.rb.elite.core.model.CityMainEntity;
+import com.rb.elite.core.model.FastLaneDataEntity;
 import com.rb.elite.core.model.MakeEntity;
 import com.rb.elite.core.model.ModelEntity;
 import com.rb.elite.core.model.ProductPriceEntity;
 import com.rb.elite.core.model.RTOServiceEntity;
-
 import com.rb.elite.core.model.RtoProductDisplayMainEntity;
 import com.rb.elite.core.model.UserConstatntEntity;
 import com.rb.elite.core.model.UserEntity;
 import com.rb.elite.core.requestmodel.ProductPriceRequestEntity;
 import com.rb.elite.core.requestmodel.RCRequestEntity;
+import com.rb.elite.core.response.FastLaneDataResponse;
 import com.rb.elite.core.response.ProductPriceResponse;
 import com.rb.elite.core.response.RtoProductDisplayResponse;
+import com.rb.elite.core.response.VehicleMasterResponse;
 import com.rb.elite.database.DataBaseController;
 import com.rb.elite.payment.PaymentRazorActivity;
 import com.rb.elite.product.ProductMainActivity;
@@ -76,17 +80,17 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     TextView textCity, txtModel;
     Spinner spRTO, spCity;
-    EditText etPincode,etVehicle, etCity;
+    EditText etPincode, etVehicle, etCity;
     List<String> RtoList, CityList;  //ProductList,
     DataBaseController dataBaseController;
     UserEntity loginEntity;
-      Button btnBooked;
+    Button btnBooked, btnGo;
     ScrollView scrollView;
 
     RTOServiceEntity serviceEntity;
 
 
-    LinearLayout lyVehicle ,lvLogo, llDocumentUpload, lyRTO, lyTAT;
+    LinearLayout lyVehicle, lvLogo, llDocumentUpload, lyRTO, lyTAT;
     RelativeLayout rlDoc, rlEditMakeModel;
     LinearLayout lyMakeModel;
     ImageView ivLogo, ivClientLogo;
@@ -148,9 +152,20 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         CityList = new ArrayList<String>();
         RtoList = new ArrayList<String>();
         OrderID = 0;
-        bindData();
-        setAutoComplete();
 
+
+        if (prefManager.getMake() != null) {
+            makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
+            acMake.setAdapter(makeAdapter);
+            bindMakeModel();
+
+        } else {
+
+            showDialog();
+            new RegisterController(getActivity()).getCarVehicleMaster(this);
+
+        }
+        bindData();
 
         // region Filter Type
 
@@ -169,7 +184,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             //endregion
 
             txtPrdName.setText("" + PRODUCT_NAME);
-           // Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "" + PRODUCT_ID + "/" + PRODUCT_CODE, Toast.LENGTH_SHORT).show();
             super.onViewCreated(view, savedInstanceState);
         }
 
@@ -196,6 +211,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         spCity = (Spinner) view.findViewById(R.id.spCity);
 
         btnBooked = (Button) view.findViewById(R.id.btnBooked);
+        btnGo = (Button) view.findViewById(R.id.btnGo);
 
         etPincode = (EditText) view.findViewById(R.id.etPincode);
 
@@ -210,7 +226,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         rlDoc = (RelativeLayout) view.findViewById(R.id.rlDoc);
         rlEditMakeModel = (RelativeLayout) view.findViewById(R.id.rlEditMakeModel);
-        lyVehicle =  (LinearLayout) view.findViewById(R.id.lyVehicle);
+        lyVehicle = (LinearLayout) view.findViewById(R.id.lyVehicle);
         lvLogo = (LinearLayout) view.findViewById(R.id.lvLogo);
         llDocumentUpload = (LinearLayout) view.findViewById(R.id.llDocumentUpload);
         lyRTO = (LinearLayout) view.findViewById(R.id.lyRTO);
@@ -236,7 +252,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         etVehicle.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
 
 
-
     }
 
     private void setOnClickListener() {
@@ -245,153 +260,156 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         etCity.setClickable(true);
 
 
-
         rlDoc.setOnClickListener(this);
         btnBooked.setOnClickListener(this);
+        btnGo.setOnClickListener(this);
         rlEditMakeModel.setOnClickListener(this);
 
         etCity.setOnClickListener(this);
 
 
-
     }
 
     private void setAutoComplete() {
-        makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
-        acMake.setAdapter(makeAdapter);
+
+        if (prefManager.getMake() != null) {
 
 
-        // region Make Listener
-        acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                acMake.setError(null);
-                acMake.setSelection(0);
-                IsMakeValid = true;
-                makeEntity = makeAdapter.getItem(position);
-                if (makeEntity.getModel() != null) {
-                    modelAdapter = new ModelAdapter(getActivity(),
-                            R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
-                    acModel.setAdapter(modelAdapter);
-                    acModel.setEnabled(true);
-                    IsModelValid = true;
-                    acModel.setVisibility(View.VISIBLE);
-                    txtModel.setVisibility(View.VISIBLE);
+            // region Make Listener
+            acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    acMake.setError(null);
+                    acMake.setSelection(0);
+                    IsMakeValid = true;
+                    makeEntity = makeAdapter.getItem(position);
+                    if (makeEntity.getModel() != null) {
+                        modelAdapter = new ModelAdapter(getActivity(),
+                                R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
+                        acModel.setAdapter(modelAdapter);
+                        acModel.setEnabled(true);
+                        IsModelValid = true;
+                        acModel.setVisibility(View.VISIBLE);
+                        txtModel.setVisibility(View.VISIBLE);
 
-                } else {
-                    acModel.setText("");
-                    acModel.setEnabled(false);
-                    acModel.setVisibility(View.INVISIBLE);
-                    txtModel.setVisibility(View.INVISIBLE);
-                    IsModelValid = false;
+                    } else {
+                        acModel.setText("");
+                        acModel.setEnabled(false);
+                        acModel.setVisibility(View.INVISIBLE);
+                        txtModel.setVisibility(View.INVISIBLE);
+                        IsModelValid = false;
 
+
+                    }
+                }
+            });
+
+
+            acMake.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
-            }
-        });
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                    if (s.length() > 0) {
+                        String str = acMake.getText().toString();
+
+                        ListAdapter listAdapter = acMake.getAdapter();
+
+                        if(listAdapter != null) {
+                            for (int i = 0; i < listAdapter.getCount(); i++) {
+                                String temp = listAdapter.getItem(i).toString().toUpperCase();
+                                if (str.compareTo(temp) == 0) {
+                                    acMake.setError(null);
+                                    acModel.setText("");
+                                    acModel.setEnabled(true);
+                                    IsMakeValid = true;
 
 
-        acMake.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                    return;
+                                }
+                            }
 
-            }
+                            acMake.setError("Invalid Make");
+                            acMake.setFocusable(true);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (s.length() > 0) {
-                    String str = acMake.getText().toString();
-
-                    ListAdapter listAdapter = acMake.getAdapter();
-                    for (int i = 0; i < listAdapter.getCount(); i++) {
-                        String temp = listAdapter.getItem(i).toString().toUpperCase();
-                        if (str.compareTo(temp) == 0) {
-                            acMake.setError(null);
                             acModel.setText("");
-                            acModel.setEnabled(true);
-                            IsMakeValid = true;
-
-
-                            return;
+                            acModel.setEnabled(false);
+                            IsMakeValid = false;
                         }
+
                     }
-
-                    acMake.setError("Invalid Make");
-                    acMake.setFocusable(true);
-
-                    acModel.setText("");
-                    acModel.setEnabled(false);
-                    IsMakeValid = false;
 
                 }
-
-            }
-        });
+            });
 
 
-        //endregion
+            //endregion
 
-        //region  Model Listener
+            //region  Model Listener
 
-        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                acModel.setError(null);
-                IsModelValid = true;
-                modelEntity = modelAdapter.getItem(position);
-                acMake.setSelection(0);
-                showDialog();
-                new ProductController(getActivity()).RTOProductListOnChangeVehicle(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), acMake.getText().toString(), acModel.getText().toString(), RenewRcFragment.this);
-
-
-            }
-        });
-
-        acModel.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (s.length() > 0) {
-                    String str = acModel.getText().toString();
-
-                    ListAdapter listAdapter = acModel.getAdapter();
-                    for (int i = 0; i < listAdapter.getCount(); i++) {
-                        String temp = listAdapter.getItem(i).toString().toUpperCase();
-                        if (str.compareTo(temp) == 0) {
-                            acModel.setError(null);
-                            IsModelValid = true;
-                            return;
-                        }
-                    }
-
-                    acModel.setError("Invalid Model");
-                    acModel.setFocusable(true);
-                    IsModelValid = false;
+            acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    acModel.setError(null);
+                    IsModelValid = true;
+                    modelEntity = modelAdapter.getItem(position);
+                    acMake.setSelection(0);
+                    showDialog();
+                    new ProductController(getActivity()).RTOProductListOnChangeVehicle(PARENT_PRODUCT_ID, PRODUCT_CODE, loginEntity.getUser_id(), acMake.getText().toString(), acModel.getText().toString(), RenewRcFragment.this);
 
 
                 }
+            });
 
-            }
-        });
+            acModel.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                    if (s.length() > 0) {
+                        String str = acModel.getText().toString();
+
+                        ListAdapter listAdapter = acModel.getAdapter();
+                        for (int i = 0; i < listAdapter.getCount(); i++) {
+                            String temp = listAdapter.getItem(i).toString().toUpperCase();
+                            if (str.compareTo(temp) == 0) {
+                                acModel.setError(null);
+                                IsModelValid = true;
+                                return;
+                            }
+                        }
+
+                        acModel.setError("Invalid Model");
+                        acModel.setFocusable(true);
+                        IsModelValid = false;
 
 
-        //endregion
+                    }
+
+                }
+            });
+
+
+            //endregion
+        }
 
 
     }
@@ -403,6 +421,11 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         txtClientName.setText(userConstatntEntity.getCompanyname());
         etVehicle.setText(userConstatntEntity.getVehicleno());
+
+    }
+
+    private void bindMakeModel()
+    {
         acMake.setText(userConstatntEntity.getMake());
         new Handler().post(new Runnable() {
             @Override
@@ -434,8 +457,6 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             }
         }, 1000);
     }
-
-
 
 
     private void setRtoTAT(RtoProductDisplayMainEntity rtoProd) {
@@ -476,17 +497,19 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             acMake.setError("Enter Make");
             return false;
         }
+        if (acModel.getVisibility() == View.VISIBLE) {
 
-        if ((acModel.getText().toString().trim().length() == 0)) {
-            acModel.requestFocus();
-            acModel.setError("Enter Model");
-            return false;
-        }
+            if ((acModel.getText().toString().trim().length() == 0)) {
+                acModel.requestFocus();
+                acModel.setError("Enter Model");
+                return false;
+            }
 
-        if (IsModelValid == false) {
-            acModel.requestFocus();
-            acModel.setError("Enter Model");
-            return false;
+            if (IsModelValid == false) {
+                acModel.requestFocus();
+                acModel.setError("Enter Model");
+                return false;
+            }
         }
         if ((etCity.getText().toString().trim().length() == 0)) {
             etCity.requestFocus();
@@ -500,13 +523,13 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         }
         if (PRODUCT_ID == 0) {
 
-            Toast.makeText(getActivity(),getResources().getString(R.string.error_Msg),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.error_Msg), Toast.LENGTH_SHORT).show();
 
             return false;
         }
         if (productPriceEntity == null) {
 
-            Toast.makeText(getActivity(),getResources().getString(R.string.error_Msg),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.error_Msg), Toast.LENGTH_SHORT).show();
 
             return false;
         }
@@ -530,22 +553,28 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             return false;
         }
 
-        if ((acModel.getText().toString().trim().length() == 0)) {
-            acModel.requestFocus();
-            acModel.setError("Enter Model");
-            return false;
-        }
+        if (acModel.getVisibility() == View.VISIBLE) {
 
-        if (IsModelValid == false) {
-            acModel.requestFocus();
-            acModel.setError("Enter Model");
-            return false;
+            if ((acModel.getText().toString().trim().length() == 0)) {
+                acModel.requestFocus();
+                acModel.setError("Enter Model");
+                return false;
+            }
+
+            if (IsModelValid == false) {
+                acModel.requestFocus();
+                acModel.setError("Enter Model");
+                return false;
+            }
         }
 
         return true;
     }
 
     private void setMakeModelEdiatable() {
+
+
+        btnGo.setVisibility(View.VISIBLE);
         etVehicle.setEnabled(true);
         acModel.setEnabled(true);
         acMake.setEnabled(true);
@@ -589,18 +618,16 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         requestEntity.setModel(acModel.getText().toString());
 
 
-
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.REQUEST_TYPE,"1");
-        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST,requestEntity);
+        bundle.putString(Constants.REQUEST_TYPE, "1");
+        bundle.putParcelable(Constants.PRODUCT_PAYMENT_REQUEST, requestEntity);
 
 
         getActivity().startActivity(new Intent(getActivity(), PaymentRazorActivity.class)
-                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE,bundle)) ;
+                .putExtra(Constants.PAYMENT_REQUEST_BUNDLE, bundle));
 
 
         getActivity().finish();
-
 
 
     }
@@ -614,8 +641,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view, getActivity());
         switch (view.getId()) {
-
 
 
             case R.id.rlDoc:
@@ -631,20 +658,34 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
                 if (validate() == false) {
                     return;
-                }
-                else {
+                } else {
 
                     saveData();
                 }
 
                 break;
 
+            case R.id.btnGo:
+
+                if (!isEmpty(etVehicle)) {
+                    etVehicle.requestFocus();
+                    etVehicle.setError("Enter Vehicle Number");
+                    return;
+                } else {
+
+                    showDialog();
+                    new RegisterController(getActivity()).getVechileDetails(etVehicle.getText().toString().trim(), this);
+
+                }
+
+                break;
+
             case R.id.etCity:
 
-                  if( validateCity()) {
-                      setScrollatBottom();
-                      startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
-                  }
+                if (validateCity()) {
+                    setScrollatBottom();
+                    startActivityForResult(new Intent(getActivity(), SearchCityActivity.class), Constants.SEARCH_CITY_CODE);
+                }
 
                 break;
 
@@ -698,10 +739,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
                 getTatData();
 
             }
-        }
-
-
-       else if (response instanceof RtoProductDisplayResponse) {
+        } else if (response instanceof RtoProductDisplayResponse) {
             if (response.getStatus_code() == 0) {
 
                 if (((RtoProductDisplayResponse) response).getData().size() > 0) {
@@ -709,6 +747,69 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
                     PRODUCT_ID = ((RtoProductDisplayResponse) response).getData().get(0).getProd_id();
                 }
+            }
+        } else if (response instanceof VehicleMasterResponse) {
+            if (response.getStatus_code() == 0) {
+                List<MakeEntity> lstMake = ((VehicleMasterResponse) response).getData().getVehicleMasterResult().getMake();
+                makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, lstMake);
+                acMake.setAdapter(makeAdapter);
+                bindMakeModel();
+
+            }
+        } else if (response instanceof FastLaneDataResponse) {
+
+            // Toast.makeText(getActivity(),"Done",Toast.LENGTH_SHORT).show();
+            FastLaneDataEntity fastLaneDataEntity = ((FastLaneDataResponse) response).getMasterData();
+
+            try {
+                if (fastLaneDataEntity != null) {
+
+                    acMake.setOnItemClickListener(null);
+                    acModel.setOnItemClickListener(null);
+                    if (fastLaneDataEntity.getMake_Name() != "") {
+                        acMake.setText("" + fastLaneDataEntity.getMake_Name());
+
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                acMake.dismissDropDown();
+                            }
+                        });
+
+                    } else {
+                        acMake.setText("");
+                    }
+
+
+                    if (fastLaneDataEntity.getModel_Name() != "") {
+                        acModel.setText("" + fastLaneDataEntity.getModel_Name());
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                acModel.dismissDropDown();
+                            }
+                        });
+
+                    } else {
+                        acModel.setText("");
+                    }
+
+
+                    acModel.setError(null);
+                    acMake.setError(null);
+
+                    IsMakeValid = true;
+                    IsModelValid = true;
+
+                    setAutoComplete();
+
+                } else {
+                    resetMakeModel();
+
+                }
+            } catch (Exception ex) {
+                resetMakeModel();
+
             }
         }
 
@@ -723,4 +824,20 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
     }
 
     //endregion
+
+    private void resetMakeModel() {
+
+        makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
+        acMake.setAdapter(makeAdapter);
+        setAutoComplete();
+
+        acModel.setError(null);
+        acMake.setError(null);
+
+        acMake.setText("");
+        acModel.setText("");
+        IsMakeValid = false;
+        IsModelValid = false;
+    }
+
 }

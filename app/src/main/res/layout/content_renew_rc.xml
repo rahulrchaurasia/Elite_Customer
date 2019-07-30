@@ -21,7 +21,7 @@
 
             android:layout_alignParentLeft="true"
 
-            android:text="Do you have another vehicle"
+            android:text="Do you have another vehicle?"
             android:textColor="@color/black" />
 
 
@@ -40,261 +40,275 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-       >
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/lyVehicle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/bg_edit"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Vehicle Number">
-
-            <EditText
-                android:id="@+id/etVehicle"
-                style="@style/Style.edittext"
-                android:drawableLeft="@drawable/ic_vehicle"
-                android:drawablePadding="10dp"
-                android:enabled="false" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lyMakeModel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_dashboard"
-        android:orientation="horizontal">
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle.MediumLarge"
+            <LinearLayout
+                android:id="@+id/lyVehicle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
-                android:text="Make :"
 
-                android:textColor="@color/black" />
+                android:background="@color/bg_edit"
+                android:orientation="horizontal">
 
-            <AutoCompleteTextView
-                android:id="@+id/acMake"
-                style="@style/Style.edittext"
-                android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Vehicle Number">
+
+                    <EditText
+                        android:id="@+id/etVehicle"
+                        style="@style/Style.edittext"
+                        android:maxLength="20"
+                        android:drawableLeft="@drawable/ic_vehicle"
+                        android:drawablePadding="10dp"
+                        android:enabled="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnGo"
+                style="@style/ButtonGreen"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/make_logo"
-                android:drawablePadding="4dp"
-                android:dropDownWidth="250dp"
-                android:enabled="false"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLines="1" />
-
-        </LinearLayout>
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                android:layout_marginTop="0dp"
+                android:text="GO" />
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/lyMakeModel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:background="@color/bg_dashboard"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtModel"
-                style="@style/TextViewStyle.MediumLarge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
-                android:text="Model :"
-
-                android:textColor="@color/black" />
-
-            <AutoCompleteTextView
-                android:id="@+id/acModel"
-                style="@style/Style.edittext"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/make_logo"
-                android:drawablePadding="4dp"
 
-                android:dropDownWidth="250dp"
-                android:enabled="false"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLines="1" />
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle.MediumLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Make :"
+
+                    android:textColor="@color/black" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/acMake"
+                    style="@style/Style.edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/make_logo"
+                    android:drawablePadding="4dp"
+                    android:dropDownWidth="250dp"
+                    android:enabled="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtModel"
+                    style="@style/TextViewStyle.MediumLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Model :"
+
+                    android:textColor="@color/black" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/acModel"
+                    style="@style/Style.edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/make_logo"
+                    android:drawablePadding="4dp"
+
+                    android:dropDownWidth="250dp"
+                    android:enabled="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <include
-        layout="@layout/layout_city_pincode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textCity"
-            style="@style/TextViewStyle.MediumLarge"
+        <include
+            layout="@layout/layout_city_pincode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:text="City :"
+            android:layout_height="wrap_content" />
 
-            android:textColor="@color/black" />
-
-
-        <Spinner
-
-            android:id="@+id/spCity"
-            style="@style/SpinnerStyle.Underlined"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:singleLine="true"
-            android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/lyRTO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
-
+                android:id="@+id/textCity"
                 style="@style/TextViewStyle.MediumLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="RTO Location :"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:layout_marginTop="8dp"
+                android:text="City :"
+
+                android:textColor="@color/black" />
 
 
             <Spinner
-                android:id="@+id/spRTO"
+
+                android:id="@+id/spCity"
                 style="@style/SpinnerStyle.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-
-                android:singleLine="true" />
-
-
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/lvLogo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left|center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginLeft="5dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+                android:singleLine="true"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/lyRTO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textCharges"
-                    style="@style/TextViewStyle.MediumBold"
-                    android:layout_width="wrap_content"
+
+                    style="@style/TextViewStyle.MediumLarge"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Charges :"
-
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/txtCharges"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:text=""
-                    android:textColor="@color/blue"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lyTAT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/texttat"
-                    style="@style/TextViewStyle.MediumBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TAT :"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/txtTAT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:text=""
+                    android:layout_marginLeft="10dp"
+                    android:text="RTO Location :"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
+
+                <Spinner
+                    android:id="@+id/spRTO"
+                    style="@style/SpinnerStyle.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lvLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="5dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textCharges"
+                        style="@style/TextViewStyle.MediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Charges :"
+
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/txtCharges"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=""
+                        android:textColor="@color/blue"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyTAT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/texttat"
+                        style="@style/TextViewStyle.MediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TAT :"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/txtTAT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
 
         </LinearLayout>
-
-
-    </LinearLayout>
-
 
 
     </LinearLayout>

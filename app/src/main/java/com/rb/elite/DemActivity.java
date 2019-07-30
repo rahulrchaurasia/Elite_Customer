@@ -116,7 +116,7 @@ public class DemActivity extends BaseActivity implements View.OnClickListener {
         correctiontEnityList.clear();
         correctiontEnityList.add( new CorrectiontEnity("0","Name",false));
         correctiontEnityList.add( new CorrectiontEnity("1","DOB",false));
-        correctiontEnityList.add( new CorrectiontEnity("2","Driving License",false));
+        correctiontEnityList.add( new CorrectiontEnity("2","Driving Licence",false));
         correctiontEnityList.add( new CorrectiontEnity("2","Address",false));
 
     }

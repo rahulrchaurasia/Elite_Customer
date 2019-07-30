@@ -67,13 +67,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
     PrefManager prefManager;
 
 
-    MakeAdapter makeAdapter;
-    ModelAdapter modelAdapter;
-    MakeEntity makeEntity;
-    ModelEntity modelEntity;
 
-    boolean IsMakeValid = false;
-    boolean IsModelValid = false;
 
     //region Location
 
@@ -103,21 +97,6 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
 
 
-
-        acMake.setThreshold(2);
-        acMake.setSelection(0);
-
-        acModel.setThreshold(1);
-        acModel.setSelection(0);
-
-        addUserRequestEntity = new AddUserRequestEntity();
-        updateUserRequestEntity = new UpdateUserRequestEntity();
-
-        makeAdapter = new MakeAdapter(this, R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
-        acMake.setAdapter(makeAdapter);
-
-        //  etpolicyVeh_no.setCursorVisible(false);
-
         if (getIntent().hasExtra("POLICY_DATA")) {
 
             policyEntity = getIntent().getExtras().getParcelable("POLICY_DATA");
@@ -126,129 +105,6 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
 
 
-//        //region Make Listener
-//        acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                acMake.setError(null);
-//                acMake.setSelection(0);
-//                IsMakeValid = true;
-//                makeEntity = makeAdapter.getItem(position);
-//                if (makeEntity.getModel() != null) {
-//                    modelAdapter = new ModelAdapter(SignUpActivity.this,
-//                            R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
-//                    acModel.setAdapter(modelAdapter);
-//                    acModel.setEnabled(true);
-//                    IsModelValid = true;
-//                    acModel.setVisibility(View.VISIBLE);
-//
-//
-//                } else {
-//                    acModel.setText("");
-//                    acModel.setEnabled(false);
-//                    acModel.setVisibility(View.INVISIBLE);
-//                    IsModelValid = false;
-//
-//
-//                }
-//            }
-//        });
-//
-//
-//        acMake.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//                String str = acMake.getText().toString();
-//
-//                ListAdapter listAdapter = acMake.getAdapter();
-//                for (int i = 0; i < listAdapter.getCount(); i++) {
-//                    String temp = listAdapter.getItem(i).toString().toUpperCase();
-//                    if (str.compareTo(temp) == 0) {
-//                        acMake.setError(null);
-//                        acModel.setText("");
-//                        acModel.setEnabled(true);
-//                        IsMakeValid = true;
-//
-//
-//                        return;
-//                    }
-//                }
-//
-//                acMake.setError("Invalid Make");
-//                acMake.setFocusable(true);
-//
-//                acModel.setText("");
-//                acModel.setEnabled(false);
-//                IsMakeValid = false;
-//
-//
-//            }
-//        });
-//
-//
-//
-//        //region  Model Listener
-//
-//        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                IsModelValid = true;
-//                acModel.setError(null);
-//                modelEntity = modelAdapter.getItem(position);
-//                acMake.setSelection(0);
-//
-//            }
-//        });
-//        acModel.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//                if (s.length() > 0) {
-//                    String str = acModel.getText().toString();
-//
-//                    ListAdapter listAdapter = acModel.getAdapter();
-//                    for (int i = 0; i < listAdapter.getCount(); i++) {
-//                        String temp = listAdapter.getItem(i).toString().toUpperCase();
-//                        if (str.compareTo(temp) == 0) {
-//                            acModel.setError(null);
-//                            IsModelValid = true;
-//                            return;
-//                        }
-//                    }
-//
-//                    acModel.setError("Invalid Model");
-//                    acModel.setFocusable(true);
-//                    IsModelValid = false;
-//
-//
-//                }
-//
-//            }
-//        });
-//
-//        //endregion
-// endregion
 
 
     }
@@ -256,12 +112,6 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
 
     private void bindDetails() {
         etFullName.setText(policyEntity.getInsuredName());
-       // etVehicle.setText(policyEntity.getVehicleNumber());
-        //etPolicyNo.setText(policyEntity.getPolicyNumber());
-//        acMake.setText(policyEntity.getMake());
-//        acModel.setText(policyEntity.getModel());
-//        IsMakeValid = true;
-//        IsModelValid = true;
 
 
     }

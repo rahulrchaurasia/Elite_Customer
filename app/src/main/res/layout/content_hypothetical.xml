@@ -26,7 +26,7 @@
 
                 android:layout_alignParentLeft="true"
 
-                android:text="Do you have another vehicle"
+                android:text="Do you have another vehicle?"
                 android:textColor="@color/black" />
 
 

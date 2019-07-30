@@ -372,7 +372,7 @@ public class AssistanObtainFragment extends BaseFragment implements View.OnClick
 
         if ((etLic.getText().toString().trim().length() == 0) && (lyLic.getVisibility() == View.VISIBLE)) {
             etLic.requestFocus();
-            etLic.setError("Enter Driving License");
+            etLic.setError("Enter Driving Licence");
             return false;
         }
 

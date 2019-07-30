@@ -107,7 +107,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Driving License">
+            android:hint="Enter Driving Licence">
 
             <EditText
                 android:id="@+id/etLic"

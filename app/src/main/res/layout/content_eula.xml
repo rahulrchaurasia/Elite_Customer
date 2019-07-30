@@ -29,7 +29,7 @@
             android:layout_marginRight="@dimen/fab_margin"
             android:gravity="center"
             android:padding="4dp"
-            android:text="END-USER LICENSE AGREEMENT – ELITE"
+            android:text="END-USER LICENCE AGREEMENT – ELITE"
             android:textAllCaps="true"
             android:textColor="@color/black"
             style="@style/TextViewStyle.Large"/>

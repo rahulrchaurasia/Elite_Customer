@@ -14,7 +14,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Driving License Number">
+            android:hint="Driving Licence Number">
 
             <EditText
                 android:id="@+id/etLicNo"
@@ -29,7 +29,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Driving License Owner Name">
+            android:hint="Driving Licence Owner Name">
 
             <EditText
                 android:id="@+id/etLicOwnerName"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Driving License Owner Dob">
+            android:hint="Driving Licence Owner Dob">
 
             <EditText
                 android:id="@+id/etLicOwnerDob"
