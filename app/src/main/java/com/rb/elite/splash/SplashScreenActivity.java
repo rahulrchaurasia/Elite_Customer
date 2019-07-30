@@ -3,7 +3,9 @@ package com.rb.elite.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,18 +42,14 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
         prefManager = new PrefManager(this);
         dataBaseController = new DataBaseController(SplashScreenActivity.this);
-
         verify();
-
-
     }
 
     private void fetchCar() {
-       // new RegisterController(this).getCarVehicleMaster(null);
+        new RegisterController(this).getCarVehicleMaster(null);
     }
 
     private void fetchUserConstatnt() {
-        //getUserConstatnt
         new RegisterController(this).getUserConstatnt(null);
     }
 
@@ -64,18 +62,14 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
     private void fetchMasters() {
 
-//        if (prefManager.getCityData().size() == 0) {
-//
-//        }
+        // new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
 
-        new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
-
-//        if (prefManager.getMake() == null) {
-//            fetchCar();
-//        }
+        if (prefManager.getMake() == null) {
+            fetchCar();
+        }
 
         if (prefManager.getUserData() != null) {
-            fetchUserConstatnt();
+            //fetchUserConstatnt();
         }
 
 
@@ -89,7 +83,7 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
     @Override
     public void OnFailure(Throwable t) {
-        Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -103,7 +97,6 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
                             verify();
                         }
                     });
-
 //            // Changing message text color
 //            snackbar.setActionTextColor(Color.RED);
 //
@@ -111,7 +104,6 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 //            View sbView = snackbar.getView();
 //            TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
 //            textView.setTextColor(Color.CYAN);
-
             snackbar.show();
         } else {
             if (prefManager.isFirstTimeLaunch()) {
@@ -121,24 +113,18 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-                        //  new RegisterController(SplashScreenActivity.this).getDbVersion(SplashScreenActivity.this);  //step1
                         UserEntity loginEntity = prefManager.getUserData();
                         if (loginEntity != null) {
                             startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
 
                         } else {
                             startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-
                         }
-                        //fetchMasters();
 
                     }
                 }, SPLASH_DISPLAY_LENGTH);
 
             }
         }
-
-
     }
 }

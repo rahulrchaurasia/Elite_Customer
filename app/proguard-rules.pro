@@ -19,3 +19,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-ignorewarnings
+
+-keep class * {
+    public private *;
+}
+
+-keep class com.rb.elite.core.requestbuilder.** { *; }
+-keep class com.rb.elite.core.model.** { *; }
+-keepclassmembers class com.rb.elite.core.model.requestmodel.** { *; }
+
+
+
+-optimizationpasses 5
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose

@@ -27,5 +27,4 @@ public class VehicleMasterEntity {
         this.Make = Make;
     }
 
-
 }

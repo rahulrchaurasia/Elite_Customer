@@ -706,7 +706,6 @@ public class RegisterController implements IRegister {
         });
     }
 
-
     @Override
     public void getCarVehicleMaster(final IResponseSubcriber iResponseSubcriber) {
 
@@ -718,13 +717,11 @@ public class RegisterController implements IRegister {
                     if (response.isSuccessful()) {
 
                         if (response.body().getData().getVehicleMasterResult() != null) {
-                           Toast.makeText(mContext, response.body().getData().getVehicleMasterResult().getMake().get(0).toString(), Toast.LENGTH_LONG).show();
+
                             new PrefManager(mContext).storeVehicle(response.body().getData().getVehicleMasterResult());
 
                             if (iResponseSubcriber != null)
                                 iResponseSubcriber.OnSuccess(response.body(), "");
-                        } else {
-                           // Toast.makeText(mContext, "null", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -757,7 +754,6 @@ public class RegisterController implements IRegister {
 
 
     }
-
 
     @Override
     public void saveFeedBack(String reqId, String userID, String feedback, final IResponseSubcriber iResponseSubcriber) {

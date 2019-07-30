@@ -3,7 +3,6 @@ package com.rb.elite.splash;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,7 +23,7 @@ public class PrefManager {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Context _context;
-    String TAG = "ERROR_TAG" ;
+    String TAG = "ERROR_TAG";
 
     // shared pref mode
     int PRIVATE_MODE = 0;
@@ -42,7 +41,7 @@ public class PrefManager {
     private static final String MOBILE = "ELITE_CUSTOMER_MOBILE";
     private static final String PASSWORD = "ELITE_CUSTOMER_PASSWORD";
 
-    private static final String VEHICLE_MASTER = "vehicle_data";
+    private static final String VEHICLE_MASTER = "com.rb.elite.splash_vehicle_data";
     private static final String USER_CONSTATNT = "user_constatnt";
     private static final String CITY_CONSTATNT = "cityr_constatnt";
     private static final String PUSH_NOTIFY_DATA = "push_notify_data";
@@ -50,7 +49,7 @@ public class PrefManager {
     private static final String IS_DEVICE_TOKEN = "devicetoken";
     public static String DEVICE_ID = "deviceID";
     public static String NOTIFICATION_COUNTER = "Notification_Counter";
-    public static String USER_DATA= "user_data";
+    public static String USER_DATA = "user_data";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -59,21 +58,14 @@ public class PrefManager {
     }
 
     public boolean storeUserData(UserEntity entity) {
-        Toast.makeText(_context, "Enter in Prefer" + entity.getName(), Toast.LENGTH_SHORT).show();
-
 
         try {
             editor.putString(USER_DATA, new Gson().toJson(entity));
-
             return editor.commit();
-        }catch (Exception ex)
-        {
-
-            Toast.makeText(_context, "Enter in Prefer" +ex.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e(TAG,"Enter in Prefer" +ex.getMessage());
-            return  false;
+        } catch (Exception ex) {
+            Log.e(TAG, "Enter in Prefer" + ex.getMessage());
+            return false;
         }
-
 
 
     }
@@ -94,12 +86,14 @@ public class PrefManager {
 
     public boolean storeVehicle(VehicleMasterEntity entity) {
         editor.putString(VEHICLE_MASTER, new Gson().toJson(entity));
+        boolean isSaved = editor.commit();
+        Log.d(TAG, "storeVehicle: " + isSaved);
         return editor.commit();
     }
 
     public List<MakeEntity> getMake() {
         String fourWheeler = pref.getString(VEHICLE_MASTER, "");
-
+        Log.d(TAG, "getMake: " + fourWheeler);
         if (fourWheeler.length() > 0) {
             VehicleMasterEntity vehicleMaster = new Gson().fromJson(fourWheeler, VehicleMasterEntity.class);
             return vehicleMaster.getMake();
@@ -116,6 +110,7 @@ public class PrefManager {
         if (entity.getVariant() != null) return entity.getVariant();
         else return null;
     }
+    //endregion
 
 
     //region master NotificationData
@@ -135,6 +130,7 @@ public class PrefManager {
             return null;
         }
     }
+
     public void clearNotification() {
         pref.edit().remove(PUSH_NOTIFY_DATA).commit();
 
@@ -142,9 +138,7 @@ public class PrefManager {
 
     //endregion
 
-    //endregion
-
-    //region master UserConstatnr
+    //region master User Constant
 
     public boolean storeUserConstatnt(UserConstatntEntity entity) {
         editor.putString(USER_CONSTATNT, new Gson().toJson(entity));
