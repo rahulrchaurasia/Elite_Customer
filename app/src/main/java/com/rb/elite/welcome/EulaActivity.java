@@ -2,11 +2,12 @@ package com.rb.elite.welcome;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.rb.elite.BaseActivity;
 import com.rb.elite.R;
@@ -50,8 +51,9 @@ public class EulaActivity extends BaseActivity implements View.OnClickListener, 
         switch (view.getId()) {
             case R.id.btnAgree:
 
-                    prefManager.setFirstTimeLaunch(false);
-                    startActivity(new Intent(this, LoginActivity.class));
+                prefManager.setFirstTimeLaunch(false);
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
                 break;
             case R.id.btnDisAgree:
                 finish();

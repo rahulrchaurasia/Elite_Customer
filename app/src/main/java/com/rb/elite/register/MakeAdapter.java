@@ -89,14 +89,19 @@ public class MakeAdapter extends ArrayAdapter<MakeEntity> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            List<MakeEntity> filterList = (ArrayList<MakeEntity>) results.values;
-            if (results != null && results.count > 0) {
-                clear();
-                for (MakeEntity people : filterList) {
-                    add(people);
-                    notifyDataSetChanged();
+            try{
+                List<MakeEntity> filterList = (ArrayList<MakeEntity>) results.values;
+                if (results != null && results.count > 0) {
+                    clear();
+                    for (MakeEntity people : filterList) {
+                        add(people);
+                        notifyDataSetChanged();
+                    }
                 }
+            }catch (Exception ex){
+
             }
+
         }
     };
 }

@@ -2,6 +2,8 @@ package com.rb.elite.splash;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,6 +24,7 @@ public class PrefManager {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Context _context;
+    String TAG = "ERROR_TAG" ;
 
     // shared pref mode
     int PRIVATE_MODE = 0;
@@ -56,8 +59,23 @@ public class PrefManager {
     }
 
     public boolean storeUserData(UserEntity entity) {
-        editor.putString(USER_DATA, new Gson().toJson(entity));
-        return editor.commit();
+        Toast.makeText(_context, "Enter in Prefer" + entity.getName(), Toast.LENGTH_SHORT).show();
+
+
+        try {
+            editor.putString(USER_DATA, new Gson().toJson(entity));
+
+            return editor.commit();
+        }catch (Exception ex)
+        {
+
+            Toast.makeText(_context, "Enter in Prefer" +ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG,"Enter in Prefer" +ex.getMessage());
+            return  false;
+        }
+
+
+
     }
 
     public UserEntity getUserData() {

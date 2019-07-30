@@ -3,11 +3,7 @@ package com.rb.elite.profile;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -20,6 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.rb.elite.BaseFragment;
 import com.rb.elite.R;
@@ -40,12 +40,15 @@ import com.rb.elite.core.response.FastLaneDataResponse;
 import com.rb.elite.core.response.PincodeResponse;
 import com.rb.elite.core.response.ProfileResponse;
 import com.rb.elite.core.response.UserRegistrationResponse;
+import com.rb.elite.core.response.VehicleMasterResponse;
 import com.rb.elite.database.DataBaseController;
 import com.rb.elite.register.MakeAdapter;
 import com.rb.elite.register.ModelAdapter;
 import com.rb.elite.splash.PrefManager;
-import com.rb.elite.splash.SplashScreenActivity;
 import com.rb.elite.utility.Constants;
+import com.rb.elite.utility.Utility;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -118,13 +121,6 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
         return view;
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser){
-//
-//        }
-//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -145,111 +141,84 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
         addUserRequestEntity = new AddUserRequestEntity();
         updateUserRequestEntity = new UpdateUserRequestEntity();
 
-        if(prefManager.getMake() != null) {
+        if (prefManager.getMake() != null) {
             makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
             acMake.setAdapter(makeAdapter);
-        }else {
-            acMake.setAdapter(null);
-            startActivity(new Intent(getActivity(), SplashScreenActivity.class));
+            //  setAutoComplete();
 
-            getCustomToast("Your session has expired");
-            getActivity().finish();
+        } else {
+
+            showDialog();
+            new RegisterController(getActivity()).getCarVehicleMaster(MyProfileFragment.this);
 
         }
 
 
-        // region Make  Listener
-        acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                acMake.setError(null);
-                acMake.setSelection(0);
-                IsMakeValid = true;
-                makeEntity = makeAdapter.getItem(position);
-                if (makeEntity.getModel() != null) {
-                    modelAdapter = new ModelAdapter(getActivity(),
-                            R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
-                    acModel.setAdapter(modelAdapter);
-                    acModel.setEnabled(true);
-                    IsModelValid = true;
-                    acModel.setVisibility(View.VISIBLE);
-
-
-                } else {
-                    acModel.setText("");
-                    acModel.setEnabled(false);
-                    acModel.setVisibility(View.INVISIBLE);
-                    IsModelValid = false;
-
-
-                }
-            }
-        });
-
-
-       /* acMake.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                String str = acMake.getText().toString();
-
-                ListAdapter listAdapter = acMake.getAdapter();
-                for (int i = 0; i < listAdapter.getCount(); i++) {
-                    String temp = listAdapter.getItem(i).toString().toUpperCase();
-                    if (str.compareTo(temp) == 0) {
-                        acMake.setError(null);
-                        acModel.setText("");
-                        acModel.setEnabled(true);
-                        IsMakeValid = true;
-
-
-                        return;
-                    }
-                }
-
-                acMake.setError("Invalid Make");
-                acMake.setFocusable(true);
-
-                acModel.setText("");
-                acModel.setEnabled(false);
-                IsMakeValid = false;
-
-
-            }
-        });
-*/
-        //endregion
-
-        //region  Model Listener
-
-        acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IsModelValid = true;
-                acModel.setError(null);
-                modelEntity = modelAdapter.getItem(position);
-                acMake.setSelection(0);
-
-            }
-        });
-
-        acMake.addTextChangedListener(textWatcherMake);
-        acModel.addTextChangedListener(textWatcherModel);
-
-        //endregion
-
         showDialog();
         new RegisterController(getActivity()).getUserProfile(this);
+
+
+    }
+
+    private void setAutoComplete() {
+
+        // region Make  Listener
+        if (prefManager.getMake() != null) {
+
+
+            acMake.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    acMake.setError(null);
+                    acMake.setSelection(0);
+                    IsMakeValid = true;
+                    makeEntity = makeAdapter.getItem(position);
+                    if (makeEntity.getModel() != null) {
+                        modelAdapter = new ModelAdapter(getActivity(),
+                                R.layout.activity_sign_up, R.id.lbl_name, makeEntity.getModel());
+                        acModel.setAdapter(modelAdapter);
+                        acModel.setEnabled(true);
+                        IsModelValid = true;
+                        acModel.setVisibility(View.VISIBLE);
+
+
+                    } else {
+                        acModel.setText("");
+                        acModel.setEnabled(false);
+                        acModel.setVisibility(View.INVISIBLE);
+                        IsModelValid = false;
+
+
+                    }
+                }
+            });
+
+
+            //endregion
+
+            //region  Model Listener
+
+            acModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    IsModelValid = true;
+                    acModel.setError(null);
+                    modelEntity = modelAdapter.getItem(position);
+                    acMake.setSelection(0);
+
+                }
+            });
+
+
+            //endregion
+
+            acMake.addTextChangedListener(textWatcherMake);
+            acModel.addTextChangedListener(textWatcherModel);
+
+        } else {
+            showDialog();
+            new RegisterController(getActivity()).getCarVehicleMaster(MyProfileFragment.this);
+        }
 
 
     }
@@ -274,25 +243,27 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
                 String str = acMake.getText().toString();
 
                 ListAdapter listAdapter = acMake.getAdapter();
-                for (int i = 0; i < listAdapter.getCount(); i++) {
-                    String temp = listAdapter.getItem(i).toString().toUpperCase();
-                    if (str.compareTo(temp) == 0) {
-                        acMake.setError(null);
-                        acModel.setText("");
-                        acModel.setEnabled(true);
-                        IsMakeValid = true;
+                if(listAdapter != null) {
+                    for (int i = 0; i < listAdapter.getCount(); i++) {
+                        String temp = listAdapter.getItem(i).toString().toUpperCase();
+                        if (str.compareTo(temp) == 0) {
+                            acMake.setError(null);
+                            acModel.setText("");
+                            acModel.setEnabled(true);
+                            IsMakeValid = true;
 
 
-                        return;
+                            return;
+                        }
                     }
+
+                    acMake.setError("Invalid Make");
+                    acMake.setFocusable(true);
+
+                    acModel.setText("");
+                    acModel.setEnabled(false);
+                    IsMakeValid = false;
                 }
-
-                acMake.setError("Invalid Make");
-                acMake.setFocusable(true);
-
-                acModel.setText("");
-                acModel.setEnabled(false);
-                IsMakeValid = false;
 
             }
         }
@@ -383,16 +354,7 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
             return false;
         }
 
-//        if (!isEmpty(etMobile)) {
-//            etMobile.requestFocus();
-//            etMobile.setError("Enter Mobile");
-//            return false;
-//        }
-//        if (!isValidePhoneNumber(etMobile)) {
-//            etMobile.requestFocus();
-//            etMobile.setError("Enter Valid Mobile");
-//            return false;
-//        }
+
         if (!isEmpty(etEmail)) {
             etEmail.requestFocus();
             etEmail.setError("Enter Email");
@@ -409,11 +371,7 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
             etVehicle.setError("Enter Vehicle Number");
             return false;
         }
-//        if (!isEmpty(etPolicyNo)) {
-//            etPolicyNo.requestFocus();
-//            etMobile.setError("Enter Reliance Policy Number");
-//            return false;
-//        }
+
 
         if (!isEmpty(acMake)) {
             acMake.requestFocus();
@@ -427,45 +385,26 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
         }
 
-        if (!isEmpty(acModel)) {
-            acModel.requestFocus();
-            acModel.setError("Enter Model");
 
-            return false;
+        if(acModel.getVisibility()== View.VISIBLE){
+
+            if (!isEmpty(acModel)) {
+                acModel.requestFocus();
+                acModel.setError("Enter Model");
+
+                return false;
+            }
+
+            if (IsModelValid == false) {
+                acModel.requestFocus();
+                acModel.setError("Invalid Model");
+
+                return false;
+            }
         }
 
-        if (IsModelValid == false) {
-            acModel.requestFocus();
-            acModel.setError("Invalid Model");
 
-            return false;
-        }
 
-//        if (!isEmpty(etPincode) && etPincode.getText().toString().length() != 6) {
-//            etPincode.requestFocus();
-//            etPincode.setError("Enter Pincode");
-//            return false;
-//        }
-//        if (!isEmpty(etPassword)) {
-//            etPassword.requestFocus();
-//            etPassword.setError("Enter Password");
-//            return false;
-//        }
-//        if (etPassword.getText().toString().trim().length() < 3) {
-//            etPassword.requestFocus();
-//            etPassword.setError("Minimum length should be 3");
-//            return false;
-//        }
-//        if (!isEmpty(etconfirmPassword)) {
-//            etconfirmPassword.requestFocus();
-//            etconfirmPassword.setError("Confirm Password");
-//            return false;
-//        }
-//        if (!etPassword.getText().toString().equals(etconfirmPassword.getText().toString())) {
-//            etconfirmPassword.requestFocus();
-//            etconfirmPassword.setError("Password Mismatch");
-//            return false;
-//        }
         return true;
     }
 
@@ -498,8 +437,13 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
         registerRequest.setVehicle_no("" + etVehicle.getText().toString().trim());
         registerRequest.setPolicy_no("");
 
-        registerRequest.setMake(""+acMake.getText().toString());
-        registerRequest.setModel(""+acModel.getText().toString());
+        registerRequest.setMake("" + acMake.getText().toString());
+
+        if(acModel.getVisibility()== View.VISIBLE) {
+            registerRequest.setModel("" + acModel.getText().toString());
+        }else{
+            registerRequest.setModel("");
+        }
 
 
         showDialog();
@@ -521,18 +465,15 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
         etMobile.setEnabled(false);
 
-        if(profile.getVehicle_no().trim().length()>0)
-        {
+        if (profile.getVehicle_no().trim().length() > 0) {
             etVehicle.setEnabled(false);
             btnGo.setVisibility(View.GONE);
         }
     }
 
-    private void resetMakeModel()
-    {
+    private void resetMakeModel() {
         acMake.addTextChangedListener(textWatcherMake);
         acModel.addTextChangedListener(textWatcherModel);
-
 
 
         acModel.setError(null);
@@ -580,6 +521,7 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
     @Override
     public void OnSuccess(APIResponse response, String message) {
 
+
         cancelDialog();
         if (response instanceof PincodeResponse) {
             if (response.getStatus_code() == 0) {
@@ -598,6 +540,13 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
                 getCustomToast(response.getMessage());
             }
+        } else if (response instanceof VehicleMasterResponse) {
+            if (response.getStatus_code() == 0) {
+                List<MakeEntity> lstMake = ((VehicleMasterResponse) response).getData().getVehicleMasterResult().getMake();
+                makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, lstMake);
+                acMake.setAdapter(makeAdapter);
+
+            }
         } else if (response instanceof ProfileResponse) {
             if (response.getStatus_code() == 0) {
                 isDataUploaded = false;
@@ -611,6 +560,7 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
                 setProfile(profileEntity);
                 isDataUploaded = true;
 
+
             }
         } else if (response instanceof FastLaneDataResponse) {
 
@@ -618,12 +568,20 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
             FastLaneDataEntity fastLaneDataEntity = ((FastLaneDataResponse) response).getMasterData();
 
             try {
-                if (fastLaneDataEntity != null && fastLaneDataEntity.getMake_Name() != "" && fastLaneDataEntity.getModel_Name() != "") {
+                if (fastLaneDataEntity != null) {
 
-                    acMake.setText("" + fastLaneDataEntity.getMake_Name());
-                    acModel.setText("" + fastLaneDataEntity.getModel_Name());
+                    if (fastLaneDataEntity.getMake_Name() != "") {
+                        acMake.setText("" + fastLaneDataEntity.getMake_Name());
+                    } else {
+                        acMake.setText("");
+                    }
 
 
+                    if (fastLaneDataEntity.getModel_Name() != "") {
+                        acModel.setText("" + fastLaneDataEntity.getModel_Name());
+                    } else {
+                        acModel.setText("");
+                    }
 
                     acModel.setError(null);
                     acMake.setError(null);
@@ -631,12 +589,13 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
                     IsMakeValid = true;
                     IsModelValid = true;
 
+                    setAutoComplete();
+
                 } else {
                     resetMakeModel();
 
                 }
-            }catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 resetMakeModel();
 
             }
@@ -652,7 +611,6 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
         // Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
         getCustomToast(t.getMessage());
     }
-
 
 
 }

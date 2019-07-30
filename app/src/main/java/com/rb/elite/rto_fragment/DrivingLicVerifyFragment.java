@@ -343,7 +343,7 @@ public class DrivingLicVerifyFragment extends BaseFragment implements View.OnCli
             return false;
         }else if (!isEmpty(etLic)) {
             etLic.requestFocus();
-            etLic.setError("Enter Driving License");
+            etLic.setError("Enter Driving Licence");
             llCorrection.setVisibility(View.VISIBLE);
             return false;
         }

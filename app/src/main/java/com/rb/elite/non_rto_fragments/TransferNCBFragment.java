@@ -75,7 +75,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     ScrollView scrollView;
     LinearLayout lyVehicle, lvLogo, lyTAT;
     RelativeLayout rlDoc, rlEditVehicle;
-    ;
+
     ImageView ivLogo, ivClientLogo;
 
     TextView txtCharges, txtPrdName, txtDoc, txtClientName, txtTAT;
@@ -384,9 +384,12 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
 
         bindData();
 
-        makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
-        acMake.setAdapter(makeAdapter);
-        setMakeListner();
+        if (prefManager.getMake() != null) {
+            makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
+            acMake.setAdapter(makeAdapter);
+            setMakeListner();
+        }
+
 
         if (getArguments() != null) {
 

@@ -233,6 +233,8 @@ public class RegisterController implements IRegister {
 
                     //callback of data
                     if (response.body().getStatus_code() == 0) {
+
+                        Toast.makeText(mContext, response.body().getData().get(0).getUserdetails().get(0).getName(), Toast.LENGTH_LONG).show();
                         new PrefManager(mContext).storeUserData(response.body().getData().get(0).getUserdetails().get(0));
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {
@@ -716,7 +718,7 @@ public class RegisterController implements IRegister {
                     if (response.isSuccessful()) {
 
                         if (response.body().getData().getVehicleMasterResult() != null) {
-                           // Toast.makeText(mContext, "data", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(mContext, response.body().getData().getVehicleMasterResult().getMake().get(0).toString(), Toast.LENGTH_LONG).show();
                             new PrefManager(mContext).storeVehicle(response.body().getData().getVehicleMasterResult());
 
                             if (iResponseSubcriber != null)
