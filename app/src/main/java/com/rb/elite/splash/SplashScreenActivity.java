@@ -48,10 +48,13 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
     private void fetchCar() {
         new RegisterController(this).getCarVehicleMaster(null);
     }
-
-    private void fetchUserConstatnt() {
-        new RegisterController(this).getUserConstatnt(null);
+    private void fetchCity() {
+        new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
     }
+
+//    private void fetchUserConstatnt() {
+//        new RegisterController(this).getUserConstatnt(null);
+//    }
 
 
     @Override
@@ -62,15 +65,16 @@ public class SplashScreenActivity extends BaseActivity implements IResponseSubcr
 
     private void fetchMasters() {
 
-        // new RegisterController(SplashScreenActivity.this).getCityMainMaster(null);
+        if(prefManager.getCityData().size() == 0)
+        {
+            fetchCity();
+        }
 
         if (prefManager.getMake() == null) {
             fetchCar();
         }
 
-        if (prefManager.getUserData() != null) {
-            //fetchUserConstatnt();
-        }
+
 
 
     }

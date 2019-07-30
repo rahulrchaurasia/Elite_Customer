@@ -277,6 +277,8 @@ public class ComplimentaryLoanAuditFragment extends BaseFragment implements View
 
     @Override
     public void onClick(View view) {
+
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
             case R.id.etDOB:
                 DateTimePicker.showOpenDatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {

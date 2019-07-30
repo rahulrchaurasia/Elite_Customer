@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.rb.elite.BaseFragment;
 import com.rb.elite.R;
+import com.rb.elite.utility.Constants;
 import com.rb.elite.utility.DateTimePicker;
 
 import java.text.SimpleDateFormat;
@@ -67,6 +68,7 @@ public class ProvideHospitalizationFragment extends BaseFragment implements View
     @Override
     public void onClick(View v) {
 
+        Constants.hideKeyBoard(v,mContext);
         if (v.getId() == R.id.etHospitalizationDate) {
 
             DateTimePicker.showOpenDatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {

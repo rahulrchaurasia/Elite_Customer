@@ -419,6 +419,7 @@ public class TransferNCBFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
             case R.id.rlEditVehicle:

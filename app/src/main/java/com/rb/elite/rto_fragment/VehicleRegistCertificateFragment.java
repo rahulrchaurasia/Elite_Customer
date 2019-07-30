@@ -279,7 +279,7 @@ public class VehicleRegistCertificateFragment extends BaseFragment implements Vi
 
     @Override
     public void onClick(View view) {
-
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
 

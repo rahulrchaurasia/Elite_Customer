@@ -290,6 +290,7 @@ public class AddressEndorsementFragment  extends BaseFragment implements View.On
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view, getActivity());
         switch (view.getId()) {
 
 

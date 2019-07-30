@@ -23,6 +23,7 @@ import com.rb.elite.core.IResponseSubcriber;
 import com.rb.elite.core.controller.register.RegisterController;
 import com.rb.elite.core.response.LoginResponse;
 import com.rb.elite.register.ClientDeclareActivity;
+import com.rb.elite.register.SignUpActivity;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
 import com.rb.elite.utility.ReadDeviceID;
@@ -105,7 +106,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         Constants.hideKeyBoard(view, LoginActivity.this);
         switch (view.getId()) {
             case R.id.tvRegistration:
-                startActivity(new Intent(LoginActivity.this, ClientDeclareActivity.class));
+               // startActivity(new Intent(LoginActivity.this, ClientDeclareActivity.class));
+                // Changes For common app 05
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
 
                 break;
 

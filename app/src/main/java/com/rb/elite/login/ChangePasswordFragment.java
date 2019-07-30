@@ -105,7 +105,9 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         cancelDialog();
         if (response instanceof CommonResponse) {
             if (response.getStatus_code() == 0) {
-                Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+
+                getCustomToast( response.getMessage());
 
                 clear();
 

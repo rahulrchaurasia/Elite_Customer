@@ -1,7 +1,6 @@
 package com.rb.elite.search;
 
 import android.app.Activity;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.rb.elite.R;
 import com.rb.elite.core.model.CityMainEntity;
@@ -37,10 +38,7 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Pr
     }
 
 
-
-
-    public class ProductItem extends RecyclerView.ViewHolder
-    {
+    public class ProductItem extends RecyclerView.ViewHolder {
         public TextView txtTitle;
         LinearLayout lyParent;
 
@@ -49,7 +47,7 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Pr
             super(itemView);
 
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            lyParent = (LinearLayout)itemView.findViewById(R.id.lyParent);
+            lyParent = (LinearLayout) itemView.findViewById(R.id.lyParent);
 
         }
     }
@@ -59,7 +57,7 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Pr
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_city_search_item, parent, false);
 
-        return new SearchCityAdapter.ProductItem (itemView);
+        return new SearchCityAdapter.ProductItem(itemView);
     }
 
     @Override
@@ -67,17 +65,16 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Pr
 
         final CityMainEntity entity = CityList.get(position);
 
-        holder.txtTitle.setText( "" +entity.getCityname().toUpperCase());
+        holder.txtTitle.setText("" + entity.getCityname().toUpperCase());
         holder.lyParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ((SearchCityActivity)mContext).getCity(entity);
+                ((SearchCityActivity) mContext).getCity(entity);
             }
         });
 
     }
-
 
 
     @Override
@@ -117,8 +114,7 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Pr
 
     }
 
-    public void   findAll( List<CityMainEntity> cityList)
-    {
+    public void findAll(List<CityMainEntity> cityList) {
         CityList = cityList;
         notifyDataSetChanged();
     }

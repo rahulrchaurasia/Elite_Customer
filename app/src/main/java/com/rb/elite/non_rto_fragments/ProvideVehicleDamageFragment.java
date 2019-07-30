@@ -373,6 +373,7 @@ public class ProvideVehicleDamageFragment extends BaseFragment implements View.O
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
 

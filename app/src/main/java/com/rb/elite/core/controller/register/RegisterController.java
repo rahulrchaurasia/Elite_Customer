@@ -1,7 +1,6 @@
 package com.rb.elite.core.controller.register;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.rb.elite.core.IResponseSubcriber;
 
@@ -234,7 +233,6 @@ public class RegisterController implements IRegister {
                     //callback of data
                     if (response.body().getStatus_code() == 0) {
 
-                        Toast.makeText(mContext, response.body().getData().get(0).getUserdetails().get(0).getName(), Toast.LENGTH_LONG).show();
                         new PrefManager(mContext).storeUserData(response.body().getData().get(0).getUserdetails().get(0));
                         iResponseSubcriber.OnSuccess(response.body(), response.body().getMessage());
                     } else {

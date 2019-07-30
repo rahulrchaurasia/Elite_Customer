@@ -4,11 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.Menu;
@@ -18,6 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.rb.elite.BaseActivity;
 import com.rb.elite.R;
@@ -31,9 +32,10 @@ import com.rb.elite.database.DataBaseController;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SearchCityActivity extends BaseActivity implements View.OnClickListener , IResponseSubcriber {
+public class SearchCityActivity extends BaseActivity implements View.OnClickListener, IResponseSubcriber {
 
     DataBaseController dataBaseController;
     PrefManager prefManager;
@@ -44,7 +46,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     LinearLayout lyOtherCity;
     private SearchView.OnQueryTextListener queryTextListener;     // for Option Menu
 
-   // LeadAdapter mAdapter;
+    // LeadAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +57,17 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         prefManager = new PrefManager(this);
+        CityList = new ArrayList<>();
+
         initialize();
 
         CityList = prefManager.getCityData();
-        if(CityList.size() >0)
-        {
-            mAdapter = new SearchCityAdapter(SearchCityActivity.this,CityList);
-            rvCity.setAdapter(mAdapter);
-        }else{
+
+        mAdapter = new SearchCityAdapter(SearchCityActivity.this, CityList);
+        rvCity.setAdapter(mAdapter);
+
+
+        if (CityList.size() == 0) {
             showDialog();
             new RegisterController(SearchCityActivity.this).getCityMainMaster(SearchCityActivity.this);
         }
@@ -83,8 +88,8 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
         rvCity.setItemAnimator(new DefaultItemAnimator());
 
         lyOtherCity.setOnClickListener(this);
-        //  recyclerLead.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
+        //  recyclerLead.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
 
     }
@@ -107,26 +112,26 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
         }
 
-        EditText editText =  searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText editText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
 
-        editText.setFilters( new InputFilter[]{
+        editText.setFilters(new InputFilter[]{
                 new InputFilter.AllCaps(),
                 new InputFilter.LengthFilter(20),
                 new InputFilter() {
                     @Override
                     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                        if(source.equals(" ")){ // for backspace
+                        if (source.equals(" ")) { // for backspace
                             return source;
                         }
-                        if(source.toString().matches("[a-zA-Z]+")){
+                        if (source.toString().matches("[a-zA-Z]+")) {
                             return source;
                         }
                         return "";
                     }
                 }
-                });
+        });
 
-        if (searchView != null  && CityList !=null && CityList.size() > 0) {
+        if (searchView != null && CityList != null && CityList.size() > 0) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
 
             queryTextListener = new SearchView.OnQueryTextListener() {
@@ -137,8 +142,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
                     if (newText.length() > 0) {
                         mAdapter.CityList = CityList;
                         mAdapter.getFilter().filter(newText);
-                    }
-                    else {
+                    } else {
                         mAdapter.findAll(CityList);
                     }
                     return true;
@@ -158,11 +162,10 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    public void getCity(CityMainEntity allCityEntity)
-    {
-        Intent intent=new Intent();
-        intent.putExtra(Constants.SEARCH_CITY_DATA,allCityEntity);
-        setResult(Constants.SEARCH_CITY_CODE,intent);
+    public void getCity(CityMainEntity allCityEntity) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.SEARCH_CITY_DATA, allCityEntity);
+        setResult(Constants.SEARCH_CITY_CODE, intent);
         finish();      //finishing activity
 
 
@@ -192,6 +195,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onBackPressed() {
         finish();
@@ -208,8 +212,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
                 if (((CityMainResponse) response).getData() != null) {
 
                     CityList = ((CityMainResponse) response).getData();
-                    mAdapter = new SearchCityAdapter(SearchCityActivity.this,CityList);
-                    rvCity.setAdapter(mAdapter);
+                    mAdapter.findAll(CityList);
                 }
             }
         }

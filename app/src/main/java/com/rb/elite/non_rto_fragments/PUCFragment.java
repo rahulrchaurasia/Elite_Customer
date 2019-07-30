@@ -277,6 +277,7 @@ public class PUCFragment extends BaseFragment implements View.OnClickListener, I
     @Override
     public void onClick(View view) {
 
+        Constants.hideKeyBoard(view,mContext);
         switch (view.getId()) {
 
 

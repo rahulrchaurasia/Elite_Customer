@@ -63,7 +63,7 @@ public class PrefManager {
             editor.putString(USER_DATA, new Gson().toJson(entity));
             return editor.commit();
         } catch (Exception ex) {
-            Log.e(TAG, "Enter in Prefer" + ex.getMessage());
+            Log.e(TAG, "Error in Vehicle Data" + ex.getMessage());
             return false;
         }
 
