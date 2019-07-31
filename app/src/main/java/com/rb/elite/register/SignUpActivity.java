@@ -438,7 +438,7 @@ public class SignUpActivity extends BaseActivity implements IResponseSubcriber, 
                 public void onClick(View v) {
 
                     // Close dialog
-                    if (etOtp.getText().toString().equals("0000") || etOtp.getText().toString().equals(OTP)) {
+                    if (etOtp.getText().toString().equals(OTP)) {
 
                         etMobile.setText(etMobile.getText().toString());
                         dialog.dismiss();

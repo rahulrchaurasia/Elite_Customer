@@ -28,8 +28,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="bottom"
                 android:layout_marginTop="4dp"
+                android:gravity="bottom"
                 android:orientation="horizontal">
 
                 <TextView
@@ -43,13 +43,13 @@
 
                 <TextView
                     android:id="@+id/txtRupee"
+                    style="@style/TextViewStyle.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextViewStyle.Large"
                     android:layout_marginLeft="2dp"
                     android:text="@string/Rs"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/txtCharges"
@@ -59,7 +59,7 @@
                     android:layout_marginLeft="2dp"
                     android:text=""
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -89,7 +89,7 @@
                     android:layout_marginLeft="2dp"
                     android:text=""
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

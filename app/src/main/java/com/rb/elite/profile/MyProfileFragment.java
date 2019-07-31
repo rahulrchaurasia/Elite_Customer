@@ -1,7 +1,6 @@
 package com.rb.elite.profile;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -46,7 +45,6 @@ import com.rb.elite.register.MakeAdapter;
 import com.rb.elite.register.ModelAdapter;
 import com.rb.elite.splash.PrefManager;
 import com.rb.elite.utility.Constants;
-import com.rb.elite.utility.Utility;
 
 import java.util.List;
 
@@ -58,16 +56,15 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
     private Context mContext;
     EditText etPolicyNo, etEmail, etPassword, etconfirmPassword;
-    Button btnVerify, btnSubmit, btnGo;
-    // TextView txtModel;
+    Button btnSubmit, btnGo;
+
     EditText etFullName, etVehicle, etMobile, etPincode, etArea, etCity, etState;
-    EditText etOtp;
+
     AutoCompleteTextView acMake, acModel;
-    Dialog dialog;
+
     AddUserRequestEntity addUserRequestEntity;
     PincodeEntity pincodeEntity;
     UpdateUserRequestEntity updateUserRequestEntity;
-    String OTP = "0000";
     LinearLayout llOtherInfo, llCityInfo;
     PolicyEntity policyEntity;
     DataBaseController dataBaseController;
@@ -137,6 +134,9 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
         acModel.setThreshold(1);
         acModel.setSelection(0);
+
+        acModel.setEnabled(false);
+        acMake.setEnabled(false);
 
         addUserRequestEntity = new AddUserRequestEntity();
         updateUserRequestEntity = new UpdateUserRequestEntity();
@@ -243,7 +243,7 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
                 String str = acMake.getText().toString();
 
                 ListAdapter listAdapter = acMake.getAdapter();
-                if(listAdapter != null) {
+                if (listAdapter != null) {
                     for (int i = 0; i < listAdapter.getCount(); i++) {
                         String temp = listAdapter.getItem(i).toString().toUpperCase();
                         if (str.compareTo(temp) == 0) {
@@ -288,20 +288,23 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
                     String str = acModel.getText().toString();
 
                     ListAdapter listAdapter = acModel.getAdapter();
-                    for (int i = 0; i < listAdapter.getCount(); i++) {
-                        String temp = listAdapter.getItem(i).toString().toUpperCase();
-                        if (str.compareTo(temp) == 0) {
-                            acModel.setError(null);
-                            IsModelValid = true;
-                            return;
+                    if (listAdapter != null) {
+
+                        for (int i = 0; i < listAdapter.getCount(); i++) {
+                            String temp = listAdapter.getItem(i).toString().toUpperCase();
+                            if (str.compareTo(temp) == 0) {
+                                acModel.setError(null);
+                                IsModelValid = true;
+                                return;
+                            }
                         }
+
+                        acModel.setError("Invalid Model");
+                        acModel.setFocusable(true);
+                        IsModelValid = false;
+
+
                     }
-
-                    acModel.setError("Invalid Model");
-                    acModel.setFocusable(true);
-                    IsModelValid = false;
-
-
                 }
 
             }
@@ -386,7 +389,7 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
         }
 
 
-        if(acModel.getVisibility()== View.VISIBLE){
+        if (acModel.getVisibility() == View.VISIBLE) {
 
             if (!isEmpty(acModel)) {
                 acModel.requestFocus();
@@ -402,7 +405,6 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
                 return false;
             }
         }
-
 
 
         return true;
@@ -439,9 +441,9 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
         registerRequest.setMake("" + acMake.getText().toString());
 
-        if(acModel.getVisibility()== View.VISIBLE) {
+        if (acModel.getVisibility() == View.VISIBLE) {
             registerRequest.setModel("" + acModel.getText().toString());
-        }else{
+        } else {
             registerRequest.setModel("");
         }
 
@@ -451,6 +453,10 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
     }
 
     private void setProfile(ProfileEntity profile) {
+
+        acModel.setEnabled(false);
+        acMake.setEnabled(false);
+
         etFullName.setText("" + profile.getName());
         etVehicle.setText("" + profile.getVehicle_no());
         acMake.setText("" + profile.getMake());
@@ -474,6 +480,9 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
     private void resetMakeModel() {
         acMake.addTextChangedListener(textWatcherMake);
         acModel.addTextChangedListener(textWatcherModel);
+
+        acModel.setEnabled(true);
+        acMake.setEnabled(true);
 
 
         acModel.setError(null);
@@ -569,6 +578,9 @@ public class MyProfileFragment extends BaseFragment implements IResponseSubcribe
 
             try {
                 if (fastLaneDataEntity != null) {
+
+                    acModel.setEnabled(true);
+                    acMake.setEnabled(true);
 
                     if (fastLaneDataEntity.getMake_Name() != "") {
                         acMake.setText("" + fastLaneDataEntity.getMake_Name());

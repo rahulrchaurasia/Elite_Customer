@@ -249,6 +249,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         acModel.setThreshold(1);
         acModel.setSelection(0);
 
+        acModel.setEnabled(false);
+        acMake.setEnabled(false);
+
         etVehicle.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
 
 
@@ -324,7 +327,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
                         ListAdapter listAdapter = acMake.getAdapter();
 
-                        if(listAdapter != null) {
+                        if (listAdapter != null) {
                             for (int i = 0; i < listAdapter.getCount(); i++) {
                                 String temp = listAdapter.getItem(i).toString().toUpperCase();
                                 if (str.compareTo(temp) == 0) {
@@ -388,19 +391,21 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
                         String str = acModel.getText().toString();
 
                         ListAdapter listAdapter = acModel.getAdapter();
-                        for (int i = 0; i < listAdapter.getCount(); i++) {
-                            String temp = listAdapter.getItem(i).toString().toUpperCase();
-                            if (str.compareTo(temp) == 0) {
-                                acModel.setError(null);
-                                IsModelValid = true;
-                                return;
+                        if (listAdapter != null) {
+                            for (int i = 0; i < listAdapter.getCount(); i++) {
+                                String temp = listAdapter.getItem(i).toString().toUpperCase();
+                                if (str.compareTo(temp) == 0) {
+                                    acModel.setError(null);
+                                    IsModelValid = true;
+                                    return;
+                                }
                             }
+
+                            acModel.setError("Invalid Model");
+                            acModel.setFocusable(true);
+                            IsModelValid = false;
+
                         }
-
-                        acModel.setError("Invalid Model");
-                        acModel.setFocusable(true);
-                        IsModelValid = false;
-
 
                     }
 
@@ -424,8 +429,7 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void bindMakeModel()
-    {
+    private void bindMakeModel() {
         acMake.setText(userConstatntEntity.getMake());
         new Handler().post(new Runnable() {
             @Override
@@ -576,8 +580,8 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
 
         btnGo.setVisibility(View.VISIBLE);
         etVehicle.setEnabled(true);
-        acModel.setEnabled(true);
-        acMake.setEnabled(true);
+        acModel.setEnabled(false);
+        acMake.setEnabled(false);
         acMake.setText("");
         acModel.setText("");
         etVehicle.setText("");
@@ -764,6 +768,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
             try {
                 if (fastLaneDataEntity != null) {
 
+                    acModel.setEnabled(true);
+                    acMake.setEnabled(true);
+
                     acMake.setOnItemClickListener(null);
                     acModel.setOnItemClickListener(null);
                     if (fastLaneDataEntity.getMake_Name() != "") {
@@ -830,6 +837,9 @@ public class RenewRcFragment extends BaseFragment implements View.OnClickListene
         makeAdapter = new MakeAdapter(getActivity(), R.layout.activity_sign_up, R.id.lbl_name, prefManager.getMake());
         acMake.setAdapter(makeAdapter);
         setAutoComplete();
+
+        acModel.setEnabled(true);
+        acMake.setEnabled(true);
 
         acModel.setError(null);
         acMake.setError(null);
